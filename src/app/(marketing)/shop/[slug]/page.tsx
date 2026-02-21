@@ -99,9 +99,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="bg-grain px-6 py-10 md:py-16">
-        <div className="mx-auto max-w-[1100px]">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
+      <section className="bg-grain px-6 py-12 md:py-20">
+        <div className="mx-auto max-w-[1200px]">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
             {/* Image Gallery */}
             <ProductImageGallery
               images={product.images}
@@ -121,7 +121,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               )}
 
               {/* Name */}
-              <h1 className="text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.1] tracking-tight font-[family-name:var(--font-display)]">
+              <h1 className="text-3xl leading-[1.1] tracking-tight md:text-4xl lg:text-5xl font-[family-name:var(--font-display)]">
                 {product.name}
               </h1>
 
@@ -197,7 +197,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 defaultValue="details"
               >
                 <AccordionItem value="details">
-                  <AccordionTrigger>Details</AccordionTrigger>
+                  <AccordionTrigger className="text-base font-semibold py-5">Details</AccordionTrigger>
                   <AccordionContent>
                     <dl className="space-y-2 text-sm text-muted-foreground">
                       {product.metadata.material && (
@@ -230,7 +230,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                 {ringSizes && ringSizes.length > 0 && (
                   <AccordionItem value="sizing">
-                    <AccordionTrigger>Sizing Guide</AccordionTrigger>
+                    <AccordionTrigger className="text-base font-semibold py-5">Sizing Guide</AccordionTrigger>
                     <AccordionContent>
                       <p className="text-sm text-muted-foreground">
                         Available sizes: {ringSizes.join(", ")}. Not sure of
@@ -244,7 +244,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                 {product.metadata.care_instructions && (
                   <AccordionItem value="care">
-                    <AccordionTrigger>Care Instructions</AccordionTrigger>
+                    <AccordionTrigger className="text-base font-semibold py-5">Care Instructions</AccordionTrigger>
                     <AccordionContent>
                       <p className="text-sm text-muted-foreground">
                         {product.metadata.care_instructions}
@@ -254,7 +254,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 )}
 
                 <AccordionItem value="shipping">
-                  <AccordionTrigger>Shipping & Returns</AccordionTrigger>
+                  <AccordionTrigger className="text-base font-semibold py-5">Shipping & Returns</AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-2 text-sm text-muted-foreground">
                       <p>
@@ -285,12 +285,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           {/* Related products */}
           {product.metadata.collection && (
+            <div className="mt-16 md:mt-24">
             <Suspense>
               <RelatedProducts
                 collection={product.metadata.collection}
                 excludeId={product.id}
               />
             </Suspense>
+            </div>
           )}
         </div>
       </section>

@@ -9,7 +9,7 @@ import { MDXRemote } from "next-mdx-remote-client/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import { CTA } from "@/components/marketing/cta";
+import { NewsletterCTA } from "@/components/marketing/newsletter-cta";
 import type { BlogPosting, WithContext } from "schema-dts";
 
 interface BlogPostPageProps {
@@ -221,8 +221,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </article>
       </div>
-      <div className="mt-12 border-t">
-        <CTA />
+      <div className="mt-12">
+        <NewsletterCTA />
       </div>
     </div>
   );

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Particles } from "@/components/ui/particles";
 
 export function NewsletterCTA() {
   const [email, setEmail] = useState("");
@@ -33,71 +32,66 @@ export function NewsletterCTA() {
   }
 
   return (
-    <section className="px-6 py-24">
-      <motion.div
-        className="mx-auto max-w-[660px]"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="relative">
-          {/* Teal glow behind card */}
-          <div className="pointer-events-none absolute top-1/2 left-1/2 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(42,157,143,0.10)_0%,transparent_65%)] dark:bg-[radial-gradient(ellipse_at_center,rgba(42,157,143,0.16)_0%,transparent_65%)]" />
+    <section className="bg-grain px-6 py-24 md:py-40">
+      <div className="mx-auto max-w-[1200px]">
+        <motion.h2
+          className="max-w-[18ch] text-4xl leading-[1.08] tracking-tight md:text-6xl font-[family-name:var(--font-display)]"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          Nothing is wasted.{" "}
+          <em className="not-italic text-primary">Everything is reborn.</em>
+        </motion.h2>
 
-          {/* Card */}
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-card px-10 py-14 text-center">
-            {/* Particles */}
-            <Particles
-              className="pointer-events-none absolute inset-0"
-              quantity={30}
-              color="#2a9d8f"
-              size={0.3}
-              staticity={70}
-              ease={60}
-            />
+        <motion.p
+          className="mt-6 max-w-[48ch] text-base leading-relaxed text-muted-foreground md:text-lg"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          New drops, workshop stories, and first access to limited releases.
+          Join the crew that keeps Rebirth rolling.
+        </motion.p>
 
-            {/* Content */}
-            <div className="relative z-10">
-              <h2 className="mb-4 text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.12] tracking-tight font-[family-name:var(--font-display)]">
-                Get the <em className="not-italic text-primary">inside look</em>
-              </h2>
-              <p className="mx-auto mb-8 max-w-[44ch] text-base leading-relaxed text-muted-foreground">
-                New drops, workshop stories, and first access to limited
-                releases. Join the crew that keeps Rebirth rolling.
-              </p>
-
-              {status === "success" ? (
-                <p className="text-sm font-medium text-primary">
-                  You&apos;re in. Keep an eye on your inbox for the good stuff.
-                </p>
-              ) : (
-                <form
-                  onSubmit={handleSubmit}
-                  className="mx-auto flex max-w-sm flex-col gap-3 sm:flex-row"
-                >
-                  <Input
-                    type="email"
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="flex-1"
-                  />
-                  <Button type="submit" disabled={status === "loading"}>
-                    {status === "loading" ? "Joining..." : "Subscribe"}
-                  </Button>
-                </form>
-              )}
-              {status === "error" && (
-                <p className="mt-3 text-sm text-destructive">
-                  Something went wrong. Please try again.
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      </motion.div>
+        <motion.div
+          className="mt-10 max-w-md"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {status === "success" ? (
+            <p className="text-base font-medium text-primary">
+              You&apos;re in. Keep an eye on your inbox for the good stuff.
+            </p>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col gap-3 sm:flex-row"
+            >
+              <Input
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="flex-1"
+              />
+              <Button type="submit" disabled={status === "loading"}>
+                {status === "loading" ? "Joining..." : "Subscribe"}
+              </Button>
+            </form>
+          )}
+          {status === "error" && (
+            <p className="mt-3 text-sm text-destructive">
+              Something went wrong. Please try again.
+            </p>
+          )}
+        </motion.div>
+      </div>
     </section>
   );
 }

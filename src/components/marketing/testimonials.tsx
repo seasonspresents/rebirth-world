@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { Marquee } from "@/components/ui/marquee";
 
 const testimonials = [
   {
@@ -41,49 +42,61 @@ const testimonials = [
   },
 ];
 
+const firstRow = testimonials.slice(0, 3);
+const secondRow = testimonials.slice(3);
+
+function TestimonialCard({ quote, name, detail }: (typeof testimonials)[0]) {
+  return (
+    <div className="min-w-[350px] max-w-[450px] rounded-xl bg-card/50 p-8 md:min-w-[450px]">
+      <p className="text-lg leading-relaxed md:text-xl">
+        &ldquo;{quote}&rdquo;
+      </p>
+      <div className="mt-6">
+        <p className="font-medium">{name}</p>
+        <p className="mt-0.5 text-sm text-muted-foreground font-[family-name:var(--font-dm-mono)]">
+          {detail}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function Testimonials() {
   return (
-    <section className="border-t border-border px-6 py-24">
-      <div className="mx-auto max-w-[1000px]">
-        <motion.div
-          className="mx-auto mb-14 max-w-[480px] text-center"
+    <section className="bg-grain py-24 md:py-40">
+      <div className="mx-auto max-w-[1200px] px-6">
+        <motion.h2
+          className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="mb-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">
-            From our community
-          </p>
-          <h2 className="text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.15] tracking-tight font-[family-name:var(--font-display)]">
-            Worn with pride, made with purpose
-          </h2>
-        </motion.div>
+          Worn with pride, made with purpose
+        </motion.h2>
+      </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((item, index) => (
-            <motion.div
-              key={index}
-              className="flex flex-col rounded-xl border border-border bg-card p-6"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.08,
-                ease: "easeOut",
-              }}
-            >
-              <p className="flex-1 text-sm leading-relaxed">
-                &ldquo;{item.quote}&rdquo;
-              </p>
-              <div className="mt-5 border-t border-border pt-4">
-                <p className="text-sm font-medium">{item.name}</p>
-                <p className="text-xs text-muted-foreground">{item.detail}</p>
-              </div>
-            </motion.div>
+      <div className="relative mt-12 md:mt-16">
+        {/* Left fade */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
+        {/* Right fade */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
+
+        <Marquee pauseOnHover className="[--duration:45s] [--gap:1.5rem]">
+          {firstRow.map((item) => (
+            <TestimonialCard key={item.name} {...item} />
           ))}
-        </div>
+        </Marquee>
+
+        <Marquee
+          reverse
+          pauseOnHover
+          className="mt-6 [--duration:45s] [--gap:1.5rem]"
+        >
+          {secondRow.map((item) => (
+            <TestimonialCard key={item.name} {...item} />
+          ))}
+        </Marquee>
       </div>
     </section>
   );

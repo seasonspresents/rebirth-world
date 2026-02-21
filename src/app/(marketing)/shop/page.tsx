@@ -60,7 +60,7 @@ async function ProductGrid({
   return (
     <>
       {/* Filter + Sort row */}
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between md:mb-16">
         <Suspense>
           <CollectionFilter counts={counts} totalCount={allProducts.length} />
         </Suspense>
@@ -84,7 +84,7 @@ async function ProductGrid({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
@@ -102,24 +102,28 @@ export default async function ShopPage({
   const { collection, sort } = await searchParams;
 
   return (
-    <section className="px-6 py-16">
-      <div className="mx-auto max-w-[1000px]">
-        {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-[clamp(2rem,4vw,3rem)] leading-[1.1] tracking-tight font-[family-name:var(--font-display)]">
+    <>
+      {/* Dramatic header */}
+      <div className="bg-grain px-6 py-20 md:py-32">
+        <div className="mx-auto max-w-[1200px]">
+          <h1 className="text-5xl leading-[1.05] tracking-tight md:text-7xl font-[family-name:var(--font-display)]">
             The Collection
           </h1>
-          <p className="mt-3 max-w-[52ch] text-base text-muted-foreground">
+          <p className="mt-4 max-w-[52ch] text-base text-muted-foreground md:text-lg">
             Recycled skateboard rings, wood-lined wedding bands, and apparel —
             each piece handmade in the North Shore workshop. No two are alike.
           </p>
         </div>
-
-        {/* Products with filter + sort */}
-        <Suspense fallback={<ProductGridSkeleton />}>
-          <ProductGrid collection={collection} sort={sort} />
-        </Suspense>
       </div>
-    </section>
+
+      {/* Products */}
+      <section className="px-6 py-12 md:py-20">
+        <div className="mx-auto max-w-[1200px]">
+          <Suspense fallback={<ProductGridSkeleton />}>
+            <ProductGrid collection={collection} sort={sort} />
+          </Suspense>
+        </div>
+      </section>
+    </>
   );
 }

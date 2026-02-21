@@ -16,10 +16,10 @@ export function OurStoryContent() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-grain relative px-6 py-24 md:py-32">
-        <div className="relative z-10 mx-auto max-w-[720px] text-center">
+      <section className="bg-grain relative px-6 py-32 md:py-48">
+        <div className="relative z-10 mx-auto max-w-[1000px]">
           <motion.p
-            className="mb-4 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-primary font-[family-name:var(--font-dm-mono)]"
+            className="mb-6 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary font-[family-name:var(--font-dm-mono)]"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -27,8 +27,8 @@ export function OurStoryContent() {
             Our Story
           </motion.p>
           <motion.h1
-            className="text-[clamp(2.2rem,5vw,3.8rem)] leading-[1.08] tracking-tight font-[family-name:var(--font-display)]"
-            initial={{ opacity: 0, y: 20 }}
+            className="max-w-[14ch] text-5xl leading-[1.05] tracking-[-0.03em] md:text-7xl lg:text-8xl font-[family-name:var(--font-display)]"
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
@@ -36,8 +36,8 @@ export function OurStoryContent() {
             <span className="text-primary">Second chances.</span>
           </motion.h1>
           <motion.p
-            className="mx-auto mt-6 max-w-[52ch] text-base leading-relaxed text-muted-foreground md:text-lg"
-            initial={{ opacity: 0, y: 20 }}
+            className="mt-8 max-w-[48ch] text-base leading-relaxed text-muted-foreground md:text-lg"
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
@@ -48,19 +48,19 @@ export function OurStoryContent() {
       </section>
 
       {/* Austrian Heritage */}
-      <section className="border-t border-border px-6 py-20">
-        <div className="mx-auto max-w-[720px]">
+      <section className="px-6 py-20 md:py-32">
+        <div className="mx-auto max-w-[1000px]">
           <motion.div {...fadeUp}>
-            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
+            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
               The Beginning
             </p>
-            <h2 className="text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.15] tracking-tight font-[family-name:var(--font-display)]">
+            <h2 className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]">
               A jeweler&apos;s son, a skater&apos;s heart
             </h2>
           </motion.div>
 
           <motion.div
-            className="mt-8 space-y-5 text-base leading-relaxed text-muted-foreground"
+            className="mx-auto mt-8 max-w-[720px] space-y-5 text-base leading-relaxed text-muted-foreground md:text-lg"
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
@@ -88,19 +88,19 @@ export function OurStoryContent() {
       </section>
 
       {/* The Broken Board Moment */}
-      <section className="border-t border-border bg-card px-6 py-20">
-        <div className="mx-auto max-w-[720px]">
+      <section className="bg-card px-6 py-20 md:py-32">
+        <div className="mx-auto max-w-[1000px]">
           <motion.div {...fadeUp}>
-            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
+            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
               The Moment
             </p>
-            <h2 className="text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.15] tracking-tight font-[family-name:var(--font-display)]">
+            <h2 className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]">
               Seven layers of potential
             </h2>
           </motion.div>
 
           <motion.div
-            className="mt-8 space-y-5 text-base leading-relaxed text-muted-foreground"
+            className="mx-auto mt-8 max-w-[720px] space-y-5 text-base leading-relaxed text-muted-foreground md:text-lg"
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
@@ -126,19 +126,19 @@ export function OurStoryContent() {
       </section>
 
       {/* Community */}
-      <section className="border-t border-border px-6 py-20">
-        <div className="mx-auto max-w-[720px]">
+      <section className="px-6 py-20 md:py-32">
+        <div className="mx-auto max-w-[1000px]">
           <motion.div {...fadeUp}>
-            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
+            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
               Community
             </p>
-            <h2 className="text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.15] tracking-tight font-[family-name:var(--font-display)]">
+            <h2 className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]">
               Donated by riders. Shaped by hand.
             </h2>
           </motion.div>
 
           <motion.div
-            className="mt-8 space-y-5 text-base leading-relaxed text-muted-foreground"
+            className="mx-auto mt-8 max-w-[720px] space-y-5 text-base leading-relaxed text-muted-foreground md:text-lg"
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
@@ -163,19 +163,19 @@ export function OurStoryContent() {
       </section>
 
       {/* Wedding Bands */}
-      <section className="border-t border-border bg-card px-6 py-20">
-        <div className="mx-auto max-w-[720px]">
+      <section className="bg-card px-6 py-20 md:py-32">
+        <div className="mx-auto max-w-[1000px]">
           <motion.div {...fadeUp}>
-            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
+            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
               The Next Chapter
             </p>
-            <h2 className="text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.15] tracking-tight font-[family-name:var(--font-display)]">
+            <h2 className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]">
               Wood-lined wedding bands
             </h2>
           </motion.div>
 
           <motion.div
-            className="mt-8 space-y-5 text-base leading-relaxed text-muted-foreground"
+            className="mx-auto mt-8 max-w-[720px] space-y-5 text-base leading-relaxed text-muted-foreground md:text-lg"
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
@@ -198,19 +198,19 @@ export function OurStoryContent() {
       </section>
 
       {/* Philosophy */}
-      <section className="bg-grain relative border-t border-border px-6 py-20">
-        <div className="relative z-10 mx-auto max-w-[720px]">
+      <section className="bg-grain relative px-6 py-20 md:py-32">
+        <div className="relative z-10 mx-auto max-w-[1000px]">
           <motion.div {...fadeUp}>
-            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
+            <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
               Philosophy
             </p>
-            <h2 className="text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.15] tracking-tight font-[family-name:var(--font-display)]">
+            <h2 className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]">
               Embrace Change
             </h2>
           </motion.div>
 
           <motion.div
-            className="mt-8 space-y-5 text-base leading-relaxed text-muted-foreground"
+            className="mx-auto mt-8 max-w-[720px] space-y-5 text-base leading-relaxed text-muted-foreground md:text-lg"
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
@@ -233,7 +233,7 @@ export function OurStoryContent() {
 
           {/* Sign-off */}
           <motion.div
-            className="mt-12 border-t border-border pt-8"
+            className="mx-auto mt-12 max-w-[720px] border-t border-border pt-8"
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
@@ -249,7 +249,7 @@ export function OurStoryContent() {
 
           {/* CTAs */}
           <motion.div
-            className="mt-10 flex flex-col items-start gap-4 sm:flex-row"
+            className="mx-auto mt-10 flex max-w-[720px] flex-col items-start gap-4 sm:flex-row"
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.3 }}
           >

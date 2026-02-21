@@ -32,28 +32,23 @@ const values = [
 
 export function ValueProps() {
   return (
-    <section className="border-t border-border px-6 py-24">
-      <div className="mx-auto max-w-[1000px]">
-        <motion.div
-          className="mx-auto mb-14 max-w-[480px] text-center"
+    <section className="bg-card px-6 py-24 md:py-36">
+      <div className="mx-auto max-w-[1200px]">
+        <motion.h2
+          className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <p className="mb-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">
-            Why Rebirth
-          </p>
-          <h2 className="text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.15] tracking-tight font-[family-name:var(--font-display)]">
-            Made different, on purpose
-          </h2>
-        </motion.div>
+          Made different, on purpose
+        </motion.h2>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className="mt-12 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 lg:grid-cols-4">
           {values.map((value, index) => (
             <motion.div
               key={value.title}
-              className="rounded-xl border border-border bg-card p-6"
+              className="border-t border-border pt-6"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -63,9 +58,9 @@ export function ValueProps() {
                 ease: "easeOut",
               }}
             >
-              <value.icon className="mb-4 size-6 text-primary" />
-              <h3 className="mb-2 text-base font-semibold">{value.title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <value.icon className="mb-4 size-8 text-primary" />
+              <h3 className="mb-2 text-lg font-semibold">{value.title}</h3>
+              <p className="text-base leading-relaxed text-muted-foreground">
                 {value.description}
               </p>
             </motion.div>

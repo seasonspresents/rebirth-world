@@ -23,28 +23,28 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="w-full border-t bg-background">
-      <div className="mx-auto max-w-[1200px] px-6 py-12">
+    <footer className="bg-grain w-full border-t bg-background">
+      <div className="mx-auto max-w-[1200px] px-6 py-16 md:py-24">
         {/* Top: Logo + tagline + columns */}
         <div className="flex flex-col gap-10 md:flex-row md:justify-between">
           {/* Brand */}
           <div className="shrink-0">
             <Logo />
-            <p className="mt-3 max-w-[28ch] text-sm text-muted-foreground">
+            <p className="mt-3 max-w-[28ch] text-base text-muted-foreground">
               Handcrafted from recycled skateboards.
               <br />
               Born on the North Shore.
             </p>
-            <p className="mt-2 text-xs font-[family-name:var(--font-dm-mono)] tracking-wide text-muted-foreground/70">
+            <p className="mt-2 text-sm font-[family-name:var(--font-dm-mono)] tracking-wide text-muted-foreground/70">
               Embrace Change
             </p>
             <a
               href="https://instagram.com/rebirthrings"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="mt-5 inline-flex items-center gap-2 text-base text-muted-foreground transition-colors hover:text-foreground"
             >
-              <Instagram className="size-4" />
+              <Instagram className="size-5" />
               <span>@rebirthrings</span>
             </a>
           </div>
@@ -72,7 +72,7 @@ export function Footer() {
         </div>
 
         {/* Bottom separator + copyright */}
-        <div className="mt-12 border-t pt-6">
+        <div className="mt-16 border-t pt-6">
           <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} Rebirth World LLC. All rights
             reserved.

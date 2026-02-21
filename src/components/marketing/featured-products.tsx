@@ -6,15 +6,12 @@ export async function FeaturedProducts() {
 
   if (products.length === 0) {
     return (
-      <section className="border-t border-border px-6 py-24">
-        <div className="mx-auto max-w-[1000px] text-center">
-          <p className="mb-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">
-            Coming soon
-          </p>
-          <h2 className="text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.15] tracking-tight font-[family-name:var(--font-display)]">
+      <section className="px-6 py-24 md:py-40">
+        <div className="mx-auto max-w-[1200px]">
+          <h2 className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]">
             Our collection is being curated
           </h2>
-          <p className="mx-auto mt-4 max-w-[44ch] text-base text-muted-foreground">
+          <p className="mt-4 max-w-[44ch] text-base text-muted-foreground">
             Sign up for our newsletter to be the first to know when new pieces
             drop.
           </p>
@@ -24,18 +21,13 @@ export async function FeaturedProducts() {
   }
 
   return (
-    <section className="border-t border-border px-6 py-24">
-      <div className="mx-auto max-w-[1000px]">
-        <div className="mx-auto mb-14 max-w-[480px] text-center">
-          <p className="mb-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">
-            Featured pieces
-          </p>
-          <h2 className="text-[clamp(1.6rem,3.5vw,2.2rem)] leading-[1.15] tracking-tight font-[family-name:var(--font-display)]">
-            Crafted with intention
-          </h2>
-        </div>
+    <section className="px-6 py-24 md:py-40">
+      <div className="mx-auto max-w-[1200px]">
+        <h2 className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]">
+          Crafted with intention
+        </h2>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 md:mt-16 md:gap-10 lg:grid-cols-3">
           {products.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
