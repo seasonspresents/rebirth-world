@@ -547,6 +547,20 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     console.log(`Handling checkout completed: ${session.id}`);
     const supabase = createServiceClient();
 
+    // Idempotency: skip if order already exists for this checkout session
+    const { data: existingOrder } = await supabase
+      .from("orders")
+      .select("id, order_number")
+      .eq("stripe_checkout_session_id", session.id)
+      .maybeSingle();
+
+    if (existingOrder) {
+      console.log(
+        `Order ${existingOrder.order_number} already exists for session ${session.id}, skipping`
+      );
+      return;
+    }
+
     // 1. Generate order number via DB function
     let orderNumber = `RB-${Date.now().toString(36).toUpperCase()}`;
     try {
@@ -615,7 +629,21 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
     console.log(`Created order ${orderNumber} with id ${order.id}`);
 
-    // 7. Insert order items (snapshot product data at purchase time)
+    // 7. Parse per-item variant/engraving data from session metadata
+    let itemVariantsMap: Record<string, string> = {};
+    try {
+      const raw = session.metadata?.item_variants;
+      if (raw) {
+        const parsed = JSON.parse(raw) as { priceId: string; variant: string }[];
+        for (const v of parsed) {
+          itemVariantsMap[v.priceId] = v.variant;
+        }
+      }
+    } catch {
+      console.log("Could not parse item_variants metadata");
+    }
+
+    // 8. Insert order items (snapshot product data at purchase time)
     const orderItems = lineItems.data.map((li) => {
       const price = li.price;
       const product =
@@ -626,12 +654,25 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       const unitPrice = li.price?.unit_amount ?? 0;
       const qty = li.quantity ?? 1;
 
+      // Parse variant string: "9" → size only, "9|Forever" → size + engraving
+      const variantRaw = price?.id ? itemVariantsMap[price.id] : null;
+      let variantName: string | null = null;
+      let engravingText: string | null = null;
+
+      if (variantRaw) {
+        const parts = variantRaw.split("|");
+        variantName = parts[0] || null;
+        engravingText = parts[1] || null;
+      }
+
       return {
         order_id: order.id,
         stripe_product_id: product?.id ?? null,
         stripe_price_id: price?.id ?? null,
         product_name: li.description ?? product?.name ?? "Unknown",
         product_image_url: product?.images?.[0] ?? null,
+        variant_name: variantName,
+        engraving_text: engravingText,
         unit_price: unitPrice,
         quantity: qty,
         total_price: unitPrice * qty,
@@ -646,7 +687,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       console.error("Error inserting order items:", itemsError);
     }
 
-    // 8. Insert into payment_history
+    // 9. Insert into payment_history
     if (!isGuest) {
       const { error: paymentError } = await supabase
         .from("payment_history")
@@ -664,12 +705,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       }
     }
 
-    // 9. Clear cart items for logged-in user
+    // 10. Clear cart items for logged-in user
     if (!isGuest) {
       await supabase.from("cart_items").delete().eq("user_id", userId);
     }
 
-    // 10. Send order confirmation email
+    // 11. Send order confirmation email
     if (customerEmail) {
       try {
         await sendEmail("order-confirmation", customerEmail, {
@@ -709,7 +750,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       }
     }
 
-    // 11. Notify GHL for post-purchase marketing automation (non-blocking)
+    // 12. Notify GHL for post-purchase marketing automation (non-blocking)
     notifyPurchase({
       email: customerEmail ?? "",
       first_name: session.customer_details?.name?.split(" ")[0],

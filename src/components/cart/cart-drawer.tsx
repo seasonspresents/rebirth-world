@@ -92,7 +92,9 @@ export function CartDrawer() {
                         </p>
                         {item.variant && (
                           <p className="mt-0.5 text-xs text-muted-foreground">
-                            Size {item.variant}
+                            {item.variant.includes("|")
+                              ? `Size ${item.variant.split("|")[0]} · "${item.variant.split("|")[1]}"`
+                              : `Size ${item.variant}`}
                           </p>
                         )}
                         <p className="mt-1 text-sm font-semibold">

@@ -9,6 +9,7 @@ const checkoutSchema = z.object({
       z.object({
         stripePriceId: z.string(),
         quantity: z.number().int().min(1),
+        variant: z.string().nullable().optional(),
       })
     )
     .min(1),
@@ -33,6 +34,14 @@ export async function POST(req: NextRequest) {
     quantity: item.quantity,
   }));
 
+  // Serialize per-item variant/engraving data for the webhook to read
+  const itemVariants = parsed.data.items
+    .filter((item) => item.variant)
+    .map((item) => ({
+      priceId: item.stripePriceId,
+      variant: item.variant,
+    }));
+
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://rebirth.world";
 
   try {
@@ -46,8 +55,8 @@ export async function POST(req: NextRequest) {
         {
           shipping_rate_data: {
             type: "fixed_amount",
-            fixed_amount: { amount: 500, currency: "usd" },
-            display_name: "Standard Shipping",
+            fixed_amount: { amount: 0, currency: "usd" },
+            display_name: "Free Standard Shipping",
             delivery_estimate: {
               minimum: { unit: "business_day", value: 5 },
               maximum: { unit: "business_day", value: 10 },
@@ -70,6 +79,9 @@ export async function POST(req: NextRequest) {
       metadata: {
         user_id: user?.id ?? "guest",
         order_source: "website",
+        ...(itemVariants.length > 0 && {
+          item_variants: JSON.stringify(itemVariants),
+        }),
       },
       ...(user?.email && { customer_email: user.email }),
       success_url: `${siteUrl}/order/success?session_id={CHECKOUT_SESSION_ID}`,

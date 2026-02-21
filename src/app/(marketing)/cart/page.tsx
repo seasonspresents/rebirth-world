@@ -38,6 +38,7 @@ export default function CartPage() {
           items: items.map((i) => ({
             stripePriceId: i.stripePriceId,
             quantity: i.quantity,
+            variant: i.variant ?? null,
           })),
         }),
       });
@@ -118,7 +119,9 @@ export default function CartPage() {
                       </Link>
                       {item.variant && (
                         <p className="mt-0.5 text-xs text-muted-foreground">
-                          Size {item.variant}
+                          {item.variant.includes("|")
+                            ? `Size ${item.variant.split("|")[0]} · Engraving: "${item.variant.split("|")[1]}"`
+                            : `Size ${item.variant}`}
                         </p>
                       )}
                       <p className="mt-1 text-sm font-semibold">
