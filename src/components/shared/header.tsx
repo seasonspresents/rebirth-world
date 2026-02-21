@@ -4,13 +4,16 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { MobileNav } from "@/components/shared/mobile-nav";
 import { Logo } from "@/components/shared/logo";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { useCart } from "@/components/cart/cart-context";
 import { cn } from "@/lib/utils";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const { itemCount, setCartOpen } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -58,11 +61,19 @@ export function Header() {
             Contact
           </Link>
           <ThemeToggle />
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/cart">
-              <ShoppingBag className="size-5" />
-              <span className="sr-only">Cart</span>
-            </Link>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="relative"
+            onClick={() => setCartOpen(true)}
+          >
+            <ShoppingBag className="size-5" />
+            {itemCount > 0 && (
+              <Badge className="absolute -top-1 -right-1 size-5 p-0 text-[10px]">
+                {itemCount}
+              </Badge>
+            )}
+            <span className="sr-only">Cart</span>
           </Button>
           <Button variant="ghost" size="sm" asChild>
             <Link href="/sign-in">Sign in</Link>

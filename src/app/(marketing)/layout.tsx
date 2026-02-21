@@ -1,5 +1,6 @@
 import { Footer } from "@/components/shared/footer";
 import { Header } from "@/components/shared/header";
+import { CartDrawer } from "@/components/cart/cart-drawer";
 
 export default function MarketingLayout({
   children,
@@ -9,6 +10,7 @@ export default function MarketingLayout({
   return (
     <div className="overflow-x-hidden">
       <Header />
+      <CartDrawer />
       <main>{children}</main>
       <Footer />
     </div>

@@ -1,13 +1,14 @@
 import { Resend } from "resend";
 import { WelcomeEmail } from "@/components/email/welcome";
 import { ConfirmSignupEmail } from "@/components/email/confirm-signup";
+import { OrderConfirmationEmail } from "@/components/email/order-confirmation";
 
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
 }
 
 // Email type definitions
-export type EmailType = "welcome" | "confirm-signup";
+export type EmailType = "welcome" | "confirm-signup" | "order-confirmation";
 
 // Props types for each email type
 export type EmailProps = {
@@ -18,6 +19,30 @@ export type EmailProps = {
   };
   "confirm-signup": {
     confirmationUrl: string;
+    siteUrl?: string;
+  };
+  "order-confirmation": {
+    orderNumber: string;
+    items: Array<{
+      name: string;
+      quantity: number;
+      unitPrice: number;
+      image?: string | null;
+    }>;
+    subtotal: number;
+    shipping: number;
+    tax: number;
+    total: number;
+    shippingAddress?: {
+      name?: string;
+      line1?: string;
+      line2?: string;
+      city?: string;
+      state?: string;
+      postalCode?: string;
+      country?: string;
+    };
+    orderUrl?: string;
     siteUrl?: string;
   };
 };
@@ -38,12 +63,17 @@ const emailConfigs: Record<EmailType, EmailConfig> = {
     from: "Rebirth World <hello@rebirth.world>",
     subject: "Confirm your signup",
   },
+  "order-confirmation": {
+    from: "Rebirth World <hello@rebirth.world>",
+    subject: "Order confirmed — Rebirth World",
+  },
 };
 
 // Email template mapping
 const emailTemplates = {
   welcome: WelcomeEmail,
   "confirm-signup": ConfirmSignupEmail,
+  "order-confirmation": OrderConfirmationEmail,
 };
 
 // Type-safe email sending function
@@ -64,7 +94,8 @@ export async function sendEmail<T extends EmailType>(
       from: config.from,
       to,
       subject: config.subject,
-      react: Template(props) as React.ReactElement,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      react: (Template as any)(props) as React.ReactElement,
     });
 
     if (error) {
@@ -88,5 +119,6 @@ export function getEmailTemplate<T extends EmailType>(
   if (!Template) {
     throw new Error(`Unknown email type: ${type}`);
   }
-  return Template(props) as React.ReactElement;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (Template as any)(props) as React.ReactElement;
 }

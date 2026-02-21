@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import type { Organization, WithContext } from "schema-dts";
 import { AuthProvider } from "@/components/auth/auth-context";
+import { CartProvider } from "@/components/cart/cart-context";
 import { createClient } from "@/lib/supabase/server";
 import type { UserProfile } from "@/lib/supabase/types";
 import { Analytics } from "@vercel/analytics/next";
@@ -133,7 +134,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider initialUser={user} initialProfile={profile}>
-            {children}
+            <CartProvider>{children}</CartProvider>
           </AuthProvider>
         </ThemeProvider>
         {/* </PHProvider> */}

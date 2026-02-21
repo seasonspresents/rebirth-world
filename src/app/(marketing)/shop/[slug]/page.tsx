@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Metadata } from "next";
 import { getProductBySlug, formatPrice } from "@/lib/payments/products";
-import { Button } from "@/components/ui/button";
+import { AddToCartButton } from "@/components/shop/add-to-cart-button";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -95,32 +95,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             )}
 
-            {/* Ring sizes */}
-            {ringSizes && ringSizes.length > 0 && (
-              <div className="mt-6">
-                <p className="mb-2 text-sm font-semibold">Available Sizes</p>
-                <div className="flex flex-wrap gap-2">
-                  {ringSizes.map((size) => (
-                    <span
-                      key={size}
-                      className="rounded-md border border-border px-3 py-1 text-sm"
-                    >
-                      {size}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Add to Cart placeholder */}
-            <div className="mt-8">
-              <Button size="lg" className="w-full sm:w-auto" disabled>
-                Add to Cart
-              </Button>
-              <p className="mt-2 text-xs text-muted-foreground">
-                Cart functionality coming soon
-              </p>
-            </div>
+            {/* Add to Cart (with size selector when applicable) */}
+            <AddToCartButton
+              product={product}
+              availableSizes={ringSizes}
+            />
           </div>
         </div>
       </div>

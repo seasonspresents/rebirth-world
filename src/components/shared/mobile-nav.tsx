@@ -11,18 +11,29 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { useCart } from "@/components/cart/cart-context";
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
+  const { itemCount, setCartOpen } = useCart();
 
   return (
     <div className="flex items-center gap-2 md:hidden">
-      <Button variant="ghost" size="icon" asChild>
-        <Link href="/cart">
-          <ShoppingBag className="size-5" />
-          <span className="sr-only">Cart</span>
-        </Link>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="relative"
+        onClick={() => setCartOpen(true)}
+      >
+        <ShoppingBag className="size-5" />
+        {itemCount > 0 && (
+          <Badge className="absolute -top-1 -right-1 size-5 p-0 text-[10px]">
+            {itemCount}
+          </Badge>
+        )}
+        <span className="sr-only">Cart</span>
       </Button>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
