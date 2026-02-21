@@ -40,12 +40,17 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Check protected routes (specify only pages that require authentication)
-  const protectedRoutes = ["/dashboard"];
+  const protectedRoutes = ["/dashboard", "/api/admin"];
   const isProtectedRoute = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route)
   );
 
-  // Redirect unauthenticated users to login page when accessing routes that require authentication
+  // Reject unauthenticated API requests with 401
+  if (isProtectedRoute && !user && request.nextUrl.pathname.startsWith("/api/")) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Redirect unauthenticated users to login page when accessing protected pages
   if (isProtectedRoute && !user) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }

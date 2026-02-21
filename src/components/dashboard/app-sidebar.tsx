@@ -3,12 +3,13 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
 import {
-  BookOpen,
   GalleryVerticalEnd,
   LifeBuoy,
   Package,
   Send,
   Settings2,
+  ShoppingBag,
+  Users,
 } from "lucide-react";
 
 import { NavMain } from "@/components/dashboard/nav-main";
@@ -22,6 +23,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/components/auth/auth-context";
+import { isClientAdmin } from "@/lib/admin-client";
 
 const teams = [
   {
@@ -46,62 +49,115 @@ const navSecondary = [
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const { user } = useAuth();
+  const isAdmin = isClientAdmin(user?.id);
+
   const isSettingsPage = pathname.startsWith("/dashboard/settings");
   const isOrdersPage = pathname.startsWith("/dashboard/orders");
+  const isProductsPage = pathname.startsWith("/dashboard/products");
+  const isCustomersPage = pathname.startsWith("/dashboard/customers");
 
-  const navMain = [
-    {
-      title: "Orders",
-      url: "/dashboard/orders",
-      icon: Package,
-      isActive: isOrdersPage,
-      items: [
+  const navMain = isAdmin
+    ? [
         {
-          title: "All Orders",
+          title: "Orders",
           url: "/dashboard/orders",
-        },
-      ],
-    },
-    {
-      title: "Resources",
-      url: "/dashboard",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Getting Started",
-          url: "https://rebirth.world",
+          icon: Package,
+          isActive: isOrdersPage,
+          items: [
+            {
+              title: "All Orders",
+              url: "/dashboard/orders",
+            },
+          ],
         },
         {
-          title: "Changelog",
-          url: "/changelog",
+          title: "Products",
+          url: "/dashboard/products",
+          icon: ShoppingBag,
+          isActive: isProductsPage,
+          items: [
+            {
+              title: "All Products",
+              url: "/dashboard/products",
+            },
+          ],
         },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "/dashboard",
-      icon: Settings2,
-      isActive: isSettingsPage,
-      items: [
         {
-          title: "General",
+          title: "Customers",
+          url: "/dashboard/customers",
+          icon: Users,
+          isActive: isCustomersPage,
+          items: [
+            {
+              title: "All Customers",
+              url: "/dashboard/customers",
+            },
+          ],
+        },
+        {
+          title: "Settings",
           url: "/dashboard/settings/general",
+          icon: Settings2,
+          isActive: isSettingsPage,
+          items: [
+            {
+              title: "General",
+              url: "/dashboard/settings/general",
+            },
+            {
+              title: "Account",
+              url: "/dashboard/settings/account",
+            },
+            {
+              title: "Billing",
+              url: "/dashboard/settings/billing",
+            },
+            {
+              title: "Notifications",
+              url: "/dashboard/settings/notifications",
+            },
+          ],
+        },
+      ]
+    : [
+        {
+          title: "Orders",
+          url: "/dashboard/orders",
+          icon: Package,
+          isActive: isOrdersPage,
+          items: [
+            {
+              title: "All Orders",
+              url: "/dashboard/orders",
+            },
+          ],
         },
         {
-          title: "Account",
-          url: "/dashboard/settings/account",
+          title: "Settings",
+          url: "/dashboard/settings/general",
+          icon: Settings2,
+          isActive: isSettingsPage,
+          items: [
+            {
+              title: "General",
+              url: "/dashboard/settings/general",
+            },
+            {
+              title: "Account",
+              url: "/dashboard/settings/account",
+            },
+            {
+              title: "Billing",
+              url: "/dashboard/settings/billing",
+            },
+            {
+              title: "Notifications",
+              url: "/dashboard/settings/notifications",
+            },
+          ],
         },
-        {
-          title: "Billing",
-          url: "/dashboard/settings/billing",
-        },
-        {
-          title: "Notifications",
-          url: "/dashboard/settings/notifications",
-        },
-      ],
-    },
-  ];
+      ];
 
   return (
     <Sidebar collapsible="icon" {...props}>

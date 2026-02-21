@@ -2,13 +2,14 @@ import { Resend } from "resend";
 import { WelcomeEmail } from "@/components/email/welcome";
 import { ConfirmSignupEmail } from "@/components/email/confirm-signup";
 import { OrderConfirmationEmail } from "@/components/email/order-confirmation";
+import { ShippingNotificationEmail } from "@/components/email/shipping-notification";
 
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
 }
 
 // Email type definitions
-export type EmailType = "welcome" | "confirm-signup" | "order-confirmation";
+export type EmailType = "welcome" | "confirm-signup" | "order-confirmation" | "shipping-notification";
 
 // Props types for each email type
 export type EmailProps = {
@@ -45,6 +46,14 @@ export type EmailProps = {
     orderUrl?: string;
     siteUrl?: string;
   };
+  "shipping-notification": {
+    orderNumber: string;
+    trackingNumber: string;
+    trackingUrl?: string;
+    carrier?: string;
+    shippingName?: string;
+    siteUrl?: string;
+  };
 };
 
 // Email configuration type
@@ -67,6 +76,10 @@ const emailConfigs: Record<EmailType, EmailConfig> = {
     from: "Rebirth World <hello@rebirth.world>",
     subject: "Order confirmed — Rebirth World",
   },
+  "shipping-notification": {
+    from: "Rebirth World <hello@rebirth.world>",
+    subject: "Your order has shipped — Rebirth World",
+  },
 };
 
 // Email template mapping
@@ -74,6 +87,7 @@ const emailTemplates = {
   welcome: WelcomeEmail,
   "confirm-signup": ConfirmSignupEmail,
   "order-confirmation": OrderConfirmationEmail,
+  "shipping-notification": ShippingNotificationEmail,
 };
 
 // Type-safe email sending function

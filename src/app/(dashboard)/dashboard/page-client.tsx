@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/auth/auth-context";
 import { createBrowserClient } from "@supabase/ssr";
 import { Skeleton } from "@/components/ui/skeleton";
+import { isClientAdmin } from "@/lib/admin-client";
 
 function getMonthRange() {
   const now = new Date();
@@ -27,6 +28,7 @@ function getMonthRange() {
 export function DashboardPageClient() {
   const router = useRouter();
   const { user } = useAuth();
+  const isAdmin = isClientAdmin(user?.id);
   const [loading, setLoading] = React.useState(true);
   const [metrics, setMetrics] = React.useState({
     orderCount: 0,
@@ -39,60 +41,75 @@ export function DashboardPageClient() {
   React.useEffect(() => {
     if (!user) return;
 
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
-    );
-
-    async function fetchData() {
-      const { start, end } = getMonthRange();
-
-      // Fetch this month's orders for metrics
-      const { data: monthOrders } = await supabase
-        .from("orders")
-        .select("id, total, status, created_at")
-        .eq("user_id", user!.id)
-        .gte("created_at", start)
-        .lte("created_at", end);
-
-      const orders = monthOrders ?? [];
-      const orderCount = orders.length;
-      const revenue = orders.reduce((sum, o) => sum + (o.total ?? 0), 0) / 100;
-      const avgOrderValue = orderCount > 0 ? revenue / orderCount : 0;
-      const pendingShipments = orders.filter((o) => o.status === "confirmed").length;
-
-      setMetrics({ orderCount, revenue, avgOrderValue, pendingShipments });
-
-      // Fetch last 90 days of orders for chart
-      const ninetyDaysAgo = new Date();
-      ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
-
-      const { data: chartOrders } = await supabase
-        .from("orders")
-        .select("total, created_at")
-        .eq("user_id", user!.id)
-        .gte("created_at", ninetyDaysAgo.toISOString());
-
-      // Aggregate by date
-      const byDate = new Map<string, { orders: number; revenue: number }>();
-      for (const o of chartOrders ?? []) {
-        const date = o.created_at.slice(0, 10);
-        const existing = byDate.get(date) ?? { orders: 0, revenue: 0 };
-        existing.orders += 1;
-        existing.revenue += (o.total ?? 0) / 100;
-        byDate.set(date, existing);
+    if (isAdmin) {
+      // Admin: fetch store-wide metrics from admin API
+      async function fetchAdminData() {
+        try {
+          const res = await fetch("/api/admin/metrics");
+          if (!res.ok) throw new Error("Failed to fetch admin metrics");
+          const data = await res.json();
+          setMetrics(data.metrics);
+          setChartData(data.chartData);
+        } catch (err) {
+          console.error("Admin metrics error:", err);
+        } finally {
+          setLoading(false);
+        }
       }
+      fetchAdminData();
+    } else {
+      // Customer: fetch own orders via Supabase (RLS-scoped)
+      async function fetchCustomerData() {
+        const supabase = createBrowserClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+        );
 
-      const chart: OrderChartDataPoint[] = Array.from(byDate.entries())
-        .map(([date, data]) => ({ date, ...data }))
-        .sort((a, b) => a.date.localeCompare(b.date));
+        const { start, end } = getMonthRange();
 
-      setChartData(chart);
-      setLoading(false);
+        const { data: monthOrders } = await supabase
+          .from("orders")
+          .select("id, total, status, created_at")
+          .eq("user_id", user!.id)
+          .gte("created_at", start)
+          .lte("created_at", end);
+
+        const orders = monthOrders ?? [];
+        const orderCount = orders.length;
+        const revenue = orders.reduce((sum, o) => sum + (o.total ?? 0), 0) / 100;
+        const avgOrderValue = orderCount > 0 ? revenue / orderCount : 0;
+        const pendingShipments = orders.filter((o) => o.status === "confirmed").length;
+
+        setMetrics({ orderCount, revenue, avgOrderValue, pendingShipments });
+
+        const ninetyDaysAgo = new Date();
+        ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+
+        const { data: chartOrders } = await supabase
+          .from("orders")
+          .select("total, created_at")
+          .eq("user_id", user!.id)
+          .gte("created_at", ninetyDaysAgo.toISOString());
+
+        const byDate = new Map<string, { orders: number; revenue: number }>();
+        for (const o of chartOrders ?? []) {
+          const date = o.created_at.slice(0, 10);
+          const existing = byDate.get(date) ?? { orders: 0, revenue: 0 };
+          existing.orders += 1;
+          existing.revenue += (o.total ?? 0) / 100;
+          byDate.set(date, existing);
+        }
+
+        const chart: OrderChartDataPoint[] = Array.from(byDate.entries())
+          .map(([date, data]) => ({ date, ...data }))
+          .sort((a, b) => a.date.localeCompare(b.date));
+
+        setChartData(chart);
+        setLoading(false);
+      }
+      fetchCustomerData();
     }
-
-    fetchData();
-  }, [user]);
+  }, [user, isAdmin]);
 
   return (
     <>

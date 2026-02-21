@@ -31,6 +31,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Empty,
   EmptyContent,
   EmptyDescription,
@@ -40,6 +47,7 @@ import {
 } from "@/components/ui/empty";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/components/auth/auth-context";
+import { isClientAdmin } from "@/lib/admin-client";
 import { formatPrice } from "@/lib/payments/constants";
 import type { Order } from "@/lib/supabase/types";
 
@@ -49,6 +57,11 @@ function getStatusBadge(status: string) {
       return {
         label: "Confirmed",
         className: "bg-green-500 text-white dark:bg-green-600 dark:text-white",
+      };
+    case "processing":
+      return {
+        label: "Processing",
+        className: "bg-yellow-500 text-white dark:bg-yellow-600 dark:text-white",
       };
     case "shipped":
       return {
@@ -60,7 +73,7 @@ function getStatusBadge(status: string) {
         label: "Delivered",
         className: "bg-green-500 text-white dark:bg-green-600 dark:text-white",
       };
-    case "canceled":
+    case "cancelled":
     case "refunded":
       return {
         label: status.charAt(0).toUpperCase() + status.slice(1),
@@ -73,6 +86,16 @@ function getStatusBadge(status: string) {
       };
   }
 }
+
+const STATUS_OPTIONS = [
+  { value: "all", label: "All Statuses" },
+  { value: "confirmed", label: "Confirmed" },
+  { value: "processing", label: "Processing" },
+  { value: "shipped", label: "Shipped" },
+  { value: "delivered", label: "Delivered" },
+  { value: "cancelled", label: "Cancelled" },
+  { value: "refunded", label: "Refunded" },
+];
 
 const breadcrumb = (
   <Breadcrumb>
@@ -92,9 +115,11 @@ const breadcrumb = (
 
 export default function OrdersPageClient() {
   const { user, isLoading: authLoading } = useAuth();
+  const isAdmin = isClientAdmin(user?.id);
   const [orders, setOrders] = useState<Order[]>([]);
   const [itemCounts, setItemCounts] = useState<Record<string, number>>({});
   const [dataLoading, setDataLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState("all");
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -104,31 +129,42 @@ export default function OrdersPageClient() {
       }
 
       try {
-        const supabase = createClient();
+        if (isAdmin) {
+          // Admin: fetch all orders from admin API
+          const params = new URLSearchParams();
+          if (statusFilter !== "all") params.set("status", statusFilter);
+          const res = await fetch(`/api/admin/orders?${params.toString()}`);
+          if (!res.ok) throw new Error("Failed to fetch admin orders");
+          const data = await res.json();
+          setOrders(data.orders);
+          setItemCounts(data.itemCounts);
+        } else {
+          // Customer: fetch own orders via Supabase
+          const supabase = createClient();
 
-        const { data: ordersData } = await supabase
-          .from("orders")
-          .select("*")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false });
+          const { data: ordersData } = await supabase
+            .from("orders")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false });
 
-        const fetchedOrders = (ordersData as Order[]) || [];
-        setOrders(fetchedOrders);
+          const fetchedOrders = (ordersData as Order[]) || [];
+          setOrders(fetchedOrders);
 
-        // Fetch item counts per order
-        if (fetchedOrders.length > 0) {
-          const orderIds = fetchedOrders.map((o) => o.id);
-          const { data: items } = await supabase
-            .from("order_items")
-            .select("order_id")
-            .in("order_id", orderIds);
+          if (fetchedOrders.length > 0) {
+            const orderIds = fetchedOrders.map((o) => o.id);
+            const { data: items } = await supabase
+              .from("order_items")
+              .select("order_id")
+              .in("order_id", orderIds);
 
-          if (items) {
-            const counts: Record<string, number> = {};
-            for (const item of items) {
-              counts[item.order_id] = (counts[item.order_id] || 0) + 1;
+            if (items) {
+              const counts: Record<string, number> = {};
+              for (const item of items) {
+                counts[item.order_id] = (counts[item.order_id] || 0) + 1;
+              }
+              setItemCounts(counts);
             }
-            setItemCounts(counts);
           }
         }
       } catch (error) {
@@ -139,9 +175,10 @@ export default function OrdersPageClient() {
     };
 
     if (!authLoading) {
+      setDataLoading(true);
       fetchOrders();
     }
-  }, [user, authLoading]);
+  }, [user, authLoading, isAdmin, statusFilter]);
 
   const isLoading = authLoading || dataLoading;
 
@@ -188,19 +225,40 @@ export default function OrdersPageClient() {
     <>
       <DashboardHeader breadcrumb={breadcrumb} />
       <div className="flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6 lg:px-6">
-        <div className="max-w-4xl space-y-6">
-          <div>
-            <h1 className="text-2xl font-bold">Order History</h1>
-            <p className="text-muted-foreground">
-              View and track your past orders
-            </p>
+        <div className={isAdmin ? "space-y-6" : "max-w-4xl space-y-6"}>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold">
+                {isAdmin ? "Orders" : "Order History"}
+              </h1>
+              <p className="text-muted-foreground">
+                {isAdmin
+                  ? "Manage all orders"
+                  : "View and track your past orders"}
+              </p>
+            </div>
+            {isAdmin && (
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  {STATUS_OPTIONS.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
           <Card>
             <CardHeader>
               <CardTitle>Orders</CardTitle>
               <CardDescription>
-                {orders.length} order{orders.length !== 1 ? "s" : ""} total
+                {orders.length} order{orders.length !== 1 ? "s" : ""}{" "}
+                {statusFilter !== "all" ? `(${statusFilter})` : "total"}
               </CardDescription>
             </CardHeader>
             <CardContent className="px-6 py-2">
@@ -210,6 +268,7 @@ export default function OrdersPageClient() {
                     <TableRow>
                       <TableHead>Order #</TableHead>
                       <TableHead>Date</TableHead>
+                      {isAdmin && <TableHead>Customer</TableHead>}
                       <TableHead>Status</TableHead>
                       <TableHead className="text-center">Items</TableHead>
                       <TableHead className="text-right">Total</TableHead>
@@ -227,6 +286,11 @@ export default function OrdersPageClient() {
                           <TableCell>
                             {new Date(order.created_at).toLocaleDateString()}
                           </TableCell>
+                          {isAdmin && (
+                            <TableCell className="max-w-[200px] truncate text-sm">
+                              {order.email}
+                            </TableCell>
+                          )}
                           <TableCell>
                             <Badge className={status.className}>
                               {status.label}
@@ -259,17 +323,21 @@ export default function OrdersPageClient() {
                     </EmptyMedia>
                     <EmptyTitle>No orders yet</EmptyTitle>
                     <EmptyDescription>
-                      Once you place an order, it will appear here.
+                      {isAdmin
+                        ? "Orders will appear here once customers start purchasing."
+                        : "Once you place an order, it will appear here."}
                     </EmptyDescription>
                   </EmptyHeader>
-                  <EmptyContent>
-                    <Button asChild>
-                      <Link href="/shop">
-                        Browse Collection
-                        <ArrowRight className="ml-1 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </EmptyContent>
+                  {!isAdmin && (
+                    <EmptyContent>
+                      <Button asChild>
+                        <Link href="/shop">
+                          Browse Collection
+                          <ArrowRight className="ml-1 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </EmptyContent>
+                  )}
                 </Empty>
               )}
             </CardContent>
