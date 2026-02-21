@@ -27,15 +27,20 @@ function toProduct(product: Stripe.Product, price: Stripe.Price): Product {
  * List all active products with their default prices
  */
 export async function listProducts(): Promise<Product[]> {
-  const products = await stripe.products.list({
-    active: true,
-    expand: ["data.default_price"],
-    limit: 100,
-  });
+  try {
+    const products = await stripe.products.list({
+      active: true,
+      expand: ["data.default_price"],
+      limit: 100,
+    });
 
-  return products.data
-    .filter((p) => p.default_price && typeof p.default_price !== "string")
-    .map((p) => toProduct(p, p.default_price as Stripe.Price));
+    return products.data
+      .filter((p) => p.default_price && typeof p.default_price !== "string")
+      .map((p) => toProduct(p, p.default_price as Stripe.Price));
+  } catch (err) {
+    console.error("Failed to fetch products:", err);
+    return [];
+  }
 }
 
 /**
@@ -89,13 +94,18 @@ export async function getProductsByCollection(
  * Get featured products
  */
 export async function getFeaturedProducts(): Promise<Product[]> {
-  const products = await stripe.products.search({
-    query: `active:'true' AND metadata['featured']:'true'`,
-    expand: ["data.default_price"],
-    limit: 8,
-  });
+  try {
+    const products = await stripe.products.search({
+      query: `active:'true' AND metadata['featured']:'true'`,
+      expand: ["data.default_price"],
+      limit: 8,
+    });
 
-  return products.data
-    .filter((p) => p.default_price && typeof p.default_price !== "string")
-    .map((p) => toProduct(p, p.default_price as Stripe.Price));
+    return products.data
+      .filter((p) => p.default_price && typeof p.default_price !== "string")
+      .map((p) => toProduct(p, p.default_price as Stripe.Price));
+  } catch (err) {
+    console.error("Failed to fetch featured products:", err);
+    return [];
+  }
 }
