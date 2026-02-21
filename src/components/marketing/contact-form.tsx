@@ -16,14 +16,13 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Instagram } from "lucide-react";
 
 // Zod schema for form validation
 const contactFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
-  company: z.string().min(2, "Company name must be at least 2 characters"),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
@@ -39,7 +38,6 @@ export function ContactForm() {
       firstName: "",
       lastName: "",
       email: "",
-      company: "",
       message: "",
     },
   });
@@ -89,37 +87,42 @@ export function ContactForm() {
               {/* Left Column - Information */}
               <div className="space-y-8">
                 <div>
-                  <h3 className="mb-4 text-2xl font-semibold md:text-3xl">
-                    Get in touch
+                  <h3 className="mb-4 text-2xl font-semibold font-[family-name:var(--font-display)] md:text-3xl">
+                    Let&apos;s talk
                   </h3>
                   <p className="text-muted-foreground text-base leading-relaxed">
-                    If you have any questions, don&apos;t hesitate to contact
-                    our team. We&apos;ll get back to you within 48 hours.
+                    Questions about sizing, custom orders, or just want to say
+                    aloha? Drop us a line — we respond within 48 hours.
                   </p>
                 </div>
 
                 <div>
                   <h4 className="mb-4 text-lg font-semibold">
-                    Contact details
+                    Reach out
                   </h4>
                   <div className="space-y-3">
                     <div className="flex items-start gap-3">
-                      <Phone className="text-muted-foreground mt-0.5 h-5 w-5" />
-                      <span className="text-muted-foreground">
-                        (123) 34567890
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3">
                       <Mail className="text-muted-foreground mt-0.5 h-5 w-5" />
                       <span className="text-muted-foreground">
-                        your-email@example.com
+                        aloha@rebirth.world
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <MapPin className="text-muted-foreground mt-0.5 h-5 w-5" />
                       <span className="text-muted-foreground">
-                        123 Main St, City, Country
+                        North Shore, Oahu, Hawaii
                       </span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <Instagram className="text-muted-foreground mt-0.5 h-5 w-5" />
+                      <a
+                        href="https://instagram.com/rebirthrings"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        @rebirthrings
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -187,58 +190,31 @@ export function ContactForm() {
                           />
                         </div>
 
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-                          <Controller
-                            name="email"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                              <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel
-                                  htmlFor="email"
-                                  className="text-sm sm:text-sm"
-                                >
-                                  Email
-                                </FieldLabel>
-                                <Input
-                                  {...field}
-                                  id="email"
-                                  type="email"
-                                  placeholder="Work email"
-                                  aria-invalid={fieldState.invalid}
-                                  className="h-10 sm:h-9"
-                                />
-                                {fieldState.invalid && (
-                                  <FieldError errors={[fieldState.error]} />
-                                )}
-                              </Field>
-                            )}
-                          />
-
-                          <Controller
-                            name="company"
-                            control={control}
-                            render={({ field, fieldState }) => (
-                              <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel
-                                  htmlFor="company"
-                                  className="text-sm sm:text-sm"
-                                >
-                                  Company
-                                </FieldLabel>
-                                <Input
-                                  {...field}
-                                  id="company"
-                                  placeholder="Company"
-                                  aria-invalid={fieldState.invalid}
-                                  className="h-10 sm:h-9"
-                                />
-                                {fieldState.invalid && (
-                                  <FieldError errors={[fieldState.error]} />
-                                )}
-                              </Field>
-                            )}
-                          />
-                        </div>
+                        <Controller
+                          name="email"
+                          control={control}
+                          render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                              <FieldLabel
+                                htmlFor="email"
+                                className="text-sm sm:text-sm"
+                              >
+                                Email
+                              </FieldLabel>
+                              <Input
+                                {...field}
+                                id="email"
+                                type="email"
+                                placeholder="Your email"
+                                aria-invalid={fieldState.invalid}
+                                className="h-10 sm:h-9"
+                              />
+                              {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                              )}
+                            </Field>
+                          )}
+                        />
 
                         <Controller
                           name="message"
@@ -254,7 +230,7 @@ export function ContactForm() {
                               <Textarea
                                 {...field}
                                 id="message"
-                                placeholder="Tell us about your needs"
+                                placeholder="Tell us what's on your mind"
                                 className="min-h-[120px] resize-none sm:min-h-[150px]"
                                 aria-invalid={fieldState.invalid}
                               />
@@ -285,7 +261,7 @@ export function ContactForm() {
                       )}
                     </Button>
                     <p className="text-muted-foreground text-center text-xs leading-relaxed">
-                      SOC 2 Type 2 • GDPR Compliant • ISO 27001 • CCPA
+                      We respond within 48 hours. Usually faster.
                     </p>
                   </CardFooter>
                 </Card>

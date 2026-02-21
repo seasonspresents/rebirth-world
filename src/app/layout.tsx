@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { DM_Sans, Instrument_Serif } from "next/font/google";
+import { DM_Sans, DM_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 // import { PHProvider } from "@/components/posthog-provider";
@@ -16,29 +17,58 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
 });
 
-const instrumentSerif = Instrument_Serif({
-  weight: "400",
-  subsets: ["latin"],
+const clashDisplay = localFont({
+  src: [
+    {
+      path: "../../public/fonts/ClashDisplay-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/ClashDisplay-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/ClashDisplay-Semibold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/ClashDisplay-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-display",
-  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const dmMono = DM_Mono({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--font-dm-mono",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rebirth.world"),
   title: {
-    default: "Rebirth World — Handcrafted Recycled Jewelry",
+    default: "Rebirth World — Recycled Skateboard Rings & Wedding Bands",
     template: "%s | Rebirth World",
   },
   description:
-    "Handcrafted rings and jewelry made from recycled metals and reclaimed materials. Each piece carries a story of transformation.",
+    "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu, Hawaii.",
   keywords: [
-    "recycled jewelry",
+    "recycled skateboard rings",
+    "skateboard jewelry",
+    "wood wedding bands",
     "handcrafted rings",
-    "sustainable jewelry",
-    "reclaimed materials",
-    "eco-friendly rings",
+    "recycled jewelry",
+    "sustainable rings",
     "rebirth world",
-    "handmade jewelry",
+    "handmade rings hawaii",
+    "wood-lined wedding bands",
+    "north shore jewelry",
   ],
   authors: [{ name: "Rebirth World" }],
   creator: "Rebirth World",
@@ -47,23 +77,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://rebirth.world",
     siteName: "Rebirth World",
-    title: "Rebirth World — Handcrafted Recycled Jewelry",
+    title: "Rebirth World — Recycled Skateboard Rings & Wedding Bands",
     description:
-      "Handcrafted rings and jewelry made from recycled metals and reclaimed materials. Each piece carries a story of transformation.",
+      "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu.",
     images: [
       {
         url: "/og/homepage.png",
         width: 1200,
         height: 630,
-        alt: "Rebirth World — Handcrafted Recycled Jewelry",
+        alt: "Rebirth World — Recycled Skateboard Rings & Wedding Bands",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rebirth World — Handcrafted Recycled Jewelry",
+    title: "Rebirth World — Recycled Skateboard Rings & Wedding Bands",
     description:
-      "Handcrafted rings and jewelry made from recycled metals and reclaimed materials. Each piece carries a story of transformation.",
+      "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu.",
     images: ["/og/homepage.png"],
   },
   robots: {
@@ -107,8 +137,8 @@ export default async function RootLayout({
     url: "https://rebirth.world",
     logo: "https://rebirth.world/logo.png",
     description:
-      "Handcrafted rings and jewelry made from recycled metals and reclaimed materials. Each piece carries a story of transformation.",
-    sameAs: [],
+      "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu, Hawaii.",
+    sameAs: ["https://instagram.com/rebirthrings"],
   };
 
   return (
@@ -122,7 +152,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${dmSans.variable} ${instrumentSerif.variable} ${dmSans.className} antialiased`}
+        className={`${dmSans.variable} ${clashDisplay.variable} ${dmMono.variable} ${dmSans.className} antialiased`}
         suppressHydrationWarning
       >
         {/* If you want to use PostHog, uncomment the PHProvider */}

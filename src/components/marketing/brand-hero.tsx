@@ -7,7 +7,7 @@ import { Particles } from "@/components/ui/particles";
 
 export function BrandHero() {
   return (
-    <section className="relative overflow-hidden px-6 py-28 md:py-36">
+    <section className="bg-grain relative overflow-hidden px-6 py-28 md:py-36">
       {/* Teal particles */}
       <Particles
         className="pointer-events-none absolute inset-0"
@@ -20,12 +20,12 @@ export function BrandHero() {
 
       <div className="relative z-10 mx-auto max-w-[800px] text-center">
         <motion.p
-          className="mb-4 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-primary"
+          className="mb-4 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-primary font-[family-name:var(--font-dm-mono)]"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Handcrafted from recycled metals
+          Handcrafted from recycled skateboards
         </motion.p>
 
         <motion.h1
@@ -34,8 +34,8 @@ export function BrandHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          Every piece carries a{" "}
-          <em className="text-primary">story of transformation</em>
+          Broken boards,{" "}
+          <em className="not-italic text-primary">reborn</em>
         </motion.h1>
 
         <motion.p
@@ -44,9 +44,9 @@ export function BrandHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          We take discarded metals and forgotten materials and turn them into
-          jewelry you&apos;ll wear for a lifetime. Made by hand in small
-          batches, designed to outlast trends.
+          Local skaters donate their broken decks. Daniel shapes them by hand in
+          his North Shore workshop — seven layers of maple, sanded, sealed, and
+          turned into rings you&apos;ll never want to take off.
         </motion.p>
 
         <motion.div

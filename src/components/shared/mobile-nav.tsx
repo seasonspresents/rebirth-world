@@ -92,8 +92,11 @@ export function MobileNav() {
                 Browse collection
               </Link>
             </Button>
-            <div className="mt-auto flex justify-center">
+            <div className="mt-auto flex flex-col items-center gap-4">
               <ThemeToggle />
+              <p className="text-xs font-[family-name:var(--font-dm-mono)] tracking-wide text-muted-foreground/60">
+                Embrace Change
+              </p>
             </div>
           </nav>
         </SheetContent>

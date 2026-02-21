@@ -192,10 +192,32 @@ export default async function OrderSuccessPage({
               )}
             </div>
 
-            {/* CTA */}
+            {/* Daniel's personal note */}
+            <div className="mt-8 rounded-xl border border-border bg-card p-6 text-left">
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                &ldquo;Every ring is made by hand in my North Shore workshop.
+                Your order means the world to me — I can&apos;t wait for you to
+                see the finished piece. Mahalo for being part of the Rebirth
+                community.&rdquo;
+              </p>
+              <p className="mt-3 text-sm font-medium">
+                — Daniel Malzl, Founder
+              </p>
+            </div>
+
+            {/* CTAs */}
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Button asChild>
                 <Link href="/shop">Continue Shopping</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <a
+                  href="https://instagram.com/rebirthrings"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Follow @rebirthrings
+                </a>
               </Button>
             </div>
           </div>

@@ -42,13 +42,13 @@ export function CTA() {
             {/* Content */}
             <div className="relative z-10">
               <h2 className="mb-4 text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.12] tracking-tight font-[family-name:var(--font-display)]">
-                Discover something{" "}
-                <em className="text-accent">made to last</em>
+                Nothing is wasted.{" "}
+                <em className="not-italic text-accent">Everything is reborn.</em>
               </h2>
               <p className="mx-auto mb-8 max-w-[44ch] text-base leading-relaxed text-muted-foreground">
-                Every piece in the Rebirth World collection is handcrafted from
-                recycled materials — designed to carry a story, built to be worn
-                for years. Find something that means something.
+                A broken skateboard becomes a ring. A forgotten piece of ancient
+                wood becomes a wedding band. Find the piece that carries your
+                story.
               </p>
               <Button
                 size="lg"

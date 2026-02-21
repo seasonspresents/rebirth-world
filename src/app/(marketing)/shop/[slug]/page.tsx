@@ -99,7 +99,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="px-6 py-10 md:py-16">
+      <section className="bg-grain px-6 py-10 md:py-16">
         <div className="mx-auto max-w-[1100px]">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
             {/* Image Gallery */}
@@ -258,13 +258,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <AccordionContent>
                     <div className="space-y-2 text-sm text-muted-foreground">
                       <p>
-                        Free standard shipping on all US orders. International
-                        shipping available at checkout.
+                        Free standard shipping on all US orders (5–10 business
+                        days). Express and international shipping available at
+                        checkout. Every order ships with tracking from our North
+                        Shore workshop.
                       </p>
                       <p>
-                        30-day return policy. Items must be unworn and in
-                        original condition. Custom engraved items are
-                        final sale.
+                        30-day returns on unworn items in original packaging.
+                        Engraved pieces are final sale. 1-year warranty on all
+                        craftsmanship.
                       </p>
                     </div>
                   </AccordionContent>

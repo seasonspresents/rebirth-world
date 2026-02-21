@@ -22,9 +22,9 @@ export function ConfirmSignupEmail({
   siteUrl = "https://rebirth.world",
 }: ConfirmSignupEmailProps) {
   return (
-    <Html lang="ko">
+    <Html lang="en">
       <Head />
-      <Preview>Confirm your email address to get started with Rebirth World</Preview>
+      <Preview>Confirm your email — you&apos;re one click away from Rebirth</Preview>
       <Body style={main}>
         <Container style={wrapper}>
           <Section style={container}>
@@ -33,7 +33,7 @@ export function ConfirmSignupEmail({
               <div style={logoBox}>
                 <Img
                   src={`${siteUrl}/logo.png`}
-                  alt="Rebirth World Logo"
+                  alt="Rebirth World"
                   width={64}
                   height={64}
                   style={logoImage}
@@ -43,11 +43,11 @@ export function ConfirmSignupEmail({
 
             {/* Content Section */}
             <Section style={content}>
-              <Heading style={heading}>Confirm your signup</Heading>
+              <Heading style={heading}>Confirm your email</Heading>
 
               <Text style={paragraph}>
-                Welcome to Rebirth World! Click the button below to confirm your email
-                address and complete your registration.
+                You&apos;re one click away from joining the Rebirth community.
+                Tap the button below to confirm your email and you&apos;re in.
               </Text>
 
               {/* Button */}
@@ -64,8 +64,8 @@ export function ConfirmSignupEmail({
               <Text style={footerText}>This link expires in 15 minutes.</Text>
 
               <Text style={footerText}>
-                If you didn&apos;t create an account with Rebirth World, you can safely
-                ignore this email.
+                If you didn&apos;t create an account with Rebirth World, you can
+                safely ignore this email.
               </Text>
             </Section>
           </Section>
@@ -75,25 +75,25 @@ export function ConfirmSignupEmail({
   );
 }
 
-// Styles
+// Styles — Rebirth brand colors
 const main = {
   margin: "0",
   padding: "0",
-  backgroundColor: "#FCFCFC",
+  backgroundColor: "#f5f0e8",
   fontFamily:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
+    "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
 };
 
 const wrapper = {
   padding: "32px 16px 24px",
-  backgroundColor: "#FCFCFC",
+  backgroundColor: "#f5f0e8",
 };
 
 const container = {
   maxWidth: "642px",
   margin: "0 auto",
   backgroundColor: "#FFFFFF",
-  border: "1px solid #e0e0e0",
+  border: "1px solid #e0d9cc",
   borderRadius: "12px",
   boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
 };
@@ -130,14 +130,14 @@ const heading = {
   fontSize: "24px",
   fontWeight: "600",
   lineHeight: "30px",
-  color: "#202020",
+  color: "#1a1a1a",
 };
 
 const paragraph = {
   margin: "0 0 24px",
   fontSize: "16px",
-  lineHeight: "24px",
-  color: "#202020",
+  lineHeight: "26px",
+  color: "#1a1a1a",
 };
 
 const buttonContainer = {
@@ -146,19 +146,18 @@ const buttonContainer = {
 
 const button = {
   display: "inline-block",
-  padding: "7px 11px",
-  backgroundColor: "#000000",
+  padding: "12px 24px",
+  backgroundColor: "#2a9d8f",
   color: "#FFFFFF",
   fontSize: "14px",
   fontWeight: "600",
   lineHeight: "16px",
   textDecoration: "none",
-  borderRadius: "3px",
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  borderRadius: "6px",
 };
 
 const divider = {
-  borderTop: "1px solid #d9d9d9",
+  borderTop: "1px solid #e0d9cc",
   margin: "0 0 32px",
 };
 
@@ -166,7 +165,7 @@ const footerText = {
   margin: "0 0 12px",
   fontSize: "12px",
   lineHeight: "18px",
-  color: "#646464",
+  color: "#8a8578",
 };
 
 export default ConfirmSignupEmail;

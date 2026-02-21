@@ -36,21 +36,26 @@ export default function NotFound() {
 
         {/* Main content */}
         <div className="relative z-10 px-4 text-center">
-          <h2 className="text-foreground mb-6 text-4xl font-semibold sm:mb-8 sm:text-5xl lg:text-6xl">
-            Page not found
+          <h2 className="text-foreground mb-6 text-4xl font-semibold font-[family-name:var(--font-display)] sm:mb-8 sm:text-5xl lg:text-6xl">
+            This page got recycled
           </h2>
 
-          <p className="mx-auto mb-8 max-w-xs text-base sm:mb-12 sm:max-w-md sm:text-lg lg:text-lg">
-            The page you are looking for either doesn&apos;t exist or currently
-            not available.
+          <p className="mx-auto mb-8 max-w-xs text-base text-muted-foreground sm:mb-12 sm:max-w-md sm:text-lg lg:text-lg">
+            Looks like this page took a different path. But there&apos;s
+            plenty more to discover.
           </p>
 
-          <Button asChild variant="secondary" size="lg">
-            <Link href="/" className="group flex items-center gap-2">
-              <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
-              Go back to homepage
-            </Link>
-          </Button>
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <Button asChild size="lg">
+              <Link href="/shop">Browse the shop</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link href="/" className="group flex items-center gap-2">
+                <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
+                Back home
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
       <Footer />

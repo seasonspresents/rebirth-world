@@ -6,27 +6,27 @@ import { Hammer, Recycle, Heart, Shield } from "lucide-react";
 const values = [
   {
     icon: Hammer,
-    title: "Handmade",
+    title: "Made by Hand, One at a Time",
     description:
-      "Every piece is shaped, soldered, and finished by hand in small batches. No mass production, no shortcuts.",
+      "Daniel shapes every ring in his North Shore workshop. No factories, no assembly lines — just a craftsman, his tools, and the wood.",
   },
   {
     icon: Recycle,
-    title: "Recycled Materials",
+    title: "Community-Donated Boards",
     description:
-      "We use reclaimed metals, salvaged wood, and repurposed materials. Nothing goes to waste.",
+      "Local skaters donate their broken decks instead of tossing them. Seven layers of maple get a second life as something you can wear every day.",
   },
   {
     icon: Heart,
-    title: "Community-Driven",
+    title: "Humanitarian at Heart",
     description:
-      "A portion of every sale supports environmental restoration and artisan apprenticeships.",
+      "Rebirth started with a simple belief: waste is just potential waiting to be unlocked. Every purchase supports that mission.",
   },
   {
     icon: Shield,
-    title: "Lifetime Warranty",
+    title: "1-Year Warranty",
     description:
-      "Built to last. If anything goes wrong with your piece, we'll repair or replace it — forever.",
+      "Every ring is sealed with CA glue for durability. If something goes wrong within the first year, we'll make it right.",
   },
 ];
 

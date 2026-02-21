@@ -47,10 +47,13 @@ function AuthFormSkeleton() {
 
 export function AuthPageLayout({ children, title }: AuthPageLayoutProps) {
   return (
-    <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-      <div className="flex w-full max-w-sm flex-col items-center justify-center gap-4">
-        <Logo clickable={false} />
-        <p className="pb-2 text-2xl font-semibold">{title}</p>
+    <div className="bg-grain flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
+      <div className="relative z-10 flex w-full max-w-sm flex-col items-center justify-center gap-4">
+        <Logo />
+        <p className="text-xs font-[family-name:var(--font-dm-mono)] tracking-wide text-muted-foreground/60">
+          Embrace Change
+        </p>
+        <p className="pb-2 text-2xl font-semibold font-[family-name:var(--font-display)]">{title}</p>
         <Suspense fallback={<AuthFormSkeleton />}>{children}</Suspense>
       </div>
     </div>

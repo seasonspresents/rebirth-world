@@ -107,11 +107,11 @@ export default async function ShopPage({
         {/* Header */}
         <div className="mb-10">
           <h1 className="text-[clamp(2rem,4vw,3rem)] leading-[1.1] tracking-tight font-[family-name:var(--font-display)]">
-            Shop
+            The Collection
           </h1>
-          <p className="mt-3 max-w-[48ch] text-base text-muted-foreground">
-            Each piece is handcrafted from recycled skateboards and reclaimed
-            materials. One of a kind, made to order.
+          <p className="mt-3 max-w-[52ch] text-base text-muted-foreground">
+            Recycled skateboard rings, wood-lined wedding bands, and apparel —
+            each piece handmade in the North Shore workshop. No two are alike.
           </p>
         </div>
 

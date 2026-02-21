@@ -8,30 +8,34 @@ import { Metadata } from "next";
 import type { WebSite, WithContext } from "schema-dts";
 
 export const metadata: Metadata = {
-  title: "Rebirth World — Handcrafted Recycled Jewelry",
+  title: "Rebirth World — Recycled Skateboard Rings & Wood-Lined Wedding Bands",
   description:
-    "Handcrafted rings and jewelry made from recycled metals and reclaimed materials. Each piece carries a story of transformation.",
+    "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Each piece is shaped by hand on the North Shore of Oahu.",
   keywords: [
-    "recycled jewelry",
+    "recycled skateboard rings",
+    "skateboard jewelry",
+    "wood wedding bands",
     "handcrafted rings",
-    "sustainable jewelry",
-    "reclaimed materials",
-    "eco-friendly rings",
+    "recycled jewelry",
+    "sustainable rings",
     "rebirth world",
+    "north shore jewelry",
+    "wood-lined wedding bands",
+    "handmade rings hawaii",
   ],
   openGraph: {
-    title: "Rebirth World — Handcrafted Recycled Jewelry",
+    title: "Rebirth World — Recycled Skateboard Rings & Wood-Lined Wedding Bands",
     description:
-      "Handcrafted rings and jewelry made from recycled metals and reclaimed materials. Each piece carries a story of transformation.",
+      "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu.",
     url: "https://rebirth.world",
     siteName: "Rebirth World",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rebirth World — Handcrafted Recycled Jewelry",
+    title: "Rebirth World — Recycled Skateboard Rings & Wood-Lined Wedding Bands",
     description:
-      "Handcrafted rings and jewelry made from recycled metals and reclaimed materials. Each piece carries a story of transformation.",
+      "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu.",
   },
 };
 
@@ -42,7 +46,7 @@ export default function Home() {
     name: "Rebirth World",
     url: "https://rebirth.world",
     description:
-      "Handcrafted rings and jewelry made from recycled metals and reclaimed materials. Each piece carries a story of transformation.",
+      "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu.",
   };
 
   return (

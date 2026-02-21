@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { Instagram } from "lucide-react";
 import { Logo } from "@/components/shared/logo";
 
 const footerLinks = {
   Shop: [
     { label: "All Products", href: "/shop" },
-    { label: "Rings", href: "/shop?collection=rings" },
-    { label: "Necklaces", href: "/shop?collection=necklaces" },
-    { label: "Bracelets", href: "/shop?collection=bracelets" },
+    { label: "Skateboard Rings", href: "/shop?collection=skateboard-rings" },
+    { label: "Wedding Bands", href: "/shop?collection=wedding-bands" },
+    { label: "Apparel", href: "/shop?collection=apparel" },
   ],
   Company: [
     { label: "Our Story", href: "/our-story" },
@@ -29,9 +30,23 @@ export function Footer() {
           {/* Brand */}
           <div className="shrink-0">
             <Logo />
-            <p className="mt-3 max-w-[26ch] text-sm text-muted-foreground">
-              Handcrafted jewelry from recycled metals and reclaimed materials.
+            <p className="mt-3 max-w-[28ch] text-sm text-muted-foreground">
+              Handcrafted from recycled skateboards.
+              <br />
+              Born on the North Shore.
             </p>
+            <p className="mt-2 text-xs font-[family-name:var(--font-dm-mono)] tracking-wide text-muted-foreground/70">
+              Embrace Change
+            </p>
+            <a
+              href="https://instagram.com/rebirthrings"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Instagram className="size-4" />
+              <span>@rebirthrings</span>
+            </a>
           </div>
 
           {/* Link columns */}
@@ -59,7 +74,8 @@ export function Footer() {
         {/* Bottom separator + copyright */}
         <div className="mt-12 border-t pt-6">
           <p className="text-sm text-muted-foreground">
-            &copy; 2026 Rebirth World. All rights reserved.
+            &copy; {new Date().getFullYear()} Rebirth World LLC. All rights
+            reserved.
           </p>
         </div>
       </div>

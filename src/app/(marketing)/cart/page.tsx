@@ -63,12 +63,13 @@ export default function CartPage() {
       <section className="px-6 py-24">
         <div className="mx-auto max-w-[800px] text-center">
           <ShoppingBag className="mx-auto mb-4 size-12 text-muted-foreground" />
-          <h1 className="text-2xl font-semibold">Your cart is empty</h1>
+          <h1 className="text-2xl font-semibold font-[family-name:var(--font-display)]">Nothing here yet</h1>
           <p className="mt-2 text-muted-foreground">
-            Discover handcrafted pieces made from recycled materials.
+            Every ring starts as a broken skateboard. Find the piece that
+            carries your story.
           </p>
           <Button asChild className="mt-6">
-            <Link href="/shop">Browse Collection</Link>
+            <Link href="/shop">Browse the collection</Link>
           </Button>
         </div>
       </section>
@@ -216,6 +217,19 @@ export default function CartPage() {
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 Shipping &amp; taxes calculated at checkout
               </p>
+
+              {/* Trust messaging */}
+              <div className="mt-5 space-y-2 border-t border-border pt-4">
+                <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span className="text-primary">&#10003;</span> Handmade in the North Shore workshop
+                </p>
+                <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span className="text-primary">&#10003;</span> 1-year warranty on every piece
+                </p>
+                <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span className="text-primary">&#10003;</span> 30-day returns, no questions asked
+                </p>
+              </div>
             </div>
           </div>
         </div>

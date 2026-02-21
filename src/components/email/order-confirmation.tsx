@@ -81,8 +81,8 @@ export function OrderConfirmationEmail({
             <Section style={content}>
               <Heading style={heading}>Order Confirmed</Heading>
               <Text style={paragraph}>
-                Thank you for your order! We&apos;re getting your handcrafted
-                pieces ready.
+                Your piece is being crafted by hand in the North Shore workshop.
+                We&apos;ll let you know as soon as it ships.
               </Text>
               <Text style={orderNumberText}>Order {orderNumber}</Text>
 
@@ -208,12 +208,19 @@ export function OrderConfirmationEmail({
               <Hr style={divider} />
 
               <Text style={footerText}>
-                Best,
+                Mahalo,
                 <br />
-                The Rebirth World Team
+                Daniel Malzl
+                <br />
+                <span style={footerRole}>Founder, Rebirth World</span>
               </Text>
               <Text style={footerTextSmall}>
-                If you have any questions about your order, reply to this email.
+                Questions about your order? Just reply to this email.
+                <br />
+                Follow along on{" "}
+                <a href="https://instagram.com/rebirthrings" style={link}>
+                  Instagram @rebirthrings
+                </a>
               </Text>
             </Section>
           </Section>
@@ -223,25 +230,25 @@ export function OrderConfirmationEmail({
   );
 }
 
-// Styles
+// Styles — Rebirth brand colors
 const main = {
   margin: "0",
   padding: "0",
-  backgroundColor: "#FCFCFC",
+  backgroundColor: "#f5f0e8",
   fontFamily:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
+    "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
 };
 
 const wrapper = {
   padding: "32px 16px 24px",
-  backgroundColor: "#FCFCFC",
+  backgroundColor: "#f5f0e8",
 };
 
 const container = {
   maxWidth: "642px",
   margin: "0 auto",
   backgroundColor: "#FFFFFF",
-  border: "1px solid #e0e0e0",
+  border: "1px solid #e0d9cc",
   borderRadius: "12px",
   boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
 };
@@ -277,21 +284,21 @@ const heading = {
   fontSize: "24px",
   fontWeight: "600",
   lineHeight: "30px",
-  color: "#202020",
+  color: "#1a1a1a",
 };
 
 const paragraph = {
   margin: "0 0 16px",
   fontSize: "16px",
-  lineHeight: "24px",
-  color: "#202020",
+  lineHeight: "26px",
+  color: "#1a1a1a",
 };
 
 const orderNumberText = {
   margin: "0 0 24px",
   fontSize: "14px",
   fontWeight: "600",
-  color: "#646464",
+  color: "#8a8578",
 };
 
 const itemsSection = {
@@ -328,13 +335,13 @@ const itemName = {
   margin: "0 0 2px",
   fontSize: "14px",
   fontWeight: "500",
-  color: "#202020",
+  color: "#1a1a1a",
 };
 
 const itemQty = {
   margin: "0",
   fontSize: "12px",
-  color: "#646464",
+  color: "#8a8578",
 };
 
 const itemPriceCol = {
@@ -346,11 +353,11 @@ const itemPrice = {
   margin: "0",
   fontSize: "14px",
   fontWeight: "500",
-  color: "#202020",
+  color: "#1a1a1a",
 };
 
 const divider = {
-  borderTop: "1px solid #e0e0e0",
+  borderTop: "1px solid #e0d9cc",
   margin: "16px 0",
 };
 
@@ -361,13 +368,13 @@ const totalRow = {
 const totalLabel = {
   margin: "0",
   fontSize: "14px",
-  color: "#646464",
+  color: "#8a8578",
 };
 
 const totalValue = {
   margin: "0",
   fontSize: "14px",
-  color: "#202020",
+  color: "#1a1a1a",
   textAlign: "right" as const,
 };
 
@@ -375,14 +382,14 @@ const grandTotalLabel = {
   margin: "0",
   fontSize: "16px",
   fontWeight: "600",
-  color: "#202020",
+  color: "#1a1a1a",
 };
 
 const grandTotalValue = {
   margin: "0",
   fontSize: "16px",
   fontWeight: "600",
-  color: "#202020",
+  color: "#1a1a1a",
   textAlign: "right" as const,
 };
 
@@ -390,7 +397,7 @@ const sectionLabel = {
   margin: "0 0 4px",
   fontSize: "12px",
   fontWeight: "600",
-  color: "#646464",
+  color: "#8a8578",
   textTransform: "uppercase" as const,
   letterSpacing: "0.5px",
 };
@@ -399,7 +406,7 @@ const addressText = {
   margin: "0 0 16px",
   fontSize: "14px",
   lineHeight: "20px",
-  color: "#202020",
+  color: "#1a1a1a",
 };
 
 const buttonContainer = {
@@ -408,29 +415,38 @@ const buttonContainer = {
 
 const button = {
   display: "inline-block",
-  padding: "7px 11px",
-  backgroundColor: "#000000",
+  padding: "12px 24px",
+  backgroundColor: "#2a9d8f",
   color: "#FFFFFF",
   fontSize: "14px",
   fontWeight: "600",
   lineHeight: "16px",
   textDecoration: "none",
-  borderRadius: "3px",
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  borderRadius: "6px",
 };
 
 const footerText = {
   margin: "0 0 16px",
   fontSize: "16px",
   lineHeight: "24px",
-  color: "#202020",
+  color: "#1a1a1a",
+};
+
+const footerRole = {
+  fontSize: "14px",
+  color: "#8a8578",
 };
 
 const footerTextSmall = {
   margin: "0",
   fontSize: "12px",
   lineHeight: "18px",
-  color: "#646464",
+  color: "#8a8578",
+};
+
+const link = {
+  color: "#2a9d8f",
+  textDecoration: "underline",
 };
 
 export default OrderConfirmationEmail;

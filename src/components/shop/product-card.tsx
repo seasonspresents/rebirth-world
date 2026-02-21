@@ -113,7 +113,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                 {product.metadata.collection.replace(/-/g, " ")}
               </p>
             )}
-            <h3 className="text-sm font-semibold leading-tight">
+            <h3 className="text-sm font-semibold leading-tight font-[family-name:var(--font-display)]">
               {product.name}
             </h3>
             {product.metadata.subtitle && (

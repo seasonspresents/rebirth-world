@@ -14,19 +14,19 @@ import {
 
 interface WelcomeEmailProps {
   userFirstname?: string;
-  dashboardUrl?: string;
+  shopUrl?: string;
   siteUrl?: string;
 }
 
 export function WelcomeEmail({
   userFirstname = "there",
-  dashboardUrl = "https://rebirth.world/dashboard",
+  shopUrl = "https://rebirth.world/shop",
   siteUrl = "https://rebirth.world",
 }: WelcomeEmailProps) {
   return (
-    <Html lang="ko">
+    <Html lang="en">
       <Head />
-      <Preview>Welcome to Rebirth World - Let&apos;s get started</Preview>
+      <Preview>Welcome to Rebirth World — handcrafted from recycled skateboards</Preview>
       <Body style={main}>
         <Container style={wrapper}>
           <Section style={container}>
@@ -35,7 +35,7 @@ export function WelcomeEmail({
               <div style={logoBox}>
                 <Img
                   src={`${siteUrl}/logo.png`}
-                  alt="Rebirth World Logo"
+                  alt="Rebirth World"
                   width={64}
                   height={64}
                   style={logoImage}
@@ -45,41 +45,46 @@ export function WelcomeEmail({
 
             {/* Content Section */}
             <Section style={content}>
-              <Heading style={heading}>Welcome to Rebirth World</Heading>
+              <Heading style={heading}>Welcome to Rebirth</Heading>
 
-              <Text style={paragraph}>Hi {userFirstname},</Text>
+              <Text style={paragraph}>Hey {userFirstname},</Text>
 
               <Text style={paragraph}>
-                Welcome to Rebirth World! We&apos;re excited to have you on board.
-                You&apos;re now part of a platform that helps you build amazing
-                SaaS products faster.
+                Thanks for joining the Rebirth community. Every ring we make
+                starts as a broken skateboard donated by local riders on the
+                North Shore of Oahu. Daniel shapes each one by hand — seven
+                layers of maple, sanded, sealed, and turned into something
+                you&apos;ll wear every day.
               </Text>
 
               <Text style={paragraph}>
-                Ready to get started? Click the button below to explore your
-                dashboard and begin your journey.
+                Browse the collection and find the piece that speaks to you.
               </Text>
 
               {/* Button */}
               <Section style={buttonContainer}>
-                <Button style={button} href={dashboardUrl}>
-                  Get started
+                <Button style={button} href={shopUrl}>
+                  Browse the shop
                 </Button>
               </Section>
 
               {/* Divider */}
               <div style={divider} />
 
-              {/* Footer Text */}
+              {/* Footer */}
               <Text style={footerText}>
-                Best,
+                Mahalo,
                 <br />
-                The Rebirth World Team
+                Daniel Malzl
+                <br />
+                <span style={footerRole}>Founder, Rebirth World</span>
               </Text>
 
               <Text style={footerTextSmall}>
-                If you have any questions, feel free to reply to this email.
-                We&apos;re here to help!
+                Follow along on{" "}
+                <a href="https://instagram.com/rebirthrings" style={link}>
+                  Instagram @rebirthrings
+                </a>
               </Text>
             </Section>
           </Section>
@@ -89,25 +94,25 @@ export function WelcomeEmail({
   );
 }
 
-// Styles
+// Styles — Rebirth brand colors
 const main = {
   margin: "0",
   padding: "0",
-  backgroundColor: "#FCFCFC",
+  backgroundColor: "#f5f0e8",
   fontFamily:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
+    "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
 };
 
 const wrapper = {
   padding: "32px 16px 24px",
-  backgroundColor: "#FCFCFC",
+  backgroundColor: "#f5f0e8",
 };
 
 const container = {
   maxWidth: "642px",
   margin: "0 auto",
   backgroundColor: "#FFFFFF",
-  border: "1px solid #e0e0e0",
+  border: "1px solid #e0d9cc",
   borderRadius: "12px",
   boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
 };
@@ -144,14 +149,14 @@ const heading = {
   fontSize: "24px",
   fontWeight: "600",
   lineHeight: "30px",
-  color: "#202020",
+  color: "#1a1a1a",
 };
 
 const paragraph = {
   margin: "0 0 16px",
   fontSize: "16px",
-  lineHeight: "24px",
-  color: "#202020",
+  lineHeight: "26px",
+  color: "#1a1a1a",
 };
 
 const buttonContainer = {
@@ -160,19 +165,18 @@ const buttonContainer = {
 
 const button = {
   display: "inline-block",
-  padding: "7px 11px",
-  backgroundColor: "#000000",
+  padding: "12px 24px",
+  backgroundColor: "#2a9d8f",
   color: "#FFFFFF",
   fontSize: "14px",
   fontWeight: "600",
   lineHeight: "16px",
   textDecoration: "none",
-  borderRadius: "3px",
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  borderRadius: "6px",
 };
 
 const divider = {
-  borderTop: "1px solid #d9d9d9",
+  borderTop: "1px solid #e0d9cc",
   margin: "0 0 24px",
 };
 
@@ -180,14 +184,24 @@ const footerText = {
   margin: "0 0 16px",
   fontSize: "16px",
   lineHeight: "24px",
-  color: "#202020",
+  color: "#1a1a1a",
+};
+
+const footerRole = {
+  fontSize: "14px",
+  color: "#8a8578",
 };
 
 const footerTextSmall = {
   margin: "0",
   fontSize: "12px",
   lineHeight: "18px",
-  color: "#646464",
+  color: "#8a8578",
+};
+
+const link = {
+  color: "#2a9d8f",
+  textDecoration: "underline",
 };
 
 export default WelcomeEmail;

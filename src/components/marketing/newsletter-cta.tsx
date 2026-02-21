@@ -60,16 +60,16 @@ export function NewsletterCTA() {
             {/* Content */}
             <div className="relative z-10">
               <h2 className="mb-4 text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.12] tracking-tight font-[family-name:var(--font-display)]">
-                Join the <em className="text-primary">Rebirth</em> community
+                Get the <em className="not-italic text-primary">inside look</em>
               </h2>
               <p className="mx-auto mb-8 max-w-[44ch] text-base leading-relaxed text-muted-foreground">
-                Be the first to see new collections, behind-the-scenes process
-                stories, and exclusive early access to limited drops.
+                New drops, workshop stories, and first access to limited
+                releases. Join the crew that keeps Rebirth rolling.
               </p>
 
               {status === "success" ? (
                 <p className="text-sm font-medium text-primary">
-                  Welcome to the community! Check your inbox.
+                  You&apos;re in. Keep an eye on your inbox for the good stuff.
                 </p>
               ) : (
                 <form

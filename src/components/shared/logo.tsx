@@ -15,18 +15,21 @@ export function Logo({
   const logoContent = (
     <div
       className={cn(
-        "flex items-center",
+        "flex items-baseline gap-1.5",
         "transition-all duration-300",
         className
       )}
     >
       <span
         className={cn(
-          "text-xl font-normal font-[family-name:var(--font-display)] italic",
+          "text-xl font-semibold tracking-tight font-[family-name:var(--font-display)]",
           textClassName
         )}
       >
         Rebirth
+      </span>
+      <span className="text-xs font-medium tracking-widest uppercase font-[family-name:var(--font-dm-mono)] text-muted-foreground">
+        World
       </span>
     </div>
   );

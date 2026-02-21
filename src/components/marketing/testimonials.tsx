@@ -5,39 +5,39 @@ import { motion } from "motion/react";
 const testimonials = [
   {
     quote:
-      "The ring is stunning. My partner cried when I told him it was made from recycled ocean metal. The story behind it made the proposal even more meaningful.",
-    name: "Sarah M.",
-    detail: "Purchased the Tidepool Ring",
-  },
-  {
-    quote:
-      "I've never gotten so many compliments on a piece of jewelry. The craftsmanship is incredible — you can feel the weight and care in every detail.",
-    name: "James K.",
-    detail: "Purchased the Driftwood Band",
-  },
-  {
-    quote:
-      "I wanted something unique for our anniversary. The engraving option made it personal, and knowing it's handmade from reclaimed materials makes it truly one-of-a-kind.",
-    name: "Lena R.",
-    detail: "Purchased the Ember Necklace",
-  },
-  {
-    quote:
-      "Fast shipping, beautiful packaging, and the ring itself exceeded my expectations. It's become my everyday wear — I never take it off.",
+      "I told my wife the ring on my finger used to be a skateboard and she didn't believe me until she saw the layers. The colors in the wood are unreal.",
     name: "Marcus T.",
-    detail: "Purchased the Carbon Ring",
+    detail: "Skateboard ring, size 10",
   },
   {
     quote:
-      "I've bought from a lot of sustainable brands, but Rebirth is different. You can tell these are made by someone who genuinely cares about their craft.",
+      "Got this as a gift for my husband — he's skated for 20 years and teared up when he realized it was made from an actual deck. He hasn't taken it off.",
+    name: "Sarah K.",
+    detail: "Gift purchase",
+  },
+  {
+    quote:
+      "We wanted wedding bands that actually meant something. The bog oak and steel bands are stunning and people always ask about them. Worth every penny.",
+    name: "Lena & James R.",
+    detail: "Wedding band pair",
+  },
+  {
+    quote:
+      "The engraving was perfect and the ring fits like a glove. You can see the seven layers of maple — each one a different color. Truly one of a kind.",
+    name: "Chris W.",
+    detail: "Engraved skateboard ring",
+  },
+  {
+    quote:
+      "I've bought from a lot of 'sustainable' brands but Rebirth is the real deal. You can tell Daniel actually makes these by hand. The quality is next level.",
     name: "Priya S.",
     detail: "Repeat customer",
   },
   {
     quote:
-      "My size 12 ring fits perfectly. I was nervous ordering online but the sizing guide was spot on. Will definitely be back for more pieces.",
-    name: "Daniel W.",
-    detail: "Purchased the Ironwood Band",
+      "Sized up like the guide suggested and it's perfect. The wood grain pattern is completely unique — no two are alike. Already planning my next order.",
+    name: "Jake D.",
+    detail: "Skateboard ring, size 12",
   },
 ];
 
