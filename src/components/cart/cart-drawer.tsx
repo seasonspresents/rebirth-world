@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2 } from "lucide-react";
+import { motion } from "motion/react";
 import {
   Sheet,
   SheetContent,
@@ -47,11 +48,26 @@ export function CartDrawer() {
           <>
             {/* Scrollable item list */}
             <div className="flex-1 overflow-y-auto px-6 py-4">
-              <ul className="space-y-4">
+              <motion.ul
+                className="space-y-4"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  visible: { transition: { staggerChildren: 0.05 } },
+                }}
+              >
                 {items.map((item) => {
                   const key = cartItemKey(item);
                   return (
-                    <li key={key} className="flex gap-4">
+                    <motion.li
+                      key={key}
+                      className="flex gap-4"
+                      variants={{
+                        hidden: { opacity: 0, x: 20 },
+                        visible: { opacity: 1, x: 0 },
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
                       {/* Thumbnail */}
                       <div className="relative size-20 shrink-0 overflow-hidden rounded-lg bg-muted">
                         {item.image ? (
@@ -115,10 +131,10 @@ export function CartDrawer() {
                           </button>
                         </div>
                       </div>
-                    </li>
+                    </motion.li>
                   );
                 })}
-              </ul>
+              </motion.ul>
             </div>
 
             {/* Footer */}

@@ -12,6 +12,16 @@ export interface ProductMetadata {
   ring_sizes?: string; // comma-separated: "6,7,8,9,10,11,12"
   slug?: string;
   featured?: string; // "true" | "false"
+  subtitle?: string; // poetic material descriptor
+  story?: string; // 1-2 sentence origin story
+  care_instructions?: string;
+  handmade_note?: string; // artisan callout
+  lead_time?: string; // days to craft, e.g. "5-7"
+  weight?: string; // grams
+  engraving_available?: string; // "true" | "false"
+  compare_at_price?: string; // cents, for strikethrough pricing
+  badge_text?: string; // custom badge text
+  sort_order?: string; // numeric string for manual ordering
 }
 
 /**
@@ -23,6 +33,7 @@ export interface Product {
   description: string | null;
   images: string[];
   metadata: ProductMetadata;
+  marketingFeatures: string[];
   slug: string;
   price: number; // in cents
   priceId: string;
@@ -34,10 +45,9 @@ export interface Product {
  * Available collections
  */
 export const COLLECTIONS = [
-  { slug: "rings", label: "Rings" },
-  { slug: "necklaces", label: "Necklaces" },
-  { slug: "bracelets", label: "Bracelets" },
-  { slug: "earrings", label: "Earrings" },
+  { slug: "skateboard-rings", label: "Skateboard Rings" },
+  { slug: "wedding-bands", label: "Wedding Bands" },
+  { slug: "apparel", label: "Apparel" },
 ] as const;
 
 /**

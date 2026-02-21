@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ShoppingBag } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MobileNav } from "@/components/shared/mobile-nav";
@@ -68,11 +69,21 @@ export function Header() {
             onClick={() => setCartOpen(true)}
           >
             <ShoppingBag className="size-5" />
-            {itemCount > 0 && (
-              <Badge className="absolute -top-1 -right-1 size-5 p-0 text-[10px]">
-                {itemCount}
-              </Badge>
-            )}
+            <AnimatePresence mode="wait">
+              {itemCount > 0 && (
+                <motion.span
+                  key={itemCount}
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.5, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                >
+                  <Badge className="absolute -top-1 -right-1 size-5 p-0 text-[10px]">
+                    {itemCount}
+                  </Badge>
+                </motion.span>
+              )}
+            </AnimatePresence>
             <span className="sr-only">Cart</span>
           </Button>
           <Button variant="ghost" size="sm" asChild>

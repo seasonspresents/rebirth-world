@@ -9,18 +9,30 @@ export { formatPrice, COLLECTIONS, type Product, type ProductMetadata } from "./
 
 function toProduct(product: Stripe.Product, price: Stripe.Price): Product {
   const metadata = product.metadata as Product["metadata"];
+  const marketingFeatures = (
+    product.marketing_features ?? []
+  ).map((f) => f.name ?? "").filter(Boolean);
   return {
     id: product.id,
     name: product.name,
     description: product.description,
     images: product.images,
     metadata,
+    marketingFeatures,
     slug: metadata.slug || product.id,
     price: price.unit_amount ?? 0,
     priceId: price.id,
     currency: price.currency,
     active: product.active,
   };
+}
+
+function sortProducts(products: Product[]): Product[] {
+  return products.sort((a, b) => {
+    const orderA = parseInt(a.metadata.sort_order ?? "999", 10);
+    const orderB = parseInt(b.metadata.sort_order ?? "999", 10);
+    return orderA - orderB;
+  });
 }
 
 /**
@@ -34,9 +46,11 @@ export async function listProducts(): Promise<Product[]> {
       limit: 100,
     });
 
-    return products.data
-      .filter((p) => p.default_price && typeof p.default_price !== "string")
-      .map((p) => toProduct(p, p.default_price as Stripe.Price));
+    return sortProducts(
+      products.data
+        .filter((p) => p.default_price && typeof p.default_price !== "string")
+        .map((p) => toProduct(p, p.default_price as Stripe.Price))
+    );
   } catch (err) {
     console.error("Failed to fetch products:", err);
     return [];
@@ -85,9 +99,11 @@ export async function getProductsByCollection(
     limit: 100,
   });
 
-  return products.data
-    .filter((p) => p.default_price && typeof p.default_price !== "string")
-    .map((p) => toProduct(p, p.default_price as Stripe.Price));
+  return sortProducts(
+    products.data
+      .filter((p) => p.default_price && typeof p.default_price !== "string")
+      .map((p) => toProduct(p, p.default_price as Stripe.Price))
+  );
 }
 
 /**
@@ -101,9 +117,11 @@ export async function getFeaturedProducts(): Promise<Product[]> {
       limit: 8,
     });
 
-    return products.data
-      .filter((p) => p.default_price && typeof p.default_price !== "string")
-      .map((p) => toProduct(p, p.default_price as Stripe.Price));
+    return sortProducts(
+      products.data
+        .filter((p) => p.default_price && typeof p.default_price !== "string")
+        .map((p) => toProduct(p, p.default_price as Stripe.Price))
+    );
   } catch (err) {
     console.error("Failed to fetch featured products:", err);
     return [];
