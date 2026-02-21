@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { stripe } from "@/lib/payments/stripe";
 import { createServiceClient } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/emails";
+import { notifyPurchase } from "@/lib/ghl";
 import Stripe from "stripe";
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -707,6 +708,28 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         console.error("Failed to send order confirmation email:", emailErr);
       }
     }
+
+    // 11. Notify GHL for post-purchase marketing automation (non-blocking)
+    notifyPurchase({
+      email: customerEmail ?? "",
+      first_name: session.customer_details?.name?.split(" ")[0],
+      last_name: session.customer_details?.name?.split(" ").slice(1).join(" "),
+      order_number: orderNumber,
+      order_total: total,
+      currency: session.currency ?? "usd",
+      items: orderItems.map((item) => ({
+        product_name: item.product_name,
+        quantity: item.quantity,
+        price: item.unit_price,
+      })),
+      shipping_address: shippingAddress
+        ? {
+            city: shippingAddress.city ?? undefined,
+            state: shippingAddress.state ?? undefined,
+            country: shippingAddress.country ?? undefined,
+          }
+        : undefined,
+    });
 
     console.log(`Checkout completed handler finished for ${orderNumber}`);
   } catch (error) {
