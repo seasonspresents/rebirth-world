@@ -107,6 +107,7 @@ export async function sendEmail<T extends EmailType>(
     const { data, error } = await getResend().emails.send({
       from: config.from,
       to,
+      replyTo: "hello@rebirth.world",
       subject: config.subject,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       react: (Template as any)(props) as React.ReactElement,

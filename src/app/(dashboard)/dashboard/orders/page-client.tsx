@@ -118,8 +118,11 @@ export default function OrdersPageClient() {
   const isAdmin = isClientAdmin(user?.id);
   const [orders, setOrders] = useState<Order[]>([]);
   const [itemCounts, setItemCounts] = useState<Record<string, number>>({});
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [page, setPage] = useState(1);
   const [dataLoading, setDataLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("all");
+  const pageSize = 50;
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -133,11 +136,14 @@ export default function OrdersPageClient() {
           // Admin: fetch all orders from admin API
           const params = new URLSearchParams();
           if (statusFilter !== "all") params.set("status", statusFilter);
+          params.set("page", page.toString());
+          params.set("limit", pageSize.toString());
           const res = await fetch(`/api/admin/orders?${params.toString()}`);
           if (!res.ok) throw new Error("Failed to fetch admin orders");
           const data = await res.json();
           setOrders(data.orders);
           setItemCounts(data.itemCounts);
+          setTotalOrders(data.total);
         } else {
           // Customer: fetch own orders via Supabase
           const supabase = createClient();
@@ -178,7 +184,7 @@ export default function OrdersPageClient() {
       setDataLoading(true);
       fetchOrders();
     }
-  }, [user, authLoading, isAdmin, statusFilter]);
+  }, [user, authLoading, isAdmin, statusFilter, page]);
 
   const isLoading = authLoading || dataLoading;
 
@@ -238,7 +244,7 @@ export default function OrdersPageClient() {
               </p>
             </div>
             {isAdmin && (
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
@@ -342,6 +348,33 @@ export default function OrdersPageClient() {
               )}
             </CardContent>
           </Card>
+
+          {/* Pagination */}
+          {isAdmin && totalOrders > pageSize && (
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-muted-foreground">
+                Showing {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, totalOrders)} of {totalOrders}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page <= 1}
+                  onClick={() => setPage((p) => p - 1)}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page * pageSize >= totalOrders}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

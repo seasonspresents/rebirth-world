@@ -90,16 +90,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ received: true });
   } catch (error) {
     console.error("Error processing webhook:", error);
-    return NextResponse.json(
-      { error: "Error processing webhook" },
-      { status: 500 }
-    );
+    // Always return 200 to prevent Stripe from retrying indefinitely.
+    // Partial failures (e.g. order created but items failed) are handled
+    // by the idempotency check which verifies items exist.
+    return NextResponse.json({ received: true });
   }
 }
 
 // Helper function to find user from metadata
 function getUserIdFromMetadata(metadata: any): string | null {
-  return metadata?.user_id || null;
+  const id = metadata?.user_id;
+  return id && id !== "guest" ? id : null;
 }
 
 async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
@@ -547,7 +548,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     console.log(`Handling checkout completed: ${session.id}`);
     const supabase = createServiceClient();
 
-    // Idempotency: skip if order already exists for this checkout session
+    // Idempotency: skip if order already exists with items for this checkout session
     const { data: existingOrder } = await supabase
       .from("orders")
       .select("id, order_number")
@@ -555,10 +556,22 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       .maybeSingle();
 
     if (existingOrder) {
+      // Verify items were also created (handles partial failure on previous attempt)
+      const { count: itemCount } = await supabase
+        .from("order_items")
+        .select("*", { count: "exact", head: true })
+        .eq("order_id", existingOrder.id);
+
+      if (itemCount && itemCount > 0) {
+        console.log(
+          `Order ${existingOrder.order_number} already exists with ${itemCount} items for session ${session.id}, skipping`
+        );
+        return;
+      }
+      // Order exists but items are missing — continue to re-insert items
       console.log(
-        `Order ${existingOrder.order_number} already exists for session ${session.id}, skipping`
+        `Order ${existingOrder.order_number} exists but has no items — re-inserting items`
       );
-      return;
     }
 
     // 1. Generate order number via DB function
@@ -586,6 +599,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     const total = session.amount_total ?? 0;
     const shippingCost = (session as any).shipping_cost?.amount_total ?? 0;
     const tax = (session as any).total_details?.amount_tax ?? 0;
+    const discount = (session as any).total_details?.amount_discount ?? 0;
 
     // 5. User info
     const userId = session.metadata?.user_id;
@@ -606,9 +620,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
             : (session.payment_intent as any)?.id ?? null,
         email: customerEmail,
         status: "confirmed",
+        payment_status: "paid",
         subtotal: subtotal,
         shipping_cost: shippingCost,
         tax_amount: tax,
+        discount_amount: discount,
         total: total,
         currency: session.currency ?? "usd",
         shipping_name: shippingName,
@@ -742,7 +758,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
                 country: shippingAddress.country ?? undefined,
               }
             : undefined,
-          orderUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "https://rebirth.world"}/shop`,
+          orderUrl: `${process.env.NEXT_PUBLIC_SITE_URL || "https://rebirth.world"}/dashboard/orders`,
         });
         console.log(`Order confirmation email sent to ${customerEmail}`);
       } catch (emailErr) {

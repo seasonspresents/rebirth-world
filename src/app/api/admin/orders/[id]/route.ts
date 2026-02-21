@@ -35,7 +35,7 @@ export async function GET(
 
 const updateSchema = z.object({
   status: z
-    .enum(["pending", "confirmed", "processing", "shipped", "delivered", "cancelled", "refunded"])
+    .enum(["pending", "confirmed", "processing", "shipped", "delivered", "cancelled"])
     .optional(),
   tracking_number: z.string().optional(),
   tracking_url: z.string().url().optional().or(z.literal("")),
@@ -63,19 +63,42 @@ export async function PATCH(
   }
 
   const supabase = createServiceClient();
+
+  // Fetch current order state for safe transitions
+  const { data: current } = await supabase
+    .from("orders")
+    .select("status, shipped_at, delivered_at")
+    .eq("id", id)
+    .single();
+
+  if (!current) {
+    return NextResponse.json({ error: "Order not found" }, { status: 404 });
+  }
+
   const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
 
-  if (parsed.data.status !== undefined) updates.status = parsed.data.status;
+  if (parsed.data.status !== undefined) {
+    updates.status = parsed.data.status;
+
+    // Set fulfillment_status in sync with status
+    if (parsed.data.status === "shipped" || parsed.data.status === "delivered") {
+      updates.fulfillment_status = "fulfilled";
+    }
+
+    // Only set shipped_at if not already set in DB
+    if (parsed.data.status === "shipped" && !current.shipped_at) {
+      updates.shipped_at = new Date().toISOString();
+    }
+
+    // Only set delivered_at if not already set in DB
+    if (parsed.data.status === "delivered" && !current.delivered_at) {
+      updates.delivered_at = new Date().toISOString();
+    }
+  }
+
   if (parsed.data.tracking_number !== undefined) updates.tracking_number = parsed.data.tracking_number;
   if (parsed.data.tracking_url !== undefined) updates.tracking_url = parsed.data.tracking_url || null;
   if (parsed.data.notes !== undefined) updates.notes = parsed.data.notes;
-
-  if (parsed.data.status === "shipped" && !updates.shipped_at) {
-    updates.shipped_at = new Date().toISOString();
-  }
-  if (parsed.data.status === "delivered") {
-    updates.delivered_at = new Date().toISOString();
-  }
 
   const { data: order, error: updateError } = await supabase
     .from("orders")

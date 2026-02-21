@@ -11,8 +11,8 @@ export async function GET(req: NextRequest) {
   const supabase = createServiceClient();
 
   const statusFilter = req.nextUrl.searchParams.get("status");
-  const page = parseInt(req.nextUrl.searchParams.get("page") || "1", 10);
-  const limit = parseInt(req.nextUrl.searchParams.get("limit") || "50", 10);
+  const page = Math.max(parseInt(req.nextUrl.searchParams.get("page") || "1", 10), 1);
+  const limit = Math.min(Math.max(parseInt(req.nextUrl.searchParams.get("limit") || "50", 10), 1), 100);
   const offset = (page - 1) * limit;
 
   let query = supabase

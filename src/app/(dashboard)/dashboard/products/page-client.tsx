@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ShoppingBag, ExternalLink } from "lucide-react";
 import { DashboardHeader } from "../layout";
+import { useAuth } from "@/components/auth/auth-context";
+import { isClientAdmin } from "@/lib/admin-client";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -57,10 +60,20 @@ function collectionLabel(slug: string | undefined): string {
 }
 
 export default function ProductsPageClient() {
+  const { user, isLoading: authLoading } = useAuth();
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!authLoading && !isClientAdmin(user?.id)) {
+      router.push("/dashboard");
+      return;
+    }
+  }, [user, authLoading, router]);
+
+  useEffect(() => {
+    if (authLoading || !isClientAdmin(user?.id)) return;
     async function fetchProducts() {
       try {
         const res = await fetch("/api/products");
@@ -74,7 +87,7 @@ export default function ProductsPageClient() {
       }
     }
     fetchProducts();
-  }, []);
+  }, [user, authLoading]);
 
   if (loading) {
     return (

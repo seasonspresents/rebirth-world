@@ -32,12 +32,37 @@ export async function POST(
 
   const supabase = createServiceClient();
 
+  // Pre-flight: check order exists and is in a fulfillable state
+  const { data: existing } = await supabase
+    .from("orders")
+    .select("id, status, email, order_number")
+    .eq("id", id)
+    .single();
+
+  if (!existing) {
+    return NextResponse.json({ error: "Order not found" }, { status: 404 });
+  }
+
+  if (existing.status === "shipped" || existing.status === "delivered") {
+    return NextResponse.json(
+      { error: "Order is already fulfilled" },
+      { status: 409 }
+    );
+  }
+
+  if (existing.status === "cancelled" || existing.status === "refunded") {
+    return NextResponse.json(
+      { error: "Cannot fulfill a cancelled or refunded order" },
+      { status: 400 }
+    );
+  }
+
   // Update order to shipped
   const { data: order, error: updateError } = await supabase
     .from("orders")
     .update({
       status: "shipped",
-      fulfillment_status: "shipped",
+      fulfillment_status: "fulfilled",
       tracking_number: parsed.data.tracking_number,
       tracking_url: parsed.data.tracking_url || null,
       shipped_at: new Date().toISOString(),
@@ -49,12 +74,13 @@ export async function POST(
 
   if (updateError || !order) {
     return NextResponse.json(
-      { error: updateError?.message || "Order not found" },
+      { error: updateError?.message || "Failed to update order" },
       { status: 500 }
     );
   }
 
   // Send shipping notification email
+  let emailSent = false;
   try {
     await sendEmail("shipping-notification", order.email, {
       orderNumber: order.order_number,
@@ -63,10 +89,10 @@ export async function POST(
       carrier: parsed.data.carrier || undefined,
       shippingName: order.shipping_name || undefined,
     });
+    emailSent = true;
   } catch (emailError) {
     console.error("Failed to send shipping notification:", emailError);
-    // Don't fail the fulfillment — order is already marked shipped
   }
 
-  return NextResponse.json({ order, emailSent: true });
+  return NextResponse.json({ order, emailSent });
 }

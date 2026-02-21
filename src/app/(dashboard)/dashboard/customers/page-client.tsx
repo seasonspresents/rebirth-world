@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Users } from "lucide-react";
 import { DashboardHeader } from "../layout";
+import { useAuth } from "@/components/auth/auth-context";
+import { isClientAdmin } from "@/lib/admin-client";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -56,10 +59,20 @@ const breadcrumb = (
 );
 
 export default function CustomersPageClient() {
+  const { user, isLoading: authLoading } = useAuth();
+  const router = useRouter();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!authLoading && !isClientAdmin(user?.id)) {
+      router.push("/dashboard");
+      return;
+    }
+  }, [user, authLoading, router]);
+
+  useEffect(() => {
+    if (authLoading || !isClientAdmin(user?.id)) return;
     async function fetchCustomers() {
       try {
         const res = await fetch("/api/admin/customers");
@@ -73,7 +86,7 @@ export default function CustomersPageClient() {
       }
     }
     fetchCustomers();
-  }, []);
+  }, [user, authLoading]);
 
   if (loading) {
     return (

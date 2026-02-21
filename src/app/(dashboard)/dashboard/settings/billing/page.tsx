@@ -214,8 +214,8 @@ export default function SettingsBillingPage() {
                                   : "bg-gray-500 text-white"
                             }
                           >
-                            {order.payment_status.charAt(0).toUpperCase() +
-                              order.payment_status.slice(1)}
+                            {(order.payment_status ?? "unpaid").charAt(0).toUpperCase() +
+                              (order.payment_status ?? "unpaid").slice(1)}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">

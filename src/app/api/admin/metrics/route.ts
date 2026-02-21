@@ -24,8 +24,11 @@ export async function GET() {
 
   const orders = monthOrders ?? [];
   const orderCount = orders.length;
-  const revenue = orders.reduce((sum, o) => sum + (o.total ?? 0), 0) / 100;
-  const avgOrderValue = orderCount > 0 ? revenue / orderCount : 0;
+  const activeOrders = orders.filter(
+    (o) => o.status !== "cancelled" && o.status !== "refunded"
+  );
+  const revenue = activeOrders.reduce((sum, o) => sum + (o.total ?? 0), 0) / 100;
+  const avgOrderValue = activeOrders.length > 0 ? revenue / activeOrders.length : 0;
   const pendingShipments = orders.filter(
     (o) => o.status === "confirmed" || o.status === "processing"
   ).length;
@@ -49,9 +52,16 @@ export async function GET() {
     byDate.set(date, existing);
   }
 
-  const chartData = Array.from(byDate.entries())
-    .map(([date, data]) => ({ date, ...data }))
-    .sort((a, b) => a.date.localeCompare(b.date));
+  // Fill in all dates (including zero-order days) for a continuous chart
+  const chartData: { date: string; orders: number; revenue: number }[] = [];
+  const cursor = new Date(ninetyDaysAgo);
+  const today = new Date();
+  while (cursor <= today) {
+    const dateStr = cursor.toISOString().slice(0, 10);
+    const data = byDate.get(dateStr) ?? { orders: 0, revenue: 0 };
+    chartData.push({ date: dateStr, ...data });
+    cursor.setDate(cursor.getDate() + 1);
+  }
 
   return NextResponse.json({
     metrics: { orderCount, revenue, avgOrderValue, pendingShipments },

@@ -214,11 +214,19 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
           carrier: carrier || undefined,
         }),
       });
-      if (!res.ok) throw new Error("Failed to fulfill order");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        toast.error(errData.error || "Failed to fulfill order");
+        return;
+      }
       const data = await res.json();
       setOrder(data.order as Order);
       setAdminStatus("shipped");
-      toast.success("Order marked as shipped and customer notified");
+      if (data.emailSent) {
+        toast.success("Order marked as shipped and customer notified");
+      } else {
+        toast.warning("Order marked as shipped, but email notification failed. Notify customer manually.");
+      }
     } catch {
       toast.error("Failed to fulfill order");
     } finally {
