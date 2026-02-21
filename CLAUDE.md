@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with code in this repository.
 
 ## Project Overview
 
@@ -25,6 +25,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Build passes with 0 errors, 41 pages generated.
 
+## Deep Context — Read These When Relevant
+
+| Document | Path | Read When |
+|----------|------|-----------|
+| Brand PRD | `docs/REBIRTH_WORLD_PRD.md` | Writing copy, designing UI, making brand/marketing decisions. Has avatars, voice guide, competitive landscape, advisory council, funnel architecture. |
+| GHL Integration | `docs/GHL_INTEGRATION_PLAN.md` | Working on webhook integrations, email/CRM flows |
+| Conversion Blueprint | `docs/SABO_TO_REBIRTH_BLUEPRINT.md` | Understanding codebase origin and conversion decisions |
+| Brand Skill | `.claude/skills/rebirth-brand/SKILL.md` | Auto-loaded when working on copy, UI, landing pages, product pages, emails |
+| Claude Code Setup | `docs/CLAUDE_CODE_SETUP_GUIDE.md` | Reference for skills/plugins system and project setup |
+
 ## Development Commands
 
 ```bash
@@ -45,6 +55,12 @@ pnpm lint
 
 # E2E tests
 pnpm test:e2e
+
+# Supabase migrations
+npx supabase db push
+
+# Stripe webhook testing
+npx stripe listen --forward-to localhost:3000/api/webhooks/stripe
 ```
 
 ## Tech Stack
@@ -55,12 +71,13 @@ pnpm test:e2e
 | UI | React | 19.2.0 |
 | Language | TypeScript | 5.x |
 | Styling | Tailwind CSS | 4.x |
-| Components | shadcn/ui (New York) + Magic UI | 70+ components |
+| Components | shadcn/ui (New York) + Magic UI + Aceternity UI | 70+ components |
 | Animation | motion (Framer Motion) | 12.x |
 | Auth | Supabase (@supabase/ssr) | 0.7.0 / 2.81.1 |
 | Database | Supabase (PostgreSQL + RLS) | — |
 | Payments | Stripe (one-time checkout) | 19.3.1 |
-| Email | Resend + React Email | 6.5.0 |
+| Email (transactional) | Resend + React Email | 6.5.0 |
+| Email (marketing) | GoHighLevel (GHL) | — |
 | Charts | Recharts | 2.15.4 |
 | Forms | React Hook Form + Zod | 7.x / 4.x |
 | Dark mode | next-themes | 0.4.6 |
@@ -144,6 +161,7 @@ src/app/
 | `/api/webhooks/stripe` | POST | Handle `checkout.session.completed`, create order + items |
 | `/api/contact` | POST | Contact form submission |
 | `/api/send` | POST | Send transactional email via Resend |
+| `/api/newsletter` | POST | Newsletter signup → Supabase + GHL webhook |
 | `/api/checkout_sessions` | POST | Legacy subscription checkout (from boilerplate, may remove) |
 
 ### Component Organization
@@ -224,6 +242,7 @@ src/lib/
 │   ├── middleware.ts      # Auth middleware (protects /dashboard)
 │   └── types.ts          # TypeScript types for all tables
 │
+├── ghl.ts                # GoHighLevel webhook helper
 ├── emails.ts             # Resend email system (type-safe send function)
 ├── posts.ts              # Blog post utilities (MDX)
 └── utils.ts              # cn() utility for Tailwind class merging
@@ -298,6 +317,7 @@ Browse /shop
   → Stripe Checkout (collects payment + shipping address)
   → Stripe fires checkout.session.completed webhook
   → Webhook: creates order + order_items in Supabase, sends confirmation email
+  → GHL webhook fires for purchase event (CRM + marketing automation)
   → Customer redirected to /order/success (confetti, cart cleared)
   → Customer views order history at /dashboard/orders
 ```
@@ -348,34 +368,48 @@ const session = await stripe.checkout.sessions.create({
 
 | Event | Action |
 |-------|--------|
-| `checkout.session.completed` | Create order + order_items, send confirmation email, record payment |
+| `checkout.session.completed` | Create order + order_items, send confirmation email, record payment, fire GHL webhook |
 
 The webhook handler lives at `/api/webhooks/stripe/route.ts`.
 
 ## Brand & Design
 
+**Full brand context lives in `docs/REBIRTH_WORLD_PRD.md`.** The brand skill at `.claude/skills/rebirth-brand/SKILL.md` auto-loads when working on copy, UI, or creative decisions. Below is the quick reference.
+
 ### Color Palette
 
-| Role | Color | Hex |
-|------|-------|-----|
-| Primary Dark | Charcoal Black | `#1a1a1a` |
-| Primary Light | Warm White | `#f5f0e8` |
-| Accent 1 | Ocean Teal | `#2a9d8f` |
-| Accent 2 | Burnt Amber | `#e07a3a` |
-| Accent 3 | Lotus Pink | `#d4a0a0` |
-| Neutral | Driftwood Gray | `#8a8578` |
-| Earth Tone | Moss Green | `#5a6b4a` |
+| Role | Color | Hex | Usage |
+|------|-------|-----|-------|
+| Primary Dark | Charcoal Black | `#1a1a1a` | Text, headers, dark backgrounds |
+| Primary Light | Warm White | `#f5f0e8` | Backgrounds, light sections |
+| Accent 1 | Ocean Teal | `#2a9d8f` | CTAs, highlights, links |
+| Accent 2 | Burnt Amber | `#e07a3a` | Skateboard wood warmth, secondary CTA |
+| Accent 3 | Lotus Pink | `#d4a0a0` | Soft moments, gift guides |
+| Neutral | Driftwood Gray | `#8a8578` | Body text, secondary info, borders |
+| Earth Tone | Moss Green | `#5a6b4a` | Eco/sustainability callouts |
 
 ### Typography
 
-| Role | Font |
-|------|------|
-| Body | DM Sans |
-| Display/Headlines | Instrument Serif |
+| Role | Font | Notes |
+|------|------|-------|
+| Headlines | Clash Display | Bold, slightly condensed, -0.03em tracking |
+| Body | DM Sans | Clean, warm, readable |
+| System/Labels | DM Mono | Monospace for numbers, links, technical text |
+
+**Do NOT use:** Inter, Roboto, Arial, or any generic system fonts.
+
+### UI Patterns
+
+- **Grain texture:** SVG noise overlay on backgrounds (kills AI-slop feel)
+- **Animations:** Framer Motion for scroll-triggered reveals and hover states
+- **Component libraries:** Aceternity UI for hero sections, Magic UI for interactive elements, shadcn/ui for core UI
+- **Photography:** Natural lighting, golden hour, lifestyle > sterile product shots
+- **Whitespace:** Generous — this isn't a cluttered marketplace
+- **Dark mode:** Supported via next-themes
 
 ### Design Principles
 
-1. **Handmade over polished** — imperfection is the aesthetic
+1. **Handmade over polished** — imperfection is the aesthetic, not a flaw
 2. **Story over specs** — lead with meaning, follow with materials
 3. **Warmth over minimalism** — organic, human, not cold tech
 4. **Authenticity over aspiration** — real photos, real stories, real craft
@@ -385,8 +419,19 @@ The webhook handler lives at `/api/webhooks/stripe/route.ts`.
 
 - **We sound like:** A wise, grounded skater friend who's also a master craftsman
 - **Not corporate, not salesy, not try-hard**
-- **Key phrases:** "Embrace Change," "Handmade with intention," "Reborn," "One of a kind," "Crafted, not manufactured"
-- **Avoid:** "Luxury" (unless wedding bands), "cheap," "eco-friendly" as lead, corporate jargon
+- **Use:** "Embrace Change," "Handmade with intention," "Reborn," "One of a kind," "Crafted" (not "manufactured")
+- **Avoid:** "Luxury" (say "premium" or "crafted"), "cheap," "eco-friendly" as lead, "handcrafted artisanal," corporate jargon
+
+### Product Context (for accurate copy)
+
+| Product | Price | Key Detail |
+|---------|-------|-----------|
+| Skateboard Rings | ~$25 | 7-layer recycled maple from donated boards |
+| Wedding Bands | $75-200+ | Gold-plated steel shells + stabilized ancient wood liners |
+| Apparel | $35-70 | Branded hoodies and tees |
+| Laser Engraving | +$9 | Up to 10 chars text or custom graphic |
+
+Interior finish is thin CA glue (NOT polyurethane). Sizing: Size 9 shell (18.8mm ID) + 0.8mm wood liner → wearable size 7.
 
 ## Cart System
 
@@ -406,7 +451,7 @@ On checkout completion, `/order/success` clears both stores.
 
 ## Email System
 
-Resend handles **transactional emails only** (instant delivery):
+**Transactional** (Resend — instant delivery):
 
 | Email Type | Template | Trigger |
 |------------|----------|---------|
@@ -424,7 +469,7 @@ await sendEmail("order-confirmation", customerEmail, {
 });
 ```
 
-**Marketing emails** (sequences, drips, newsletters) are handled externally by GoHighLevel (GHL), not Resend.
+**Marketing** (GoHighLevel — sequences, drips, newsletters): GHL webhooks fire on newsletter signup, purchase, and abandoned cart events. See `src/lib/ghl.ts` and `docs/GHL_INTEGRATION_PLAN.md`.
 
 ## Environment Variables
 
@@ -444,6 +489,10 @@ STRIPE_WEBHOOK_SECRET=
 
 # Resend
 RESEND_API_KEY=
+
+# GoHighLevel
+GHL_API_KEY=
+GHL_LOCATION_ID=
 
 # PostHog (optional)
 NEXT_PUBLIC_POSTHOG_KEY=
@@ -479,9 +528,7 @@ export default async function NewPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/sign-in');
 
-  // Fetch data from Supabase
   const { data } = await supabase.from('orders').select('*');
-
   return <YourComponent data={data} />;
 }
 ```
@@ -530,6 +577,15 @@ export async function POST(req: NextRequest) {
    ```
 3. Post auto-appears on `/blog` sorted by date
 
+## Code Style
+
+- TypeScript strict mode
+- Functional components with hooks
+- Tailwind for styling — no CSS modules
+- ES modules, not CommonJS
+- Prettier + ESLint
+- Commit messages: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`
+
 ## Important Notes
 
 ### Package Manager
@@ -551,6 +607,17 @@ Some boilerplate artifacts may remain:
 - `/pricing` page — may be repurposed or removed
 
 These don't affect functionality but can be cleaned up.
+
+## What NOT to Do
+
+- Don't use Pages Router patterns (getServerSideProps, etc.)
+- Don't install additional CSS frameworks (Tailwind only)
+- Don't use `any` type — always type properly
+- Don't hardcode prices — pull from Stripe/Supabase
+- Don't use the word "luxury" in copy — say "premium" or "crafted"
+- Don't use Inter, Roboto, or Arial fonts — use Clash Display, DM Sans, DM Mono
+- Don't write generic/template-sounding copy — read the brand skill first
+- Don't use sterile product photography aesthetic — warm, natural, lifestyle
 
 ## Deployment
 
