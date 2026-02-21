@@ -1,103 +1,77 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
+import { Package, DollarSign, ShoppingCart, Truck } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
-  CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
-export function SectionCards() {
+interface SectionCardsProps {
+  orderCount: number;
+  revenue: number;
+  avgOrderValue: number;
+  pendingShipments: number;
+}
+
+export function SectionCards({
+  orderCount,
+  revenue,
+  avgOrderValue,
+  pendingShipments,
+}: SectionCardsProps) {
   return (
     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Bookings This Month</CardDescription>
+          <CardDescription>Orders This Month</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            34
+            {orderCount}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +18%
-            </Badge>
-          </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Up from 29 last month <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Rebirth handled 127 inquiries
+            <Package className="size-4" /> Total orders placed
           </div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Messages Handled</CardDescription>
+          <CardDescription>Revenue</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            1,847
+            ${revenue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +24%
-            </Badge>
-          </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Across DMs, SMS & voice <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Zero messages left unread
+            <DollarSign className="size-4" /> This month&apos;s revenue
           </div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Avg. Response Time</CardDescription>
+          <CardDescription>Avg. Order Value</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            38s
+            ${avgOrderValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingDown />
-              -52%
-            </Badge>
-          </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Down from 1m 19s <IconTrendingDown className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Faster replies = more bookings
+            <ShoppingCart className="size-4" /> Average per order
           </div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Revenue Recovered</CardDescription>
+          <CardDescription>Pending Shipments</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            $4,200
+            {pendingShipments}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +31%
-            </Badge>
-          </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            From after-hours inquiries <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Bookings that would have been lost
+            <Truck className="size-4" /> Awaiting shipment
           </div>
         </CardFooter>
       </Card>

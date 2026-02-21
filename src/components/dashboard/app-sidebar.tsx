@@ -6,10 +6,6 @@ import {
   BookOpen,
   GalleryVerticalEnd,
   LifeBuoy,
-  MessageSquare,
-  CalendarCheck,
-  BarChart3,
-  Bot,
   Package,
   Send,
   Settings2,
@@ -55,49 +51,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const navMain = [
     {
-      title: "Conversations",
-      url: "/dashboard",
-      icon: MessageSquare,
-      isActive: !isSettingsPage && !isOrdersPage,
-      items: [
-        {
-          title: "All Messages",
-          url: "/dashboard",
-        },
-        {
-          title: "DMs",
-          url: "/dashboard",
-        },
-        {
-          title: "SMS",
-          url: "/dashboard",
-        },
-        {
-          title: "Voice",
-          url: "/dashboard",
-        },
-      ],
-    },
-    {
-      title: "Bookings",
-      url: "/dashboard",
-      icon: CalendarCheck,
-      items: [
-        {
-          title: "Upcoming",
-          url: "/dashboard",
-        },
-        {
-          title: "Completed",
-          url: "/dashboard",
-        },
-        {
-          title: "Canceled",
-          url: "/dashboard",
-        },
-      ],
-    },
-    {
       title: "Orders",
       url: "/dashboard/orders",
       icon: Package,
@@ -106,44 +59,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {
           title: "All Orders",
           url: "/dashboard/orders",
-        },
-      ],
-    },
-    {
-      title: "AI Assistants",
-      url: "/dashboard",
-      icon: Bot,
-      items: [
-        {
-          title: "Active Agents",
-          url: "/dashboard",
-        },
-        {
-          title: "Scripts & Tone",
-          url: "/dashboard",
-        },
-        {
-          title: "Training",
-          url: "/dashboard",
-        },
-      ],
-    },
-    {
-      title: "Analytics",
-      url: "/dashboard",
-      icon: BarChart3,
-      items: [
-        {
-          title: "Overview",
-          url: "/dashboard",
-        },
-        {
-          title: "Response Times",
-          url: "/dashboard",
-        },
-        {
-          title: "Revenue",
-          url: "/dashboard",
         },
       ],
     },

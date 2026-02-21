@@ -42,21 +42,20 @@ export function CTA() {
             {/* Content */}
             <div className="relative z-10">
               <h2 className="mb-4 text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.12] tracking-tight font-[family-name:var(--font-display)]">
-                What if you were actually{" "}
-                <em className="text-accent">home for dinner</em> tonight?
+                Discover something{" "}
+                <em className="text-accent">made to last</em>
               </h2>
               <p className="mx-auto mb-8 max-w-[44ch] text-base leading-relaxed text-muted-foreground">
-                You became a jewelry designer for the freedom to create — not to
-                answer DMs from the dinner table while your family waits. Rebirth
-                handles every message, text, and missed call so you can be
-                present for the people and the work that actually matter.
+                Every piece in the Rebirth World collection is handcrafted from
+                recycled materials — designed to carry a story, built to be worn
+                for years. Find something that means something.
               </p>
               <Button
                 size="lg"
                 asChild
               >
-                <a href="#pricing">
-                  Get your time back <span className="ml-1">→</span>
+                <a href="/shop">
+                  Browse Collection <span className="ml-1">→</span>
                 </a>
               </Button>
             </div>
