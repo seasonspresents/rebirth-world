@@ -10,6 +10,7 @@ import {
   CalendarCheck,
   BarChart3,
   Bot,
+  Package,
   Send,
   Settings2,
 } from "lucide-react";
@@ -50,13 +51,14 @@ const navSecondary = [
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   const isSettingsPage = pathname.startsWith("/dashboard/settings");
+  const isOrdersPage = pathname.startsWith("/dashboard/orders");
 
   const navMain = [
     {
       title: "Conversations",
       url: "/dashboard",
       icon: MessageSquare,
-      isActive: !isSettingsPage,
+      isActive: !isSettingsPage && !isOrdersPage,
       items: [
         {
           title: "All Messages",
@@ -92,6 +94,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {
           title: "Canceled",
           url: "/dashboard",
+        },
+      ],
+    },
+    {
+      title: "Orders",
+      url: "/dashboard/orders",
+      icon: Package,
+      isActive: isOrdersPage,
+      items: [
+        {
+          title: "All Orders",
+          url: "/dashboard/orders",
         },
       ],
     },
