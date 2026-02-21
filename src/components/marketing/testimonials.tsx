@@ -64,7 +64,7 @@ function TestimonialCard({ quote, name, detail }: (typeof testimonials)[0]) {
 export function Testimonials() {
   return (
     <section className="bg-grain py-24 md:py-40">
-      <div className="mx-auto max-w-[1200px] px-6">
+      <div className="relative z-10 mx-auto max-w-[1200px] px-6">
         <motion.h2
           className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]"
           initial={{ opacity: 0, y: 20 }}
@@ -76,7 +76,7 @@ export function Testimonials() {
         </motion.h2>
       </div>
 
-      <div className="relative mt-12 md:mt-16">
+      <div className="relative z-10 mt-12 md:mt-16">
         {/* Left fade */}
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
         {/* Right fade */}

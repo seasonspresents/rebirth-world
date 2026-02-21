@@ -105,7 +105,7 @@ export default async function ShopPage({
     <>
       {/* Dramatic header */}
       <div className="bg-grain px-6 py-20 md:py-32">
-        <div className="mx-auto max-w-[1200px]">
+        <div className="relative z-10 mx-auto max-w-[1200px]">
           <h1 className="text-5xl leading-[1.05] tracking-tight md:text-7xl font-[family-name:var(--font-display)]">
             The Collection
           </h1>

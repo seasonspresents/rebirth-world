@@ -8,7 +8,7 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-clip">
       <Header />
       <CartDrawer />
       <main>{children}</main>

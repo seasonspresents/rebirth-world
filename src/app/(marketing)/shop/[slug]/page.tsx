@@ -100,7 +100,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       />
 
       <section className="bg-grain px-6 py-12 md:py-20">
-        <div className="mx-auto max-w-[1200px]">
+        <div className="relative z-10 mx-auto max-w-[1200px]">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
             {/* Image Gallery */}
             <ProductImageGallery

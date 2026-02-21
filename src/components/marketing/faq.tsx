@@ -49,7 +49,7 @@ export function FAQ() {
       id="faq"
       className="bg-grain bg-[#f2ede5] px-6 py-24 md:py-36 dark:bg-muted/30"
     >
-      <div className="mx-auto max-w-[1100px]">
+      <div className="relative z-10 mx-auto max-w-[1100px]">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_1.5fr] md:gap-20">
           {/* Left column — header */}
           <div className="md:sticky md:top-24 md:self-start">

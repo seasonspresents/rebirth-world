@@ -33,7 +33,7 @@ export function NewsletterCTA() {
 
   return (
     <section className="bg-grain px-6 py-24 md:py-40">
-      <div className="mx-auto max-w-[1200px]">
+      <div className="relative z-10 mx-auto max-w-[1200px]">
         <motion.h2
           className="max-w-[18ch] text-4xl leading-[1.08] tracking-tight md:text-6xl font-[family-name:var(--font-display)]"
           initial={{ opacity: 0, y: 20 }}
