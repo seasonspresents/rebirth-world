@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col overflow-x-hidden">
           <div className="@container/main flex flex-1 flex-col gap-2">
             {children}
           </div>
@@ -35,22 +35,24 @@ export function DashboardHeader({
   actions?: ReactNode;
 }) {
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-      <div className="flex items-center gap-2">
-        <SidebarTrigger className="-ml-1" />
+    <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b px-3 sm:h-16 sm:px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+      <div className="flex min-w-0 items-center gap-2">
+        <SidebarTrigger className="-ml-1 shrink-0" />
         <Separator
           orientation="vertical"
           className="mr-2 data-[orientation=vertical]:h-4"
         />
-        {breadcrumb}
+        <div className="min-w-0">{breadcrumb}</div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex shrink-0 items-center gap-1 sm:gap-2">
         <NotificationsDropdown variant="outline" />
-        <ModeToggle variant="outline" />
+        <span className="hidden sm:inline-flex">
+          <ModeToggle variant="outline" />
+        </span>
         {actions}
         <Separator
           orientation="vertical"
-          className="mx-2 data-[orientation=vertical]:h-4"
+          className="mx-1 sm:mx-2 data-[orientation=vertical]:h-4"
         />
         <HeaderUserMenu />
       </div>

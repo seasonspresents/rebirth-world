@@ -13,7 +13,8 @@ import {
   Upload,
   X,
   GripVertical,
-  ShoppingBag,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardHeader } from "../../layout";
@@ -256,6 +257,16 @@ export default function ProductEditClient({
 
   const removeImage = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const moveImage = (from: number, to: number) => {
+    if (to < 0 || to >= images.length) return;
+    setImages((prev) => {
+      const newImages = [...prev];
+      const [moved] = newImages.splice(from, 1);
+      newImages.splice(to, 0, moved);
+      return newImages;
+    });
   };
 
   const handleDragStart = (index: number) => {
@@ -519,13 +530,33 @@ export default function ProductEditClient({
                               sizes="200px"
                             />
                             <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20" />
+                            {/* Remove button */}
                             <button
                               onClick={() => removeImage(index)}
-                              className="absolute right-1.5 top-1.5 rounded-full bg-black/60 p-1.5 opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100"
+                              className="absolute right-1.5 top-1.5 rounded-full bg-black/60 p-2 sm:p-1.5 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100"
                             >
-                              <X className="h-3.5 w-3.5 text-white" />
+                              <X className="h-4 w-4 text-white sm:h-3.5 sm:w-3.5" />
                             </button>
-                            <div className="absolute left-1.5 top-1.5 cursor-grab rounded-full bg-black/60 p-1.5 opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
+                            {/* Reorder buttons (mobile) / drag handle (desktop) */}
+                            <div className="absolute bottom-1.5 right-1.5 flex gap-1 sm:hidden">
+                              {index > 0 && (
+                                <button
+                                  onClick={() => moveImage(index, index - 1)}
+                                  className="rounded-full bg-black/60 p-1.5"
+                                >
+                                  <ChevronUp className="h-4 w-4 text-white" />
+                                </button>
+                              )}
+                              {index < images.length - 1 && (
+                                <button
+                                  onClick={() => moveImage(index, index + 1)}
+                                  className="rounded-full bg-black/60 p-1.5"
+                                >
+                                  <ChevronDown className="h-4 w-4 text-white" />
+                                </button>
+                              )}
+                            </div>
+                            <div className="absolute left-1.5 top-1.5 hidden cursor-grab rounded-full bg-black/60 p-1.5 sm:group-hover:block">
                               <GripVertical className="h-3.5 w-3.5 text-white" />
                             </div>
                             {index === 0 && (
