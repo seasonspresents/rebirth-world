@@ -7,6 +7,7 @@ import {
   listProducts,
 } from "@/lib/payments/products";
 import { ProductImageGallery } from "@/components/shop/product-image-gallery";
+import { Product3DToggle } from "@/components/shop/product-3d-toggle";
 import { AddToCartButton } from "@/components/shop/add-to-cart-button";
 import { TrustBadges } from "@/components/shop/trust-badges";
 import { ProductStory } from "@/components/shop/product-story";
@@ -102,10 +103,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <section className="bg-grain px-6 py-12 md:py-20">
         <div className="relative z-10 mx-auto max-w-[1200px]">
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
-            {/* Image Gallery */}
-            <ProductImageGallery
-              images={product.images}
-              productName={product.name}
+            {/* Image Gallery + optional 3D View */}
+            <Product3DToggle
+              show3D={
+                product.metadata.collection === "skateboard-rings" ||
+                product.metadata.collection === "wedding-bands"
+              }
+              imageGallery={
+                <ProductImageGallery
+                  images={product.images}
+                  productName={product.name}
+                />
+              }
             />
 
             {/* Product Details */}

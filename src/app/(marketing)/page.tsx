@@ -4,6 +4,7 @@ import { ValueProps } from "@/components/marketing/value-props";
 import { Testimonials } from "@/components/marketing/testimonials";
 import { FAQ } from "@/components/marketing/faq";
 import { NewsletterCTA } from "@/components/marketing/newsletter-cta";
+import { ScrollRingSceneLazy } from "@/components/3d/scroll-ring-scene-lazy";
 import { Metadata } from "next";
 import type { WebSite, WithContext } from "schema-dts";
 
@@ -60,6 +61,7 @@ export default function Home() {
       <div>
         <BrandHero />
         <FeaturedProducts />
+        <ScrollRingSceneLazy />
         <ValueProps />
         <Testimonials />
         <FAQ />

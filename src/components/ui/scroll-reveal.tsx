@@ -5,7 +5,7 @@ import { useGsapReveal } from "@/hooks/use-gsap-reveal";
 interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
-  as?: React.ElementType;
+  as?: React.ElementType<React.ComponentPropsWithRef<"div">>;
   from?: gsap.TweenVars;
   stagger?: number;
   start?: string;
