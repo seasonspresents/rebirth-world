@@ -1,5 +1,6 @@
 import { BrandHero } from "@/components/marketing/brand-hero";
 import { FeaturedProducts } from "@/components/marketing/featured-products";
+import { CraftStory } from "@/components/marketing/craft-story";
 import { ValueProps } from "@/components/marketing/value-props";
 import { Testimonials } from "@/components/marketing/testimonials";
 import { FAQ } from "@/components/marketing/faq";
@@ -61,6 +62,7 @@ export default function Home() {
       <div>
         <BrandHero />
         <FeaturedProducts />
+        <CraftStory />
         <ScrollRingSceneLazy />
         <ValueProps />
         <Testimonials />

@@ -1,7 +1,9 @@
 "use client";
 
-import { Marquee } from "@/components/ui/marquee";
-import { TextReveal } from "@/components/ui/text-reveal";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, SplitText } from "@/lib/gsap/register";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 const testimonials = [
   {
@@ -42,16 +44,20 @@ const testimonials = [
   },
 ];
 
-const firstRow = testimonials.slice(0, 3);
-const secondRow = testimonials.slice(3);
+const featured = testimonials[0];
+const secondary = testimonials.slice(1);
 
-function TestimonialCard({ quote, name, detail }: (typeof testimonials)[0]) {
+function SecondaryCard({
+  quote,
+  name,
+  detail,
+}: (typeof testimonials)[0]) {
   return (
-    <div className="min-w-[350px] max-w-[450px] rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm md:min-w-[450px]">
-      <p className="text-lg leading-relaxed md:text-xl">
+    <div className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm md:p-8">
+      <p className="text-base leading-relaxed md:text-lg">
         &ldquo;{quote}&rdquo;
       </p>
-      <div className="mt-6">
+      <div className="mt-5">
         <p className="font-medium">{name}</p>
         <p className="mt-0.5 text-sm opacity-60 font-[family-name:var(--font-dm-mono)]">
           {detail}
@@ -62,35 +68,81 @@ function TestimonialCard({ quote, name, detail }: (typeof testimonials)[0]) {
 }
 
 export function Testimonials() {
+  const quoteRef = useRef<HTMLQuoteElement>(null);
+
+  useGSAP(
+    () => {
+      const el = quoteRef.current;
+      if (!el) return;
+
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      if (prefersReducedMotion) return;
+
+      const split = SplitText.create(el, { type: "chars" });
+
+      gsap.from(split.chars, {
+        opacity: 0,
+        y: 12,
+        duration: 0.6,
+        stagger: 0.01,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      return () => {
+        split.revert();
+      };
+    },
+    { scope: quoteRef, dependencies: [] }
+  );
+
   return (
-    <section className="section-ocean bg-grain py-24 md:py-40">
+    <section
+      data-section-theme="ocean"
+      className="section-ocean bg-grain py-24 md:py-40"
+    >
       <div className="relative z-10 mx-auto max-w-[1200px] px-6">
-        <TextReveal as="h2" className="text-fluid-display" type="words">
-          Worn with pride, made with purpose
-        </TextReveal>
-      </div>
+        {/* Featured editorial pull quote */}
+        <div className="relative">
+          {/* Decorative quotation mark */}
+          <span
+            className="pointer-events-none absolute -top-8 -left-2 select-none text-mega-lg opacity-[0.08] md:-top-12 md:-left-6"
+            aria-hidden="true"
+          >
+            &ldquo;
+          </span>
 
-      <div className="relative z-10 mt-12 md:mt-16">
-        {/* Left fade */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[var(--section-bg,var(--background))] to-transparent" />
-        {/* Right fade */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[var(--section-bg,var(--background))] to-transparent" />
+          <blockquote
+            ref={quoteRef}
+            className="relative text-mega-sm max-w-[22ch] md:max-w-[28ch]"
+          >
+            {featured.quote}
+          </blockquote>
 
-        <Marquee pauseOnHover className="[--duration:45s] [--gap:1.5rem]">
-          {firstRow.map((item) => (
-            <TestimonialCard key={item.name} {...item} />
-          ))}
-        </Marquee>
+          <div className="mt-8">
+            <p className="text-lg font-medium">{featured.name}</p>
+            <p className="mt-1 text-sm text-section-muted font-[family-name:var(--font-dm-mono)]">
+              {featured.detail}
+            </p>
+          </div>
+        </div>
 
-        <Marquee
-          reverse
-          pauseOnHover
-          className="mt-6 [--duration:45s] [--gap:1.5rem]"
+        {/* Secondary testimonials grid */}
+        <ScrollReveal
+          stagger={0.1}
+          className="mt-20 grid grid-cols-1 gap-6 md:mt-28 md:grid-cols-2 lg:grid-cols-3"
         >
-          {secondRow.map((item) => (
-            <TestimonialCard key={item.name} {...item} />
+          {secondary.map((item) => (
+            <SecondaryCard key={item.name} {...item} />
           ))}
-        </Marquee>
+        </ScrollReveal>
       </div>
     </section>
   );

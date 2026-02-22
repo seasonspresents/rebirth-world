@@ -1,13 +1,16 @@
 import { getFeaturedProducts } from "@/lib/payments/products";
-import { ProductCard } from "@/components/shop/product-card";
 import { TextReveal } from "@/components/ui/text-reveal";
+import { HorizontalProductShowcase } from "@/components/marketing/horizontal-product-showcase";
 
 export async function FeaturedProducts() {
   const products = await getFeaturedProducts();
 
   if (products.length === 0) {
     return (
-      <section className="section-dark px-6 py-24 md:py-40">
+      <section
+        data-section-theme="dark"
+        className="section-dark px-6 py-24 md:py-40"
+      >
         <div className="mx-auto max-w-[1200px]">
           <h2 className="text-fluid-display">
             Our collection is being curated
@@ -22,17 +25,25 @@ export async function FeaturedProducts() {
   }
 
   return (
-    <section className="section-dark px-6 py-24 md:py-40">
-      <div className="mx-auto max-w-[1200px]">
-        <TextReveal as="h2" className="text-fluid-display" type="words">
-          Crafted with intention
-        </TextReveal>
-
-        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 md:mt-16 md:gap-10 lg:grid-cols-3">
-          {products.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
-          ))}
+    <section
+      data-section-theme="dark"
+      className="section-dark"
+    >
+      <div className="px-6 pt-24 md:pt-40">
+        <div className="mx-auto max-w-[1200px]">
+          <TextReveal as="h2" className="text-fluid-display" type="words">
+            Crafted with intention
+          </TextReveal>
         </div>
+      </div>
+
+      <div className="mt-12 md:mt-16">
+        <HorizontalProductShowcase products={products} />
+      </div>
+
+      {/* Bottom padding for mobile grid */}
+      <div className="px-6 pb-24 md:hidden">
+        {/* spacer for mobile layout */}
       </div>
     </section>
   );

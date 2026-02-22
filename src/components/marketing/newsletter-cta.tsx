@@ -33,7 +33,7 @@ export function NewsletterCTA() {
   }
 
   return (
-    <section className="section-warm bg-grain px-6 py-24 md:py-40">
+    <section data-section-theme="warm" className="section-warm bg-grain px-6 py-24 md:py-40">
       <div className="relative z-10 mx-auto max-w-[1200px]">
         <TextReveal
           as="h2"

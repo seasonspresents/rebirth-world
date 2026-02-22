@@ -34,7 +34,7 @@ const values = [
 
 export function ValueProps() {
   return (
-    <section className="section-earth px-6 py-24 md:py-36">
+    <section data-section-theme="earth" className="section-earth px-6 py-24 md:py-36">
       <div className="mx-auto max-w-[1200px]">
         <TextReveal as="h2" className="text-fluid-display" type="words">
           Made different, on purpose

@@ -48,6 +48,7 @@ export function FAQ() {
   return (
     <section
       id="faq"
+      data-section-theme="earth"
       className="section-earth bg-grain px-6 py-24 md:py-36"
     >
       <div className="relative z-10 mx-auto max-w-[1100px]">

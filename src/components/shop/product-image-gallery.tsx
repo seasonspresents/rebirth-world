@@ -11,11 +11,13 @@ import { cn } from "@/lib/utils";
 interface ProductImageGalleryProps {
   images: string[];
   productName: string;
+  slug?: string;
 }
 
 export function ProductImageGallery({
   images,
   productName,
+  slug,
 }: ProductImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -94,6 +96,11 @@ export function ProductImageGallery({
                 radius="0.75rem"
                 scaleFrom={1.1}
                 containerClassName="h-full w-full"
+                style={
+                  slug && activeIndex === 0
+                    ? { viewTransitionName: `product-${slug}` }
+                    : undefined
+                }
               />
             </motion.div>
           </AnimatePresence>

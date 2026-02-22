@@ -71,6 +71,7 @@ export function ScrollRingScene() {
   return (
     <section
       ref={sectionRef}
+      data-section-theme="dark"
       className="section-dark relative overflow-hidden px-6 py-32 md:py-48"
     >
       <div className="relative z-10 mx-auto max-w-[1200px]">

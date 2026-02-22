@@ -25,6 +25,12 @@ This file provides guidance to Claude Code when working with code in this reposi
 - **Animation system** — GSAP + Lenis smooth scroll, scroll-triggered reveals, text animations, parallax, magnetic buttons, custom cursor, 3D tilt
 - **3D ring viewer** — React Three Fiber procedural ring with custom GLSL wood-stripe shader, scroll-driven 3D scene, interactive ring customizer with 5 wood presets
 - **Section color schemes** — 4 named CSS schemes (warm/dark/ocean/earth) with dark mode variants
+- **Smooth section color blending** — GSAP ScrollTrigger tweens background/text colors between adjacent sections (no hard cuts)
+- **Cinematic hero** — Full-viewport pinned hero with GSAP SplitText char reveal, "REBIRTH" watermark parallax, scroll indicator
+- **Horizontal product showcase** — GSAP pinned horizontal scroll on desktop, vertical grid fallback on mobile
+- **Pinned craft story** — 4-step "From Board to Ring" crossfade sequence (Collect → Layer → Shape → Finish)
+- **Editorial testimonials** — Featured pull quote in mega typography with SplitText char reveal, secondary grid
+- **View transitions** — CSS View Transitions API for product image morphing between shop grid and detail page
 - **Fluid typography** — `clamp()`-based mega-typography utilities for editorial headlines
 - **Branded preloader** — Session-based "REBIRTH / Embrace Change" intro animation
 - **Announcement bar** — Marquee ticker with brand phrases
@@ -104,8 +110,8 @@ npx stripe listen --forward-to localhost:3000/api/webhooks/stripe
 ```text
 src/app/
 ├── (marketing)/          # Public storefront — has header + footer layout
-│   ├── page.tsx          # Homepage (hero, products, value props, testimonials, FAQ, newsletter)
-│   ├── layout.tsx        # Header + Footer wrapper
+│   ├── page.tsx          # Homepage (hero, products, craft story, 3D ring, value props, testimonials, FAQ, newsletter)
+│   ├── layout.tsx        # Header + Footer + SectionColorBlender wrapper
 │   ├── shop/
 │   │   └── page.tsx      # Product catalog with collection filter
 │   ├── shop/[slug]/
@@ -205,8 +211,8 @@ src/components/
 │   └── smooth-scroll-provider.tsx # Lenis smooth scroll + GSAP ScrollTrigger sync
 │
 ├── shop/                 # E-commerce components
-│   ├── product-card.tsx          # Product card with 3D tilt, collection theming
-│   ├── product-image-gallery.tsx # Gallery with ScrollImage cinematic reveal
+│   ├── product-card.tsx          # Product card with 3D tilt, collection theming, view transition
+│   ├── product-image-gallery.tsx # Gallery with ScrollImage cinematic reveal + view transition
 │   ├── product-3d-toggle.tsx     # Photos/3D View tab toggle (ring products)
 │   ├── product-story.tsx         # Product story with TextReveal
 │   ├── collection-filter.tsx     # Category filter tabs
@@ -217,10 +223,13 @@ src/components/
 │   └── cart-drawer.tsx           # Slide-out cart drawer (with useLenisPause)
 │
 ├── marketing/            # Storefront marketing sections
-│   ├── brand-hero.tsx            # Hero with Magnetic CTA, ParallaxLayer, fluid typography
-│   ├── featured-products.tsx     # section-dark, TextReveal heading
+│   ├── brand-hero.tsx            # Full-viewport pinned hero, GSAP SplitText, watermark, scroll indicator
+│   ├── featured-products.tsx     # section-dark, TextReveal heading, horizontal showcase
+│   ├── horizontal-product-showcase.tsx # GSAP pinned horizontal scroll (desktop) / grid (mobile)
+│   ├── craft-story.tsx           # Pinned 4-step "From Board to Ring" crossfade sequence
+│   ├── section-color-blender.tsx # Layout-level GSAP ScrollTrigger color blending between sections
 │   ├── value-props.tsx           # section-earth, AnimatedIcon stroke-draw
-│   ├── testimonials.tsx          # section-ocean, glassmorphism cards
+│   ├── testimonials.tsx          # section-ocean, editorial pull quote + SplitText + secondary grid
 │   ├── faq.tsx                   # section-earth, TextReveal
 │   ├── newsletter-cta.tsx        # section-warm, TextReveal
 │   └── contact-form.tsx          # Contact form with Zod validation
@@ -447,8 +456,11 @@ The webhook handler lives at `/api/webhooks/stripe/route.ts`.
 - **Grain texture:** SVG noise overlay on backgrounds (kills AI-slop feel)
 - **Smooth scroll:** Lenis with momentum (`lerp: 0.1, duration: 1.2`) on all marketing pages
 - **Scroll reveals:** GSAP ScrollTrigger for new sections; Framer Motion `whileInView` for legacy
-- **Text animations:** GSAP SplitText for headlines (chars/words/lines stagger)
+- **Pinned scroll sequences:** Hero pin (0.5x viewport), horizontal product scroll, 4-step craft story crossfade
+- **Text animations:** GSAP SplitText for headlines (chars/words/lines stagger, char-by-char with rotateX on hero)
+- **Section color blending:** `SectionColorBlender` tweens colors between adjacent `[data-section-theme]` sections via GSAP scrub
 - **Section color shifting:** 4 CSS schemes (`section-warm`, `section-dark`, `section-ocean`, `section-earth`) shift mood per section
+- **View transitions:** CSS View Transitions API morphs product images between shop grid and detail page
 - **Fluid typography:** `clamp()`-based mega utilities (`.text-mega`, `.text-fluid-display`, `.text-fluid-heading`)
 - **Cinematic image reveals:** ScrollImage component (scale 1.15→1.0 with overflow clip)
 - **Micro-interactions:** Magnetic buttons, custom cursor, 3D tilt hover, animated icon stroke-draw
@@ -495,11 +507,25 @@ Marketing Layout
 ├── SmoothScrollProvider (Lenis)     # Wraps all marketing pages
 │   ├── ScrollTriggerSync            # Syncs GSAP ScrollTrigger to Lenis scroll
 │   ├── CustomCursor                 # Desktop-only branded cursor
+│   ├── SectionColorBlender          # GSAP body color blending between [data-section-theme] sections
 │   ├── Header + AnnouncementBar     # Marquee ticker
 │   ├── CartDrawer                   # useLenisPause(isCartOpen)
 │   ├── main                         # Page content with scroll animations
 │   └── Footer
 └── Preloader                        # Session-based, in root layout (outside Lenis)
+```
+
+### Homepage Section Order
+
+```text
+1. BrandHero          (section-warm)  — Full-viewport pinned, SplitText chars, watermark, scroll indicator
+2. FeaturedProducts   (section-dark)  — Horizontal scroll product showcase (desktop) / grid (mobile)
+3. CraftStory         (section-dark)  — Pinned 4-step "From Board to Ring" crossfade sequence
+4. ScrollRingScene    (section-dark)  — 3D ring with scroll-driven rotation
+5. ValueProps         (section-earth) — AnimatedIcon stroke-draw, 4-column grid
+6. Testimonials       (section-ocean) — Editorial pull quote + secondary grid
+7. FAQ                (section-earth) — Sticky header + accordion
+8. NewsletterCTA      (section-warm)  — Email signup form
 ```
 
 ### Coexistence Rules
@@ -604,7 +630,7 @@ import { ScrollRingSceneLazy } from "@/components/3d/scroll-ring-scene-lazy";
 import { TextReveal } from "@/components/ui/text-reveal";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
-<section className="section-dark px-6 py-24">
+<section data-section-theme="dark" className="section-dark px-6 py-24">
   <TextReveal as="h2" className="text-fluid-display" type="words">
     Your headline here
   </TextReveal>
@@ -614,6 +640,8 @@ import { ScrollReveal } from "@/components/ui/scroll-reveal";
   </ScrollReveal>
 </section>
 ```
+
+**Important:** Always add `data-section-theme` to new sections so the `SectionColorBlender` can tween colors between them.
 
 **New cinematic image:**
 ```tsx
@@ -627,6 +655,29 @@ import { ScrollImage } from "@/components/ui/scroll-image";
   scaleFrom={1.15}
   radius="1rem"
 />
+```
+
+**New pinned scroll section** (see `craft-story.tsx` for full example):
+```tsx
+// Pin a section and scrub through a timeline
+gsap.timeline({
+  scrollTrigger: {
+    trigger: sectionRef.current,
+    start: "top top",
+    end: `+=${window.innerHeight * 3}`,
+    pin: true,
+    scrub: 0.5,
+  },
+});
+```
+
+**View transition on product images:**
+```tsx
+// On the source (card/grid):
+<Image style={{ viewTransitionName: `product-${slug}` }} ... />
+
+// On the destination (detail page) — matching name:
+<ScrollImage style={{ viewTransitionName: `product-${slug}` }} ... />
 ```
 
 ## Cart System
@@ -819,6 +870,8 @@ These don't affect functionality but can be cleaned up.
 - Don't use `next/dynamic` with `ssr: false` in Server Components — create a `"use client"` lazy wrapper
 - Don't add Lenis smooth scroll to dashboard/auth layouts — only marketing pages get it
 - Don't forget `prefers-reduced-motion` checks in new animation hooks
+- Don't forget `data-section-theme` on new marketing sections — the `SectionColorBlender` needs it for smooth color blending
+- Don't create pinned scroll sections on mobile — always provide fallback layouts (horizontal showcase falls back to vertical grid, craft story shows all steps stacked)
 
 ## Deployment
 

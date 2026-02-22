@@ -20,6 +20,8 @@ interface ScrollImageProps {
   scaleFrom?: number;
   /** Border radius of the container (default: "1rem") */
   radius?: string;
+  /** Style passed to the Image element (e.g. for viewTransitionName) */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -39,6 +41,7 @@ export function ScrollImage({
   priority,
   scaleFrom = 1.15,
   radius = "1rem",
+  style,
 }: ScrollImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -89,6 +92,7 @@ export function ScrollImage({
           sizes={sizes}
           priority={priority}
           className={cn("h-full w-full object-cover", className)}
+          style={style}
         />
       </div>
     </div>

@@ -113,6 +113,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <ProductImageGallery
                   images={product.images}
                   productName={product.name}
+                  slug={product.slug}
                 />
               }
             />

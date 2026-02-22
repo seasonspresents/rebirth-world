@@ -538,3 +538,42 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
 }
+
+/* ============================================
+   View Transitions — product image morphing
+   ============================================ */
+
+::view-transition-old(root) {
+  animation: vt-fade-out 0.25s ease-out both;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 0.25s ease-in both;
+}
+
+@keyframes vt-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   Section color blender — prevent CSS
+   transitions from fighting GSAP tweens
+   ============================================ */
+
+[data-section-theme] {
+  transition: background-color 0s, color 0s;
+}
