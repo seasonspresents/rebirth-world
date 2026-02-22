@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart/cart-context";
 import { cartItemKey } from "@/lib/cart/types";
 import { formatPrice } from "@/lib/payments/constants";
+import { useLenisPause } from "@/hooks/use-lenis-pause";
 
 export function CartDrawer() {
   const {
@@ -26,6 +27,8 @@ export function CartDrawer() {
     updateQuantity,
     removeItem,
   } = useCart();
+
+  useLenisPause(isCartOpen);
 
   return (
     <Sheet open={isCartOpen} onOpenChange={setCartOpen}>

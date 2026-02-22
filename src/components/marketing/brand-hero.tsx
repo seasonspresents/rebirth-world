@@ -29,7 +29,7 @@ export function BrandHero() {
         </motion.p>
 
         <motion.h1
-          className="max-w-[14ch] text-5xl leading-[1.05] tracking-[-0.03em] md:text-7xl lg:text-8xl font-[family-name:var(--font-display)]"
+          className="text-mega max-w-[14ch]"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}

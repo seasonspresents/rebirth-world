@@ -14,10 +14,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { useCart } from "@/components/cart/cart-context";
+import { useLenisPause } from "@/hooks/use-lenis-pause";
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
   const { itemCount, setCartOpen } = useCart();
+
+  useLenisPause(open);
 
   return (
     <div className="flex items-center gap-2 md:hidden">

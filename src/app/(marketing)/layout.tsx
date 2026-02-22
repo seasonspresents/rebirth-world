@@ -1,6 +1,7 @@
 import { Footer } from "@/components/shared/footer";
 import { Header } from "@/components/shared/header";
 import { CartDrawer } from "@/components/cart/cart-drawer";
+import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 
 export default function MarketingLayout({
   children,
@@ -8,11 +9,13 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="overflow-x-clip">
-      <Header />
-      <CartDrawer />
-      <main>{children}</main>
-      <Footer />
-    </div>
+    <SmoothScrollProvider>
+      <div className="overflow-x-clip">
+        <Header />
+        <CartDrawer />
+        <main>{children}</main>
+        <Footer />
+      </div>
+    </SmoothScrollProvider>
   );
 }
