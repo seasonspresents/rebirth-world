@@ -113,6 +113,10 @@ export interface Order {
   customer_notes: string | null;
   coupon_code: string | null;
   stripe_coupon_id: string | null;
+  shippo_transaction_id: string | null;
+  shippo_label_url: string | null;
+  shipping_carrier: string | null;
+  shipping_rate_amount: number | null; // cents
   created_at: string;
   updated_at: string;
   shipped_at: string | null;

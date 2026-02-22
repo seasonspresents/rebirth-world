@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ShoppingBag, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { ShoppingBag, ExternalLink, Pencil } from "lucide-react";
 import { DashboardHeader } from "../layout";
 import { useAuth } from "@/components/auth/auth-context";
 import { isClientAdmin } from "@/lib/admin-client";
@@ -128,11 +129,10 @@ export default function ProductsPageClient() {
             <div>
               <h1 className="text-2xl font-bold">Products</h1>
               <p className="text-muted-foreground">
-                View all products from Stripe. Edit products in the Stripe
-                Dashboard.
+                Manage products, pricing, and metadata.
               </p>
             </div>
-            <Button variant="outline" asChild>
+            <Button variant="outline" size="sm" asChild>
               <a
                 href="https://dashboard.stripe.com/products"
                 target="_blank"
@@ -162,7 +162,7 @@ export default function ProductsPageClient() {
                       <TableHead>Collection</TableHead>
                       <TableHead className="text-right">Price</TableHead>
                       <TableHead className="text-center">Status</TableHead>
-                      <TableHead className="text-right">Action</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -206,16 +206,24 @@ export default function ProductsPageClient() {
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button variant="ghost" size="sm" asChild>
-                            <a
-                              href={`https://dashboard.stripe.com/products/${product.id}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Edit
-                              <ExternalLink className="ml-1 h-3 w-3" />
-                            </a>
-                          </Button>
+                          <div className="flex items-center justify-end gap-1">
+                            <Button variant="ghost" size="sm" asChild>
+                              <Link href={`/dashboard/products/${product.id}`}>
+                                <Pencil className="mr-1 h-3 w-3" />
+                                Edit
+                              </Link>
+                            </Button>
+                            <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                              <a
+                                href={`https://dashboard.stripe.com/products/${product.id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Open in Stripe"
+                              >
+                                <ExternalLink className="h-3 w-3" />
+                              </a>
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}

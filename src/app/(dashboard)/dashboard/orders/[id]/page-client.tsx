@@ -11,6 +11,9 @@ import {
   ArrowLeft,
   AlertCircle,
   Loader2,
+  Download,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { toast } from "sonner";
 import { DashboardHeader } from "../../layout";
@@ -48,6 +51,17 @@ import { useAuth } from "@/components/auth/auth-context";
 import { isClientAdmin } from "@/lib/admin-client";
 import { formatPrice } from "@/lib/payments/constants";
 import type { Order, OrderItem } from "@/lib/supabase/types";
+
+interface ShippingRate {
+  rateId: string;
+  carrier: string;
+  service: string;
+  price: string;
+  priceCents: number;
+  currency: string;
+  estimatedDays: number | null;
+  durationTerms: string | null;
+}
 
 function getStatusBadge(status: string) {
   switch (status.toLowerCase()) {
@@ -115,6 +129,13 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
   const [savingNotes, setSavingNotes] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
 
+  // Shippo shipping state
+  const [rates, setRates] = useState<ShippingRate[]>([]);
+  const [selectedRateId, setSelectedRateId] = useState("");
+  const [loadingRates, setLoadingRates] = useState(false);
+  const [buyingLabel, setBuyingLabel] = useState(false);
+  const [showManualEntry, setShowManualEntry] = useState(false);
+
   useEffect(() => {
     const fetchOrder = async () => {
       if (!user) {
@@ -139,6 +160,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
           setTrackingNumber(data.order.tracking_number || "");
           setTrackingUrl(data.order.tracking_url || "");
           setAdminNotes(data.order.notes || "");
+          setCarrier(data.order.shipping_carrier || "");
         } else {
           // Customer: fetch own order via Supabase
           const supabase = createClient();
@@ -199,8 +221,10 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
   };
 
   const handleFulfill = async () => {
-    if (!trackingNumber.trim()) {
-      toast.error("Tracking number is required");
+    // tracking_number can come from Shippo label (already on order) or manual input
+    const hasTrackingOnOrder = order?.tracking_number;
+    if (!trackingNumber.trim() && !hasTrackingOnOrder) {
+      toast.error("Tracking number is required. Purchase a label or enter one manually.");
       return;
     }
     setFulfilling(true);
@@ -209,7 +233,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          tracking_number: trackingNumber,
+          tracking_number: trackingNumber || undefined,
           tracking_url: trackingUrl || undefined,
           carrier: carrier || undefined,
         }),
@@ -250,6 +274,60 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
       toast.error("Failed to save notes");
     } finally {
       setSavingNotes(false);
+    }
+  };
+
+  const handleGetRates = async () => {
+    setLoadingRates(true);
+    setRates([]);
+    setSelectedRateId("");
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/shipping/rates`);
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        toast.error(errData.error || "Failed to get rates");
+        return;
+      }
+      const data = await res.json();
+      setRates(data.rates || []);
+      if (data.rates?.length > 0) {
+        setSelectedRateId(data.rates[0].rateId);
+      }
+    } catch {
+      toast.error("Failed to get shipping rates");
+    } finally {
+      setLoadingRates(false);
+    }
+  };
+
+  const handleBuyLabel = async () => {
+    if (!selectedRateId) {
+      toast.error("Select a rate first");
+      return;
+    }
+    setBuyingLabel(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/shipping/label`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rateId: selectedRateId }),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        toast.error(errData.error || "Failed to buy label");
+        return;
+      }
+      const data = await res.json();
+      setOrder(data.order as Order);
+      setTrackingNumber(data.order.tracking_number || "");
+      setTrackingUrl(data.order.tracking_url || "");
+      setCarrier(data.order.shipping_carrier || "");
+      setRates([]);
+      toast.success("Label purchased! Tracking number auto-filled.");
+    } catch {
+      toast.error("Failed to purchase label");
+    } finally {
+      setBuyingLabel(false);
     }
   };
 
@@ -360,7 +438,13 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
   const status = getStatusBadge(order.status);
   const hasShipping = order.shipping_name || order.shipping_address_line1;
   const hasTracking = order.tracking_number;
+  const hasLabel = order.shippo_label_url;
   const currency = order.currency || "usd";
+  const canFulfill =
+    order.status !== "shipped" &&
+    order.status !== "delivered" &&
+    order.status !== "cancelled" &&
+    order.status !== "refunded";
 
   return (
     <>
@@ -526,7 +610,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                       Fulfillment
                     </CardTitle>
                     <CardDescription>
-                      Update order status, add tracking, and notify customer
+                      Get rates, buy labels, and ship orders
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -566,54 +650,223 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
 
                     <Separator />
 
-                    {/* Tracking info */}
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="carrier">Carrier</Label>
-                        <Select value={carrier} onValueChange={setCarrier}>
-                          <SelectTrigger id="carrier">
-                            <SelectValue placeholder="Select carrier" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {CARRIER_OPTIONS.map((c) => (
-                              <SelectItem key={c} value={c}>
-                                {c}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="tracking-number">Tracking Number</Label>
-                        <Input
-                          id="tracking-number"
-                          value={trackingNumber}
-                          onChange={(e) => setTrackingNumber(e.target.value)}
-                          placeholder="Enter tracking number"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="tracking-url">
-                          Tracking URL (optional)
-                        </Label>
-                        <Input
-                          id="tracking-url"
-                          value={trackingUrl}
-                          onChange={(e) => setTrackingUrl(e.target.value)}
-                          placeholder="https://..."
-                        />
-                      </div>
-                      <Button
-                        onClick={handleFulfill}
-                        disabled={fulfilling || !trackingNumber.trim()}
-                        className="w-full"
-                      >
-                        {fulfilling && (
-                          <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                    {/* Label already purchased */}
+                    {hasLabel && (
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <Badge className="bg-green-500 text-white">Label Purchased</Badge>
+                          {order.shipping_carrier && (
+                            <span className="text-muted-foreground text-sm">
+                              via {order.shipping_carrier}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Button variant="outline" size="sm" asChild>
+                            <a
+                              href={order.shippo_label_url!}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <Download className="mr-1 h-4 w-4" />
+                              Download Label
+                            </a>
+                          </Button>
+                          {order.tracking_url && (
+                            <Button variant="outline" size="sm" asChild>
+                              <a
+                                href={order.tracking_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <ExternalLink className="mr-1 h-4 w-4" />
+                                Track Package
+                              </a>
+                            </Button>
+                          )}
+                        </div>
+                        {order.tracking_number && (
+                          <p className="text-sm">
+                            <span className="text-muted-foreground">Tracking: </span>
+                            <span className="font-mono">{order.tracking_number}</span>
+                          </p>
                         )}
-                        Mark as Shipped & Notify Customer
-                      </Button>
-                    </div>
+                        {order.shipping_rate_amount != null && (
+                          <p className="text-sm">
+                            <span className="text-muted-foreground">Label cost: </span>
+                            {formatPrice(order.shipping_rate_amount, currency)}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Shippo rate picker — only show if no label purchased yet and order can be fulfilled */}
+                    {!hasLabel && canFulfill && hasShipping && (
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <Label className="text-base font-semibold">Shipping Label</Label>
+                        </div>
+
+                        {rates.length === 0 && (
+                          <Button
+                            variant="outline"
+                            onClick={handleGetRates}
+                            disabled={loadingRates}
+                            className="w-full"
+                          >
+                            {loadingRates ? (
+                              <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                            ) : (
+                              <Truck className="mr-1 h-4 w-4" />
+                            )}
+                            {loadingRates ? "Getting rates..." : "Get Shipping Rates"}
+                          </Button>
+                        )}
+
+                        {rates.length > 0 && (
+                          <div className="space-y-3">
+                            <div className="space-y-2">
+                              {rates.map((rate) => (
+                                <label
+                                  key={rate.rateId}
+                                  className={`flex cursor-pointer items-center justify-between rounded-lg border p-3 transition-colors ${
+                                    selectedRateId === rate.rateId
+                                      ? "border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-950/30"
+                                      : "hover:bg-muted/50"
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <input
+                                      type="radio"
+                                      name="shipping-rate"
+                                      checked={selectedRateId === rate.rateId}
+                                      onChange={() => setSelectedRateId(rate.rateId)}
+                                      className="h-4 w-4"
+                                    />
+                                    <div>
+                                      <p className="text-sm font-medium">
+                                        {rate.carrier} — {rate.service}
+                                      </p>
+                                      <p className="text-muted-foreground text-xs">
+                                        {rate.estimatedDays
+                                          ? `${rate.estimatedDays} business day${rate.estimatedDays !== 1 ? "s" : ""}`
+                                          : rate.durationTerms || "Estimated delivery varies"}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <span className="text-sm font-semibold">
+                                    ${rate.price}
+                                  </span>
+                                </label>
+                              ))}
+                            </div>
+                            <div className="flex gap-2">
+                              <Button
+                                onClick={handleBuyLabel}
+                                disabled={buyingLabel || !selectedRateId}
+                                className="flex-1"
+                              >
+                                {buyingLabel && (
+                                  <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                                )}
+                                {buyingLabel ? "Purchasing..." : "Buy Label"}
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                onClick={() => {
+                                  setRates([]);
+                                  setSelectedRateId("");
+                                }}
+                              >
+                                Cancel
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Manual tracking entry — collapsible fallback */}
+                    {canFulfill && (
+                      <>
+                        <Separator />
+                        <div>
+                          <button
+                            onClick={() => setShowManualEntry(!showManualEntry)}
+                            className="text-muted-foreground hover:text-foreground flex w-full items-center justify-between text-sm transition-colors"
+                          >
+                            <span>Enter tracking manually</span>
+                            {showManualEntry ? (
+                              <ChevronUp className="h-4 w-4" />
+                            ) : (
+                              <ChevronDown className="h-4 w-4" />
+                            )}
+                          </button>
+                          {showManualEntry && (
+                            <div className="mt-4 space-y-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="carrier">Carrier</Label>
+                                <Select value={carrier} onValueChange={setCarrier}>
+                                  <SelectTrigger id="carrier">
+                                    <SelectValue placeholder="Select carrier" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {CARRIER_OPTIONS.map((c) => (
+                                      <SelectItem key={c} value={c}>
+                                        {c}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="tracking-number">
+                                  Tracking Number
+                                </Label>
+                                <Input
+                                  id="tracking-number"
+                                  value={trackingNumber}
+                                  onChange={(e) =>
+                                    setTrackingNumber(e.target.value)
+                                  }
+                                  placeholder="Enter tracking number"
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="tracking-url">
+                                  Tracking URL (optional)
+                                </Label>
+                                <Input
+                                  id="tracking-url"
+                                  value={trackingUrl}
+                                  onChange={(e) =>
+                                    setTrackingUrl(e.target.value)
+                                  }
+                                  placeholder="https://..."
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    )}
+
+                    {/* Ship & Notify button */}
+                    {canFulfill && (hasTracking || trackingNumber.trim()) && (
+                      <>
+                        <Separator />
+                        <Button
+                          onClick={handleFulfill}
+                          disabled={fulfilling}
+                          className="w-full"
+                        >
+                          {fulfilling && (
+                            <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                          )}
+                          Mark as Shipped & Notify Customer
+                        </Button>
+                      </>
+                    )}
 
                     <Separator />
 
