@@ -11,6 +11,7 @@ import { Logo } from "@/components/shared/logo";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { useCart } from "@/components/cart/cart-context";
 import { cn } from "@/lib/utils";
+import { AnnouncementBar } from "@/components/shared/announcement-bar";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -25,13 +26,20 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full backdrop-blur-[14px] transition-all duration-300",
+        "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
-          ? "border-b border-border bg-background/92"
-          : "border-b border-transparent bg-background/70"
+          ? "border-b border-border"
+          : "border-b border-transparent"
       )}
     >
-      <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between px-6">
+      <AnnouncementBar />
+      <div
+        className={cn(
+          "backdrop-blur-[14px] transition-colors duration-300",
+          scrolled ? "bg-background/92" : "bg-background/70"
+        )}
+      >
+        <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between px-6">
         {/* Logo */}
         <Logo />
 
@@ -93,6 +101,7 @@ export function Header() {
 
         {/* Mobile Menu */}
         <MobileNav />
+        </div>
       </div>
     </header>
   );

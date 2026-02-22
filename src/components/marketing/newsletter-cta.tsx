@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 export function NewsletterCTA() {
   const [email, setEmail] = useState("");
@@ -32,18 +33,15 @@ export function NewsletterCTA() {
   }
 
   return (
-    <section className="bg-grain px-6 py-24 md:py-40">
+    <section className="section-warm bg-grain px-6 py-24 md:py-40">
       <div className="relative z-10 mx-auto max-w-[1200px]">
-        <motion.h2
-          className="max-w-[18ch] text-4xl leading-[1.08] tracking-tight md:text-6xl font-[family-name:var(--font-display)]"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <TextReveal
+          as="h2"
+          className="text-fluid-display max-w-[18ch]"
+          type="words"
         >
-          Nothing is wasted.{" "}
-          <em className="not-italic text-primary">Everything is reborn.</em>
-        </motion.h2>
+          Nothing is wasted. Everything is reborn.
+        </TextReveal>
 
         <motion.p
           className="mt-6 max-w-[48ch] text-base leading-relaxed text-muted-foreground md:text-lg"

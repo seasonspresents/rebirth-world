@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 const faqItems = [
   {
@@ -47,15 +48,15 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      className="bg-grain bg-[#f2ede5] px-6 py-24 md:py-36 dark:bg-muted/30"
+      className="section-earth bg-grain px-6 py-24 md:py-36"
     >
       <div className="relative z-10 mx-auto max-w-[1100px]">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_1.5fr] md:gap-20">
           {/* Left column — header */}
           <div className="md:sticky md:top-24 md:self-start">
-            <h2 className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]">
+            <TextReveal as="h2" className="text-fluid-display" type="words">
               Everything you need to know
-            </h2>
+            </TextReveal>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Questions about sizing, materials, shipping, or care — we&apos;ve
               got you covered.

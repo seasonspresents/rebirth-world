@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
 import { Marquee } from "@/components/ui/marquee";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 const testimonials = [
   {
@@ -47,13 +47,13 @@ const secondRow = testimonials.slice(3);
 
 function TestimonialCard({ quote, name, detail }: (typeof testimonials)[0]) {
   return (
-    <div className="min-w-[350px] max-w-[450px] rounded-xl bg-card/50 p-8 md:min-w-[450px]">
+    <div className="min-w-[350px] max-w-[450px] rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm md:min-w-[450px]">
       <p className="text-lg leading-relaxed md:text-xl">
         &ldquo;{quote}&rdquo;
       </p>
       <div className="mt-6">
         <p className="font-medium">{name}</p>
-        <p className="mt-0.5 text-sm text-muted-foreground font-[family-name:var(--font-dm-mono)]">
+        <p className="mt-0.5 text-sm opacity-60 font-[family-name:var(--font-dm-mono)]">
           {detail}
         </p>
       </div>
@@ -63,24 +63,18 @@ function TestimonialCard({ quote, name, detail }: (typeof testimonials)[0]) {
 
 export function Testimonials() {
   return (
-    <section className="bg-grain py-24 md:py-40">
+    <section className="section-ocean bg-grain py-24 md:py-40">
       <div className="relative z-10 mx-auto max-w-[1200px] px-6">
-        <motion.h2
-          className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
+        <TextReveal as="h2" className="text-fluid-display" type="words">
           Worn with pride, made with purpose
-        </motion.h2>
+        </TextReveal>
       </div>
 
       <div className="relative z-10 mt-12 md:mt-16">
         {/* Left fade */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[var(--section-bg,var(--background))] to-transparent" />
         {/* Right fade */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[var(--section-bg,var(--background))] to-transparent" />
 
         <Marquee pauseOnHover className="[--duration:45s] [--gap:1.5rem]">
           {firstRow.map((item) => (

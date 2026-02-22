@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Eye } from "lucide-react";
 import { motion } from "motion/react";
 import type { Product } from "@/lib/payments/constants";
-import { formatPrice } from "@/lib/payments/constants";
+import { formatPrice, getCollectionStyle } from "@/lib/payments/constants";
 import { Badge } from "@/components/ui/badge";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { ProductQuickView } from "@/components/shop/product-quick-view";
@@ -46,6 +46,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         className="relative"
+        style={getCollectionStyle(product.metadata.collection)}
       >
         <Link
           href={`/shop/${product.slug}`}
@@ -122,7 +123,12 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               </p>
             )}
             <div className="mt-1.5 flex items-center gap-2">
-              <p className="text-sm font-medium text-primary">
+              <p
+                className="text-sm font-medium"
+                style={{
+                  color: "var(--collection-primary, var(--primary))",
+                }}
+              >
                 {formatPrice(product.price, product.currency)}
               </p>
               {isOnSale && compareAt && (

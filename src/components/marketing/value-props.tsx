@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { Hammer, Recycle, Heart, Shield } from "lucide-react";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 const values = [
   {
@@ -32,17 +33,11 @@ const values = [
 
 export function ValueProps() {
   return (
-    <section className="bg-card px-6 py-24 md:py-36">
+    <section className="section-earth px-6 py-24 md:py-36">
       <div className="mx-auto max-w-[1200px]">
-        <motion.h2
-          className="text-3xl leading-[1.15] tracking-tight md:text-5xl font-[family-name:var(--font-display)]"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
+        <TextReveal as="h2" className="text-fluid-display" type="words">
           Made different, on purpose
-        </motion.h2>
+        </TextReveal>
 
         <div className="mt-12 grid grid-cols-1 gap-8 md:mt-16 md:grid-cols-2 lg:grid-cols-4">
           {values.map((value, index) => (
@@ -58,7 +53,7 @@ export function ValueProps() {
                 ease: "easeOut",
               }}
             >
-              <value.icon className="mb-4 size-8 text-primary" />
+              <value.icon className="mb-4 size-8" style={{ color: "var(--section-accent, var(--primary))" }} />
               <h3 className="mb-2 text-lg font-semibold">{value.title}</h3>
               <p className="text-base leading-relaxed text-muted-foreground">
                 {value.description}

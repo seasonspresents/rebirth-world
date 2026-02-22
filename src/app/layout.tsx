@@ -11,6 +11,7 @@ import { CartProvider } from "@/components/cart/cart-context";
 import { createClient } from "@/lib/supabase/server";
 import type { UserProfile } from "@/lib/supabase/types";
 import { Analytics } from "@vercel/analytics/next";
+import { Preloader } from "@/components/shared/preloader";
 
 const dmSans = DM_Sans({
   variable: "--font-body",
@@ -155,6 +156,7 @@ export default async function RootLayout({
         className={`${dmSans.variable} ${clashDisplay.variable} ${dmMono.variable} ${dmSans.className} antialiased`}
         suppressHydrationWarning
       >
+        <Preloader />
         {/* If you want to use PostHog, uncomment the PHProvider */}
         {/* <PHProvider> */}
         <ThemeProvider

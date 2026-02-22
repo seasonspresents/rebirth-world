@@ -7,7 +7,7 @@ import { Particles } from "@/components/ui/particles";
 
 export function BrandHero() {
   return (
-    <section className="bg-grain relative overflow-hidden px-6 py-32 md:py-48 lg:py-56">
+    <section className="section-warm bg-grain relative overflow-hidden px-6 py-32 md:py-48 lg:py-56">
       {/* Teal particles — subtle, fewer, larger */}
       <Particles
         className="pointer-events-none absolute inset-0"
