@@ -152,8 +152,8 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         {/* BorderBeam for featured */}
         {isFeatured && (
           <BorderBeam
-            colorFrom="#2a9d8f"
-            colorTo="#e07a3a"
+            colorFrom="#2d8a7e"
+            colorTo="#cc7e3a"
             duration={8}
             size={80}
           />

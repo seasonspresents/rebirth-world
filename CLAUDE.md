@@ -429,17 +429,19 @@ The webhook handler lives at `/api/webhooks/stripe/route.ts`.
 
 **Full brand context lives in `docs/REBIRTH_WORLD_PRD.md`.** The brand skill at `.claude/skills/rebirth-brand/SKILL.md` auto-loads when working on copy, UI, or creative decisions. Below is the quick reference.
 
-### Color Palette
+### Color Palette (Definitive — derived from 35mm film photography & brand assets)
 
-| Role | Color | Hex | Usage |
-|------|-------|-----|-------|
-| Primary Dark | Charcoal Black | `#1a1a1a` | Text, headers, dark backgrounds |
-| Primary Light | Warm White | `#f5f0e8` | Backgrounds, light sections |
-| Accent 1 | Ocean Teal | `#2a9d8f` | CTAs, highlights, links |
-| Accent 2 | Burnt Amber | `#e07a3a` | Skateboard wood warmth, secondary CTA |
-| Accent 3 | Lotus Pink | `#d4a0a0` | Soft moments, gift guides |
-| Neutral | Driftwood Gray | `#8a8578` | Body text, secondary info, borders |
-| Earth Tone | Moss Green | `#5a6b4a` | Eco/sustainability callouts |
+| Role | Name | Hex | Usage |
+|------|------|-----|-------|
+| Dark | Warm Black | `#1c1917` | Text, headers, dark backgrounds — warm brown undertone from film |
+| Light | Film Cream | `#f3ece1` | Backgrounds, light sections — 35mm Portra parchment warmth |
+| Primary | Rebirth Teal | `#2d8a7e` | CTAs, highlights, links — deep jade from vinyl record & apparel |
+| Accent | Amber Gold | `#cc7e3a` | Skateboard warmth, secondary CTA — golden-honey maple tone |
+| Soft | Terracotta Rose | `#b87272` | Soft moments, gift guides — warm dusty rose from apparel |
+| Neutral | Driftwood | `#897b6b` | Body text, secondary info, borders — warm brown-gray from film |
+| Earth | North Shore Green | `#4d7a4e` | Eco/sustainability callouts — tropical foliage through warm film |
+| Wood | Aged Maple | `#876f4c` | Wedding band collection primary — actual aged wood tone |
+| Deep Moss | Deep Moss | `#536b45` | Darker warm green for earth details |
 
 ### Typography
 
@@ -561,10 +563,10 @@ Defined in `globals.css` as CSS classes that set `--section-bg/fg/accent/muted` 
 
 | Class | Background | Text | Accent | Use Case |
 |-------|-----------|------|--------|----------|
-| `.section-warm` | `#f5f0e8` | `#1a1a1a` | `#2a9d8f` | Hero, newsletter |
-| `.section-dark` | `#1a1a1a` | `#f5f0e8` | `#e07a3a` | Featured products |
-| `.section-ocean` | `#1a3a36` | `#c8e6e3` | `#e07a3a` | Testimonials |
-| `.section-earth` | `#f2ede5` | `#2a2118` | `#4a7c59` | FAQ, value props |
+| `.section-warm` | `#f3ece1` | `#1c1917` | `#2d8a7e` | Hero, newsletter |
+| `.section-dark` | `#1c1917` | `#f3ece1` | `#cc7e3a` | Featured products, craft story |
+| `.section-ocean` | `#1a3832` | `#c2dad1` | `#cc7e3a` | Testimonials |
+| `.section-earth` | `#f0eade` | `#28201a` | `#4d7a4e` | FAQ, value props |
 
 Each has a `.dark` mode variant. Use with Tailwind: `text-section-fg`, `bg-section-bg`, etc.
 
@@ -591,9 +593,9 @@ import { getCollectionStyle } from "@/lib/payments/constants";
 
 | Collection | Primary | Accent |
 |-----------|---------|--------|
-| skateboard-rings | `#2a9d8f` (teal) | `#e07a3a` (amber) |
-| wedding-bands | `#8b7355` (brown) | `#c76b8a` (lotus) |
-| apparel | `#4a7c59` (moss) | `#e07a3a` (amber) |
+| skateboard-rings | `#2d8a7e` (Rebirth Teal) | `#cc7e3a` (Amber Gold) |
+| wedding-bands | `#876f4c` (Aged Maple) | `#b87272` (Terracotta Rose) |
+| apparel | `#4d7a4e` (North Shore Green) | `#cc7e3a` (Amber Gold) |
 
 ### 3D Ring System
 

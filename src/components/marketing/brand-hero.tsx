@@ -161,7 +161,7 @@ export function BrandHero() {
         <Particles
           className="pointer-events-none absolute inset-0"
           quantity={20}
-          color="#2a9d8f"
+          color="#2d8a7e"
           size={0.6}
           staticity={60}
           ease={50}

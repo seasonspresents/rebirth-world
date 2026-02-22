@@ -235,17 +235,18 @@ ISLAND CRAFT (North Shore vibes, natural textures, ocean tones, laid-back luxury
 
 ### 5.2 Visual Identity Guidelines
 
-**Color Palette:**
+**Color Palette (Definitive — derived from 35mm film photography & brand assets):**
 
-| Role | Color | Hex | Usage |
-|------|-------|-----|-------|
-| Primary Dark | Charcoal Black | `#1a1a1a` | Text, headers, dark backgrounds |
-| Primary Light | Warm White | `#f5f0e8` | Backgrounds, light sections |
-| Accent 1 | Ocean Teal | `#2a9d8f` | CTAs, highlights, links |
-| Accent 2 | Burnt Amber | `#e07a3a` | Skateboard wood warmth, secondary CTA |
-| Accent 3 | Lotus Pink | `#d4a0a0` | Feminine touch, gift guides, soft moments |
-| Neutral | Driftwood Gray | `#8a8578` | Body text, secondary info, borders |
-| Earth Tone | Moss Green | `#5a6b4a` | Eco/sustainability callouts |
+| Role | Name | Hex | Usage |
+|------|------|-----|-------|
+| Dark | Warm Black | `#1c1917` | Text, headers, dark backgrounds — warm brown undertone from film |
+| Light | Film Cream | `#f3ece1` | Backgrounds, light sections — 35mm Portra parchment warmth |
+| Primary | Rebirth Teal | `#2d8a7e` | CTAs, highlights, links — deep jade from vinyl record & apparel |
+| Accent | Amber Gold | `#cc7e3a` | Skateboard warmth, secondary CTA — golden-honey maple tone |
+| Soft | Terracotta Rose | `#b87272` | Soft moments, gift guides — warm dusty rose from apparel |
+| Neutral | Driftwood | `#897b6b` | Body text, secondary info, borders — warm brown-gray from film |
+| Earth | North Shore Green | `#4d7a4e` | Eco/sustainability callouts — tropical foliage through warm film |
+| Wood | Aged Maple | `#876f4c` | Wedding band collection primary — actual aged wood tone |
 
 **Typography Direction:**
 

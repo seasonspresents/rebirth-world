@@ -7,13 +7,13 @@ import * as THREE from "three";
 
 /** Color layers representing the 7-ply skateboard maple */
 const WOOD_LAYERS = [
-  "#c9a66b", // natural maple
-  "#2a9d8f", // teal dye
-  "#8b4513", // dark wood
-  "#e07a3a", // amber
-  "#c9a66b", // natural maple
-  "#1a1a1a", // charcoal grip
-  "#d4a76a", // light maple
+  "#c4a067", // natural maple
+  "#2d8a7e", // teal dye
+  "#7a3f13", // dark wood
+  "#cc7e3a", // amber gold
+  "#c4a067", // natural maple
+  "#1c1917", // charcoal grip
+  "#d0a36a", // light maple
 ];
 
 interface RingModelProps {
@@ -137,7 +137,7 @@ export function RingModel({
           {/* Engraving text rendered along the inner band */}
           <Text
             fontSize={tube * 0.5}
-            color="#8a8578"
+            color="#897b6b"
             anchorX="center"
             anchorY="middle"
             position={[0, 0, -engravingGroup.innerR]}

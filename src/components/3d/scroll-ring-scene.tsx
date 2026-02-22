@@ -116,7 +116,7 @@ export function ScrollRingScene() {
                 <directionalLight
                   position={[-3, 2, -2]}
                   intensity={0.3}
-                  color="#e07a3a"
+                  color="#cc7e3a"
                 />
                 <Environment preset="studio" environmentIntensity={0.2} />
 

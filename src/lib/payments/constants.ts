@@ -60,22 +60,22 @@ export const COLLECTION_COLORS: Record<
   { primary: string; accent: string; bg: string; muted: string }
 > = {
   "skateboard-rings": {
-    primary: "#2a9d8f",
-    accent: "#e07a3a",
-    bg: "#f5f0e8",
-    muted: "#8a8578",
+    primary: "#2d8a7e",
+    accent: "#cc7e3a",
+    bg: "#f3ece1",
+    muted: "#897b6b",
   },
   "wedding-bands": {
-    primary: "#8b7355",
-    accent: "#c76b8a",
-    bg: "#f2ede5",
-    muted: "#a09a8e",
+    primary: "#876f4c",
+    accent: "#b87272",
+    bg: "#f0eade",
+    muted: "#a09688",
   },
   apparel: {
-    primary: "#4a7c59",
-    accent: "#e07a3a",
-    bg: "#f0ede6",
-    muted: "#8a8578",
+    primary: "#4d7a4e",
+    accent: "#cc7e3a",
+    bg: "#f0ebe3",
+    muted: "#897b6b",
   },
 };
 

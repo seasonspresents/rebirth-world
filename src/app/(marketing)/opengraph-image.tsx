@@ -9,8 +9,8 @@ export default async function Image() {
     (
       <div
         style={{
-          background: "#1a1a1a",
-          color: "#f5f0e8",
+          background: "#1c1917",
+          color: "#f3ece1",
           width: "100%",
           height: "100%",
           display: "flex",
@@ -27,7 +27,7 @@ export default async function Image() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse at 50% 0%, rgba(42,157,143,0.12) 0%, transparent 60%)",
+              "radial-gradient(ellipse at 50% 0%, rgba(45,138,126,0.12) 0%, transparent 60%)",
           }}
         />
 
@@ -46,7 +46,7 @@ export default async function Image() {
               fontWeight: 600,
               letterSpacing: "-0.02em",
               fontStyle: "italic",
-              color: "#2a9d8f",
+              color: "#2d8a7e",
             }}
           >
             Rebirth
@@ -68,7 +68,7 @@ export default async function Image() {
           }}
         >
           <span>Handcrafted </span>
-          <span style={{ color: "#2a9d8f" }}>Recycled Jewelry</span>
+          <span style={{ color: "#2d8a7e" }}>Recycled Jewelry</span>
         </div>
 
         {/* Subline */}
@@ -94,8 +94,8 @@ export default async function Image() {
             marginTop: "44px",
             padding: "8px 20px",
             borderRadius: "100px",
-            border: "1px solid rgba(42,157,143,0.3)",
-            background: "rgba(42,157,143,0.06)",
+            border: "1px solid rgba(45,138,126,0.3)",
+            background: "rgba(45,138,126,0.06)",
           }}
         >
           <div
@@ -109,7 +109,7 @@ export default async function Image() {
           <span
             style={{
               fontSize: "16px",
-              color: "#2a9d8f",
+              color: "#2d8a7e",
               fontWeight: 600,
               letterSpacing: "0.04em",
             }}

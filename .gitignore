@@ -37,6 +37,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# brand source assets (217MB — optimized copies go to public/brand/)
+Rebirth World - Brand Assets 2026/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

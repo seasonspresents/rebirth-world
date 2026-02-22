@@ -98,14 +98,14 @@ export function WelcomeEmail({
 const main = {
   margin: "0",
   padding: "0",
-  backgroundColor: "#f5f0e8",
+  backgroundColor: "#f3ece1",
   fontFamily:
     "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
 };
 
 const wrapper = {
   padding: "32px 16px 24px",
-  backgroundColor: "#f5f0e8",
+  backgroundColor: "#f3ece1",
 };
 
 const container = {
@@ -149,14 +149,14 @@ const heading = {
   fontSize: "24px",
   fontWeight: "600",
   lineHeight: "30px",
-  color: "#1a1a1a",
+  color: "#1c1917",
 };
 
 const paragraph = {
   margin: "0 0 16px",
   fontSize: "16px",
   lineHeight: "26px",
-  color: "#1a1a1a",
+  color: "#1c1917",
 };
 
 const buttonContainer = {
@@ -166,7 +166,7 @@ const buttonContainer = {
 const button = {
   display: "inline-block",
   padding: "12px 24px",
-  backgroundColor: "#2a9d8f",
+  backgroundColor: "#2d8a7e",
   color: "#FFFFFF",
   fontSize: "14px",
   fontWeight: "600",
@@ -184,23 +184,23 @@ const footerText = {
   margin: "0 0 16px",
   fontSize: "16px",
   lineHeight: "24px",
-  color: "#1a1a1a",
+  color: "#1c1917",
 };
 
 const footerRole = {
   fontSize: "14px",
-  color: "#8a8578",
+  color: "#897b6b",
 };
 
 const footerTextSmall = {
   margin: "0",
   fontSize: "12px",
   lineHeight: "18px",
-  color: "#8a8578",
+  color: "#897b6b",
 };
 
 const link = {
-  color: "#2a9d8f",
+  color: "#2d8a7e",
   textDecoration: "underline",
 };
 

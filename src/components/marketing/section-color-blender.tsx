@@ -18,17 +18,17 @@ import { gsap, ScrollTrigger } from "@/lib/gsap/register";
  */
 
 const THEME_COLORS: Record<string, { bg: string; fg: string }> = {
-  warm: { bg: "#f5f0e8", fg: "#1a1a1a" },
-  dark: { bg: "#1a1a1a", fg: "#f5f0e8" },
-  ocean: { bg: "#1a3a36", fg: "#c8e6e3" },
-  earth: { bg: "#f2ede5", fg: "#2a2118" },
+  warm: { bg: "#f3ece1", fg: "#1c1917" },
+  dark: { bg: "#1c1917", fg: "#f3ece1" },
+  ocean: { bg: "#1a3832", fg: "#c2dad1" },
+  earth: { bg: "#f0eade", fg: "#28201a" },
 };
 
 const DARK_THEME_COLORS: Record<string, { bg: string; fg: string }> = {
-  warm: { bg: "#1e1e1c", fg: "#f5f0e8" },
-  dark: { bg: "#0d0d0d", fg: "#f5f0e8" },
-  ocean: { bg: "#0f2422", fg: "#c8e6e3" },
-  earth: { bg: "#1a1710", fg: "#ebe5d8" },
+  warm: { bg: "#1e1c19", fg: "#f3ece1" },
+  dark: { bg: "#0f0d0b", fg: "#f3ece1" },
+  ocean: { bg: "#0f2320", fg: "#c2dad1" },
+  earth: { bg: "#1a1710", fg: "#e9e2d3" },
 };
 
 function getThemeColors(isDark: boolean) {

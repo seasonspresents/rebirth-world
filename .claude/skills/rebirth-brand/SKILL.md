@@ -46,16 +46,17 @@ For full brand context, read `docs/REBIRTH_WORLD_PRD.md` — it contains:
 
 ## Design System
 
-### Colors
-| Role | Hex | Usage |
-|------|-----|-------|
-| Primary Dark | #1a1a1a | Text, headers, dark backgrounds |
-| Primary Light | #f5f0e8 | Backgrounds, light sections |
-| Accent 1 | #2a9d8f | CTAs, highlights, links |
-| Accent 2 | #e07a3a | Skateboard warmth, secondary CTA |
-| Accent 3 | #d4a0a0 | Soft moments, gift guides |
-| Neutral | #8a8578 | Body text, secondary info |
-| Earth | #5a6b4a | Eco/sustainability callouts |
+### Colors (Definitive — derived from 35mm film photography & brand assets)
+| Role | Hex | Name | Usage |
+|------|-----|------|-------|
+| Dark | #1c1917 | Warm Black | Text, headers, dark backgrounds — warm brown undertone from film |
+| Light | #f3ece1 | Film Cream | Backgrounds, light sections — 35mm Portra parchment warmth |
+| Primary | #2d8a7e | Rebirth Teal | CTAs, highlights, links — deep jade from vinyl record & apparel |
+| Accent | #cc7e3a | Amber Gold | Skateboard warmth, secondary CTA — golden-honey maple tone |
+| Soft | #b87272 | Terracotta Rose | Soft moments, gift guides — warm dusty rose from apparel |
+| Neutral | #897b6b | Driftwood | Body text, secondary info — warm brown-gray from film neutrals |
+| Earth | #4d7a4e | North Shore Green | Eco/sustainability — tropical foliage through warm film |
+| Wood | #876f4c | Aged Maple | Wedding band collection — actual aged wood tone |
 
 ### Typography
 - **Headlines:** Clash Display (bold, slightly condensed, -0.03em tracking)

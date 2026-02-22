@@ -108,86 +108,90 @@
 :root {
   --radius: 0.625rem;
 
-  /* Rebirth World brand palette */
-  --rebirth-warm-white: #f5f0e8;
-  --rebirth-charcoal: #1a1a1a;
-  --rebirth-teal: #2a9d8f;
-  --rebirth-amber: #e07a3a;
-  --rebirth-moss: #4a7c59;
-  --rebirth-lotus: #c76b8a;
-  --rebirth-driftwood: #8b7355;
+  /* ============================================
+     Rebirth World — Definitive Brand Palette
+     Derived from 35mm film photography, brand assets,
+     apparel, and North Shore visual identity.
+     ============================================ */
+  --rebirth-film-cream: #f3ece1;
+  --rebirth-warm-black: #1c1917;
+  --rebirth-teal: #2d8a7e;
+  --rebirth-amber: #cc7e3a;
+  --rebirth-moss: #4d7a4e;
+  --rebirth-rose: #b87272;
+  --rebirth-driftwood: #876f4c;
 
-  /* warm-white background (#f5f0e8) */
-  --background: oklch(0.953 0.015 85);
-  /* charcoal foreground (#1a1a1a) */
-  --foreground: oklch(0.17 0 0);
-  --card: oklch(0.98 0.005 85);
-  --card-foreground: oklch(0.17 0 0);
-  --popover: oklch(0.98 0.005 85);
-  --popover-foreground: oklch(0.17 0 0);
-  /* ocean-teal primary (#2a9d8f) */
-  --primary: oklch(0.62 0.1 175);
-  --primary-foreground: oklch(0.98 0.005 85);
-  --secondary: oklch(0.935 0.01 85);
-  --secondary-foreground: oklch(0.17 0 0);
-  --muted: oklch(0.935 0.01 85);
-  --muted-foreground: oklch(0.5 0.01 80);
-  /* burnt-amber accent (#e07a3a) */
-  --accent: oklch(0.7 0.16 55);
-  --accent-foreground: oklch(0.17 0 0);
+  /* Film Cream background (#f3ece1) */
+  --background: oklch(0.948 0.017 80);
+  /* Warm Black foreground (#1c1917) */
+  --foreground: oklch(0.165 0.008 55);
+  --card: oklch(0.975 0.008 80);
+  --card-foreground: oklch(0.165 0.008 55);
+  --popover: oklch(0.975 0.008 80);
+  --popover-foreground: oklch(0.165 0.008 55);
+  /* Rebirth Teal primary (#2d8a7e) */
+  --primary: oklch(0.565 0.082 174);
+  --primary-foreground: oklch(0.975 0.008 80);
+  --secondary: oklch(0.93 0.012 80);
+  --secondary-foreground: oklch(0.165 0.008 55);
+  --muted: oklch(0.93 0.012 80);
+  --muted-foreground: oklch(0.52 0.015 60);
+  /* Amber Gold accent (#cc7e3a) */
+  --accent: oklch(0.645 0.13 58);
+  --accent-foreground: oklch(0.165 0.008 55);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0.01 85);
-  --input: oklch(0.9 0.01 85);
-  --ring: oklch(0.62 0.1 175);
-  /* Chart: teal, moss, lotus-pink, amber, driftwood */
-  --chart-1: oklch(0.62 0.1 175);
-  --chart-2: oklch(0.52 0.1 150);
-  --chart-3: oklch(0.6 0.12 350);
-  --chart-4: oklch(0.7 0.16 55);
-  --chart-5: oklch(0.55 0.06 65);
-  --sidebar: oklch(0.945 0.012 85);
-  --sidebar-foreground: oklch(0.17 0 0);
-  --sidebar-primary: oklch(0.62 0.1 175);
-  --sidebar-primary-foreground: oklch(0.98 0.005 85);
-  --sidebar-accent: oklch(0.935 0.01 85);
-  --sidebar-accent-foreground: oklch(0.17 0 0);
-  --sidebar-border: oklch(0.9 0.01 85);
-  --sidebar-ring: oklch(0.62 0.1 175);
+  --border: oklch(0.895 0.012 80);
+  --input: oklch(0.895 0.012 80);
+  --ring: oklch(0.565 0.082 174);
+  /* Chart: teal, green, rose, amber, driftwood */
+  --chart-1: oklch(0.565 0.082 174);
+  --chart-2: oklch(0.5 0.08 148);
+  --chart-3: oklch(0.58 0.08 25);
+  --chart-4: oklch(0.645 0.13 58);
+  --chart-5: oklch(0.52 0.05 55);
+  --sidebar: oklch(0.94 0.014 80);
+  --sidebar-foreground: oklch(0.165 0.008 55);
+  --sidebar-primary: oklch(0.565 0.082 174);
+  --sidebar-primary-foreground: oklch(0.975 0.008 80);
+  --sidebar-accent: oklch(0.93 0.012 80);
+  --sidebar-accent-foreground: oklch(0.165 0.008 55);
+  --sidebar-border: oklch(0.895 0.012 80);
+  --sidebar-ring: oklch(0.565 0.082 174);
 }
 
 .dark {
-  /* Rebirth World dark mode */
-  --background: oklch(0.15 0.005 85);
-  --foreground: oklch(0.95 0.005 85);
-  --card: oklch(0.2 0.005 85);
-  --card-foreground: oklch(0.95 0.005 85);
-  --popover: oklch(0.2 0.005 85);
-  --popover-foreground: oklch(0.95 0.005 85);
-  --primary: oklch(0.68 0.1 175);
-  --primary-foreground: oklch(0.15 0.005 85);
-  --secondary: oklch(0.27 0.005 85);
-  --secondary-foreground: oklch(0.95 0.005 85);
-  --muted: oklch(0.27 0.005 85);
-  --muted-foreground: oklch(0.7 0.01 80);
-  --accent: oklch(0.72 0.16 55);
-  --accent-foreground: oklch(0.15 0.005 85);
+  /* Rebirth World dark mode — warm undertones throughout */
+  --background: oklch(0.145 0.008 55);
+  --foreground: oklch(0.948 0.008 80);
+  --card: oklch(0.2 0.008 55);
+  --card-foreground: oklch(0.948 0.008 80);
+  --popover: oklch(0.2 0.008 55);
+  --popover-foreground: oklch(0.948 0.008 80);
+  --primary: oklch(0.64 0.082 174);
+  --primary-foreground: oklch(0.145 0.008 55);
+  --secondary: oklch(0.27 0.008 55);
+  --secondary-foreground: oklch(0.948 0.008 80);
+  --muted: oklch(0.27 0.008 55);
+  --muted-foreground: oklch(0.68 0.012 60);
+  --accent: oklch(0.72 0.12 62);
+  --accent-foreground: oklch(0.145 0.008 55);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.68 0.1 175);
-  --chart-1: oklch(0.68 0.1 175);
-  --chart-2: oklch(0.58 0.1 150);
-  --chart-3: oklch(0.65 0.12 350);
-  --chart-4: oklch(0.72 0.16 55);
-  --chart-5: oklch(0.6 0.06 65);
-  --sidebar: oklch(0.2 0.005 85);
-  --sidebar-foreground: oklch(0.95 0.005 85);
-  --sidebar-primary: oklch(0.68 0.1 175);
-  --sidebar-primary-foreground: oklch(0.95 0.005 85);
-  --sidebar-accent: oklch(0.27 0.005 85);
-  --sidebar-accent-foreground: oklch(0.95 0.005 85);
+  --ring: oklch(0.64 0.082 174);
+  --chart-1: oklch(0.64 0.082 174);
+  --chart-2: oklch(0.56 0.08 148);
+  --chart-3: oklch(0.64 0.08 25);
+  --chart-4: oklch(0.72 0.12 62);
+  --chart-5: oklch(0.58 0.05 55);
+  --sidebar: oklch(0.2 0.008 55);
+  --sidebar-foreground: oklch(0.948 0.008 80);
+  --sidebar-primary: oklch(0.64 0.082 174);
+  --sidebar-primary-foreground: oklch(0.948 0.008 80);
+  --sidebar-accent: oklch(0.27 0.008 55);
+  --sidebar-accent-foreground: oklch(0.948 0.008 80);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.68 0.1 175);
+  --sidebar-ring: oklch(0.64 0.082 174);
 }
 
 @layer base {
@@ -299,74 +303,74 @@
 
 @layer components {
   .section-warm {
-    --section-bg: #f5f0e8;
-    --section-fg: #1a1a1a;
-    --section-accent: #2a9d8f;
-    --section-muted: #8a8578;
+    --section-bg: #f3ece1;
+    --section-fg: #1c1917;
+    --section-accent: #2d8a7e;
+    --section-muted: #897b6b;
     background-color: var(--section-bg);
     color: var(--section-fg);
   }
 
   .section-dark {
-    --section-bg: #1a1a1a;
-    --section-fg: #f5f0e8;
-    --section-accent: #e07a3a;
-    --section-muted: #a09a8e;
+    --section-bg: #1c1917;
+    --section-fg: #f3ece1;
+    --section-accent: #cc7e3a;
+    --section-muted: #a09688;
     background-color: var(--section-bg);
     color: var(--section-fg);
   }
 
   .section-ocean {
-    --section-bg: #1a3a36;
-    --section-fg: #c8e6e3;
-    --section-accent: #e07a3a;
-    --section-muted: #7aa8a2;
+    --section-bg: #1a3832;
+    --section-fg: #c2dad1;
+    --section-accent: #cc7e3a;
+    --section-muted: #7a9f98;
     background-color: var(--section-bg);
     color: var(--section-fg);
   }
 
   .section-earth {
-    --section-bg: #f2ede5;
-    --section-fg: #2a2118;
-    --section-accent: #4a7c59;
-    --section-muted: #8a8578;
+    --section-bg: #f0eade;
+    --section-fg: #28201a;
+    --section-accent: #4d7a4e;
+    --section-muted: #897b6b;
     background-color: var(--section-bg);
     color: var(--section-fg);
   }
 
   /* Dark mode variants */
   :is(.dark) .section-warm {
-    --section-bg: #1e1e1c;
-    --section-fg: #f5f0e8;
-    --section-accent: #3dbfae;
-    --section-muted: #a09a8e;
+    --section-bg: #1e1c19;
+    --section-fg: #f3ece1;
+    --section-accent: #3a9f91;
+    --section-muted: #a09688;
     background-color: var(--section-bg);
     color: var(--section-fg);
   }
 
   :is(.dark) .section-dark {
-    --section-bg: #0d0d0d;
-    --section-fg: #f5f0e8;
-    --section-accent: #f0934e;
-    --section-muted: #a09a8e;
+    --section-bg: #0f0d0b;
+    --section-fg: #f3ece1;
+    --section-accent: #d99b52;
+    --section-muted: #a09688;
     background-color: var(--section-bg);
     color: var(--section-fg);
   }
 
   :is(.dark) .section-ocean {
-    --section-bg: #0f2422;
-    --section-fg: #c8e6e3;
-    --section-accent: #f0934e;
-    --section-muted: #5d8a84;
+    --section-bg: #0f2320;
+    --section-fg: #c2dad1;
+    --section-accent: #d99b52;
+    --section-muted: #5d8a82;
     background-color: var(--section-bg);
     color: var(--section-fg);
   }
 
   :is(.dark) .section-earth {
     --section-bg: #1a1710;
-    --section-fg: #ebe5d8;
-    --section-accent: #5fa06e;
-    --section-muted: #7a7468;
+    --section-fg: #e9e2d3;
+    --section-accent: #5d9a5e;
+    --section-muted: #7a7362;
     background-color: var(--section-bg);
     color: var(--section-fg);
   }
@@ -413,7 +417,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1a1a1a;
+  background-color: #1c1917;
   pointer-events: none;
 }
 
@@ -430,7 +434,7 @@
   font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 600;
   letter-spacing: 0.2em;
-  color: #f5f0e8;
+  color: #f3ece1;
 }
 
 .preloader-sub {
@@ -438,7 +442,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: #2a9d8f;
+  color: #2d8a7e;
   opacity: 0;
   animation: preloader-sub-in 0.6s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
