@@ -2,6 +2,7 @@ import { Footer } from "@/components/shared/footer";
 import { Header } from "@/components/shared/header";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
+import { CustomCursor } from "@/components/ui/custom-cursor";
 
 export default function MarketingLayout({
   children,
@@ -10,7 +11,8 @@ export default function MarketingLayout({
 }) {
   return (
     <SmoothScrollProvider>
-      <div className="overflow-x-clip">
+      <div className="cursor-custom overflow-x-clip">
+        <CustomCursor />
         <Header />
         <CartDrawer />
         <main>{children}</main>

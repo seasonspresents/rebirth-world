@@ -373,6 +373,36 @@
 }
 
 /* ============================================
+   3D tilt glare overlay
+   ============================================ */
+
+.tilt-glare::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    circle at var(--tilt-glare-x, 50%) var(--tilt-glare-y, 50%),
+    rgba(255, 255, 255, var(--tilt-glare-opacity, 0)) 0%,
+    transparent 60%
+  );
+  transition: opacity 0.3s;
+}
+
+/* ============================================
+   Custom cursor — hide default on desktop
+   ============================================ */
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .cursor-custom,
+  .cursor-custom * {
+    cursor: none !important;
+  }
+}
+
+/* ============================================
    Preloader
    ============================================ */
 

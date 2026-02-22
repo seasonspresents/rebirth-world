@@ -10,6 +10,7 @@ import { formatPrice, getCollectionStyle } from "@/lib/payments/constants";
 import { Badge } from "@/components/ui/badge";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { ProductQuickView } from "@/components/shop/product-quick-view";
+import { useTilt } from "@/hooks/use-tilt";
 
 interface ProductCardProps {
   product: Product;
@@ -21,6 +22,7 @@ const cardEase: [number, number, number, number] = [0.21, 0.47, 0.32, 0.98];
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
+  const { ref: tiltRef, tiltHandlers } = useTilt({ maxTilt: 5, glare: 0.12 });
 
   const isFeatured = product.metadata.featured === "true";
   const compareAt = product.metadata.compare_at_price
@@ -48,6 +50,11 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         className="relative"
         style={getCollectionStyle(product.metadata.collection)}
       >
+        <div
+          ref={tiltRef}
+          {...tiltHandlers}
+          className="tilt-glare relative rounded-xl"
+        >
         <Link
           href={`/shop/${product.slug}`}
           className="group block overflow-hidden rounded-xl border border-border bg-card transition-shadow duration-300 hover:shadow-lg"
@@ -139,6 +146,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             </div>
           </div>
         </Link>
+        </div>
 
         {/* BorderBeam for featured */}
         {isFeatured && (

@@ -4,21 +4,25 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Particles } from "@/components/ui/particles";
+import { Magnetic } from "@/components/ui/magnetic";
+import { ParallaxLayer } from "@/components/ui/parallax-layer";
 
 export function BrandHero() {
   return (
     <section className="section-warm bg-grain relative overflow-hidden px-6 py-32 md:py-48 lg:py-56">
-      {/* Teal particles — subtle, fewer, larger */}
-      <Particles
-        className="pointer-events-none absolute inset-0"
-        quantity={20}
-        color="#2a9d8f"
-        size={0.6}
-        staticity={60}
-        ease={50}
-      />
+      {/* Teal particles — subtle, fewer, larger — floats slower for depth */}
+      <ParallaxLayer speed={-0.3} className="absolute inset-0">
+        <Particles
+          className="pointer-events-none absolute inset-0"
+          quantity={20}
+          color="#2a9d8f"
+          size={0.6}
+          staticity={60}
+          ease={50}
+        />
+      </ParallaxLayer>
 
-      <div className="relative z-10 mx-auto max-w-[1200px]">
+      <ParallaxLayer speed={-0.1} className="relative z-10 mx-auto max-w-[1200px]">
         <motion.p
           className="mb-6 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary font-[family-name:var(--font-dm-mono)]"
           initial={{ opacity: 0, y: 40 }}
@@ -55,13 +59,15 @@ export function BrandHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <Button asChild className="px-8 py-4 text-base">
-            <Link href="/shop">
-              Browse the collection <span className="ml-1">&rarr;</span>
-            </Link>
-          </Button>
+          <Magnetic strength={0.25}>
+            <Button asChild className="px-8 py-4 text-base">
+              <Link href="/shop">
+                Browse the collection <span className="ml-1">&rarr;</span>
+              </Link>
+            </Button>
+          </Magnetic>
         </motion.div>
-      </div>
+      </ParallaxLayer>
     </section>
   );
 }

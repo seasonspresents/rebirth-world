@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { Hammer, Recycle, Heart, Shield } from "lucide-react";
 import { TextReveal } from "@/components/ui/text-reveal";
+import { AnimatedIcon } from "@/components/ui/animated-icon";
 
 const values = [
   {
@@ -53,7 +54,9 @@ export function ValueProps() {
                 ease: "easeOut",
               }}
             >
-              <value.icon className="mb-4 size-8" style={{ color: "var(--section-accent, var(--primary))" }} />
+              <AnimatedIcon className="mb-4">
+                <value.icon className="size-8" style={{ color: "var(--section-accent, var(--primary))" }} />
+              </AnimatedIcon>
               <h3 className="mb-2 text-lg font-semibold">{value.title}</h3>
               <p className="text-base leading-relaxed text-muted-foreground">
                 {value.description}
