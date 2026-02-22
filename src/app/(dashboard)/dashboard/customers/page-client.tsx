@@ -137,26 +137,32 @@ export default function CustomersPageClient() {
                 {customers.length} customer{customers.length !== 1 ? "s" : ""}
               </CardDescription>
             </CardHeader>
-            <CardContent className="px-6 py-2">
+            <CardContent className="px-2 py-2 sm:px-6">
               {customers.length > 0 ? (
+                <div className="overflow-x-auto -mx-2 sm:mx-0">
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Name</TableHead>
-                      <TableHead>Email</TableHead>
+                      <TableHead className="hidden sm:table-cell">Email</TableHead>
                       <TableHead className="text-center">Orders</TableHead>
-                      <TableHead className="text-right">Total Spent</TableHead>
-                      <TableHead>Last Order</TableHead>
-                      <TableHead className="text-center">Type</TableHead>
+                      <TableHead className="text-right">Spent</TableHead>
+                      <TableHead className="hidden md:table-cell">Last Order</TableHead>
+                      <TableHead className="hidden sm:table-cell text-center">Type</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {customers.map((customer) => (
                       <TableRow key={customer.email}>
-                        <TableCell className="font-medium">
-                          {customer.name || "—"}
+                        <TableCell>
+                          <div>
+                            <p className="font-medium">{customer.name || "—"}</p>
+                            <p className="text-muted-foreground truncate text-xs sm:hidden">
+                              {customer.email}
+                            </p>
+                          </div>
                         </TableCell>
-                        <TableCell className="max-w-[240px] truncate text-sm">
+                        <TableCell className="hidden sm:table-cell max-w-[200px] truncate text-sm">
                           {customer.email}
                         </TableCell>
                         <TableCell className="text-center">
@@ -165,12 +171,12 @@ export default function CustomersPageClient() {
                         <TableCell className="text-right">
                           {formatPrice(customer.totalSpent)}
                         </TableCell>
-                        <TableCell className="text-sm">
+                        <TableCell className="hidden md:table-cell text-sm">
                           {new Date(
                             customer.lastOrderDate
                           ).toLocaleDateString()}
                         </TableCell>
-                        <TableCell className="text-center">
+                        <TableCell className="hidden sm:table-cell text-center">
                           <Badge
                             variant="outline"
                             className={
@@ -186,6 +192,7 @@ export default function CustomersPageClient() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               ) : (
                 <div className="flex flex-col items-center gap-3 py-12">
                   <Users className="text-muted-foreground h-12 w-12" />

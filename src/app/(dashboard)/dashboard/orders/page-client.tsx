@@ -232,12 +232,12 @@ export default function OrdersPageClient() {
       <DashboardHeader breadcrumb={breadcrumb} />
       <div className="flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6 lg:px-6">
         <div className={isAdmin ? "space-y-6" : "max-w-4xl space-y-6"}>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-2xl font-bold">
                 {isAdmin ? "Orders" : "Order History"}
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {isAdmin
                   ? "Manage all orders"
                   : "View and track your past orders"}
@@ -245,7 +245,7 @@ export default function OrdersPageClient() {
             </div>
             {isAdmin && (
               <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-full sm:w-[180px]">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -267,18 +267,21 @@ export default function OrdersPageClient() {
                 {statusFilter !== "all" ? `(${statusFilter})` : "total"}
               </CardDescription>
             </CardHeader>
-            <CardContent className="px-6 py-2">
+            <CardContent className="px-2 py-2 sm:px-6">
               {orders.length > 0 ? (
+                <div className="overflow-x-auto -mx-2 sm:mx-0">
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Order #</TableHead>
-                      <TableHead>Date</TableHead>
-                      {isAdmin && <TableHead>Customer</TableHead>}
+                      <TableHead className="hidden sm:table-cell">Date</TableHead>
+                      {isAdmin && <TableHead className="hidden md:table-cell">Customer</TableHead>}
                       <TableHead>Status</TableHead>
-                      <TableHead className="text-center">Items</TableHead>
+                      <TableHead className="hidden sm:table-cell text-center">Items</TableHead>
                       <TableHead className="text-right">Total</TableHead>
-                      <TableHead className="text-right">Action</TableHead>
+                      <TableHead className="text-right">
+                        <span className="sr-only">Action</span>
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -287,13 +290,15 @@ export default function OrdersPageClient() {
                       return (
                         <TableRow key={order.id}>
                           <TableCell className="font-medium">
-                            {order.order_number}
+                            <Link href={`/dashboard/orders/${order.id}`} className="hover:underline">
+                              {order.order_number}
+                            </Link>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="hidden sm:table-cell">
                             {new Date(order.created_at).toLocaleDateString()}
                           </TableCell>
                           {isAdmin && (
-                            <TableCell className="max-w-[200px] truncate text-sm">
+                            <TableCell className="hidden md:table-cell max-w-[200px] truncate text-sm">
                               {order.email}
                             </TableCell>
                           )}
@@ -302,17 +307,17 @@ export default function OrdersPageClient() {
                               {status.label}
                             </Badge>
                           </TableCell>
-                          <TableCell className="text-center">
+                          <TableCell className="hidden sm:table-cell text-center">
                             {itemCounts[order.id] || 0}
                           </TableCell>
                           <TableCell className="text-right">
                             {formatPrice(order.total, order.currency)}
                           </TableCell>
                           <TableCell className="text-right">
-                            <Button variant="ghost" size="sm" asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
                               <Link href={`/dashboard/orders/${order.id}`}>
-                                <Eye className="mr-1 h-4 w-4" />
-                                View
+                                <Eye className="h-4 w-4" />
+                                <span className="sr-only">View order</span>
                               </Link>
                             </Button>
                           </TableCell>
@@ -321,6 +326,7 @@ export default function OrdersPageClient() {
                     })}
                   </TableBody>
                 </Table>
+                </div>
               ) : (
                 <Empty className="my-8 border-0">
                   <EmptyHeader>
@@ -351,11 +357,11 @@ export default function OrdersPageClient() {
 
           {/* Pagination */}
           {isAdmin && totalOrders > pageSize && (
-            <div className="flex items-center justify-between">
-              <p className="text-sm text-muted-foreground">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-muted-foreground text-center text-sm sm:text-left">
                 Showing {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, totalOrders)} of {totalOrders}
               </p>
-              <div className="flex gap-2">
+              <div className="flex justify-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"

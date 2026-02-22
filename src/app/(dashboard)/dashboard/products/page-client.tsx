@@ -152,49 +152,60 @@ export default function ProductsPageClient() {
                 {products.length !== 1 ? "s" : ""}
               </CardDescription>
             </CardHeader>
-            <CardContent className="px-6 py-2">
+            <CardContent className="px-2 py-2 sm:px-6">
               {products.length > 0 ? (
+                <div className="overflow-x-auto -mx-2 sm:mx-0">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[60px]">Image</TableHead>
+                      <TableHead className="w-[52px]">Image</TableHead>
                       <TableHead>Name</TableHead>
-                      <TableHead>Collection</TableHead>
+                      <TableHead className="hidden sm:table-cell">Collection</TableHead>
                       <TableHead className="text-right">Price</TableHead>
-                      <TableHead className="text-center">Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead className="hidden sm:table-cell text-center">Status</TableHead>
+                      <TableHead className="text-right">
+                        <span className="sr-only">Actions</span>
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {products.map((product) => (
                       <TableRow key={product.id}>
                         <TableCell>
-                          {product.images[0] ? (
-                            <div className="relative h-10 w-10 overflow-hidden rounded-md">
-                              <Image
-                                src={product.images[0]}
-                                alt={product.name}
-                                fill
-                                className="object-cover"
-                                sizes="40px"
-                              />
-                            </div>
-                          ) : (
-                            <div className="bg-muted flex h-10 w-10 items-center justify-center rounded-md">
-                              <ShoppingBag className="text-muted-foreground h-4 w-4" />
-                            </div>
-                          )}
+                          <Link href={`/dashboard/products/${product.id}`}>
+                            {product.images[0] ? (
+                              <div className="relative h-10 w-10 overflow-hidden rounded-md">
+                                <Image
+                                  src={product.images[0]}
+                                  alt={product.name}
+                                  fill
+                                  className="object-cover"
+                                  sizes="40px"
+                                />
+                              </div>
+                            ) : (
+                              <div className="bg-muted flex h-10 w-10 items-center justify-center rounded-md">
+                                <ShoppingBag className="text-muted-foreground h-4 w-4" />
+                              </div>
+                            )}
+                          </Link>
                         </TableCell>
-                        <TableCell className="font-medium">
-                          {product.name}
+                        <TableCell>
+                          <Link href={`/dashboard/products/${product.id}`} className="hover:underline">
+                            <p className="font-medium">{product.name}</p>
+                            <p className="text-muted-foreground text-xs sm:hidden">
+                              {collectionLabel(product.metadata.collection)}
+                              {!product.active && " · Inactive"}
+                            </p>
+                          </Link>
                         </TableCell>
-                        <TableCell className="text-muted-foreground text-sm">
+                        <TableCell className="hidden sm:table-cell text-muted-foreground text-sm">
                           {collectionLabel(product.metadata.collection)}
                         </TableCell>
                         <TableCell className="text-right">
                           {formatPrice(product.price, product.currency)}
                         </TableCell>
-                        <TableCell className="text-center">
+                        <TableCell className="hidden sm:table-cell text-center">
                           <Badge
                             className={
                               product.active
@@ -207,20 +218,20 @@ export default function ProductsPageClient() {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-1">
-                            <Button variant="ghost" size="sm" asChild>
-                              <Link href={`/dashboard/products/${product.id}`}>
-                                <Pencil className="mr-1 h-3 w-3" />
-                                Edit
+                            <Button variant="ghost" size="icon" className="h-9 w-9" asChild>
+                              <Link href={`/dashboard/products/${product.id}`} title="Edit product">
+                                <Pencil className="h-4 w-4" />
+                                <span className="sr-only">Edit</span>
                               </Link>
                             </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                            <Button variant="ghost" size="icon" className="hidden sm:inline-flex h-9 w-9" asChild>
                               <a
                                 href={`https://dashboard.stripe.com/products/${product.id}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="Open in Stripe"
                               >
-                                <ExternalLink className="h-3 w-3" />
+                                <ExternalLink className="h-3.5 w-3.5" />
                               </a>
                             </Button>
                           </div>
@@ -229,6 +240,7 @@ export default function ProductsPageClient() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               ) : (
                 <div className="text-muted-foreground py-12 text-center">
                   No products found in Stripe.

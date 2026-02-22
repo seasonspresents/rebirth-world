@@ -384,8 +384,8 @@ export default function ProductEditClient({
         }
       />
       <div className="flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6 lg:px-6">
-        <div className="max-w-5xl space-y-6">
-          <div className="flex items-center gap-3">
+        <div className="max-w-5xl space-y-4 md:space-y-6">
+          <div className="flex flex-wrap items-center gap-2">
             <Button variant="ghost" size="sm" asChild>
               <Link href="/dashboard/products">
                 <ArrowLeft className="mr-1 h-4 w-4" />
@@ -396,7 +396,8 @@ export default function ProductEditClient({
               {slug && (
                 <Button variant="outline" size="sm" asChild>
                   <Link href={`/shop/${slug}`} target="_blank">
-                    View on Store
+                    <span className="hidden sm:inline">View on Store</span>
+                    <span className="sm:hidden">Store</span>
                     <ExternalLink className="ml-1 h-3 w-3" />
                   </Link>
                 </Button>
@@ -414,15 +415,15 @@ export default function ProductEditClient({
             </div>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+          <div className="grid gap-4 md:gap-6 lg:grid-cols-[1fr_340px]">
             {/* Left column — main fields */}
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {/* Basic info */}
               <Card>
-                <CardHeader>
+                <CardHeader className="px-4 sm:px-6">
                   <CardTitle>Product Details</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 px-4 sm:px-6">
                   <div className="space-y-2">
                     <Label htmlFor="product-name">Name</Label>
                     <Input
@@ -442,7 +443,7 @@ export default function ProductEditClient({
                       rows={4}
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="product-price">Price (USD)</Label>
                       <div className="relative">
@@ -487,16 +488,16 @@ export default function ProductEditClient({
 
               {/* Images */}
               <Card>
-                <CardHeader>
+                <CardHeader className="px-4 sm:px-6">
                   <CardTitle>Images</CardTitle>
                   <CardDescription>
                     Drag to reorder. First image is the primary display image.
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="px-4 sm:px-6">
                   <div className="space-y-4">
                     {images.length > 0 && (
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
                         {images.map((url, index) => (
                           <div
                             key={`${url}-${index}`}
@@ -520,15 +521,15 @@ export default function ProductEditClient({
                             <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20" />
                             <button
                               onClick={() => removeImage(index)}
-                              className="absolute right-1 top-1 rounded-full bg-black/60 p-1 opacity-0 transition-opacity group-hover:opacity-100"
+                              className="absolute right-1.5 top-1.5 rounded-full bg-black/60 p-1.5 opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100"
                             >
-                              <X className="h-3 w-3 text-white" />
+                              <X className="h-3.5 w-3.5 text-white" />
                             </button>
-                            <div className="absolute left-1 top-1 cursor-grab rounded-full bg-black/60 p-1 opacity-0 transition-opacity group-hover:opacity-100">
-                              <GripVertical className="h-3 w-3 text-white" />
+                            <div className="absolute left-1.5 top-1.5 cursor-grab rounded-full bg-black/60 p-1.5 opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
+                              <GripVertical className="h-3.5 w-3.5 text-white" />
                             </div>
                             {index === 0 && (
-                              <Badge className="absolute bottom-1 left-1 bg-blue-500 text-[10px] text-white">
+                              <Badge className="absolute bottom-1.5 left-1.5 bg-blue-500 text-xs text-white">
                                 Primary
                               </Badge>
                             )}
@@ -563,10 +564,10 @@ export default function ProductEditClient({
 
               {/* Story & copy */}
               <Card>
-                <CardHeader>
+                <CardHeader className="px-4 sm:px-6">
                   <CardTitle>Story & Copy</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 px-4 sm:px-6">
                   <div className="space-y-2">
                     <Label htmlFor="product-subtitle">Subtitle</Label>
                     <Input
@@ -610,12 +611,12 @@ export default function ProductEditClient({
             </div>
 
             {/* Right column — metadata */}
-            <div className="space-y-6 lg:sticky lg:top-4 lg:self-start">
+            <div className="space-y-4 md:space-y-6 lg:sticky lg:top-4 lg:self-start">
               <Card>
-                <CardHeader>
+                <CardHeader className="px-4 sm:px-6">
                   <CardTitle>Catalog</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 px-4 sm:px-6">
                   <div className="space-y-2">
                     <Label htmlFor="product-collection">Collection</Label>
                     <Select value={collection} onValueChange={setCollection}>
@@ -664,10 +665,10 @@ export default function ProductEditClient({
               </Card>
 
               <Card>
-                <CardHeader>
+                <CardHeader className="px-4 sm:px-6">
                   <CardTitle>Display</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 px-4 sm:px-6">
                   <div className="space-y-2">
                     <Label htmlFor="product-badge">Badge Text</Label>
                     <Input
@@ -723,10 +724,10 @@ export default function ProductEditClient({
               </Card>
 
               <Card>
-                <CardHeader>
+                <CardHeader className="px-4 sm:px-6">
                   <CardTitle>Shipping</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 px-4 sm:px-6">
                   <div className="space-y-2">
                     <Label htmlFor="product-lead-time">Lead Time (days)</Label>
                     <Input

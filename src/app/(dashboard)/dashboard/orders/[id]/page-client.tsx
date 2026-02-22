@@ -460,12 +460,12 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
             </Button>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+          <div className="grid gap-4 md:gap-6 lg:grid-cols-[1fr_340px]">
             {/* Left column */}
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {/* Order items */}
               <Card>
-                <CardHeader>
+                <CardHeader className="px-4 sm:px-6">
                   <CardTitle className="flex items-center gap-2">
                     <Package className="h-5 w-5" />
                     Items
@@ -475,15 +475,15 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                     order
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
+                <CardContent className="px-4 sm:px-6">
+                  <div className="space-y-3">
                     {items.map((item) => (
                       <div
                         key={item.id}
-                        className="flex items-center gap-4 rounded-lg border p-3"
+                        className="flex items-start gap-3 rounded-lg border p-3"
                       >
                         {item.product_image_url ? (
-                          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md">
+                          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md sm:h-16 sm:w-16">
                             <Image
                               src={item.product_image_url}
                               alt={item.product_name}
@@ -493,32 +493,34 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                             />
                           </div>
                         ) : (
-                          <div className="bg-muted flex h-16 w-16 shrink-0 items-center justify-center rounded-md">
-                            <Package className="text-muted-foreground h-6 w-6" />
+                          <div className="bg-muted flex h-12 w-12 shrink-0 items-center justify-center rounded-md sm:h-16 sm:w-16">
+                            <Package className="text-muted-foreground h-5 w-5" />
                           </div>
                         )}
                         <div className="min-w-0 flex-1">
-                          <p className="truncate font-medium">
+                          <p className="font-medium leading-tight">
                             {item.product_name}
                           </p>
                           {item.variant_name && (
-                            <p className="text-muted-foreground text-sm">
+                            <p className="text-muted-foreground text-xs sm:text-sm">
                               {item.variant_name}
                             </p>
                           )}
                           {item.engraving_text && (
-                            <p className="text-muted-foreground text-sm">
+                            <p className="text-muted-foreground text-xs sm:text-sm">
                               Engraving: &quot;{item.engraving_text}&quot;
                             </p>
                           )}
-                          <p className="text-muted-foreground text-sm">
-                            {formatPrice(item.unit_price, currency)} &times;{" "}
-                            {item.quantity}
-                          </p>
+                          <div className="mt-1 flex items-center justify-between">
+                            <p className="text-muted-foreground text-xs sm:text-sm">
+                              {formatPrice(item.unit_price, currency)} &times;{" "}
+                              {item.quantity}
+                            </p>
+                            <p className="shrink-0 text-sm font-medium">
+                              {formatPrice(item.total_price, currency)}
+                            </p>
+                          </div>
                         </div>
-                        <p className="shrink-0 font-medium">
-                          {formatPrice(item.total_price, currency)}
-                        </p>
                       </div>
                     ))}
                   </div>
@@ -604,7 +606,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
               {/* Admin: Fulfillment controls */}
               {isAdmin && (
                 <Card>
-                  <CardHeader>
+                  <CardHeader className="px-4 sm:px-6">
                     <CardTitle className="flex items-center gap-2">
                       <Truck className="h-5 w-5" />
                       Fulfillment
@@ -613,7 +615,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                       Get rates, buy labels, and ship orders
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-6 px-4 sm:px-6">
                     {/* Status update */}
                     <div className="space-y-2">
                       <Label>Order Status</Label>
@@ -622,7 +624,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                           value={adminStatus}
                           onValueChange={setAdminStatus}
                         >
-                          <SelectTrigger className="w-[200px]">
+                          <SelectTrigger className="w-full sm:w-[200px]">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -729,34 +731,34 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                               {rates.map((rate) => (
                                 <label
                                   key={rate.rateId}
-                                  className={`flex cursor-pointer items-center justify-between rounded-lg border p-3 transition-colors ${
+                                  className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors sm:items-center sm:justify-between ${
                                     selectedRateId === rate.rateId
                                       ? "border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-950/30"
                                       : "hover:bg-muted/50"
                                   }`}
                                 >
-                                  <div className="flex items-center gap-3">
-                                    <input
-                                      type="radio"
-                                      name="shipping-rate"
-                                      checked={selectedRateId === rate.rateId}
-                                      onChange={() => setSelectedRateId(rate.rateId)}
-                                      className="h-4 w-4"
-                                    />
-                                    <div>
-                                      <p className="text-sm font-medium">
+                                  <input
+                                    type="radio"
+                                    name="shipping-rate"
+                                    checked={selectedRateId === rate.rateId}
+                                    onChange={() => setSelectedRateId(rate.rateId)}
+                                    className="mt-0.5 h-4 w-4 shrink-0 sm:mt-0"
+                                  />
+                                  <div className="min-w-0 flex-1">
+                                    <div className="flex items-start justify-between gap-2 sm:items-center">
+                                      <p className="text-sm font-medium leading-tight">
                                         {rate.carrier} — {rate.service}
                                       </p>
-                                      <p className="text-muted-foreground text-xs">
-                                        {rate.estimatedDays
-                                          ? `${rate.estimatedDays} business day${rate.estimatedDays !== 1 ? "s" : ""}`
-                                          : rate.durationTerms || "Estimated delivery varies"}
-                                      </p>
+                                      <span className="shrink-0 text-sm font-semibold">
+                                        ${rate.price}
+                                      </span>
                                     </div>
+                                    <p className="text-muted-foreground mt-0.5 text-xs">
+                                      {rate.estimatedDays
+                                        ? `${rate.estimatedDays} business day${rate.estimatedDays !== 1 ? "s" : ""}`
+                                        : rate.durationTerms || "Estimated delivery varies"}
+                                    </p>
                                   </div>
-                                  <span className="text-sm font-semibold">
-                                    ${rate.price}
-                                  </span>
                                 </label>
                               ))}
                             </div>
@@ -765,6 +767,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                                 onClick={handleBuyLabel}
                                 disabled={buyingLabel || !selectedRateId}
                                 className="flex-1"
+                                size="lg"
                               >
                                 {buyingLabel && (
                                   <Loader2 className="mr-1 h-4 w-4 animate-spin" />
@@ -773,6 +776,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                               </Button>
                               <Button
                                 variant="ghost"
+                                size="lg"
                                 onClick={() => {
                                   setRates([]);
                                   setSelectedRateId("");
@@ -899,10 +903,10 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
             {/* Right column — sticky sidebar */}
             <div className="lg:sticky lg:top-4 lg:self-start">
               <Card>
-                <CardHeader>
+                <CardHeader className="px-4 sm:px-6">
                   <CardTitle>Order Summary</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 px-4 sm:px-6">
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">
@@ -921,7 +925,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                     {isAdmin && (
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Customer</span>
-                        <span className="max-w-[180px] truncate text-right">
+                        <span className="max-w-[140px] truncate text-right sm:max-w-[180px]">
                           {order.email}
                         </span>
                       </div>
