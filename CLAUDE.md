@@ -22,14 +22,21 @@ This file provides guidance to Claude Code when working with code in this reposi
 - **70+ UI components** — shadcn/ui + Magic UI
 - **Legal pages** — Privacy, Terms, Cookie Policy (e-commerce specific)
 - **SEO** — Sitemap, robots.txt, Open Graph, JSON-LD structured data
+- **Animation system** — GSAP + Lenis smooth scroll, scroll-triggered reveals, text animations, parallax, magnetic buttons, custom cursor, 3D tilt
+- **3D ring viewer** — React Three Fiber procedural ring with custom GLSL wood-stripe shader, scroll-driven 3D scene, interactive ring customizer with 5 wood presets
+- **Section color schemes** — 4 named CSS schemes (warm/dark/ocean/earth) with dark mode variants
+- **Fluid typography** — `clamp()`-based mega-typography utilities for editorial headlines
+- **Branded preloader** — Session-based "REBIRTH / Embrace Change" intro animation
+- **Announcement bar** — Marquee ticker with brand phrases
 
-Build passes with 0 errors, 41 pages generated.
+Build passes with 0 errors, 62 pages generated.
 
 ## Deep Context — Read These When Relevant
 
 | Document | Path | Read When |
 |----------|------|-----------|
 | Brand PRD | `docs/REBIRTH_WORLD_PRD.md` | Writing copy, designing UI, making brand/marketing decisions. Has avatars, voice guide, competitive landscape, advisory council, funnel architecture. |
+| UI/UX Playbook | `docs/UI_UX_TRANSFORMATION_PLAYBOOK.md` | Animation/interaction work, adding new scroll effects, understanding inspiration sites and pattern decisions. Has 14-site research, 10 implementation patterns, brand asset inventory. |
 | GHL Integration | `docs/GHL_INTEGRATION_PLAN.md` | Working on webhook integrations, email/CRM flows |
 | Conversion Blueprint | `docs/SABO_TO_REBIRTH_BLUEPRINT.md` | Understanding codebase origin and conversion decisions |
 | Brand Skill | `.claude/skills/rebirth-brand/SKILL.md` | Auto-loaded when working on copy, UI, landing pages, product pages, emails |
@@ -72,7 +79,10 @@ npx stripe listen --forward-to localhost:3000/api/webhooks/stripe
 | Language | TypeScript | 5.x |
 | Styling | Tailwind CSS | 4.x |
 | Components | shadcn/ui (New York) + Magic UI + Aceternity UI | 70+ components |
-| Animation | motion (Framer Motion) | 12.x |
+| Animation (scroll) | GSAP + @gsap/react + ScrollTrigger + SplitText | 3.14.2 / 2.1.2 |
+| Animation (motion) | motion (Framer Motion) | 12.x |
+| Smooth scroll | Lenis | 1.3.17 |
+| 3D | React Three Fiber + Drei + Three.js | 9.5.0 / 10.7.7 / 0.183.1 |
 | Auth | Supabase (@supabase/ssr) | 0.7.0 / 2.81.1 |
 | Database | Supabase (PostgreSQL + RLS) | — |
 | Payments | Stripe (one-time checkout) | 19.3.1 |
@@ -168,30 +178,51 @@ src/app/
 
 ```text
 src/components/
-├── ui/                   # 70+ shadcn/ui + Magic UI components (DO NOT MODIFY)
+├── 3d/                   # React Three Fiber 3D components
+│   ├── ring-model.tsx            # Procedural torus with GLSL wood-stripe shader + engraving
+│   ├── ring-viewer.tsx           # Self-contained Canvas with lighting, controls, shadows
+│   ├── scroll-ring-scene.tsx     # Scroll-driven 3D ring section (GSAP ScrollTrigger)
+│   ├── scroll-ring-scene-lazy.tsx # Client wrapper for dynamic import (ssr: false)
+│   ├── ring-customizer.tsx       # 5 wood presets, engraving input, live 3D preview
+│   └── index.ts                  # Barrel exports
+│
+├── ui/                   # 70+ shadcn/ui + Magic UI + animation components
 │   ├── button, card, dialog, input, table, tabs, etc.
 │   ├── border-beam, shine-border, particles, marquee      (Magic UI)
 │   ├── animated-beam, animated-list, animated-shiny-text   (Magic UI)
 │   ├── bento-grid, number-ticker, orbiting-circles         (Magic UI)
 │   ├── confetti, interactive-grid-pattern                  (Magic UI)
+│   ├── scroll-reveal.tsx         # Declarative GSAP scroll-triggered reveal wrapper
+│   ├── text-reveal.tsx           # GSAP SplitText scroll-triggered text animation
+│   ├── scroll-image.tsx          # Overflow-clip image reveal (scale 1.15→1.0 on scroll)
+│   ├── magnetic.tsx              # GSAP magnetic pull-toward-cursor button effect
+│   ├── custom-cursor.tsx         # Branded dot+ring cursor (desktop only, teal, mix-blend)
+│   ├── parallax-layer.tsx        # Declarative GSAP parallax wrapper
+│   ├── animated-icon.tsx         # SVG stroke-draw animation on scroll
 │   └── ... (57+ total components)
 │
+├── providers/            # Context providers
+│   └── smooth-scroll-provider.tsx # Lenis smooth scroll + GSAP ScrollTrigger sync
+│
 ├── shop/                 # E-commerce components
-│   ├── product-card.tsx          # Product card for grid display
+│   ├── product-card.tsx          # Product card with 3D tilt, collection theming
+│   ├── product-image-gallery.tsx # Gallery with ScrollImage cinematic reveal
+│   ├── product-3d-toggle.tsx     # Photos/3D View tab toggle (ring products)
+│   ├── product-story.tsx         # Product story with TextReveal
 │   ├── collection-filter.tsx     # Category filter tabs
 │   └── add-to-cart-button.tsx    # Size selector + engraving + add to cart
 │
 ├── cart/                 # Cart system
 │   ├── cart-context.tsx          # CartProvider (localStorage + Supabase sync)
-│   └── cart-drawer.tsx           # Slide-out cart drawer
+│   └── cart-drawer.tsx           # Slide-out cart drawer (with useLenisPause)
 │
 ├── marketing/            # Storefront marketing sections
-│   ├── hero.tsx                  # Brand hero section
-│   ├── social-proof.tsx          # Customer count / review stats
-│   ├── pricing.tsx               # Pricing tiers
-│   ├── testimonials.tsx          # Customer testimonials
-│   ├── faq.tsx                   # FAQ accordion
-│   ├── cta.tsx                   # Call-to-action (links to /shop)
+│   ├── brand-hero.tsx            # Hero with Magnetic CTA, ParallaxLayer, fluid typography
+│   ├── featured-products.tsx     # section-dark, TextReveal heading
+│   ├── value-props.tsx           # section-earth, AnimatedIcon stroke-draw
+│   ├── testimonials.tsx          # section-ocean, glassmorphism cards
+│   ├── faq.tsx                   # section-earth, TextReveal
+│   ├── newsletter-cta.tsx        # section-warm, TextReveal
 │   └── contact-form.tsx          # Contact form with Zod validation
 │
 ├── dashboard/            # Dashboard components
@@ -216,9 +247,11 @@ src/components/
 │   └── order-confirmation.tsx    # Order confirmation email
 │
 ├── shared/               # Layout components
-│   ├── header.tsx                # Site header (Shop, Our Story, Blog, Contact, cart icon)
+│   ├── header.tsx                # Site header + AnnouncementBar
 │   ├── footer.tsx                # Site footer
-│   ├── mobile-nav.tsx            # Mobile nav drawer
+│   ├── mobile-nav.tsx            # Mobile nav drawer (with useLenisPause)
+│   ├── announcement-bar.tsx      # Marquee ticker with brand phrases
+│   ├── preloader.tsx             # Session-based branded preloader
 │   ├── logo.tsx                  # Rebirth World logo
 │   ├── theme-toggle.tsx          # Theme toggle
 │   └── mode-toggle.tsx           # Dark/light mode
@@ -231,9 +264,13 @@ src/components/
 
 ```text
 src/lib/
+├── gsap/
+│   └── register.ts       # GSAP singleton — registers ScrollTrigger + SplitText once
+│
 ├── payments/
 │   ├── stripe.ts         # Stripe client initialization
 │   ├── products.ts       # Stripe Products API helpers (fetch, format, cache)
+│   ├── constants.ts      # Product types, COLLECTION_COLORS, getCollectionStyle()
 │   └── index.ts          # Exports
 │
 ├── supabase/
@@ -246,6 +283,13 @@ src/lib/
 ├── emails.ts             # Resend email system (type-safe send function)
 ├── posts.ts              # Blog post utilities (MDX)
 └── utils.ts              # cn() utility for Tailwind class merging
+
+src/hooks/
+├── use-gsap-reveal.ts    # Reusable GSAP ScrollTrigger reveal (opacity+y, stagger)
+├── use-text-reveal.ts    # GSAP SplitText scroll animation (chars/words/lines)
+├── use-lenis-pause.ts    # Pause/resume Lenis smooth scroll for modals
+├── use-parallax.ts       # GSAP ScrollTrigger parallax movement
+└── use-tilt.ts           # 3D perspective tilt on hover (desktop only)
 ```
 
 ### Content
@@ -401,7 +445,14 @@ The webhook handler lives at `/api/webhooks/stripe/route.ts`.
 ### UI Patterns
 
 - **Grain texture:** SVG noise overlay on backgrounds (kills AI-slop feel)
-- **Animations:** Framer Motion for scroll-triggered reveals and hover states
+- **Smooth scroll:** Lenis with momentum (`lerp: 0.1, duration: 1.2`) on all marketing pages
+- **Scroll reveals:** GSAP ScrollTrigger for new sections; Framer Motion `whileInView` for legacy
+- **Text animations:** GSAP SplitText for headlines (chars/words/lines stagger)
+- **Section color shifting:** 4 CSS schemes (`section-warm`, `section-dark`, `section-ocean`, `section-earth`) shift mood per section
+- **Fluid typography:** `clamp()`-based mega utilities (`.text-mega`, `.text-fluid-display`, `.text-fluid-heading`)
+- **Cinematic image reveals:** ScrollImage component (scale 1.15→1.0 with overflow clip)
+- **Micro-interactions:** Magnetic buttons, custom cursor, 3D tilt hover, animated icon stroke-draw
+- **3D viewer:** React Three Fiber ring with GLSL shader for product pages
 - **Component libraries:** Aceternity UI for hero sections, Magic UI for interactive elements, shadcn/ui for core UI
 - **Photography:** Natural lighting, golden hour, lifestyle > sterile product shots
 - **Whitespace:** Generous — this isn't a cluttered marketplace
@@ -432,6 +483,151 @@ The webhook handler lives at `/api/webhooks/stripe/route.ts`.
 | Laser Engraving | +$9 | Up to 10 chars text or custom graphic |
 
 Interior finish is thin CA glue (NOT polyurethane). Sizing: Size 9 shell (18.8mm ID) + 0.8mm wood liner → wearable size 7.
+
+## Animation & Interaction System
+
+The storefront uses a dual animation architecture: **GSAP** for scroll-driven effects and **Framer Motion** for component-level transitions. These two systems coexist but must never be applied to the same DOM element.
+
+### Architecture
+
+```text
+Marketing Layout
+├── SmoothScrollProvider (Lenis)     # Wraps all marketing pages
+│   ├── ScrollTriggerSync            # Syncs GSAP ScrollTrigger to Lenis scroll
+│   ├── CustomCursor                 # Desktop-only branded cursor
+│   ├── Header + AnnouncementBar     # Marquee ticker
+│   ├── CartDrawer                   # useLenisPause(isCartOpen)
+│   ├── main                         # Page content with scroll animations
+│   └── Footer
+└── Preloader                        # Session-based, in root layout (outside Lenis)
+```
+
+### Coexistence Rules
+
+1. **Never apply both `<motion.div whileInView>` and GSAP ScrollTrigger to the same element** — they will fight over the same CSS properties
+2. **GSAP is for new/enhanced sections** — TextReveal, ScrollImage, AnimatedIcon, parallax
+3. **Framer Motion is for existing component transitions** — card hover, lightbox, cart drawer items
+4. **Both respect `prefers-reduced-motion`** — all GSAP hooks check this and skip animation
+
+### GSAP Registration
+
+All components import GSAP from `@/lib/gsap/register` (never directly from `gsap`):
+
+```typescript
+import { gsap, ScrollTrigger, SplitText } from "@/lib/gsap/register";
+```
+
+This singleton registers plugins once at import time.
+
+### Hooks
+
+| Hook | File | What It Does |
+|------|------|-------------|
+| `useGsapReveal` | `hooks/use-gsap-reveal.ts` | ScrollTrigger fade+slide reveal with optional stagger for children |
+| `useTextReveal` | `hooks/use-text-reveal.ts` | SplitText animation (chars/words/lines) on scroll |
+| `useLenisPause` | `hooks/use-lenis-pause.ts` | Pause Lenis when modals/drawers are open |
+| `useParallax` | `hooks/use-parallax.ts` | ScrollTrigger parallax movement (negative=lag, positive=lead) |
+| `useTilt` | `hooks/use-tilt.ts` | 3D perspective tilt on hover with CSS glare (desktop only) |
+
+### Section Color Schemes
+
+Defined in `globals.css` as CSS classes that set `--section-bg/fg/accent/muted` variables:
+
+| Class | Background | Text | Accent | Use Case |
+|-------|-----------|------|--------|----------|
+| `.section-warm` | `#f5f0e8` | `#1a1a1a` | `#2a9d8f` | Hero, newsletter |
+| `.section-dark` | `#1a1a1a` | `#f5f0e8` | `#e07a3a` | Featured products |
+| `.section-ocean` | `#1a3a36` | `#c8e6e3` | `#e07a3a` | Testimonials |
+| `.section-earth` | `#f2ede5` | `#2a2118` | `#4a7c59` | FAQ, value props |
+
+Each has a `.dark` mode variant. Use with Tailwind: `text-section-fg`, `bg-section-bg`, etc.
+
+### Fluid Typography
+
+| Class | Range | Use |
+|-------|-------|-----|
+| `.text-mega` | `clamp(3rem, 8vw, 8rem)` | Primary hero headlines |
+| `.text-mega-sm` | `clamp(2.5rem, 6vw, 6rem)` | Secondary headlines |
+| `.text-mega-lg` | `clamp(4rem, 10vw, 10rem)` | Full-bleed display |
+| `.text-fluid-display` | `clamp(2rem, 5vw, 4.5rem)` | Section titles |
+| `.text-fluid-heading` | `clamp(1.5rem, 3.5vw, 3rem)` | Sub-section headings |
+
+### Per-Collection Color Theming
+
+Products get collection-specific colors via `getCollectionStyle()` from `lib/payments/constants.ts`:
+
+```typescript
+import { getCollectionStyle } from "@/lib/payments/constants";
+
+// Returns CSSProperties with --collection-primary and --collection-accent
+<div style={getCollectionStyle("skateboard-rings")}>
+```
+
+| Collection | Primary | Accent |
+|-----------|---------|--------|
+| skateboard-rings | `#2a9d8f` (teal) | `#e07a3a` (amber) |
+| wedding-bands | `#8b7355` (brown) | `#c76b8a` (lotus) |
+| apparel | `#4a7c59` (moss) | `#e07a3a` (amber) |
+
+### 3D Ring System
+
+All 3D components live in `src/components/3d/` and require `ssr: false` dynamic imports:
+
+```typescript
+// WRONG — Server Component can't use ssr: false
+const Ring = dynamic(() => import("./ring-viewer"), { ssr: false });
+
+// CORRECT — use the lazy wrapper (client component)
+import { ScrollRingSceneLazy } from "@/components/3d/scroll-ring-scene-lazy";
+```
+
+**Ring Model** — Procedural torus with custom GLSL shader:
+- 7 color layers simulating skateboard ply (configurable via `layers` prop)
+- Wood grain noise via hash function
+- Specular highlight for CA glue finish
+- Engraving text rendered via Drei `Text` on inner surface
+
+**Ring Customizer** — 5 wood presets:
+- Classic Maple, Ocean Fade, Sunset Deck, Dark Stealth, Moss Earth
+- Each has 7 unique layer colors
+- Live engraving preview (up to 10 chars)
+
+**Scroll Ring Scene** — Homepage section:
+- Ring rotates 4x as user scrolls through section
+- Scale lerps 0.7→1.0, position floats on sine wave
+- Progress driven by GSAP ScrollTrigger `scrub: 0.5`
+
+### Adding New Animations
+
+**New scroll-triggered section:**
+```tsx
+import { TextReveal } from "@/components/ui/text-reveal";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
+
+<section className="section-dark px-6 py-24">
+  <TextReveal as="h2" className="text-fluid-display" type="words">
+    Your headline here
+  </TextReveal>
+  <ScrollReveal stagger={0.1}>
+    <Card>...</Card>
+    <Card>...</Card>
+  </ScrollReveal>
+</section>
+```
+
+**New cinematic image:**
+```tsx
+import { ScrollImage } from "@/components/ui/scroll-image";
+
+<ScrollImage
+  src="/images/hero.jpg"
+  alt="Description"
+  fill
+  sizes="100vw"
+  scaleFrom={1.15}
+  radius="1rem"
+/>
+```
 
 ## Cart System
 
@@ -618,6 +814,11 @@ These don't affect functionality but can be cleaned up.
 - Don't use Inter, Roboto, or Arial fonts — use Clash Display, DM Sans, DM Mono
 - Don't write generic/template-sounding copy — read the brand skill first
 - Don't use sterile product photography aesthetic — warm, natural, lifestyle
+- Don't mix Framer Motion `whileInView` and GSAP ScrollTrigger on the same DOM element
+- Don't import `gsap` directly — always import from `@/lib/gsap/register`
+- Don't use `next/dynamic` with `ssr: false` in Server Components — create a `"use client"` lazy wrapper
+- Don't add Lenis smooth scroll to dashboard/auth layouts — only marketing pages get it
+- Don't forget `prefers-reduced-motion` checks in new animation hooks
 
 ## Deployment
 
