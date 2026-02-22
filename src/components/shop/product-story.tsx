@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { TextReveal } from "@/components/ui/text-reveal";
 
 interface ProductStoryProps {
   story: string;
@@ -19,9 +20,9 @@ export function ProductStory({ story, productName }: ProductStoryProps) {
       <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
         The Story
       </p>
-      <h2 className="mb-6 text-[clamp(1.5rem,3vw,2rem)] leading-[1.2] font-[family-name:var(--font-display)]">
+      <TextReveal as="h2" className="mb-6 text-fluid-heading" type="words">
         Behind the {productName}
-      </h2>
+      </TextReveal>
       <p className="leading-relaxed text-muted-foreground">{story}</p>
     </motion.section>
   );

@@ -2,6 +2,7 @@
 
 import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
+import { Text } from "@react-three/drei";
 import * as THREE from "three";
 
 /** Color layers representing the 7-ply skateboard maple */
@@ -40,6 +41,7 @@ export function RingModel({
   radius = 1,
   tube = 0.22,
   rotateSpeed = 0.3,
+  engravingText,
   autoRotate = true,
 }: RingModelProps) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -119,9 +121,34 @@ export function RingModel({
     }
   });
 
+  // Position engraving text along the inner surface of the ring
+  const engravingGroup = useMemo(() => {
+    if (!engravingText) return null;
+    // Inner radius is the torus radius minus tube radius
+    const innerR = radius - tube + 0.01;
+    return { innerR };
+  }, [engravingText, radius, tube]);
+
   return (
     <mesh ref={meshRef} material={material} rotation={[Math.PI / 6, 0, 0]}>
       <torusGeometry args={[radius, tube, 64, 128]} />
+      {engravingText && engravingGroup && (
+        <group>
+          {/* Engraving text rendered along the inner band */}
+          <Text
+            fontSize={tube * 0.5}
+            color="#8a8578"
+            anchorX="center"
+            anchorY="middle"
+            position={[0, 0, -engravingGroup.innerR]}
+            rotation={[0, Math.PI, 0]}
+            maxWidth={radius * 2}
+            font="/fonts/ClashDisplay-Medium.woff2"
+          >
+            {engravingText}
+          </Text>
+        </group>
+      )}
     </mesh>
   );
 }

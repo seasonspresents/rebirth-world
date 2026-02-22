@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { ScrollImage } from "@/components/ui/scroll-image";
 import { cn } from "@/lib/utils";
 
 interface ProductImageGalleryProps {
@@ -70,9 +71,9 @@ export function ProductImageGallery({
     <>
       {/* Desktop: Main image + thumbnails */}
       <div className="hidden md:block">
-        {/* Main image */}
+        {/* Main image — cinematic scroll reveal */}
         <button
-          className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-muted cursor-zoom-in"
+          className="relative w-full aspect-[4/5] bg-muted cursor-zoom-in"
           onClick={() => setLightboxOpen(true)}
         >
           <AnimatePresence mode="wait">
@@ -84,13 +85,15 @@ export function ProductImageGallery({
               transition={{ duration: 0.3 }}
               className="absolute inset-0"
             >
-              <Image
+              <ScrollImage
                 src={images[activeIndex]}
                 alt={`${productName} — Image ${activeIndex + 1}`}
                 fill
-                className="object-cover"
                 sizes="50vw"
                 priority={activeIndex === 0}
+                radius="0.75rem"
+                scaleFrom={1.1}
+                containerClassName="h-full w-full"
               />
             </motion.div>
           </AnimatePresence>
@@ -142,13 +145,15 @@ export function ProductImageGallery({
                   setLightboxOpen(true);
                 }}
               >
-                <Image
+                <ScrollImage
                   src={img}
                   alt={`${productName} — Image ${i + 1}`}
                   fill
-                  className="object-cover"
                   sizes="100vw"
                   priority={i === 0}
+                  radius="0"
+                  scaleFrom={1.08}
+                  containerClassName="h-full w-full"
                 />
               </button>
             </div>

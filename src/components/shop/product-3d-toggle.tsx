@@ -11,7 +11,12 @@ const RingViewer = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex h-full items-center justify-center">
-        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        <div className="flex flex-col items-center gap-3">
+          <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground font-[family-name:var(--font-dm-mono)]">
+            Loading 3D viewer&hellip;
+          </p>
+        </div>
       </div>
     ),
   }
