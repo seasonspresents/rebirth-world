@@ -1,0 +1,36 @@
+{
+  "version": "cc-os-v1",
+  "project": "Rebirth",
+  "updatedFrom": "/Users/admin/projects/_meta/command-center-os-v1.json",
+  "profile": {
+    "project": "Rebirth",
+    "archetype": "growth",
+    "ghl": {
+      "tokenItem": "GHL | Rebirth | Agency API Token",
+      "locationItem": "GHL | Rebirth | Location ID",
+      "connected": true,
+      "locationName": "Rebirth",
+      "lastCode": 200
+    },
+    "osModules": [
+      "lead_inbox",
+      "conversations",
+      "kpi_scoreboard",
+      "execution_queue",
+      "updates_feed",
+      "integrations_health",
+      "decision_panel",
+      "governance_audit"
+    ]
+  },
+  "universalModules": [
+    "lead_inbox",
+    "conversations",
+    "kpi_scoreboard",
+    "execution_queue",
+    "updates_feed",
+    "integrations_health",
+    "decision_panel",
+    "governance_audit"
+  ]
+}
