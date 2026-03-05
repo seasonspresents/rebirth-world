@@ -33,8 +33,20 @@ export async function GET(
     );
   }
 
+  // Fetch order items for dynamic parcel sizing
+  const { data: orderItems } = await supabase
+    .from("order_items")
+    .select("quantity")
+    .eq("order_id", id);
+
+  // Build items array for parcel sizing
+  const items = orderItems?.map((item) => ({
+    quantity: item.quantity,
+    collection: undefined, // Would be fetched from Stripe product metadata in production
+  })) || [];
+
   try {
-    const rates = await getShippingRates(order as Order);
+    const rates = await getShippingRates(order as Order, items);
     return NextResponse.json({ rates });
   } catch (err) {
     console.error("Failed to get shipping rates:", err);

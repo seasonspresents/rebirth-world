@@ -202,10 +202,18 @@ export interface ShippingRate {
 }
 
 /**
- * Get shipping rates for an admin order (existing behavior)
+ * Get shipping rates for an admin order
+ * @param order - The order to get rates for
+ * @param items - Optional order items to determine parcel size (if not provided, uses default jewelry parcel)
  */
-export async function getShippingRates(order: Order): Promise<ShippingRate[]> {
+export async function getShippingRates(
+  order: Order,
+  items?: Array<{ collection?: string; quantity: number; weight_oz?: number }>
+): Promise<ShippingRate[]> {
   const fromAddress = getFromAddress();
+  
+  // Determine parcel based on order items, or fall back to jewelry default
+  const parcel = items ? getParcelForItems(items) : PARCEL_TEMPLATES.jewelry;
 
   const shipment = await shippo.shipments.create({
     addressFrom: fromAddress,
@@ -218,7 +226,7 @@ export async function getShippingRates(order: Order): Promise<ShippingRate[]> {
       zip: order.shipping_postal_code || "",
       country: order.shipping_country || "US",
     },
-    parcels: [PARCEL_TEMPLATES.jewelry], // Default for admin; dynamic when items available
+    parcels: [parcel],
     async: false,
   });
 

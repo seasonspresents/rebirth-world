@@ -48,6 +48,14 @@ export async function POST(
     );
   }
 
+  // Prevent purchasing "free shipping" rate IDs (these are internal markers, not real Shippo rates)
+  if (parsed.data.rateId === "free_shipping") {
+    return NextResponse.json(
+      { error: "Invalid rate: cannot purchase free shipping rate" },
+      { status: 400 }
+    );
+  }
+
   try {
     const label = await purchaseLabel(parsed.data.rateId);
 

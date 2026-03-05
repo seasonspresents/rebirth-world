@@ -47,11 +47,13 @@ export async function POST(req: NextRequest) {
   // Optional webhook signature verification
   const webhookSecret = process.env.SHIPPO_WEBHOOK_SECRET;
   if (webhookSecret) {
-    // Shippo doesn't currently sign webhooks with HMAC,
-    // but they recommend verifying via a shared secret token in the URL
-    // e.g. /api/webhooks/shippo?token=YOUR_SECRET
-    const token = req.nextUrl.searchParams.get("token");
-    if (token !== webhookSecret) {
+    // Support both query param (legacy) and Authorization header (preferred)
+    const queryToken = req.nextUrl.searchParams.get("token");
+    const authHeader = req.headers.get("Authorization");
+    const bearerToken = authHeader?.replace(/^Bearer\s+/i, "");
+    
+    const isValid = queryToken === webhookSecret || bearerToken === webhookSecret;
+    if (!isValid) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
   }

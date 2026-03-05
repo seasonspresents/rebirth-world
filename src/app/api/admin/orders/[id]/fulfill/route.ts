@@ -77,6 +77,7 @@ export async function POST(
       fulfillment_status: "fulfilled",
       tracking_number: trackingNumber,
       tracking_url: trackingUrl,
+      shipping_carrier: carrierName,
       shipped_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     })

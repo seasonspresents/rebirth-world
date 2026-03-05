@@ -20,7 +20,7 @@ export async function POST(
 
   const { data: order } = await supabase
     .from("orders")
-    .select("id, shippo_transaction_id, status, tracking_number")
+    .select("id, shippo_transaction_id, status, tracking_number, shipped_at")
     .eq("id", id)
     .single();
 
@@ -40,6 +40,20 @@ export async function POST(
       { error: "Cannot refund label for a delivered order" },
       { status: 400 }
     );
+  }
+
+  // Check 90-day refund window (most carriers only refund within 90 days)
+  if (order.shipped_at) {
+    const shippedDate = new Date(order.shipped_at);
+    const daysSinceShipped = Math.floor(
+      (Date.now() - shippedDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    if (daysSinceShipped > 90) {
+      return NextResponse.json(
+        { error: `Cannot refund label: ${daysSinceShipped} days since shipment (max 90 days)` },
+        { status: 400 }
+      );
+    }
   }
 
   try {
