@@ -689,6 +689,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         product_image_url: product?.images?.[0] ?? null,
         variant_name: variantName,
         engraving_text: engravingText,
+        collection: product?.metadata?.collection ?? null,
         unit_price: unitPrice,
         quantity: qty,
         total_price: unitPrice * qty,

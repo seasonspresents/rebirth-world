@@ -140,6 +140,7 @@ export interface OrderItem {
   total_price: number;
   engraving_text: string | null;
   engraving_graphic_url: string | null;
+  collection: string | null;
   created_at: string;
 }
 
