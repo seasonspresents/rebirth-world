@@ -1,0 +1,11 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#0f0f0f"/>
+  <rect x="0" y="0" width="1200" height="4" fill="#2d8a7e"/>
+  <text x="80" y="180" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#2d8a7e" letter-spacing="3" font-weight="500">REBIRTH WORLD</text>
+  <text x="80" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="72" fill="#e8e0d4" font-weight="700" letter-spacing="-2">Your Shipping</text>
+  <text x="80" y="380" font-family="system-ui, -apple-system, sans-serif" font-size="72" fill="#e8e0d4" font-weight="700" letter-spacing="-2">Just Got <tspan fill="#2d8a7e">Real</tspan></text>
+  <text x="80" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#8a7f72">Live USPS &amp; UPS rates · One-click labels · Auto tracking</text>
+  <text x="80" y="560" font-family="monospace" font-size="14" fill="#8a7f72">rebirth.world/updates</text>
+  <circle cx="1080" cy="520" r="40" fill="none" stroke="#2d8a7e" stroke-width="2" opacity="0.3"/>
+  <circle cx="1100" cy="480" r="20" fill="none" stroke="#cc7e3a" stroke-width="1.5" opacity="0.2"/>
+</svg>
