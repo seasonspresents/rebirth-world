@@ -5,7 +5,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { purchaseLabel } from "@/lib/shippo";
 
 const labelSchema = z.object({
-  rateId: z.string().min(1, "Rate ID is required"),
+  rateId: z.string().optional(), // Optional — falls back to order's shippo_rate_id
 });
 
 export async function POST(
@@ -33,7 +33,7 @@ export async function POST(
   // Verify order exists
   const { data: existing } = await supabase
     .from("orders")
-    .select("id, shippo_transaction_id")
+    .select("id, shippo_transaction_id, shippo_rate_id")
     .eq("id", id)
     .single();
 
@@ -48,8 +48,17 @@ export async function POST(
     );
   }
 
+  // Use provided rateId or fall back to stored shippo_rate_id (one-click)
+  const rateId = parsed.data.rateId || existing.shippo_rate_id;
+  if (!rateId) {
+    return NextResponse.json(
+      { error: "No rate ID provided and no stored rate on order" },
+      { status: 400 }
+    );
+  }
+
   // Prevent purchasing "free shipping" rate IDs (these are internal markers, not real Shippo rates)
-  if (parsed.data.rateId === "free_shipping") {
+  if (rateId === "free_shipping") {
     return NextResponse.json(
       { error: "Invalid rate: cannot purchase free shipping rate" },
       { status: 400 }
@@ -57,7 +66,7 @@ export async function POST(
   }
 
   try {
-    const label = await purchaseLabel(parsed.data.rateId);
+    const label = await purchaseLabel(rateId);
 
     const { data: order, error: updateError } = await supabase
       .from("orders")

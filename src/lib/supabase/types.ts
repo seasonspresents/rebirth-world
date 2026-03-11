@@ -114,6 +114,7 @@ export interface Order {
   coupon_code: string | null;
   stripe_coupon_id: string | null;
   shippo_transaction_id: string | null;
+  shippo_rate_id: string | null;
   shippo_label_url: string | null;
   shipping_carrier: string | null;
   shipping_rate_amount: number | null; // cents
