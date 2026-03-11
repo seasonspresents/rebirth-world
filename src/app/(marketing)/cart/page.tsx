@@ -11,6 +11,7 @@ import { useCart } from "@/components/cart/cart-context";
 import { cartItemKey } from "@/lib/cart/types";
 import { formatPrice } from "@/lib/payments/constants";
 import { useState } from "react";
+import { ShippingEstimator } from "@/components/cart/shipping-estimator";
 
 export default function CartPage() {
   const { items, subtotal, updateQuantity, removeItem, clearCart } = useCart();
@@ -193,11 +194,8 @@ export default function CartPage() {
                   <span className="text-muted-foreground">Subtotal</span>
                   <span className="font-medium">{formatPrice(subtotal)}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Shipping</span>
-                  <span className="text-muted-foreground">
-                    Calculated at checkout
-                  </span>
+                <div className="border-t border-border pt-3 mt-1">
+                  <ShippingEstimator />
                 </div>
               </div>
 

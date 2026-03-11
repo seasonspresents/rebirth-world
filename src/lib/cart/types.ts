@@ -13,6 +13,7 @@ export interface CartItemData {
   currency: string;
   quantity: number;
   variant: string | null; // e.g. ring size
+  collection: string | null; // e.g. "skateboard-rings", "wedding-bands", "apparel"
 }
 
 /**
@@ -43,6 +44,7 @@ export function productToCartItem(
     currency: product.currency,
     quantity,
     variant,
+    collection: product.metadata.collection ?? null,
   };
 }
 
