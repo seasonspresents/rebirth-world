@@ -40,6 +40,9 @@ export default function CartPage() {
             stripePriceId: i.stripePriceId,
             quantity: i.quantity,
             variant: i.variant ?? null,
+            name: i.name,
+            price: i.price,
+            collection: i.collection ?? null,
           })),
         }),
       });
