@@ -33,16 +33,16 @@ export async function GET(
     );
   }
 
-  // Fetch order items for dynamic parcel sizing
+  // Fetch order items with collection for dynamic parcel sizing
   const { data: orderItems } = await supabase
     .from("order_items")
-    .select("quantity")
+    .select("quantity, collection")
     .eq("order_id", id);
 
   // Build items array for parcel sizing
   const items = orderItems?.map((item) => ({
     quantity: item.quantity,
-    collection: undefined, // Would be fetched from Stripe product metadata in production
+    collection: item.collection ?? undefined,
   })) || [];
 
   try {
