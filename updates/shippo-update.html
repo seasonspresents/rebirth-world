@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rebirth World — Shipping Update for Daniel</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0f0f0f;
+      --bg-card: #1a1a1a;
+      --bg-card-hover: #222;
+      --text: #e8e0d4;
+      --text-muted: #8a7f72;
+      --teal: #2d8a7e;
+      --teal-glow: rgba(45, 138, 126, 0.15);
+      --amber: #cc7e3a;
+      --amber-glow: rgba(204, 126, 58, 0.15);
+      --green: #4d7a4e;
+      --green-glow: rgba(77, 122, 78, 0.15);
+      --rose: #b87272;
+      --border: #2a2a2a;
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 60px 24px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--teal-glow);
+      border: 1px solid rgba(45, 138, 126, 0.3);
+      border-radius: 100px;
+      font-size: 13px;
+      font-family: 'DM Mono', monospace;
+      color: var(--teal);
+      margin-bottom: 32px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--teal);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+
+    .hero h1 span { color: var(--teal); }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 500px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards 0.6s;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 1s;
+    }
+
+    .scroll-hint span {
+      display: block;
+      width: 24px;
+      height: 40px;
+      border: 2px solid var(--text-muted);
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .scroll-hint span::after {
+      content: '';
+      width: 4px;
+      height: 8px;
+      background: var(--teal);
+      border-radius: 4px;
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: scrollDot 2s ease infinite;
+    }
+
+    /* ---- SECTIONS ---- */
+    section {
+      padding: 100px 0;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .section-label .line {
+      width: 24px;
+      height: 1px;
+      background: var(--text-muted);
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    h2 span { color: var(--teal); }
+
+    .subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+
+    /* ---- CARDS ---- */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .card-grid { grid-template-columns: 1fr 1fr; }
+      .card-grid .card-wide { grid-column: 1 / -1; }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: #333;
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon.teal { background: var(--teal-glow); }
+    .card-icon.amber { background: var(--amber-glow); }
+    .card-icon.green { background: var(--green-glow); }
+
+    .card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ---- FLOW ---- */
+    .flow {
+      position: relative;
+      padding-left: 48px;
+    }
+
+    .flow::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--teal), var(--amber), var(--green));
+      border-radius: 2px;
+    }
+
+    .flow-step {
+      position: relative;
+      padding: 0 0 48px 0;
+    }
+
+    .flow-step:last-child { padding-bottom: 0; }
+
+    .flow-dot {
+      position: absolute;
+      left: -48px;
+      top: 4px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      border: 2px solid var(--teal);
+      color: var(--teal);
+      transition: all 0.3s ease;
+    }
+
+    .flow-step:nth-child(2) .flow-dot { border-color: var(--amber); color: var(--amber); }
+    .flow-step:nth-child(3) .flow-dot { border-color: var(--teal); color: var(--teal); }
+    .flow-step:nth-child(4) .flow-dot { border-color: var(--green); color: var(--green); }
+    .flow-step:nth-child(5) .flow-dot { border-color: var(--amber); color: var(--amber); }
+
+    .flow-step h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .flow-step p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ---- RATE DEMO ---- */
+    .rate-demo {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-top: 32px;
+    }
+
+    .rate-demo-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    .rate-demo-header .route {
+      font-family: 'DM Mono', monospace;
+      color: var(--teal);
+      font-size: 13px;
+    }
+
+    .rate-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+
+    .rate-row:hover {
+      border-color: var(--teal);
+      background: var(--teal-glow);
+    }
+
+    .rate-row .carrier {
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    .rate-row .service {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-left: 8px;
+    }
+
+    .rate-row .price {
+      font-family: 'DM Mono', monospace;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--teal);
+    }
+
+    .rate-row .days {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-left: 12px;
+    }
+
+    .rate-row.free .price { color: var(--green); }
+
+    /* ---- QUESTIONS ---- */
+    .question-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .question-card:hover {
+      border-color: var(--amber);
+      background: var(--amber-glow);
+    }
+
+    .question-card .q {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .question-card .q .num {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--amber);
+      padding-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .question-card .context {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      padding-left: 32px;
+      line-height: 1.6;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .question-card.open .context {
+      max-height: 200px;
+    }
+
+    /* ---- STATUS BAR ---- */
+    .status-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-top: 32px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .status-row:last-child { border-bottom: none; }
+
+    .status-row .label { color: var(--text-muted); }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+    }
+
+    .badge.done {
+      background: var(--green-glow);
+      color: var(--green);
+      border: 1px solid rgba(77, 122, 78, 0.3);
+    }
+
+    .badge.pending {
+      background: var(--amber-glow);
+      color: var(--amber);
+      border: 1px solid rgba(204, 126, 58, 0.3);
+    }
+
+    .badge .dot-sm {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* ---- FOOTER ---- */
+    .footer {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .footer .logo {
+      font-size: 14px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    /* ---- ANIMATIONS ---- */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    @keyframes scrollDot {
+      0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      100% { transform: translateX(-50%) translateY(16px); opacity: 0; }
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 640px) {
+      .hero { padding: 40px 24px; min-height: 90vh; }
+      section { padding: 60px 0; }
+      .rate-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .rate-row .price { margin-top: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Update — March 2026
+    </div>
+    <h1>Your Shipping<br>Just Got <span>Real</span></h1>
+    <p>Here's what we built for rebirth.world and what it means for your orders, your customers, and your workflow.</p>
+    <div class="scroll-hint"><span></span></div>
+  </div>
+
+  <!-- WHAT IS SHIPPO -->
+  <section id="what">
+    <div class="container">
+      <div class="section-label"><span class="line"></span> The Basics</div>
+      <h2>What is <span>Shippo</span>?</h2>
+      <p class="subtitle">Think of Shippo as your shipping command center. Instead of going to the USPS or UPS website every time you need to ship a ring, everything happens right inside your Rebirth World dashboard.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon teal">&#x1F4E6;</div>
+          <h3>Real Carrier Rates</h3>
+          <p>Your customers see actual USPS, UPS, and FedEx prices at checkout — not made-up numbers. The price they pay is the real cost to ship from Haleiwa.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon amber">&#x1F3F7;</div>
+          <h3>Print Labels From Your Dashboard</h3>
+          <p>When an order comes in, you click one button to buy a shipping label. It gives you a PDF — print it, stick it on the box, drop it off.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon green">&#x1F4CD;</div>
+          <h3>Automatic Tracking Updates</h3>
+          <p>Once a package ships, Shippo tells your website when it's in transit, out for delivery, or delivered. Your customer sees this in real-time on their order page.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon teal">&#x2705;</div>
+          <h3>Smart Packaging</h3>
+          <p>The system knows a skateboard ring is tiny and an apparel order is bigger. It picks the right box size so you're never overpaying for shipping.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="flow">
+    <div class="container">
+      <div class="section-label"><span class="line"></span> The Flow</div>
+      <h2>How a <span>Shipment</span> Works Now</h2>
+      <p class="subtitle">From the moment a customer checks out to the moment their ring arrives — here's what happens behind the scenes.</p>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot">1</div>
+          <h3>Customer Adds to Cart</h3>
+          <p>They pick their ring, choose a size, maybe add an engraving. On the cart page, they can enter their zip code and instantly see what shipping will cost them — USPS Ground for $5.89, Priority for $14, etc.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">2</div>
+          <h3>They Check Out</h3>
+          <p>At checkout (Stripe), they pick their preferred shipping speed. If their order is $100+, they get free standard shipping automatically. They pay, and the order lands in your dashboard.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">3</div>
+          <h3>You Buy a Label (One Click)</h3>
+          <p>In your admin dashboard, open the order. Click "Get Rates" to see what carriers are charging. Click "Buy Label" — Shippo purchases the label and gives you a PDF with the barcode, tracking number, everything.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">4</div>
+          <h3>You Ship It</h3>
+          <p>Print the label, put it on the package, drop it at USPS or schedule a pickup. Click "Fulfill Order" in the dashboard — your customer gets an email with their tracking number.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">5</div>
+          <h3>Tracking Updates Automatically</h3>
+          <p>Shippo watches the package. When it's in transit, delivered, or if there's a problem — your website knows. The customer's order page updates in real-time. You don't have to do anything.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE RATES DEMO -->
+  <section id="rates">
+    <div class="container">
+      <div class="section-label"><span class="line"></span> Real Numbers</div>
+      <h2>What Customers <span>Actually See</span></h2>
+      <p class="subtitle">These are real rates from Shippo right now, for shipping a skateboard ring from your workshop to San Francisco.</p>
+
+      <div class="rate-demo">
+        <div class="rate-demo-header">
+          <span>&#x1F4E6;</span>
+          Skateboard Ring (6" x 4" x 2", 4oz)
+          <span class="route">Haleiwa, HI &rarr; San Francisco, CA</span>
+        </div>
+
+        <div class="rate-row free">
+          <div>
+            <span class="carrier">Rebirth World</span>
+            <span class="service">Free Standard Shipping</span>
+          </div>
+          <div>
+            <span class="price">FREE</span>
+            <span class="days">5-7 days</span>
+          </div>
+        </div>
+        <div class="rate-row">
+          <div>
+            <span class="carrier">USPS</span>
+            <span class="service">Ground Advantage</span>
+          </div>
+          <div>
+            <span class="price">$5.89</span>
+            <span class="days">5 days</span>
+          </div>
+        </div>
+        <div class="rate-row">
+          <div>
+            <span class="carrier">UPS</span>
+            <span class="service">Ground</span>
+          </div>
+          <div>
+            <span class="price">$12.60</span>
+            <span class="days">3 days</span>
+          </div>
+        </div>
+        <div class="rate-row">
+          <div>
+            <span class="carrier">USPS</span>
+            <span class="service">Priority Mail</span>
+          </div>
+          <div>
+            <span class="price">$14.09</span>
+            <span class="days">3 days</span>
+          </div>
+        </div>
+        <div class="rate-row">
+          <div>
+            <span class="carrier">USPS</span>
+            <span class="service">Priority Mail Express</span>
+          </div>
+          <div>
+            <span class="price">$44.10</span>
+            <span class="days">1 day</span>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: 16px; font-size: 13px; color: var(--text-muted); font-family: 'DM Mono', monospace;">
+        * Free shipping shown when order is $100+. Rates vary by destination.
+      </p>
+    </div>
+  </section>
+
+  <!-- WHAT CHANGES FOR DANIEL -->
+  <section id="changes">
+    <div class="container">
+      <div class="section-label"><span class="line"></span> For You</div>
+      <h2>What Changes in <span>Your Workflow</span></h2>
+      <p class="subtitle">The short version: less guessing, less manual work, happier customers.</p>
+
+      <div class="card-grid">
+        <div class="card card-wide">
+          <div class="card-icon green">&#x1F3AF;</div>
+          <h3>Before vs. After</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px;">
+            <div>
+              <p style="font-size: 13px; font-family: 'DM Mono', monospace; color: var(--rose); margin-bottom: 8px;">BEFORE</p>
+              <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
+                Flat shipping rates ($0 or $15)<br>
+                No real carrier pricing<br>
+                Manual tracking number entry<br>
+                No automatic status updates<br>
+                Customers had to ask "where's my order?"
+              </p>
+            </div>
+            <div>
+              <p style="font-size: 13px; font-family: 'DM Mono', monospace; color: var(--green); margin-bottom: 8px;">AFTER</p>
+              <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
+                Real USPS/UPS rates at checkout<br>
+                One-click label purchase<br>
+                Tracking auto-populates<br>
+                Status updates itself (transit, delivered)<br>
+                Customers see tracking on their order page
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon teal">&#x1F4B0;</div>
+          <h3>You Don't Lose Money on Shipping</h3>
+          <p>Customers pay the actual carrier rate. No more eating the cost of express shipping on a $25 ring because we had a flat rate.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-icon amber">&#x23F1;</div>
+          <h3>Fulfillment Takes 2 Minutes</h3>
+          <p>Open order &rarr; Buy label &rarr; Print &rarr; Ship &rarr; Done. The tracking number, email to customer, and status update all happen automatically.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECT STATUS -->
+  <section id="status">
+    <div class="container">
+      <div class="section-label"><span class="line"></span> Status</div>
+      <h2>Where We're <span>At</span></h2>
+      <p class="subtitle">Everything is built and committed. Here's the breakdown.</p>
+
+      <div class="status-bar">
+        <div class="status-row">
+          <span class="label">Shippo API connection</span>
+          <span class="badge done"><span class="dot-sm"></span> Done</span>
+        </div>
+        <div class="status-row">
+          <span class="label">Real shipping rates at checkout</span>
+          <span class="badge done"><span class="dot-sm"></span> Done</span>
+        </div>
+        <div class="status-row">
+          <span class="label">Cart page rate estimator</span>
+          <span class="badge done"><span class="dot-sm"></span> Done</span>
+        </div>
+        <div class="status-row">
+          <span class="label">Label purchase from dashboard</span>
+          <span class="badge done"><span class="dot-sm"></span> Done</span>
+        </div>
+        <div class="status-row">
+          <span class="label">Tracking webhook (auto-updates)</span>
+          <span class="badge done"><span class="dot-sm"></span> Done</span>
+        </div>
+        <div class="status-row">
+          <span class="label">Shipping notification email</span>
+          <span class="badge done"><span class="dot-sm"></span> Done</span>
+        </div>
+        <div class="status-row">
+          <span class="label">Smart parcel sizing</span>
+          <span class="badge done"><span class="dot-sm"></span> Done</span>
+        </div>
+        <div class="status-row">
+          <span class="label">Switch to live Shippo key</span>
+          <span class="badge pending"><span class="dot-sm"></span> Before launch</span>
+        </div>
+        <div class="status-row">
+          <span class="label">Register webhook URL in Shippo</span>
+          <span class="badge pending"><span class="dot-sm"></span> Before launch</span>
+        </div>
+        <div class="status-row">
+          <span class="label">End-to-end test (real checkout)</span>
+          <span class="badge pending"><span class="dot-sm"></span> Before launch</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUESTIONS FOR DANIEL -->
+  <section id="questions">
+    <div class="container">
+      <div class="section-label"><span class="line"></span> Need Your Input</div>
+      <h2>Questions for <span>You</span></h2>
+      <p class="subtitle">A few things we need your call on before we flip this live. Tap any question to see why it matters.</p>
+
+      <div class="question-card" onclick="this.classList.toggle('open')">
+        <div class="q">
+          <span class="num">01</span>
+          <span>Is $100 the right threshold for free shipping?</span>
+        </div>
+        <div class="context">Right now, orders of $100+ get free standard shipping automatically. This means a customer buying 4 skateboard rings ($100) ships free, but 3 rings ($75) doesn't. We can change this to any amount — $75, $50, or remove it entirely.</div>
+      </div>
+
+      <div class="question-card" onclick="this.classList.toggle('open')">
+        <div class="q">
+          <span class="num">02</span>
+          <span>Do you want to offer international shipping at launch?</span>
+        </div>
+        <div class="context">The system supports it — we have customs declarations built in for shipments outside the US. Currently enabled for CA, GB, AU, NZ. International rates will be higher (USPS Priority International, etc). Do you want this on from day one or start US-only?</div>
+      </div>
+
+      <div class="question-card" onclick="this.classList.toggle('open')">
+        <div class="q">
+          <span class="num">03</span>
+          <span>What carriers do you want to show customers?</span>
+        </div>
+        <div class="context">Right now we show USPS and UPS options. We can filter to USPS-only if you prefer (simpler for customers, and USPS is usually cheapest for small items from Hawaii). Or we can add FedEx too. Your call.</div>
+      </div>
+
+      <div class="question-card" onclick="this.classList.toggle('open')">
+        <div class="q">
+          <span class="num">04</span>
+          <span>Are the product weights accurate enough?</span>
+        </div>
+        <div class="context">We're using 4oz for rings and 8oz for apparel as defaults. If the actual weights are different, shipping rates could be slightly off. Do you know the real weights? Even a rough number helps — we can update them in Stripe product metadata.</div>
+      </div>
+
+      <div class="question-card" onclick="this.classList.toggle('open')">
+        <div class="q">
+          <span class="num">05</span>
+          <span>Do you have packaging supplies ready?</span>
+        </div>
+        <div class="context">The system assumes you're using small jewelry boxes (6" x 4" x 2") for rings and poly mailers for apparel. If you're using different packaging, let us know the dimensions so the rates are accurate. Also — do you have a label printer or are you printing on regular paper?</div>
+      </div>
+
+      <div class="question-card" onclick="this.classList.toggle('open')">
+        <div class="q">
+          <span class="num">06</span>
+          <span>Want USPS pickup from your workshop, or drop-off?</span>
+        </div>
+        <div class="context">USPS offers free package pickup if you schedule it through their website. Otherwise, you'd drop packages at the Haleiwa post office. This doesn't change anything in the system — just something to plan for your workflow.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="logo">Rebirth World</div>
+    <p>Embrace Change</p>
+  </div>
+
+  <script>
+    // Scroll reveal
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    sections.forEach(s => observer.observe(s));
+
+    // Stagger card animations
+    document.querySelectorAll('.card, .flow-step, .question-card, .rate-row').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = `opacity 0.5s ease ${i * 0.08}s, transform 0.5s ease ${i * 0.08}s, background 0.3s ease, border-color 0.3s ease`;
+
+      const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1 });
+
+      cardObserver.observe(el);
+    });
+  </script>
+
+</body>
+</html>
