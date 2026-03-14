@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText } from "@/lib/gsap/register";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ export function BrandHero() {
   const watermarkRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -29,7 +31,6 @@ export function BrandHero() {
       ).matches;
 
       if (prefersReducedMotion) {
-        // Show everything immediately
         gsap.set(
           [
             eyebrowRef.current,
@@ -37,6 +38,7 @@ export function BrandHero() {
             subtextRef.current,
             ctaRef.current,
             scrollIndicatorRef.current,
+            imageRef.current,
           ],
           { opacity: 1, y: 0 }
         );
@@ -45,14 +47,19 @@ export function BrandHero() {
 
       const tl = gsap.timeline();
 
-      // Eyebrow fade in
+      tl.fromTo(
+        imageRef.current,
+        { opacity: 0, scale: 1.05 },
+        { opacity: 1, scale: 1, duration: 1, ease: "power3.out" }
+      );
+
       tl.fromTo(
         eyebrowRef.current,
         { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }
+        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+        "-=0.6"
       );
 
-      // SplitText headline — char-by-char with rotation
       const split = SplitText.create(headline, { type: "chars" });
       tl.fromTo(
         split.chars,
@@ -68,7 +75,6 @@ export function BrandHero() {
         "-=0.3"
       );
 
-      // Subtitle
       tl.fromTo(
         subtextRef.current,
         { opacity: 0, y: 30 },
@@ -76,7 +82,6 @@ export function BrandHero() {
         "-=0.4"
       );
 
-      // CTA button
       tl.fromTo(
         ctaRef.current,
         { opacity: 0, y: 30 },
@@ -84,7 +89,6 @@ export function BrandHero() {
         "-=0.3"
       );
 
-      // Scroll indicator fade in
       tl.fromTo(
         scrollIndicatorRef.current,
         { opacity: 0 },
@@ -92,7 +96,6 @@ export function BrandHero() {
         "-=0.2"
       );
 
-      // Pin the hero for 0.5x viewport scroll distance
       gsap.to(section, {
         scrollTrigger: {
           trigger: section,
@@ -104,7 +107,6 @@ export function BrandHero() {
         },
       });
 
-      // Watermark drifts up during the pin
       if (watermarkRef.current) {
         gsap.to(watermarkRef.current, {
           y: -100,
@@ -118,7 +120,6 @@ export function BrandHero() {
         });
       }
 
-      // Scroll indicator fades out on scroll
       if (scrollIndicatorRef.current) {
         gsap.to(scrollIndicatorRef.current, {
           autoAlpha: 0,
@@ -143,9 +144,8 @@ export function BrandHero() {
     <section
       ref={sectionRef}
       data-section-theme="warm"
-      className="section-warm bg-grain relative flex min-h-screen items-center overflow-hidden px-6"
+      className="section-warm bg-grain relative flex min-h-screen items-end overflow-hidden md:items-center"
     >
-      {/* Watermark */}
       <div
         ref={watermarkRef}
         className="pointer-events-none absolute inset-0 flex items-center justify-center select-none"
@@ -156,7 +156,6 @@ export function BrandHero() {
         </span>
       </div>
 
-      {/* Teal particles */}
       <ParallaxLayer speed={-0.3} className="absolute inset-0">
         <Particles
           className="pointer-events-none absolute inset-0"
@@ -168,44 +167,70 @@ export function BrandHero() {
         />
       </ParallaxLayer>
 
-      <ParallaxLayer speed={-0.1} className="relative z-10 mx-auto max-w-[1200px]">
-        <p
-          ref={eyebrowRef}
-          className="mb-6 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary opacity-0 font-[family-name:var(--font-dm-mono)]"
-        >
-          Handcrafted from recycled skateboards
-        </p>
+      <div className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 md:grid-cols-2 md:gap-12 md:px-6 lg:gap-16">
+        <div className="order-2 flex flex-col justify-center px-6 pb-12 md:order-1 md:px-0 md:py-12">
+          <p
+            ref={eyebrowRef}
+            className="mb-6 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary opacity-0 font-[family-name:var(--font-dm-mono)]"
+          >
+            Handcrafted from recycled skateboards
+          </p>
 
-        <h1
-          ref={headlineRef}
-          className="text-mega max-w-[14ch] opacity-0"
-          style={{ perspective: "600px" }}
-        >
-          Broken boards,{" "}
-          <em className="not-italic text-primary">reborn</em>
-        </h1>
+          <h1
+            ref={headlineRef}
+            className="text-mega max-w-[14ch] opacity-0"
+            style={{ perspective: "600px" }}
+          >
+            Broken boards,{" "}
+            <em className="not-italic text-primary">reborn</em>
+          </h1>
 
-        <p
-          ref={subtextRef}
-          className="mt-8 max-w-[48ch] text-lg leading-relaxed text-muted-foreground opacity-0 md:text-xl"
-        >
-          Local skaters donate their broken decks. Daniel shapes them by hand in
-          his North Shore workshop — seven layers of maple, sanded, sealed, and
-          turned into rings you&apos;ll never want to take off.
-        </p>
+          <p
+            ref={subtextRef}
+            className="mt-8 max-w-[48ch] text-lg leading-relaxed text-muted-foreground opacity-0 md:text-xl"
+          >
+            Local skaters donate their broken decks. Daniel shapes them by hand
+            in his North Shore workshop — seven layers of maple, sanded, sealed,
+            and turned into rings you&apos;ll never want to take off.
+          </p>
 
-        <div ref={ctaRef} className="mt-12 opacity-0">
-          <Magnetic strength={0.25}>
-            <Button asChild className="px-8 py-4 text-base">
-              <Link href="/shop">
-                Browse the collection <span className="ml-1">&rarr;</span>
-              </Link>
-            </Button>
-          </Magnetic>
+          <div ref={ctaRef} className="mt-12 flex items-center gap-4 opacity-0">
+            <Magnetic strength={0.25}>
+              <Button asChild className="px-8 py-4 text-base">
+                <Link href="/shop">Shop Rings</Link>
+              </Button>
+            </Magnetic>
+            <Magnetic strength={0.15}>
+              <Button asChild variant="ghost" className="px-6 py-4 text-base">
+                <Link href="/our-story">
+                  Our Story <span className="ml-1">&rarr;</span>
+                </Link>
+              </Button>
+            </Magnetic>
+          </div>
         </div>
-      </ParallaxLayer>
 
-      {/* Scroll indicator */}
+        <div className="order-1 md:order-2">
+          <ParallaxLayer speed={-0.1} className="h-full">
+            <div
+              ref={imageRef}
+              className="relative h-[60vh] w-full opacity-0 md:h-full md:min-h-[600px]"
+            >
+              <Image
+                src="/images/hero-ring.jpg"
+                alt="Handcrafted recycled skateboard ring"
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover md:rounded-2xl"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-grain opacity-30 md:rounded-2xl" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[var(--section-bg)] to-transparent md:hidden" />
+            </div>
+          </ParallaxLayer>
+        </div>
+      </div>
+
       <div
         ref={scrollIndicatorRef}
         className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 opacity-0"
