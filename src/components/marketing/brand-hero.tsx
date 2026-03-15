@@ -10,7 +10,11 @@ import { Particles } from "@/components/ui/particles";
 import { Magnetic } from "@/components/ui/magnetic";
 import { ParallaxLayer } from "@/components/ui/parallax-layer";
 
-export function BrandHero() {
+interface BrandHeroProps {
+  heroImage?: string;
+}
+
+export function BrandHero({ heroImage }: BrandHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtextRef = useRef<HTMLParagraphElement>(null);
@@ -217,7 +221,7 @@ export function BrandHero() {
               className="relative h-[60vh] w-full opacity-0 md:h-full md:min-h-[600px]"
             >
               <Image
-                src="/images/hero-ring.jpg"
+                src={heroImage || "/images/hero-ring.jpg"}
                 alt="Handcrafted recycled skateboard ring"
                 fill
                 priority

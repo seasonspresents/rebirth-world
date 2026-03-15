@@ -1,6 +1,7 @@
 import { BrandHero } from "@/components/marketing/brand-hero";
 import { SocialProofBar } from "@/components/marketing/social-proof-bar";
 import { FeaturedProducts } from "@/components/marketing/featured-products";
+import { getFeaturedProducts } from "@/lib/payments/products";
 import { CraftStory } from "@/components/marketing/craft-story";
 import { CollectionsGateway } from "@/components/marketing/collections-gateway";
 import { ScrollRingSceneLazy } from "@/components/3d/scroll-ring-scene-lazy";
@@ -43,7 +44,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  const featured = await getFeaturedProducts();
+  const heroImage = featured[0]?.images[0];
   const jsonLd: WithContext<WebSite> = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -63,7 +66,7 @@ export default function Home() {
       />
       <OrganizationJsonLd />
       <div>
-        <BrandHero />
+        <BrandHero heroImage={heroImage} />
         <SocialProofBar />
         <FeaturedProducts />
         <CraftStory />
