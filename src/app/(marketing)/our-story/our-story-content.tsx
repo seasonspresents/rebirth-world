@@ -88,7 +88,7 @@ export function OurStoryContent() {
       </section>
 
       {/* The Broken Board Moment */}
-      <section className="bg-card px-6 py-20 md:py-32">
+      <section className="bg-card text-card-foreground px-6 py-20 md:py-32">
         <div className="mx-auto max-w-[1000px]">
           <motion.div {...fadeUp}>
             <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">
@@ -163,7 +163,7 @@ export function OurStoryContent() {
       </section>
 
       {/* Wedding Bands */}
-      <section className="bg-card px-6 py-20 md:py-32">
+      <section className="bg-card text-card-foreground px-6 py-20 md:py-32">
         <div className="mx-auto max-w-[1000px]">
           <motion.div {...fadeUp}>
             <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70 font-[family-name:var(--font-dm-mono)]">

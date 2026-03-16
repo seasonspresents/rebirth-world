@@ -57,7 +57,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         >
         <Link
           href={`/shop/${product.slug}`}
-          className="group block overflow-hidden rounded-xl border border-border bg-card transition-shadow duration-300 hover:shadow-lg"
+          className="group block overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-shadow duration-300 hover:shadow-lg"
         >
           {/* Image container */}
           <div className="relative aspect-square overflow-hidden bg-muted">
@@ -104,7 +104,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: hovered ? 1 : 0 }}
               transition={{ duration: 0.2 }}
-              className="absolute inset-x-3 bottom-3 z-10 flex items-center justify-center gap-2 rounded-lg bg-background/90 px-4 py-2.5 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-background"
+              className="absolute inset-x-3 bottom-3 z-10 flex items-center justify-center gap-2 rounded-lg bg-background/90 text-foreground px-4 py-2.5 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-background"
               onClick={(e) => {
                 e.preventDefault();
                 setQuickViewOpen(true);

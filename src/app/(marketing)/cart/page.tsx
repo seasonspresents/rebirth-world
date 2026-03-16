@@ -189,7 +189,7 @@ export default function CartPage() {
 
           {/* Order summary */}
           <div className="lg:sticky lg:top-24">
-            <div className="rounded-xl border border-border bg-card p-6">
+            <div className="rounded-xl border border-border bg-card text-card-foreground p-6">
               <h2 className="text-lg font-semibold">Order Summary</h2>
 
               <div className="mt-4 space-y-2 text-sm">
