@@ -55,7 +55,7 @@ export function StickyAddToCart({ product, targetRef }: StickyAddToCartProps) {
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
           transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-          className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md md:hidden"
+          className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 text-foreground px-4 py-3 backdrop-blur-md md:hidden"
         >
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">

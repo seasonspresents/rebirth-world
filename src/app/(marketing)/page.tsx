@@ -1,11 +1,14 @@
 import { BrandHero } from "@/components/marketing/brand-hero";
+import { SocialProofBar } from "@/components/marketing/social-proof-bar";
 import { FeaturedProducts } from "@/components/marketing/featured-products";
+import { getFeaturedProducts } from "@/lib/payments/products";
 import { CraftStory } from "@/components/marketing/craft-story";
-import { ValueProps } from "@/components/marketing/value-props";
+import { CollectionsGateway } from "@/components/marketing/collections-gateway";
+import { ScrollRingSceneLazy } from "@/components/3d/scroll-ring-scene-lazy";
 import { Testimonials } from "@/components/marketing/testimonials";
 import { FAQ } from "@/components/marketing/faq";
 import { NewsletterCTA } from "@/components/marketing/newsletter-cta";
-import { ScrollRingSceneLazy } from "@/components/3d/scroll-ring-scene-lazy";
+import { OrganizationJsonLd } from "@/components/seo/json-ld";
 import { Metadata } from "next";
 import type { WebSite, WithContext } from "schema-dts";
 
@@ -41,7 +44,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  const featured = await getFeaturedProducts();
+  const heroImage = featured[0]?.images[0];
   const jsonLd: WithContext<WebSite> = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -59,12 +64,14 @@ export default function Home() {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
+      <OrganizationJsonLd />
       <div>
-        <BrandHero />
+        <BrandHero heroImage={heroImage} />
+        <SocialProofBar />
         <FeaturedProducts />
         <CraftStory />
+        <CollectionsGateway />
         <ScrollRingSceneLazy />
-        <ValueProps />
         <Testimonials />
         <FAQ />
         <NewsletterCTA />

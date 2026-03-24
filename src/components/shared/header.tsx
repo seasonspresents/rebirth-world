@@ -65,7 +65,7 @@ export function Header() {
       <div
         className={cn(
           "backdrop-blur-[14px] transition-colors duration-300",
-          scrolled ? "bg-background/92" : "bg-background/70"
+          scrolled ? "bg-background/92 text-foreground" : "bg-background/70 text-foreground"
         )}
       >
         <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between px-6">

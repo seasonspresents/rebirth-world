@@ -58,9 +58,9 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         >
           <Link
             href={`/shop/${product.slug}`}
-            className="group block"
+            className="group block overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-shadow duration-300 hover:shadow-lg"
           >
-            {/* Image — 3:4 portrait aspect ratio per luxury PRD */}
+            {/* Image — 3:4 portrait aspect ratio */}
             <div className="relative aspect-product overflow-hidden bg-muted/30">
               {product.images[0] ? (
                 <>
@@ -72,7 +72,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     style={{ viewTransitionName: `product-${product.slug}` }}
                   />
-                  {/* Hover image crossfade — luxury standard */}
+                  {/* Hover image crossfade */}
                   {product.images[1] && (
                     <Image
                       src={product.images[1]}
@@ -90,7 +90,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                 </div>
               )}
 
-              {/* Badge — minimal, editorial */}
+              {/* Badge */}
               {badgeText && (
                 <Badge
                   variant={isOnSale ? "destructive" : "secondary"}
@@ -100,24 +100,24 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                 </Badge>
               )}
 
-              {/* Quick View — appears on hover with luxury motion */}
+              {/* Quick View */}
               <motion.button
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
                 transition={{ duration: 0.4, ease: luxuryEase }}
-                className="absolute inset-x-4 bottom-4 z-10 flex items-center justify-center gap-2 bg-foreground/90 px-4 py-3 text-xs font-medium uppercase tracking-widest text-background backdrop-blur-sm transition-colors hover:bg-foreground"
+                className="absolute inset-x-4 bottom-4 z-10 flex items-center justify-center gap-2 rounded-lg bg-background/90 px-4 py-2.5 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-background"
                 onClick={(e) => {
                   e.preventDefault();
                   setQuickViewOpen(true);
                 }}
               >
-                <Eye className="size-3.5" />
+                <Eye className="size-4" />
                 Quick View
               </motion.button>
             </div>
 
-            {/* Product info — minimal, editorial typography */}
-            <div className="mt-4 space-y-1">
+            {/* Product info — editorial */}
+            <div className="mt-4 space-y-1 p-4">
               {product.metadata.collection && (
                 <p className="label-luxury text-muted-foreground">
                   {product.metadata.collection.replace(/-/g, " ")}
@@ -126,6 +126,11 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               <h3 className="text-sm font-medium tracking-wide font-[family-name:var(--font-display)]">
                 {product.name}
               </h3>
+              {product.metadata.subtitle && (
+                <p className="line-clamp-1 text-xs text-muted-foreground">
+                  {product.metadata.subtitle}
+                </p>
+              )}
               <div className="flex items-center gap-2">
                 <p className="text-sm font-[family-name:var(--font-dm-mono)] text-muted-foreground">
                   {formatPrice(product.price, product.currency)}

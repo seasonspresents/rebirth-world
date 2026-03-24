@@ -6,7 +6,7 @@ export function ProductGridSkeleton({ count = 6 }: { count?: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="overflow-hidden rounded-xl border border-border bg-card"
+          className="overflow-hidden rounded-xl border border-border bg-card text-card-foreground"
         >
           <Skeleton className="aspect-square w-full rounded-none" />
           <div className="p-4 space-y-2">

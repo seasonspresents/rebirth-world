@@ -115,7 +115,7 @@ export default async function OrderSuccessPage({
             </p>
 
             {/* Order summary card */}
-            <div className="mt-10 rounded-xl border border-border bg-card p-6 text-left">
+            <div className="mt-10 rounded-xl border border-border bg-card text-card-foreground p-6 text-left">
               <h2 className="text-lg font-semibold">Order Summary</h2>
 
               {/* Items */}
@@ -193,7 +193,7 @@ export default async function OrderSuccessPage({
             </div>
 
             {/* Daniel's personal note */}
-            <div className="mt-8 rounded-xl border border-border bg-card p-6 text-left">
+            <div className="mt-8 rounded-xl border border-border bg-card text-card-foreground p-6 text-left">
               <p className="text-sm leading-relaxed text-muted-foreground">
                 &ldquo;Every ring is made by hand in my North Shore workshop.
                 Your order means the world to me — I can&apos;t wait for you to

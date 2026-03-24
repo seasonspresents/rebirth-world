@@ -1,640 +1,797 @@
-# Rebirth World — 2026 Redesign PRD
+# REBIRTH_2026_REDESIGN_PRD.md
 
-> "I looked at a snapped deck one day and saw something most people would throw away. I saw a ring."
-> — Daniel Malzl, Founder
-
----
-
-## Executive Summary
-
-This PRD defines the transformation of rebirth.world from a well-built e-commerce store into an **award-worthy editorial brand experience** that converts. The site must feel like Daniel — handmade, warm, personal, artistic, spiritual, and rebellious against corporate sameness.
-
-**The north star:** A 23-year-old eco-conscious traveler lands on this site and thinks *"this brand gets me"* within 3 seconds, then spends 5 minutes reading Daniel's story before they even look at the price.
-
-**Design philosophy:** The site should feel like a **surf magazine meets a travel journal meets an independent record label** — not like a Shopify template with nice fonts.
+> **Status:** Draft
+> **Author:** OpenClaw
+> **Created:** 2026-03-13
+> **Repo:** `/Users/admin/.openclaw/workspace/rebirth-world/`
+> **Live:** https://rebirth.world
 
 ---
 
-## Part 1: Brand Foundation
+## 1. Executive Summary
 
-### 1.1 Who Is Daniel Malzl?
+Rebirth World has a production-grade foundation: 62 pages, 70+ components, Stripe checkout, Shippo shipping, Supabase auth, 3D ring viewer, GSAP/Framer Motion animation system, and a cohesive warm-earth design system. The conversion from Sabo boilerplate is complete and operational.
 
-- Skateboarder, jeweler, traveler, founder
-- 8 years in business (since November 2016)
-- Based in Mapleton, Utah (workshop)
-- Served a mission in Guatemala — changed his life
-- Traveled Latin America with a personal skateboard (Guatemala → Costa Rica → Colombia → Peru → Chile)
-- Son of Austrian master jeweler Christoph Malzl (trained at Koppenwallner's, Salzburg)
-- Known as "The Rebirth Guy"
-- Signs off: "With love — Daniel"
-- Community: "Rebirth Fam"
+This PRD defines the **2026 visual and functional redesign** — evolving the site from "working storefront" to "brand experience platform" that supports three growth vectors:
 
-### 1.2 Brand Philosophy
+1. **Wedding band collection launch** — premium price point ($75–$200+), dedicated experience
+2. **Community & content flywheel** — UGC, reviews, editorial content, social proof at scale
+3. **Conversion optimization** — reducing friction in the purchase funnel, improving mobile experience, adding personalization
 
-The name Rebirth represents powerful change we embrace through growth, challenges, and experiences.
-
-**Core principles (from the Rebirth Frequency crewneck):**
-- **A1: Embrace the Chaos** — Guatemala 2022, leaving business behind to serve, trusting uncertainty
-- **A2: Everything You Need Is Already Here** — Lake Atitlán, gratitude, the puzzle pieces already connected
-- **B1: Always Connected** — Peru, Machu Picchu, Carlos: "you can never be too connected or less connected — you ARE always connected"
-- **B2: Inner Echoes** — Trust your intuition, the inner echoes that guide you
-
-**Wrap text:** *"Bless the places in you that are breaking, embrace the rebirth of what is blooming within you."*
-
-### 1.3 Target Customer Avatar
-
-- **Age:** 18-30
-- **Identity:** Eco-conscious, outdoorsy, creative, values-driven
-- **Archetype:** "23-year-old traveler who is eco-conscious, outdoorsy, and has love for positive and meaningful growth/experiences"
-- **Goal:** Become the better and more conscious version of themselves
-- **Dream:** Solo travel around the world, embracing the beauty of art and other cultures
-- **Buying trigger:** Connecting with the story behind a product, wanting to make a difference
-- **Key insight:** Many are first-time jewelry buyers. "Some people's first ring is a Rebirth Ring because of the story and message."
-
-### 1.4 Brand Voice
-
-| Do | Don't |
-|----|-------|
-| First-person, Daniel's actual voice | Corporate "we believe" language |
-| Specific details (seven layers, CA glue, Machu Picchu) | Generic "premium handcrafted artisanal" |
-| Short, honest sentences | Marketing fluff |
-| "With love — Daniel" warmth | "Subscribe to our newsletter" coldness |
-| "Broken boards, reborn" directness | "Sustainable luxury fashion" buzzwords |
-| Philosophical without pretension | Preachy sustainability lectures |
-| "Embrace Change" as lived experience | "Embrace Change" as empty tagline |
+The redesign preserves the existing architecture and tech stack. No framework migrations. No database rewrites. This is a **design-layer evolution** on top of a solid engineering foundation.
 
 ---
 
-## Part 2: Design Direction
+## 2. Goals & Success Metrics
 
-### 2.1 Visual Identity — "Analog Soul, Digital Craft"
+### Primary Goals
 
-The site should feel like it was designed by someone who makes things with their hands, not someone who drags widgets in a page builder.
+| Goal | Metric | Target |
+|------|--------|--------|
+| Increase conversion rate | Checkout completions / sessions | 3.5% → 5.5% |
+| Launch wedding band collection | Collection pages live, first 10 orders | By end of Q2 2026 |
+| Grow average order value | AOV | $35 → $65 |
+| Build social proof engine | Reviews collected per month | 20+ |
+| Improve mobile experience | Mobile conversion parity with desktop | Within 15% |
 
-**Key aesthetic pillars:**
+### Non-Goals
 
-1. **Handwritten & Hand-drawn Elements**
-   - Handwritten annotations alongside clean typography (like Daniel's thank-you cards)
-   - Hand-drawn SVG underlines, circles, arrows — not CSS borders
-   - Stamp/sticker-like badges scattered with slight rotation (±2-5°)
-   - "Scratchy" texture overlays on select elements (like skateboard grip tape)
-
-2. **Collage & Sticker Aesthetic**
-   - Product badges that look like vinyl stickers ("Handmade in Utah", "100% Recycled", "Free Shipping")
-   - Tape/washi-tape visual holding photos to the page
-   - Scattered mini-elements: pressed flowers, small skateboard icons, lotus symbols
-   - Think: physical moodboard pinned to a workshop wall
-
-3. **Organic Shapes & Movement**
-   - No hard rectangular section dividers — use organic blob/wave SVG dividers
-   - Slight random rotation on product cards (±1-2°) so they feel "placed by hand"
-   - Elements that feel imperfect on purpose — asymmetric layouts, hand-placed feeling
-
-4. **Warm Film Photography Grain**
-   - Keep and enhance the existing grain texture system
-   - All photography should feel like 35mm film (warm tones, natural light, golden hour)
-   - Subtle vignette on hero images
-
-5. **Vinyl Record / Music Design Language**
-   - Inspired by the Rebirth Frequency crewneck concept
-   - Section headers could reference A-side/B-side track listing format
-   - "Now playing" micro-element showing current page/section
-   - Liner notes style for the About/Story page
-
-### 2.2 Color System Updates
-
-Keep the existing warm palette but add:
-
-| Addition | Hex | Usage |
-|----------|-----|-------|
-| Sticker Yellow | `#f5e642` | Sticker/badge backgrounds, highlights |
-| Kraft Paper | `#c4a882` | Tape elements, packaging section backgrounds |
-| Pencil Gray | `#4a4a4a` | Handwritten annotation text |
-| Pressed Flower Pink | `#d4a0a0` | Botanical elements, flower ring collection |
-
-### 2.3 Typography Updates
-
-Keep Clash Display (headlines), DM Sans (body), DM Mono (technical). Add:
-
-| Font | Role | Vibe |
-|------|------|------|
-| **Caveat** or **Kalam** (Google Fonts) | Handwritten annotations, sticker text, personal notes | Daniel's handwriting feel |
-| **Recoleta** (or similar warm serif) | Editorial pull quotes, story sections | Magazine/editorial warmth |
-
-### 2.4 Inspiration Brands & Techniques to Emulate
-
-| Brand | What to Take | Apply To |
-|-------|-------------|----------|
-| **Poppi** | Sticker badges, flavor-specific color worlds, joyful energy | Collection-specific product pages, badge overlays |
-| **Couplet Coffee** | Hand-drawn doodles between sections, anti-pretentious messaging | Section dividers, Daniel's voice |
-| **Recess** | Ambient atmospheric animations, product-matched color pages | Product detail pages, hero section |
-| **Liquid Death** | Punk attitude in design, patch/sticker art embedded in experience | Accessories section, 404 page |
-| **Ghia** | Vintage poster typography, recipe/usage integration | Story sections, editorial layouts |
-| **Lusano** | Moodboard-style browsing, warm serif typography | Collection landing pages |
+- Migrating off Next.js, Supabase, Stripe, or Vercel
+- Building a subscription/membership model
+- Multi-vendor marketplace
+- Native mobile app
 
 ---
 
-## Part 3: Page-by-Page Redesign
+## 3. Current State Assessment
 
-### 3.1 Homepage
+### What's Working
 
-**Current state:** Good narrative arc but feels like a well-designed template. Hero says "Embrace Change" — correct philosophy but too corporate.
+- **Design system** — Warm-earth palette (Film Cream, Rebirth Teal, Amber Gold), Clash Display + DM Sans typography, grain textures, section color blending. This is distinctive and on-brand.
+- **Animation infrastructure** — GSAP ScrollTrigger + Framer Motion coexistence rules are established. SplitText, parallax, tilt-glare, magnetic buttons, smooth scroll (Lenis) all working.
+- **3D ring viewer** — Custom GLSL shader with 7 wood-layer colors, engraving preview, scroll-driven rotation. Unique differentiator.
+- **E-commerce flow** — Cart (localStorage + Supabase sync), Stripe checkout, Shippo live rates, order confirmation with confetti, admin dashboard with order management.
+- **Auth** — Email/password + Google OAuth, protected dashboard routes.
 
-**New homepage structure:**
+### What Needs Work
 
-```
-1. HERO — "Broken Boards, Reborn"
-   - Full-viewport, Daniel's actual words as hero copy
-   - Background: workshop video loop or cinematic product reel (not particles)
-   - Handwritten "With love — Daniel" annotation in corner
-   - Sticker badge: "Handmade in Utah" with slight rotation
-   - Scroll indicator: hand-drawn arrow SVG (not chevron)
+| Area | Current State | Problem |
+|------|--------------|---------|
+| Homepage hero | Static SplitText + watermark | Doesn't tell the product story fast enough — visitors bounce before scrolling |
+| Product pages | Functional but template-feeling | Missing lifestyle context, material storytelling, social proof |
+| Mobile nav | Slide-out drawer | Touch targets tight, no bottom-nav pattern for thumb reach |
+| Blog | 3 MDX posts | Not driving SEO or organic traffic |
+| Reviews/UGC | None | No social proof beyond static testimonials |
+| Wedding bands | Not launched | Premium collection needs dedicated experience, not just a catalog filter |
+| Cart/checkout | Full-page cart + Stripe redirect | Cart drawer exists but could be smoother; no upsell/cross-sell |
+| Search | None | No product search or filtering beyond collection tabs |
+| Performance | Acceptable | 3D scene + GSAP + Lenis = heavy; needs progressive loading strategy |
 
-2. FEATURED COLLECTION — "The 2026 Drop"
-   - Editorial-style product showcase (not a grid)
-   - Each product card slightly rotated, placed like photos on a table
-   - Hover reveals Daniel's one-line story about each piece
-   - "NEW" sticker badges on 2026 collection items
+---
 
-3. THE STORY — "From Board to Ring" (enhanced)
-   - Keep the pinned 4-step sequence but add:
-     - Hand-drawn step numbers (SVG, not system font)
-     - Actual workshop photos (not illustrations)
-     - Daniel's handwritten notes annotating each step
-     - Pressed flower / wood grain texture overlays
+## 4. Design Philosophy
 
-4. DONATE A BOARD — "Your Board. Your Ring."
-   - NEW SECTION — this is the viral hook
-   - Photo of a broken board → arrow → photo of finished ring
-   - CTA: "Send us your deck, we'll make your ring"
-   - Simple form: photo upload + contact info
-   - Social proof: "347 boards recycled and counting"
+### Guiding Principles
 
-5. THE FREQUENCY — Brand Philosophy
-   - Vinyl record visual with A1/A2/B1/B2 track listing
-   - Each "track" is a scrollable philosophy section
-   - Liner notes aesthetic — text alongside sleeve art
-   - "Bless the places in you that are breaking..." as the close
+1. **Handmade over polished** — The site should feel crafted, not templated. Grain textures, organic shapes, warmth over sterile minimalism.
+2. **Story over specs** — Every product page is a narrative: where the board came from, who rode it, how it became a ring. Features are secondary to meaning.
+3. **Motion with purpose** — Animations reveal and delight, never distract. Every tween earns its weight. `prefers-reduced-motion` always respected.
+4. **Warm dark mode** — No harsh black/white contrast. Maintain undertones (#1c1917, #f3ece1) across themes.
+5. **Island craft meets digital craft** — North Shore soul in every pixel. Salt air, worn wood, golden hour.
 
-6. UNBOXING — "What Arrives at Your Door"
-   - NEW SECTION — show the full experience
-   - Ring + stickers + handwritten thank-you card
-   - Photos that look like someone just opened the package
-   - Pull quote from Paul H. testimonial overlaid
+### Visual Evolution (v1 → v2)
 
-7. COMMUNITY — "Rebirth Fam"
-   - Instagram feed embed or curated UGC gallery
-   - Real customers wearing Rebirth products
-   - "Tag @rebirthrings to be featured"
+| Element | v1 (Current) | v2 (Redesign) |
+|---------|-------------|----------------|
+| Hero | Pinned text reveal, static scroll indicator | Video/image hero with product in context, immediate CTA |
+| Product cards | Standard image + price | Lifestyle shots, hover video, collection-themed borders |
+| Typography | Clash Display headlines only | Clash Display expanded to midweight body callouts |
+| Spacing | Consistent but dense | More breathing room, editorial whitespace |
+| Photography | Product-on-white | Product-in-life (hands, beaches, skate sessions, weddings) |
+| Color usage | Section-based theming | Same palette, more gradient transitions between sections |
+| Micro-interactions | Hover states, tilt | Cursor-aware reveals, scroll-velocity effects, haptic-feel transitions |
 
-8. TESTIMONIALS — (enhanced)
-   - Keep editorial pull quote format
-   - Add handwritten-style quotation marks
-   - Customer photos alongside quotes
+---
 
-9. FAQ — (enhanced)
-   - "Donate a board" question added
-   - Hand-drawn question mark icons
-   - Sticky header with Daniel's face
+## 5. Architecture & Technical Approach
 
-10. NEWSLETTER — "Stay Connected"
-    - "With love — Daniel" sign-off
-    - Not "Subscribe to our newsletter" — instead:
-      "Get stories from the workshop, new drops, and the occasional life update."
-```
+### Preserved (No Changes)
 
-### 3.2 Product Detail Page — Story-First
+- Next.js 16 App Router + RSC
+- Supabase PostgreSQL + RLS
+- Stripe one-time payments
+- Shippo shipping
+- Resend + React Email
+- Vercel hosting
+- pnpm package manager
+- GSAP + Framer Motion + Lenis animation stack
+- React Three Fiber 3D system
 
-**Current state:** Specs-first, thin descriptions, truncated copy. "Sells specs, not soul."
+### New Dependencies (Proposed)
 
-**New product page structure:**
+| Package | Purpose | Justification |
+|---------|---------|---------------|
+| `@vercel/og` | Dynamic OG images | Product/collection sharing on social |
+| `plaiceholder` or `sharp` | Blur-hash placeholders | Perceived performance for image-heavy pages |
+| `nuqs` | URL state management | Filter/sort/search state in URL for shareability |
+| `vaul` (already installed) | Bottom sheet (mobile) | Mobile-native cart and filter experience |
 
-```
-ABOVE THE FOLD:
-├── Product image gallery (left 60%)
-│   ├── Main image with film grain overlay
-│   ├── Thumbnail strip
-│   ├── 3D viewer toggle (ring products)
-│   └── Sticker badge: collection tag, "Handmade", etc.
-│
-└── Product info (right 40%)
-    ├── Handwritten collection label (e.g., "skateboard rings" in Caveat font)
-    ├── Product name (Clash Display)
-    ├── Daniel's one-liner: "Inspired by the volcanic shores of Lake Atitlán..."
-    ├── Price
-    ├── Size selector
-    ├── Engraving option
-    ├── "Add to Cart" button
-    └── Trust badges as sticker-style elements
+### Performance Budget
 
-BELOW THE FOLD — THE STORY:
-├── "The Story Behind This Ring" — editorial section
-│   ├── Full-width lifestyle photo
-│   ├── Daniel's narrative (2-3 paragraphs in his voice)
-│   ├── Travel photos if relevant (Guatemala, Peru, etc.)
-│   └── Handwritten annotation overlay
-│
-├── "How It's Made" — 3-step mini craft story
-│   ├── The board → The layers → The ring
-│   └── Workshop photos specific to this product
-│
-├── Details accordion
-│   ├── Materials & dimensions
-│   ├── Sizing guide
-│   ├── Care instructions
-│   └── Shipping & returns
-│
-├── "You Might Also Like" — related products
-│   └── Collage-style layout (not a grid)
-│
-└── "From the Rebirth Fam" — UGC/reviews section
-```
+| Metric | Target |
+|--------|--------|
+| LCP | < 2.5s |
+| FID | < 100ms |
+| CLS | < 0.1 |
+| Total JS (initial) | < 200KB gzipped |
+| 3D scene | Lazy-loaded, intersection-triggered |
 
-### 3.3 Collection Landing Pages
+**Strategy:** The 3D ring scene and GSAP ScrollTrigger are heavy. Redesign introduces:
+- `loading="lazy"` + Intersection Observer for below-fold sections
+- Dynamic `import()` for 3D components (already partially done via `scroll-ring-scene-lazy.tsx`)
+- Image `priority` only on hero; all others use blur placeholders
+- Font subsetting for Clash Display (only used weights)
 
-Each collection (Skateboard Rings, Wedding Bands, Apparel, Accessories) gets its own **editorial landing page** — not just a filtered grid.
+---
 
-**Structure:**
-```
-├── Collection hero (full-width, lifestyle photography)
-│   ├── Collection name in Clash Display
-│   ├── Collection philosophy (2 sentences)
-│   └── Color scheme shifts to collection palette
-│
-├── Featured piece — large editorial spotlight
-│   ├── Full-bleed image
-│   ├── Daniel's story about this piece
-│   └── CTA to product page
-│
-├── Product grid — with personality
-│   ├── Cards with slight rotation (±1-2°)
-│   ├── Sticker badges
-│   └── Hover: mini story preview
-│
-└── Collection story — why this collection exists
-    └── Daniel's narrative + photos
-```
+## 6. Page-by-Page Redesign Spec
 
-### 3.4 "Our Story" / About Page — The Travel Journal
+### 6.1 Homepage (`/`)
 
-**Current state:** Good but could be extraordinary.
+**Goal:** Tell the Rebirth story in 8 seconds. Show product, show craft, show proof. Get to shop.
 
-**New structure:**
-```
-├── Hero: Daniel in workshop, full-width cinematic photo
-│
-├── Timeline / Journey (scroll-driven)
-│   ├── 2016 — "I looked at a snapped deck and saw a ring"
-│   ├── Guatemala — The mission, the weavers, Lake Atitlán
-│   ├── Latin America — The skateboard that traveled 5 countries
-│   ├── North Shore — The workshop, the community
-│   ├── Utah — The next chapter
-│   └── 2026 — "The Rebirth of Rebirth"
-│   (Each section: photo + narrative + hand-drawn location marker)
-│
-├── The Craft — expanded "From Board to Ring"
-│   └── Workshop video or photo sequence
-│
-├── The Family — Daniel's dad (master jeweler), brother Mattias
-│   └── Real family photos, honest narrative
-│
-├── The Collaborators
-│   ├── Guatemalan weavers
-│   ├── Local skaters who donate boards
-│   └── Community partners
-│
-└── CTA: "Come see the workshop" / "Donate a board"
-```
+#### Section Redesign
 
-### 3.5 2026 Collection Launch Page
+| # | Section | Changes |
+|---|---------|---------|
+| 1 | **Hero** | Replace text-only hero with split layout: left = headline + CTA, right = hero product image or looping video (hands holding ring, skateboard being cut). Retain SplitText animation on headline. Add "Shop Rings" + "Our Story" dual CTA. Background: subtle parallax lifestyle image with grain overlay. |
+| 2 | **Social Proof Bar** | **NEW.** Horizontal ticker: "1,000+ rings crafted" · "⭐ 4.9 average rating" · "Handmade in Hawaii" · customer photos. Uses existing `announcement-bar.tsx` marquee pattern. |
+| 3 | **Featured Products** | Keep horizontal scroll (desktop) but upgrade cards: lifestyle thumbnails, hover-to-video, collection badge, "Starting at $XX". Mobile: 2-column grid with swipe hint. |
+| 4 | **Craft Story** | Keep pinned 4-step crossfade but add real workshop photography behind each step. Add subtle parallax depth layers. Tighten copy. |
+| 5 | **Collections Gateway** | **NEW.** Full-width split: left = Skateboard Rings (amber tones, skate imagery), right = Wedding Bands (warm dark, intimate imagery). Each links to filtered `/shop`. Replace generic `ValueProps` section. |
+| 6 | **3D Ring Scene** | Keep scroll-driven ring. Add "Customize Yours →" CTA below that links to `/shop/customize`. |
+| 7 | **Testimonials** | Upgrade from static quotes to carousel with customer photos, verified purchase badges, star ratings. Pull from reviews system (Phase 2). |
+| 8 | **Instagram/UGC Feed** | **NEW.** Replace FAQ on homepage (move FAQ to `/faq`). Grid of customer photos tagged @rebirthworld. Manual curation initially, API integration later. |
+| 9 | **Newsletter CTA** | Keep, but add incentive: "Get 10% off your first ring" with email capture. |
 
-**Special editorial page for the March 2026 drop.**
+#### Hero Component Spec
 
 ```
-├── Cinematic hero — "The Rebirth of Rebirth"
-│   └── Video or scroll-driven animation
-│
-├── Product 1: Gold-Coated Steel Wedding Band (6.5mm)
-│   ├── Large product photography
-│   ├── Interior wood core options visualized
-│   ├── "Comfort fit, micro-mesh sanded" — feel it through the screen
-│   └── Available sizes, CTA
-│
-├── Product 2: Classic Rebirth Ring
-│   ├── "100% recycled. 100% Utah. 100% handmade."
-│   ├── Close-up of the 7 maple layers
-│   └── "The ring that started it all"
-│
-├── Product 3: Embedded Flower Wedding Band (8mm)
-│   ├── THIS IS THE HERO PIECE — give it the most space
-│   ├── Full travel story: Guatemala → Costa Rica → Colombia → Peru → Chile
-│   ├── Map visualization of the journey
-│   ├── Close-up of embedded coca leaves and flowers
-│   ├── "Made from my own personal skateboard"
-│   └── This page should read like a short documentary
-│
-├── Product 4: Rebirth Frequency Crewneck
-│   ├── Vinyl record visual — interactive
-│   ├── A1/A2/B1/B2 philosophy sections
-│   ├── Available colors: Pale Yellow, Black
-│   ├── Sizes: S-XXL
-│   └── "This is not just a crewneck. This is the manifesto."
-│
-└── Drop CTA — "Free ring to the first 5 customers"
-    └── Countdown or claim counter
+┌─────────────────────────────────────────────────┐
+│ [grain overlay]                                 │
+│                                                 │
+│  ┌──────────────────┐  ┌──────────────────────┐ │
+│  │  EMBRACE          │  │                      │ │
+│  │  CHANGE 🪷        │  │   [hero product      │ │
+│  │                   │  │    image/video        │ │
+│  │  Handcrafted rings│  │    with parallax]     │ │
+│  │  from recycled    │  │                      │ │
+│  │  skateboards.     │  │                      │ │
+│  │                   │  │                      │ │
+│  │  [Shop Rings]     │  │                      │ │
+│  │  [Our Story →]    │  │                      │ │
+│  └──────────────────┘  └──────────────────────┘ │
+│                                                 │
+│  ───── scroll ─────                             │
+└─────────────────────────────────────────────────┘
 ```
 
-### 3.6 404 Page
+**Mobile:** Stack vertically. Image first (60vh), text overlay at bottom with gradient fade.
 
-**Remove particles. Replace with branded experience:**
+---
+
+### 6.2 Shop Page (`/shop`)
+
+**Current:** Collection filter tabs + product grid.
+
+**Redesign:**
+
+- **Collection header** — Full-width banner per collection with lifestyle image, title, short copy. Changes dynamically when filter changes.
+- **Filters** — Sidebar on desktop (sticky), bottom sheet on mobile. Filter by: collection, material, price range, ring size availability.
+- **Sort** — Price (low/high), newest, popular. State in URL via `nuqs`.
+- **Product cards** — Larger images, hover state shows secondary lifestyle shot (not just zoom). Price + "X colors available" + star rating.
+- **Quick view** — Click card → modal with image gallery + size selector + add-to-cart. Skip full page load for impulse buys.
+- **Empty state** — If filter yields no results: "No rings match — try adjusting your filters" with reset button.
+
+---
+
+### 6.3 Product Detail Page (`/shop/[slug]`)
+
+**Current:** Image gallery + details + 3D toggle + add-to-cart.
+
+**Redesign:**
+
+| Section | Spec |
+|---------|------|
+| **Gallery** | Left column: 4-5 images (product, lifestyle, detail, on-hand, scale). Sticky on desktop scroll. Support video as first item. View Transition morphing from shop grid. |
+| **Details** | Right column: Product name, price, star rating (linked to reviews below), size selector with guide link, engraving input (if applicable), "Add to Cart" + "Buy Now" (skip cart). |
+| **Story block** | Below fold: "The Story Behind This Ring" — editorial section with the board's origin, maker notes. Uses `TextReveal` animation. |
+| **Material specs** | Expandable accordion: materials, dimensions, care instructions. |
+| **3D Viewer** | Inline toggle (already exists). Ensure it's lazy-loaded and doesn't affect LCP. |
+| **Reviews** | Below story: customer reviews with photos, star breakdown chart, "Write a Review" CTA. |
+| **Related products** | "You might also like" — 3-4 cards from same collection or complementary items. |
+| **Recently viewed** | Persistent bar at bottom (localStorage-powered). |
+
+---
+
+### 6.4 Wedding Band Collection (`/collections/wedding-bands`)
+
+**NEW dedicated landing page.** This is not just a filtered shop view — it's a conversion-optimized experience for the "Alternative Groom" avatar.
+
+| Section | Spec |
+|---------|------|
+| **Hero** | Cinematic: close-up of hands exchanging rings, warm lighting. Headline: "Rings as unique as your story." Subdued, intimate tone — contrast with skateboard collection energy. |
+| **Value prop strip** | Handcrafted · Lifetime warranty · Custom engraving · Ethically sourced |
+| **Product showcase** | 2-column grid: large lifestyle image left, product details right. Alternate layout per row. |
+| **Customization CTA** | "Design your band together" → links to ring customizer with wedding-specific presets (Bog Oak, Koa, Walnut). |
+| **Size guide** | Inline expandable guide with printable ring sizer PDF download. |
+| **Couple testimonials** | Real couples, real stories. Photo + quote + ring choice. |
+| **FAQ** | Wedding-specific: turnaround time, resizing policy, engraving options, bulk/wedding party pricing. |
+| **Consultation CTA** | "Book a free consultation" → contact form or Calendly embed. |
+
+**Design notes:** Section color scheme should use `.section-dark` and `.section-ocean` predominantly. Amber Gold accent only for CTAs. Overall tone: intimate, premium, trustworthy.
+
+---
+
+### 6.5 Ring Customizer (`/shop/customize`)
+
+**Current:** Exists as a component (`ring-customizer.tsx`) with 5 wood presets.
+
+**Redesign — Elevate to full page:**
+
+| Feature | Spec |
+|---------|------|
+| **Layout** | Split: left = 3D live preview (full height, interactive), right = configuration panel |
+| **Wood selection** | Visual swatches (real wood photos, not color dots). 7+ options: Maple, Walnut, Koa, Bog Oak, Zebrawood, Purple Heart, Olive. |
+| **Band width** | Slider: 4mm / 6mm / 8mm with live 3D update |
+| **Engraving** | Text input with live preview on ring interior. Character limit, font preview. |
+| **Finish** | Matte / Satin / High Polish (visual toggle) |
+| **Price calculator** | Live price updates as options change. "Starting at $XX" → exact price. |
+| **Add to cart** | Captures all selections as variant metadata. |
+| **Share** | "Share your design" → generates URL with config in query params. |
+
+---
+
+### 6.6 Our Story (`/our-story`)
+
+**Current:** Basic brand narrative page.
+
+**Redesign — Editorial longform:**
+
+| Section | Spec |
+|---------|------|
+| **Opening** | Full-bleed image: Daniel in workshop. No headline — let the image breathe. |
+| **Origin** | Scroll-driven narrative: Salzburg jeweler lineage → skateboarding → North Shore → the idea. Parallax images between text blocks. |
+| **Process** | Interactive: 4 steps with scroll-triggered reveals. Real workshop photos, not illustrations. |
+| **Materials** | Grid of materials with macro photography. Hover for sourcing story. |
+| **Impact** | Numbers: boards recycled, rings crafted, trees planted (if applicable). `NumberTicker` from Magic UI. |
+| **Team** | Daniel's profile + any collaborators. Authentic, not corporate headshots. |
+
+---
+
+### 6.7 Blog (`/blog`)
+
+**Current:** 3 MDX posts. Basic layout.
+
+**Redesign:**
+
+- **Index page** — Magazine-style layout: featured post (large), recent posts (3-column grid), category filter.
+- **Post layout** — Wider content column (max 720px), larger images, pull quotes, author byline with avatar.
+- **Categories** — Jewelry Care, Skateboard Culture, Sustainability, Wedding, Behind the Scenes.
+- **SEO** — Each post gets proper meta, OG image (generated via `@vercel/og`), JSON-LD BlogPosting schema.
+- **Related posts** — 3 related posts at bottom based on category.
+- **Newsletter CTA** — Inline after 50% scroll.
+- **Content target** — 2 posts/month minimum. Mix of SEO-targeted and brand storytelling.
+
+---
+
+### 6.8 Cart & Checkout
+
+**Current:** Full-page cart + Stripe hosted checkout.
+
+**Redesign:**
+
+| Feature | Spec |
+|---------|------|
+| **Cart drawer** | Primary interaction. Already exists (`cart-drawer.tsx`). Enhance with: product thumbnails, quantity +/- controls, remove button, subtotal, "Continue to Checkout" CTA. |
+| **Upsell** | "Complete the look" — suggest complementary items in drawer (e.g., care kit with ring purchase). |
+| **Free shipping threshold** | Progress bar: "Add $XX more for free shipping" (if applicable). |
+| **Express checkout** | Apple Pay / Google Pay buttons above standard checkout (Stripe Payment Request Button). |
+| **Guest checkout** | Keep supporting. Don't gate behind auth. |
+| **Order confirmation** | Keep confetti animation. Add "Share your purchase" social buttons. Add estimated delivery date from Shippo. |
+
+---
+
+### 6.9 Mobile Experience
+
+**Principles:**
+- Thumb-zone navigation: primary actions within bottom 40% of screen
+- Bottom nav bar (Shop, Search, Cart, Account) — replaces hamburger as primary nav
+- Swipe gestures: product image gallery swipe, filter bottom sheet
+- Touch targets: minimum 44×44px
+- No horizontal scroll on mobile (except intentional carousels with swipe indicators)
+
+**Bottom Nav Spec:**
 
 ```
-"This page got recycled."
+┌─────────────────────────────────────┐
+│  🏠 Home  │  🔍 Search  │  🛒 Cart(2)  │  👤 Account  │
+└─────────────────────────────────────┘
+```
 
-[Hand-drawn broken skateboard illustration]
+Appears on scroll-up, hides on scroll-down. Cart badge shows item count.
 
-"Like a broken board, sometimes things need to become something new.
-Let's get you back on track."
+---
 
-[Button: "Back to the workshop" → /]
-[Button: "Browse the collection" → /shop]
+### 6.10 Admin Dashboard (`/dashboard`)
 
-— Daniel
+**Current:** Functional but basic. Orders table, analytics cards, settings.
+
+**Redesign (Lower Priority):**
+
+- **KPI cards** — Real-time: today's revenue, orders, conversion rate, avg order value
+- **Order management** — Status workflow: Pending → Crafting → Shipped → Delivered. Inline tracking number entry. One-click Shippo label purchase.
+- **Product management** — Sync from Stripe, but allow toggling featured/hidden, reordering, adding lifestyle images
+- **Customer list** — Repeat buyers, lifetime value, last order date
+- **Reviews moderation** — Approve/reject/respond to reviews
+- **Analytics** — Revenue chart (Recharts, already exists), traffic sources, top products, conversion funnel
+
+---
+
+## 7. New Systems
+
+### 7.1 Reviews & Ratings
+
+**Database additions:**
+
+```sql
+CREATE TABLE reviews (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  order_item_id UUID REFERENCES order_items(id),
+  user_id UUID REFERENCES auth.users(id),
+  product_stripe_id TEXT NOT NULL,
+  rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  title TEXT,
+  body TEXT,
+  photos TEXT[], -- array of image URLs
+  verified_purchase BOOLEAN DEFAULT false,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  admin_response TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- RLS: users can create for their own orders, read approved reviews
+-- Admin: can read all, update status, add response
+```
+
+**Collection flow:**
+1. Order delivered → wait 7 days → send review request email (Resend)
+2. Email links to `/review?order={id}&item={id}` with pre-filled product
+3. Customer submits rating + optional title/body/photos
+4. Review goes to `pending` → admin approves in dashboard
+5. Approved reviews appear on product pages and testimonials
+
+**Display:**
+- Star rating on product cards (shop grid)
+- Full reviews section on product detail page
+- Aggregate rating in JSON-LD schema (Product → AggregateRating)
+
+### 7.2 Product Search
+
+**Approach:** Client-side search over Stripe product catalog (already fetched).
+
+- Search input in header (desktop) and search page (mobile bottom nav)
+- Fuzzy matching on product name, description, collection, material
+- Results: product cards with highlighting
+- No external search service needed at current catalog size (<100 products)
+
+### 7.3 Wishlist / Save for Later
+
+**Storage:** localStorage for guests, Supabase table for logged-in users.
+
+```sql
+CREATE TABLE wishlists (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id),
+  stripe_price_id TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(user_id, stripe_price_id)
+);
+```
+
+- Heart icon on product cards and detail pages
+- Wishlist page accessible from account menu
+- "Your saved items" email reminder after 7 days (if items still in wishlist, no purchase)
+
+### 7.4 Dynamic OG Images
+
+**Implementation:** `@vercel/og` (Satori) for edge-generated images.
+
+- **Product pages** — Product image + name + price on branded background
+- **Blog posts** — Title + category + reading time on branded background
+- **Collection pages** — Collection hero image + title
+- **Base template** — Rebirth World logo, grain texture, warm color scheme
+
+Route: `src/app/api/og/route.tsx`
+
+---
+
+## 8. SEO & Content Strategy
+
+### Technical SEO
+
+| Item | Status | Action |
+|------|--------|--------|
+| XML Sitemap | Missing | Generate via `next-sitemap` or custom route handler |
+| Robots.txt | Default | Add with sitemap reference, block /dashboard, /api |
+| JSON-LD Schema | Partial | Add: Product, AggregateRating, Organization, BreadcrumbList, BlogPosting, FAQPage |
+| Meta tags | Basic | Audit all pages: title (50-60 chars), description (150-160 chars), canonical URLs |
+| OG/Twitter cards | Missing on most | Add via `@vercel/og` dynamic images |
+| Image alt text | Inconsistent | Audit all product/lifestyle images |
+| Core Web Vitals | Unmeasured | Set up Vercel Speed Insights, establish baselines |
+
+### Content Pillars
+
+1. **Skateboard Culture** — Board history, skate spot guides, rider profiles → drives organic traffic from skate community
+2. **Sustainable Jewelry** — Recycling process, material sourcing, eco impact → captures "ethical jewelry" searches
+3. **Wedding & Commitment** — Alternative wedding ring guides, proposal stories, couple features → high-intent keywords
+4. **Craft & Making** — Workshop behind-the-scenes, tool tours, technique breakdowns → builds E-E-A-T authority
+5. **Style & Care** — Ring styling guides, care instructions, sizing help → captures mid-funnel searches
+
+**Target:** 2 posts/month → 24 posts in Year 1. Mix of SEO-targeted (long-tail keywords) and brand storytelling (shareable, linkable).
+
+---
+
+## 9. Email & CRM Enhancements
+
+### Automated Sequences (via Resend + GoHighLevel)
+
+| Trigger | Sequence | Emails |
+|---------|----------|--------|
+| Newsletter signup | Welcome series | Welcome (immediate) → Brand story (Day 2) → 10% off code (Day 5) |
+| Browse abandonment | Retargeting | "Still thinking about [product]?" (24h) → "Your ring is waiting" (72h) |
+| Cart abandonment | Recovery | Cart reminder (1h) → "Almost yours" (24h) → Last chance + urgency (48h) |
+| Post-purchase | Nurture | Order confirmation (immediate) → Shipping update → Care guide (Day 3 post-delivery) → Review request (Day 7) → "How's your ring?" (Day 30) |
+| Review submitted | Thank you | Thank you + 15% off next purchase |
+| Wishlist dormant | Re-engagement | "Items you saved are still available" (7 days) → "Low stock alert" (14 days, if applicable) |
+
+### GoHighLevel Sync
+
+- Purchase events already firing via webhook
+- Add: review submitted, wishlist created, email engagement events
+- Build customer segments: repeat buyers, high-AOV, wedding collection browsers
+
+---
+
+## 10. Implementation Phases
+
+### Phase 1: Foundation (Weeks 1–3)
+
+**Goal:** Core visual refresh + performance baseline.
+
+| Task | Files | Priority |
+|------|-------|----------|
+| Homepage hero redesign | `src/components/marketing/brand-hero.tsx` | P0 |
+| Social proof ticker | `src/components/marketing/social-proof-bar.tsx` (new) | P0 |
+| Product card upgrade | `src/components/shop/product-card.tsx` | P0 |
+| Mobile bottom nav | `src/components/shared/bottom-nav.tsx` (new) | P0 |
+| Image blur placeholders | All image-heavy components | P1 |
+| Performance audit + LCP fix | 3D lazy loading, font subsetting | P1 |
+| XML sitemap + robots.txt | `src/app/sitemap.ts`, `src/app/robots.ts` | P1 |
+| JSON-LD schema (Product, Org) | `src/components/seo/` (new dir) | P1 |
+| Collections gateway section | `src/components/marketing/collections-gateway.tsx` (new) | P1 |
+
+**Deliverable:** Refreshed homepage, improved mobile nav, performance baselines established.
+
+### Phase 2: Product Experience (Weeks 4–6)
+
+**Goal:** Enhanced product pages + wedding band collection launch.
+
+| Task | Files | Priority |
+|------|-------|----------|
+| Product detail page redesign | `src/app/(marketing)/shop/[slug]/page.tsx` | P0 |
+| Wedding band landing page | `src/app/(marketing)/collections/wedding-bands/page.tsx` (new) | P0 |
+| Ring customizer full page | `src/app/(marketing)/shop/customize/page.tsx` (new) | P0 |
+| Quick view modal | `src/components/shop/quick-view.tsx` (new) | P1 |
+| Shop filters + URL state | `src/app/(marketing)/shop/page.tsx`, add `nuqs` | P1 |
+| Related products component | `src/components/shop/related-products.tsx` (new) | P1 |
+| Recently viewed (localStorage) | `src/components/shop/recently-viewed.tsx` (new) | P2 |
+| Size guide page/modal | `src/app/(marketing)/size-guide/page.tsx` or modal | P1 |
+
+**Deliverable:** Wedding band collection live, product pages tell stories, customizer is a standalone experience.
+
+### Phase 3: Social Proof & Content (Weeks 7–9)
+
+**Goal:** Reviews system, blog upgrade, UGC integration.
+
+| Task | Files | Priority |
+|------|-------|----------|
+| Reviews database + API | `supabase/migrations/`, `src/app/api/reviews/` | P0 |
+| Review display component | `src/components/shop/reviews.tsx` (new) | P0 |
+| Review submission page | `src/app/(marketing)/review/page.tsx` (new) | P0 |
+| Review request email | `src/components/email/review-request.tsx` (new) | P0 |
+| Blog index redesign | `src/app/blog/page.tsx` | P1 |
+| Blog post layout upgrade | `src/app/blog/[slug]/page.tsx` | P1 |
+| Dynamic OG images | `src/app/api/og/route.tsx` (new) | P1 |
+| UGC/Instagram section | `src/components/marketing/ugc-feed.tsx` (new) | P2 |
+| FAQ standalone page | `src/app/(marketing)/faq/page.tsx` (new) | P2 |
+
+**Deliverable:** Reviews collecting, blog looks editorial, social proof is real and visible.
+
+### Phase 4: Conversion & Polish (Weeks 10–12)
+
+**Goal:** Cart optimization, email sequences, final polish.
+
+| Task | Files | Priority |
+|------|-------|----------|
+| Cart drawer enhancements | `src/components/cart/cart-drawer.tsx` | P0 |
+| Upsell/cross-sell in cart | `src/components/cart/cart-upsell.tsx` (new) | P1 |
+| Express checkout (Apple/Google Pay) | Stripe Payment Request Button integration | P1 |
+| Wishlist system | DB migration + `src/components/shop/wishlist-button.tsx` | P1 |
+| Email sequences (welcome, abandon, post-purchase) | Resend + GHL automation | P1 |
+| Our Story page redesign | `src/app/(marketing)/our-story/page.tsx` | P2 |
+| Admin dashboard polish | `src/components/dashboard/` | P2 |
+| Product search | `src/components/shared/search.tsx` (new) | P2 |
+| Accessibility audit | All interactive components | P1 |
+| E2E test coverage | `tests/` — checkout flow, cart, auth, reviews | P1 |
+
+**Deliverable:** Optimized funnel, automated email nurturing, polished experience end-to-end.
+
+---
+
+## 11. Component Inventory: New vs Modified
+
+### New Components
+
+| Component | Location | Phase |
+|-----------|----------|-------|
+| `social-proof-bar.tsx` | `src/components/marketing/` | 1 |
+| `collections-gateway.tsx` | `src/components/marketing/` | 1 |
+| `bottom-nav.tsx` | `src/components/shared/` | 1 |
+| `quick-view.tsx` | `src/components/shop/` | 2 |
+| `related-products.tsx` | `src/components/shop/` | 2 |
+| `recently-viewed.tsx` | `src/components/shop/` | 2 |
+| `reviews.tsx` | `src/components/shop/` | 3 |
+| `review-form.tsx` | `src/components/shop/` | 3 |
+| `ugc-feed.tsx` | `src/components/marketing/` | 3 |
+| `cart-upsell.tsx` | `src/components/cart/` | 4 |
+| `wishlist-button.tsx` | `src/components/shop/` | 4 |
+| `search.tsx` | `src/components/shared/` | 4 |
+| `json-ld.tsx` | `src/components/seo/` | 1 |
+| `review-request.tsx` | `src/components/email/` | 3 |
+
+### Modified Components
+
+| Component | Changes | Phase |
+|-----------|---------|-------|
+| `brand-hero.tsx` | Split layout, video support, dual CTA | 1 |
+| `product-card.tsx` | Lifestyle images, hover video, rating badge | 1 |
+| `featured-products.tsx` | Updated card integration, mobile grid | 1 |
+| `header.tsx` | Search input (desktop), simplified mobile | 1 |
+| `cart-drawer.tsx` | Thumbnails, quantity controls, upsell slot | 4 |
+| `testimonials.tsx` | Carousel, customer photos, verified badges | 3 |
+| `faq.tsx` | Move to standalone page, add wedding FAQ | 3 |
+| `value-props.tsx` | Replace with collections-gateway on homepage | 1 |
+
+### New Pages
+
+| Route | Purpose | Phase |
+|-------|---------|-------|
+| `/collections/wedding-bands` | Wedding band landing page | 2 |
+| `/shop/customize` | Full-page ring customizer | 2 |
+| `/review` | Review submission form | 3 |
+| `/faq` | Standalone FAQ page | 3 |
+| `/size-guide` | Ring sizing guide | 2 |
+
+---
+
+## 12. Database Migrations
+
+### Phase 2 Migration
+
+```sql
+-- Wishlist table
+CREATE TABLE wishlists (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  stripe_price_id TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(user_id, stripe_price_id)
+);
+
+ALTER TABLE wishlists ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users manage own wishlists" ON wishlists
+  FOR ALL USING (auth.uid() = user_id);
+```
+
+### Phase 3 Migration
+
+```sql
+-- Reviews table
+CREATE TABLE reviews (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  order_item_id UUID REFERENCES order_items(id),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  product_stripe_id TEXT NOT NULL,
+  rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  title TEXT,
+  body TEXT,
+  photos TEXT[] DEFAULT '{}',
+  verified_purchase BOOLEAN DEFAULT false,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  admin_response TEXT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
+
+-- Public can read approved reviews
+CREATE POLICY "Anyone can read approved reviews" ON reviews
+  FOR SELECT USING (status = 'approved');
+
+-- Users can create reviews for their own orders
+CREATE POLICY "Users create own reviews" ON reviews
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- Users can update their own pending reviews
+CREATE POLICY "Users update own pending reviews" ON reviews
+  FOR UPDATE USING (auth.uid() = user_id AND status = 'pending');
+
+-- Index for product page queries
+CREATE INDEX idx_reviews_product ON reviews(product_stripe_id, status);
+CREATE INDEX idx_reviews_user ON reviews(user_id);
 ```
 
 ---
 
-## Part 4: Technical Implementation
+## 13. Design Tokens (Additions)
 
-### 4.1 New Design Components to Build
-
-| Component | Description | Technique |
-|-----------|-------------|-----------|
-| `<Sticker>` | Rotated badge with slight shadow, like a physical sticker | CSS transform rotate (±2-5°), drop-shadow, border-radius |
-| `<HandwrittenText>` | Text in Caveat/Kalam font for annotations | Font-face + reduced opacity, slight rotation |
-| `<TapeStrip>` | Washi tape visual holding elements | SVG or CSS gradient strip with slight transparency |
-| `<OrganicDivider>` | Wavy/blob SVG section dividers | SVG path with slight animation, replaces hard `border-b` |
-| `<StickerBadge>` | Collection of reusable sticker badges | "Handmade in Utah", "100% Recycled", "Free Shipping", "NEW" |
-| `<PressedFlower>` | Decorative botanical SVG elements | Positioned absolutely, subtle parallax, low opacity |
-| `<HandDrawnArrow>` | SVG arrow with DrawSVG reveal on scroll | GSAP DrawSVGPlugin, scroll-triggered |
-| `<VinylRecord>` | Interactive record visual for philosophy section | CSS animation (rotation), click to "play" |
-| `<DonateBoard>` | Board donation form with photo upload | File upload + Supabase storage + form |
-| `<JourneyMap>` | Scroll-driven travel map (Guatemala → Peru) | SVG path with DrawSVG, scroll-linked |
-| `<UnboxingShowcase>` | Lifestyle photos of what arrives at your door | Scroll-triggered reveal, collage layout |
-| `<UGCGallery>` | Instagram/customer photo grid | Instagram API or manual curated grid |
-| `<ProductStory>` | Editorial story section for product pages | Rich text + images, scroll-triggered reveals |
-| `<WorkshopVideo>` | Ambient workshop video with grain overlay | HTML5 video, mix-blend-mode for grain |
-
-### 4.2 Animation Upgrades
-
-| Animation | Current | Upgrade To |
-|-----------|---------|-----------|
-| Hero headline | GSAP SplitText char reveal | Keep, but add handwritten annotation that draws in after |
-| Section reveals | GSAP ScrollTrigger opacity+y | Add organic SVG path draw for dividers |
-| Product cards | Framer Motion whileInView | Add slight random rotation + "placed on table" feel |
-| Page transitions | CSS View Transitions | Enhance with Flip-based product image morphing |
-| Section dividers | Hard `border-b` CSS | Replace with organic SVG wave/blob dividers |
-| Scroll indicator | Chevron icon | Hand-drawn arrow SVG with DrawSVG animation |
-| Background | Grain texture (keep) | Add subtle pressed flower / botanical parallax elements |
-| Hero background | Particles (remove) | Workshop video loop or cinematic product reel |
-
-### 4.3 CSS Techniques to Implement
+No changes to the existing color palette. Additions only:
 
 ```css
-/* Sticker rotation — slight random tilt */
-.sticker {
-  --rotation: 2deg;
-  transform: rotate(var(--rotation));
-  filter: drop-shadow(2px 3px 4px rgba(0,0,0,0.15));
-}
-.sticker:nth-child(odd) { --rotation: -3deg; }
-.sticker:nth-child(3n) { --rotation: 4deg; }
+/* New spacing utilities */
+.section-breathe { padding-block: clamp(5rem, 12vw, 10rem); }
+.section-tight   { padding-block: clamp(3rem, 6vw, 5rem); }
 
-/* Handwritten annotation */
-.handwritten {
-  font-family: var(--font-handwritten);
-  color: var(--pencil-gray);
-  opacity: 0.85;
-  transform: rotate(-2deg);
-  font-size: 0.875rem;
+/* New text utilities */
+.text-editorial {
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
 }
 
-/* Tape strip */
-.tape {
-  background: linear-gradient(
-    180deg,
-    rgba(196, 168, 130, 0.6) 0%,
-    rgba(196, 168, 130, 0.4) 100%
-  );
-  width: 80px;
-  height: 24px;
-  transform: rotate(-5deg);
-  position: absolute;
-  top: -12px;
-}
+/* Bottom nav z-index */
+.z-bottom-nav { z-index: 40; }
 
-/* Organic blob divider */
-.organic-divider svg {
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: -1px 0; /* prevent gap */
+/* Collection-specific gradients */
+.gradient-skateboard {
+  background: linear-gradient(135deg, #cc7e3a 0%, #876f4c 100%);
 }
-
-/* CSS scroll-driven animation (no JS) */
-.product-card {
-  animation: card-reveal linear both;
-  animation-timeline: view();
-  animation-range: entry 20% cover 40%;
-}
-@keyframes card-reveal {
-  from { opacity: 0; transform: translateY(30px) rotate(2deg); }
-  to { opacity: 1; transform: translateY(0) rotate(var(--card-rotation, 0deg)); }
+.gradient-wedding {
+  background: linear-gradient(135deg, #1a3832 0%, #2d8a7e 100%);
 }
 ```
 
-### 4.4 Template Artifacts to Remove
+---
 
-**Delete immediately (unused boilerplate):**
-- `src/components/ui/orbiting-circles.tsx`
-- `src/components/ui/bento-grid.tsx`
-- `src/components/ui/animated-beam.tsx`
-- `src/components/ui/animated-list.tsx`
-- `src/components/ui/animated-shiny-text.tsx`
-- `src/components/ui/interactive-grid-pattern.tsx`
-- `src/components/ui/number-ticker.tsx`
-- `src/components/dashboard/nav-projects.tsx`
+## 14. Testing Strategy
 
-**Refactor:**
-- `src/app/not-found.tsx` — Replace particles with branded "This page got recycled" design
-- `src/components/dashboard/app-sidebar.tsx` — Remove `plan: "Pro"` SaaS language
-- `src/components/dashboard/team-switcher.tsx` — Remove team switching concept
-- Hero section — Remove particles, replace with workshop video or cinematic imagery
+| Layer | Tool | Coverage Target |
+|-------|------|----------------|
+| E2E | Playwright | Checkout flow, cart operations, auth, review submission |
+| Component | Vitest + Testing Library | Reviews, search, wishlist, bottom nav |
+| Visual | Playwright screenshots | Homepage, product page, wedding landing — desktop + mobile |
+| Performance | Vercel Speed Insights + Lighthouse CI | Core Web Vitals on every deploy |
+| Accessibility | axe-core + manual | WCAG 2.1 AA on all interactive elements |
 
-### 4.5 Product Data Enrichment
+### Critical E2E Paths
 
-Every product in Stripe needs these metadata fields populated:
-
-| Field | Purpose | Example |
-|-------|---------|---------|
-| `story` | Daniel's narrative about this product (2-3 sentences) | "Inspired by the volcanic shores of Lake Atitlán, where I watched the sunrise paint the water seven different colors..." |
-| `subtitle` | Poetic material descriptor | "Seven layers of maple, sealed with intention" |
-| `handmade_note` | Artisan callout | "Shaped by hand in the Utah workshop" |
-| `lead_time` | Days to craft | "5-7" |
-| `care_instructions` | Product-specific care | "Thin CA glue finish. Avoid prolonged water exposure." |
-| `engraving_available` | Whether engraving is offered | "true" |
-| `badge_text` | Custom sticker badge | "New Drop", "Best Seller", "Daniel's Pick" |
+1. Homepage → Shop → Product → Add to Cart → Checkout → Confirmation
+2. Homepage → Wedding Bands → Customize → Add to Cart → Checkout
+3. Review request email → Submit review → Review appears on product page
+4. Mobile: Bottom nav → Search → Product → Quick view → Add to Cart
+5. Guest checkout (no auth required)
 
 ---
 
-## Part 5: Content Strategy
+## 15. Risks & Mitigations
 
-### 5.1 Product Descriptions — Written as Daniel
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| 3D scene performance on low-end mobile | Users bounce | Intersection Observer lazy load; fallback to static image on devices with <4GB RAM or no WebGL |
+| Wedding band imagery not ready | Collection launch delayed | Use ring customizer 3D renders as placeholder; commission lifestyle photos in parallel |
+| Review spam | Fake reviews damage trust | Require verified purchase; manual moderation queue; rate limiting |
+| Scope creep | Timeline slips | Strict P0/P1/P2 prioritization; P2 items can slip without blocking launch |
+| GSAP license | GSAP requires license for commercial use | Verify current license status; Club GreenSock if needed |
 
-Every product needs a story rewritten in Daniel's voice. Format:
+---
+
+## 16. Launch Checklist
+
+- [ ] All P0 items from Phases 1–4 complete
+- [ ] Stripe switched from test to live mode
+- [ ] All product images are lifestyle shots (not placeholder)
+- [ ] Email sequences tested end-to-end
+- [ ] Mobile experience tested on iPhone SE, iPhone 15, Pixel 7
+- [ ] Core Web Vitals passing (LCP < 2.5s, CLS < 0.1)
+- [ ] JSON-LD validates via Google Rich Results Test
+- [ ] XML sitemap submitted to Google Search Console
+- [ ] OG images rendering correctly on Twitter, Facebook, iMessage
+- [ ] Accessibility audit passing (axe-core, 0 critical issues)
+- [ ] E2E tests green on CI
+- [ ] 404 page styled and helpful
+- [ ] Analytics (PostHog or Vercel Analytics) confirmed tracking
+- [ ] DNS + SSL verified
+- [ ] Backup/rollback plan documented
+
+---
+
+## Appendix A: File Tree (Post-Redesign)
 
 ```
-[One-line hook — what makes this piece special]
-
-[2-3 paragraphs of story — where the material came from, why Daniel made it,
-what it represents. Include specific places, specific moments, specific feelings.]
-
-[Technical details woven naturally into the narrative, not as a spec sheet]
+src/
+├── app/
+│   ├── (marketing)/
+│   │   ├── page.tsx                          # Homepage (redesigned)
+│   │   ├── shop/
+│   │   │   ├── page.tsx                      # Shop (enhanced filters)
+│   │   │   ├── [slug]/page.tsx               # Product detail (redesigned)
+│   │   │   └── customize/page.tsx            # Ring customizer (NEW)
+│   │   ├── collections/
+│   │   │   └── wedding-bands/page.tsx        # Wedding collection (NEW)
+│   │   ├── our-story/page.tsx                # Our Story (redesigned)
+│   │   ├── faq/page.tsx                      # FAQ (NEW standalone)
+│   │   ├── size-guide/page.tsx               # Size guide (NEW)
+│   │   ├── review/page.tsx                   # Review submission (NEW)
+│   │   └── contact/page.tsx                  # Contact
+│   ├── blog/
+│   │   ├── page.tsx                          # Blog index (redesigned)
+│   │   └── [slug]/page.tsx                   # Blog post (redesigned)
+│   ├── api/
+│   │   ├── og/route.tsx                      # Dynamic OG images (NEW)
+│   │   ├── reviews/route.ts                  # Reviews CRUD (NEW)
+│   │   └── ... (existing)
+│   ├── sitemap.ts                            # XML sitemap (NEW)
+│   └── robots.ts                             # Robots.txt (NEW)
+├── components/
+│   ├── marketing/
+│   │   ├── social-proof-bar.tsx              # NEW
+│   │   ├── collections-gateway.tsx           # NEW
+│   │   ├── ugc-feed.tsx                      # NEW
+│   │   └── ... (existing, modified)
+│   ├── shop/
+│   │   ├── quick-view.tsx                    # NEW
+│   │   ├── related-products.tsx              # NEW
+│   │   ├── recently-viewed.tsx               # NEW
+│   │   ├── reviews.tsx                       # NEW
+│   │   ├── review-form.tsx                   # NEW
+│   │   ├── wishlist-button.tsx               # NEW
+│   │   └── ... (existing, modified)
+│   ├── cart/
+│   │   ├── cart-upsell.tsx                   # NEW
+│   │   └── ... (existing, modified)
+│   ├── shared/
+│   │   ├── bottom-nav.tsx                    # NEW
+│   │   ├── search.tsx                        # NEW
+│   │   └── ... (existing, modified)
+│   ├── seo/
+│   │   └── json-ld.tsx                       # NEW
+│   └── email/
+│       ├── review-request.tsx                # NEW
+│       └── ... (existing)
 ```
 
-**Example (Tolimán Ring):**
-
-> Inspired by the vibrant culture of San Pedro La Laguna on Lake Atitlán, Guatemala — a place that changed everything for me.
->
-> I was living there during my mission, collecting broken boards from the local skaters. The colors in this ring — those deep reds and sun-bleached golds — they're the exact layers I peeled from a deck that had been ridden through the cobblestone streets of Panajachel. Seven layers of maple, each one carrying the story of a different session, a different fall, a different decision to get back up.
->
-> Sealed with thin CA glue for a smooth, natural finish. Sizes 5-12. Each ring is one of a kind — the color pattern you receive will be unique to your piece.
-
-### 5.2 Micro-Copy & Easter Eggs
-
-Scatter Daniel's voice throughout the site in unexpected places:
-
-| Location | Current | Replace With |
-|----------|---------|-------------|
-| Cart empty state | "Your cart is empty" | "Nothing here yet — go find your ring" |
-| Add to cart button | "Add to Cart" | "This one's mine" or "Add to Cart" (keep clean) |
-| Footer tagline | Generic copyright | "Made with love in Mapleton, Utah. Nothing is wasted. Everything is reborn." |
-| 404 page | Particles + generic | "This page got recycled. Let's get you back on track." |
-| Order confirmation | Generic "thank you" | "Mahalo! Your ring is being shaped right now." |
-| Newsletter success | "Thank you for subscribing" | "Welcome to the Rebirth Fam. Talk soon. — Daniel" |
-| Loading states | Spinner | "Shaping things up..." |
-| Search no results | "No results found" | "Nothing found — try searching for 'skateboard' or 'wedding'" |
-| Size guide header | "Sizing Guide" | "Finding your fit" |
-
-### 5.3 Photography Direction
-
-| Type | Guidance |
-|------|----------|
-| Product shots | Natural lighting, wooden surfaces, workshop context. NOT white background studio. Show the grain, the layers, the imperfections. |
-| Lifestyle shots | 23-year-old in nature — hiking, surfing, traveling. Ring on hand with mountains/ocean behind. Golden hour. |
-| Workshop shots | Daniel's hands shaping a ring. Wood shavings. Tools. The mess. The process. |
-| Unboxing shots | Package just opened on a table. Stickers, card, ring visible. Natural, not styled. |
-| Travel shots | Daniel's actual travel photos from Guatemala, Peru, Chile. Film grain feel. |
-
 ---
 
-## Part 6: Implementation Phases
+## Appendix B: Reference Documents
 
-### Phase 1: Foundation (Week 1-2)
-- [ ] Delete template artifacts (9 unused components)
-- [ ] Add handwritten font (Caveat or Kalam) to font stack
-- [ ] Create `<Sticker>`, `<HandwrittenText>`, `<OrganicDivider>` components
-- [ ] Replace hero particles with workshop imagery
-- [ ] Fix 404 page (branded "page got recycled")
-- [ ] Write product stories for all 30 products (Stripe metadata)
-- [ ] Replace micro-copy throughout site
-
-### Phase 2: Homepage Transformation (Week 2-3)
-- [ ] New hero section with Daniel's words + sticker badges
-- [ ] "Donate a Board" section
-- [ ] "What Arrives at Your Door" unboxing section
-- [ ] Vinyl record / Rebirth Frequency philosophy section
-- [ ] Community / UGC gallery section
-- [ ] Organic SVG section dividers (replace hard borders)
-- [ ] Enhanced testimonials with handwritten elements
-
-### Phase 3: Product Experience (Week 3-4)
-- [ ] Story-first product detail page layout
-- [ ] Collection landing pages (editorial, not filtered grid)
-- [ ] Sticker badges on product cards
-- [ ] Product card slight rotation effect
-- [ ] DrawSVG animations for hand-drawn elements
-- [ ] Enhanced 3D ring viewer with wood preset stories
-
-### Phase 4: 2026 Collection Launch (Week 4-5)
-- [ ] Editorial collection launch page
-- [ ] Embedded flower ring documentary-style page
-- [ ] Rebirth Frequency crewneck interactive page
-- [ ] "First 5 customers free ring" mechanism
-- [ ] Journey map (SVG DrawSVG) for travel story
-
-### Phase 5: Polish & Delight (Week 5-6)
-- [ ] Easter egg micro-interactions
-- [ ] Ambient pressed flower / botanical parallax elements
-- [ ] CSS scroll-driven animations (replace JS where possible)
-- [ ] Performance audit + Core Web Vitals optimization
-- [ ] Mobile experience fine-tuning
-- [ ] Lighthouse scores capture for showcase
-
----
-
-## Part 7: Success Metrics
-
-| Metric | Current | Target |
-|--------|---------|--------|
-| Time on site | Unknown | 4+ minutes (story engagement) |
-| Pages per session | Unknown | 3+ (browse collection → product → story) |
-| Bounce rate | Unknown | < 40% |
-| Conversion rate | Unknown | 2-3% (industry avg for DTC jewelry) |
-| Lighthouse Performance | Unknown | 90+ |
-| Lighthouse Accessibility | Unknown | 95+ |
-| "How did you hear about us?" → "The website" | Unknown | Top 3 response |
-| Social shares / screenshots | Unknown | Weekly UGC from site experience |
-| Awwwards nomination | No | Submit after Phase 5 |
-
----
-
-## Part 8: What This Is NOT
-
-- This is NOT a template swap. The existing Next.js/Tailwind/GSAP foundation is excellent and stays.
-- This is NOT adding more features. It's making existing features feel like Daniel.
-- This is NOT a traditional e-commerce optimization. It's turning a store into a brand experience.
-- This is NOT about more products. It's about each product having a soul on the page.
-- This is NOT minimalism for minimalism's sake. It's warm, organic, artistic, fun — like Daniel.
-
----
-
-## Appendix A: Reference Brands
-
-| Brand | URL | What to Study |
-|-------|-----|--------------|
-| Poppi | drinkpoppi.com | Sticker badges, joyful energy, flavor color worlds |
-| Couplet Coffee | coupletcoffee.com | Hand-drawn doodles, anti-pretentious copy, organic shapes |
-| Recess | takearecess.com | Atmospheric animations, product-matched colors, calm energy |
-| Liquid Death | liquiddeath.com | Punk attitude in design, patch art, entertainment-first |
-| Ghia | drinkghia.com | Vintage typography, nostalgic warmth, recipe integration |
-| Lusano | lusano.com | Moodboard navigation, warm serif type, editorial browsing |
-| Patagonia | patagonia.com | Story-first product pages, environmental mission integration |
-
-## Appendix B: Technical References
-
-| Technique | Resource |
-|-----------|----------|
-| CSS Scroll-Driven Animations | developer.chrome.com/blog/css-ui-ecommerce-sda |
-| GSAP DrawSVG Plugin | gsap.com/docs/v3/Plugins/DrawSVGPlugin |
-| GSAP MorphSVG Plugin | gsap.com/docs/v3/Plugins/MorphSVGPlugin |
-| View Transitions API | developer.chrome.com/docs/web-platform/view-transitions |
-| Rive Interactive Animations | rive.app |
-| SVG Handwriting Animation | css-tricks.com/svg-line-animation-works |
-| Scroll-Driven Animations Demos | scroll-driven-animations.style |
-
----
-
-*"The lotus grows from mud. A broken board becomes a ring. Change isn't something to resist — it's the force that creates something new."*
-
-*— PRD authored for Seasons & Daniel, March 2026*
+| Document | Path | Relevance |
+|----------|------|-----------|
+| Brand & Business PRD | `docs/REBIRTH_WORLD_PRD.md` | Origin story, avatars, voice, competitive landscape |
+| Conversion Blueprint | `SABO_TO_REBIRTH_BLUEPRINT.md` | File dispositions, architecture decisions |
+| Dev Guide | `CLAUDE.md` | Tech stack, component docs, animation rules, deployment |
+| Implementation Report | `docs/IMPLEMENTATION-REPORT.md` | What was built in Phases 1-3 |
+| GHL Integration | `docs/GHL_INTEGRATION_PLAN.md` | CRM webhook architecture |
+| Market Research | `docs/research/` | Avatar language, pricing, awareness levels |
