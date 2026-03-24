@@ -8,21 +8,20 @@ import { motion } from "motion/react";
 import type { Product } from "@/lib/payments/constants";
 import { formatPrice, getCollectionStyle } from "@/lib/payments/constants";
 import { Badge } from "@/components/ui/badge";
-import { BorderBeam } from "@/components/ui/border-beam";
+import { SpotlightCard } from "@/components/ui/spotlight";
 import { ProductQuickView } from "@/components/shop/product-quick-view";
-import { useTilt } from "@/hooks/use-tilt";
 
 interface ProductCardProps {
   product: Product;
   index?: number;
 }
 
-const cardEase: [number, number, number, number] = [0.21, 0.47, 0.32, 0.98];
+/* Luxury easing — smooth, expensive-feeling motion */
+const luxuryEase: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
-  const { ref: tiltRef, tiltHandlers } = useTilt({ maxTilt: 5, glare: 0.12 });
 
   const isFeatured = product.metadata.featured === "true";
   const compareAt = product.metadata.compare_at_price
@@ -36,128 +35,110 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   return (
     <>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, margin: "-50px" }}
         transition={{
-          duration: 0.5,
-          delay: index * 0.08,
-          ease: cardEase,
+          duration: 0.8,
+          delay: index * 0.1,
+          ease: luxuryEase,
         }}
-        whileHover={{ y: -4 }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         className="relative"
         style={getCollectionStyle(product.metadata.collection)}
       >
-        <div
-          ref={tiltRef}
-          {...tiltHandlers}
-          className="tilt-glare relative rounded-xl"
+        <SpotlightCard
+          className="rounded-none"
+          spotlightColor={
+            isFeatured
+              ? "rgba(204, 126, 58, 0.1)"
+              : "rgba(45, 138, 126, 0.08)"
+          }
         >
-        <Link
-          href={`/shop/${product.slug}`}
-          className="group block overflow-hidden rounded-xl border border-border bg-card transition-shadow duration-300 hover:shadow-lg"
-        >
-          {/* Image container */}
-          <div className="relative aspect-square overflow-hidden bg-muted">
-            {product.images[0] ? (
-              <>
-                <Image
-                  src={product.images[0]}
-                  alt={product.name}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  style={{ viewTransitionName: `product-${product.slug}` }}
-                />
-                {/* Hover image swap */}
-                {product.images[1] && (
+          <Link
+            href={`/shop/${product.slug}`}
+            className="group block"
+          >
+            {/* Image — 3:4 portrait aspect ratio per luxury PRD */}
+            <div className="relative aspect-product overflow-hidden bg-muted/30">
+              {product.images[0] ? (
+                <>
                   <Image
-                    src={product.images[1]}
-                    alt={`${product.name} alternate`}
+                    src={product.images[0]}
+                    alt={product.name}
                     fill
-                    className="object-cover transition-opacity duration-500"
-                    style={{ opacity: hovered ? 1 : 0 }}
+                    className="object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    style={{ viewTransitionName: `product-${product.slug}` }}
                   />
-                )}
-              </>
-            ) : (
-              <div className="flex h-full items-center justify-center text-muted-foreground">
-                No image
-              </div>
-            )}
+                  {/* Hover image crossfade — luxury standard */}
+                  {product.images[1] && (
+                    <Image
+                      src={product.images[1]}
+                      alt={`${product.name} alternate`}
+                      fill
+                      className="object-cover transition-opacity duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                      style={{ opacity: hovered ? 1 : 0 }}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  )}
+                </>
+              ) : (
+                <div className="flex h-full items-center justify-center text-muted-foreground">
+                  No image
+                </div>
+              )}
 
-            {/* Badge */}
-            {badgeText && (
-              <Badge
-                variant={isOnSale ? "destructive" : "secondary"}
-                className="absolute left-3 top-3 z-10"
-              >
-                {badgeText}
-              </Badge>
-            )}
+              {/* Badge — minimal, editorial */}
+              {badgeText && (
+                <Badge
+                  variant={isOnSale ? "destructive" : "secondary"}
+                  className="absolute left-3 top-3 z-10 rounded-none text-[10px] tracking-wider"
+                >
+                  {badgeText}
+                </Badge>
+              )}
 
-            {/* Quick View overlay button */}
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: hovered ? 1 : 0 }}
-              transition={{ duration: 0.2 }}
-              className="absolute inset-x-3 bottom-3 z-10 flex items-center justify-center gap-2 rounded-lg bg-background/90 px-4 py-2.5 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-background"
-              onClick={(e) => {
-                e.preventDefault();
-                setQuickViewOpen(true);
-              }}
-            >
-              <Eye className="size-4" />
-              Quick View
-            </motion.button>
-          </div>
-
-          {/* Info */}
-          <div className="p-4">
-            {product.metadata.collection && (
-              <p className="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                {product.metadata.collection.replace(/-/g, " ")}
-              </p>
-            )}
-            <h3 className="text-sm font-semibold leading-tight font-[family-name:var(--font-display)]">
-              {product.name}
-            </h3>
-            {product.metadata.subtitle && (
-              <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
-                {product.metadata.subtitle}
-              </p>
-            )}
-            <div className="mt-1.5 flex items-center gap-2">
-              <p
-                className="text-sm font-medium"
-                style={{
-                  color: "var(--collection-primary, var(--primary))",
+              {/* Quick View — appears on hover with luxury motion */}
+              <motion.button
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
+                transition={{ duration: 0.4, ease: luxuryEase }}
+                className="absolute inset-x-4 bottom-4 z-10 flex items-center justify-center gap-2 bg-foreground/90 px-4 py-3 text-xs font-medium uppercase tracking-widest text-background backdrop-blur-sm transition-colors hover:bg-foreground"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setQuickViewOpen(true);
                 }}
               >
-                {formatPrice(product.price, product.currency)}
-              </p>
-              {isOnSale && compareAt && (
-                <p className="text-xs text-muted-foreground line-through">
-                  {formatPrice(compareAt, product.currency)}
+                <Eye className="size-3.5" />
+                Quick View
+              </motion.button>
+            </div>
+
+            {/* Product info — minimal, editorial typography */}
+            <div className="mt-4 space-y-1">
+              {product.metadata.collection && (
+                <p className="label-luxury text-muted-foreground">
+                  {product.metadata.collection.replace(/-/g, " ")}
                 </p>
               )}
+              <h3 className="text-sm font-medium tracking-wide font-[family-name:var(--font-display)]">
+                {product.name}
+              </h3>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-[family-name:var(--font-dm-mono)] text-muted-foreground">
+                  {formatPrice(product.price, product.currency)}
+                </p>
+                {isOnSale && compareAt && (
+                  <p className="text-xs text-muted-foreground/60 line-through font-[family-name:var(--font-dm-mono)]">
+                    {formatPrice(compareAt, product.currency)}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
-        </Link>
-        </div>
-
-        {/* BorderBeam for featured */}
-        {isFeatured && (
-          <BorderBeam
-            colorFrom="#2d8a7e"
-            colorTo="#cc7e3a"
-            duration={8}
-            size={80}
-          />
-        )}
+          </Link>
+        </SpotlightCard>
       </motion.div>
 
       <ProductQuickView

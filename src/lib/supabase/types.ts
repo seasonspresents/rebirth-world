@@ -36,32 +36,6 @@ export interface UserProfile {
 }
 
 /**
- * User Subscription
- * Maps to the `user_subscriptions` table
- */
-export interface UserSubscription {
-  id: string;
-  user_id: string;
-  stripe_customer_id: string | null;
-  stripe_subscription_id: string | null;
-  stripe_price_id: string | null;
-  plan_name: string | null;
-  status: string | null;
-  billing_cycle: string | null;
-  trial_start: string | null; // ISO timestamp
-  trial_end: string | null; // ISO timestamp
-  current_period_start: string | null; // ISO timestamp
-  current_period_end: string | null; // ISO timestamp
-  cancel_at_period_end: boolean;
-  canceled_at: string | null; // ISO timestamp - Date when cancellation was requested
-  cancel_at: string | null; // ISO timestamp - Future date when subscription will be canceled
-  cancellation_reason: string | null;
-  cancellation_feedback: string | null;
-  created_at: string; // ISO timestamp
-  updated_at: string; // ISO timestamp
-}
-
-/**
  * Payment History
  * Maps to the `payment_history` table
  */
@@ -203,10 +177,3 @@ export type UserProfileUpdate = Partial<
   Omit<UserProfile, "id" | "user_id" | "created_at" | "updated_at">
 >;
 
-/**
- * Type for creating/updating a subscription
- * Omits system-generated fields
- */
-export type UserSubscriptionUpdate = Partial<
-  Omit<UserSubscription, "id" | "user_id" | "created_at" | "updated_at">
->;

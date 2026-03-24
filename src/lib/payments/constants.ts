@@ -48,6 +48,7 @@ export const COLLECTIONS = [
   { slug: "skateboard-rings", label: "Skateboard Rings" },
   { slug: "wedding-bands", label: "Wedding Bands" },
   { slug: "apparel", label: "Apparel" },
+  { slug: "accessories", label: "Accessories" },
 ] as const;
 
 /**
@@ -75,6 +76,12 @@ export const COLLECTION_COLORS: Record<
     primary: "#4d7a4e",
     accent: "#cc7e3a",
     bg: "#f0ebe3",
+    muted: "#897b6b",
+  },
+  accessories: {
+    primary: "#876f4c",
+    accent: "#2d8a7e",
+    bg: "#f3ece1",
     muted: "#897b6b",
   },
 };

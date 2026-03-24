@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
-import { Particles } from "@/components/ui/particles";
+import { SpotlightCard } from "@/components/ui/spotlight";
 
 export function CTA() {
   return (
@@ -18,18 +18,11 @@ export function CTA() {
           {/* Radial amber glow behind card */}
           <div className="pointer-events-none absolute top-1/2 left-1/2 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(224,138,48,0.12)_0%,transparent_65%)] dark:bg-[radial-gradient(ellipse_at_center,rgba(224,138,48,0.18)_0%,transparent_65%)]" />
 
-          {/* Card */}
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-card px-10 py-14 text-center">
-            {/* Floating particles */}
-            <Particles
-              className="pointer-events-none absolute inset-0"
-              quantity={30}
-              color="#e08a30"
-              size={0.3}
-              staticity={70}
-              ease={60}
-            />
-
+          {/* Aceternity SpotlightCard */}
+          <SpotlightCard
+            className="overflow-hidden rounded-2xl border border-border bg-card px-10 py-14 text-center"
+            spotlightColor="rgba(204, 126, 58, 0.15)"
+          >
             {/* Grain texture */}
             <div
               className="pointer-events-none absolute inset-0 opacity-[0.02]"
@@ -39,7 +32,6 @@ export function CTA() {
               }}
             />
 
-            {/* Content */}
             <div className="relative z-10">
               <h2 className="mb-4 text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.12] tracking-tight font-[family-name:var(--font-display)]">
                 Nothing is wasted.{" "}
@@ -50,16 +42,13 @@ export function CTA() {
                 wood becomes a wedding band. Find the piece that carries your
                 story.
               </p>
-              <Button
-                size="lg"
-                asChild
-              >
+              <Button size="lg" asChild>
                 <a href="/shop">
                   Browse Collection <span className="ml-1">→</span>
                 </a>
               </Button>
             </div>
-          </div>
+          </SpotlightCard>
         </div>
       </motion.div>
     </section>

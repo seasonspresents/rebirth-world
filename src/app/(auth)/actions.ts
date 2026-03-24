@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { notifyAccountCreated } from "@/lib/ghl";
+import { sendEmail } from "@/lib/emails";
 
 type OAuthProvider = "google" | "github" | "apple";
 
@@ -100,6 +102,20 @@ export async function signUp(formData: FormData) {
   if (error) {
     return { error: error.message };
   }
+
+  // Fire-and-forget: notify GHL of new account for marketing automation
+  notifyAccountCreated({
+    email,
+    first_name: fullName?.split(" ")[0],
+    auth_method: "email",
+  });
+
+  // Send welcome email (fire-and-forget)
+  sendEmail("welcome", email, {
+    userFirstname: fullName?.split(" ")[0] || "there",
+  }).catch((err) => {
+    console.error("Failed to send welcome email:", err);
+  });
 
   revalidatePath("/", "layout");
   return { success: true };

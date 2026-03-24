@@ -135,6 +135,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
   const [loadingRates, setLoadingRates] = useState(false);
   const [buyingLabel, setBuyingLabel] = useState(false);
   const [showManualEntry, setShowManualEntry] = useState(false);
+  const [refundingLabel, setRefundingLabel] = useState(false);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -328,6 +329,31 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
       toast.error("Failed to purchase label");
     } finally {
       setBuyingLabel(false);
+    }
+  };
+
+  const handleRefundLabel = async () => {
+    if (!confirm("Refund this shipping label? The order will be set back to unfulfilled.")) return;
+    setRefundingLabel(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/shipping/refund`, {
+        method: "POST",
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        toast.error(errData.error || "Failed to refund label");
+        return;
+      }
+      const data = await res.json();
+      setOrder(data.order as Order);
+      setTrackingNumber("");
+      setTrackingUrl("");
+      setCarrier("");
+      toast.success("Label refunded. Order set to unfulfilled.");
+    } catch {
+      toast.error("Failed to refund label");
+    } finally {
+      setRefundingLabel(false);
     }
   };
 
@@ -684,6 +710,20 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                                 <ExternalLink className="mr-1 h-4 w-4" />
                                 Track Package
                               </a>
+                            </Button>
+                          )}
+                          {order.status !== "delivered" && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={handleRefundLabel}
+                              disabled={refundingLabel}
+                              className="text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950/30"
+                            >
+                              {refundingLabel ? (
+                                <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                              ) : null}
+                              {refundingLabel ? "Refunding..." : "Refund Label"}
                             </Button>
                           )}
                         </div>

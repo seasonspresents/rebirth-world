@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { upsertContact } from "@/lib/ghl";
+import { sendEmail } from "@/lib/emails";
 
 const contactSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
-  company: z.string().min(2, "Company name must be at least 2 characters"),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
@@ -14,8 +15,27 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedData = contactSchema.parse(body);
 
-    // TODO: Send contact form data via Resend or store in database
-    console.log("Contact form submission:", validatedData);
+    // Upsert contact into GHL with contact_form tag + message in custom fields
+    upsertContact({
+      email: validatedData.email,
+      firstName: validatedData.firstName,
+      lastName: validatedData.lastName,
+      tags: ["contact_form", "lead"],
+      source: "rebirth.world",
+      customFields: [
+        { key: "contact_message", field_value: validatedData.message },
+      ],
+    });
+
+    // Send notification email to team
+    sendEmail("contact-notification", "aloha@rebirth.world", {
+      firstName: validatedData.firstName,
+      lastName: validatedData.lastName,
+      email: validatedData.email,
+      message: validatedData.message,
+    }).catch((err) => {
+      console.error("Failed to send contact notification email:", err);
+    });
 
     return NextResponse.json(
       {

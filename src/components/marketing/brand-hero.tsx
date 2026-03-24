@@ -4,8 +4,10 @@ import { useRef } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText } from "@/lib/gsap/register";
-import { Button } from "@/components/ui/button";
-import { Particles } from "@/components/ui/particles";
+import { motion } from "motion/react";
+import { Spotlight } from "@/components/ui/spotlight";
+import { SparklesText } from "@/components/ui/sparkles-text";
+import { ButtonMovingBorder } from "@/components/ui/moving-border";
 import { Magnetic } from "@/components/ui/magnetic";
 import { ParallaxLayer } from "@/components/ui/parallax-layer";
 
@@ -29,7 +31,6 @@ export function BrandHero() {
       ).matches;
 
       if (prefersReducedMotion) {
-        // Show everything immediately
         gsap.set(
           [
             eyebrowRef.current,
@@ -43,56 +44,57 @@ export function BrandHero() {
         return;
       }
 
-      const tl = gsap.timeline();
+      const tl = gsap.timeline({ delay: 0.2 });
 
-      // Eyebrow fade in
+      // Eyebrow — slides in from left with a slight blur
       tl.fromTo(
         eyebrowRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }
+        { opacity: 0, x: -40, filter: "blur(8px)" },
+        { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" }
       );
 
-      // SplitText headline — char-by-char with rotation
-      const split = SplitText.create(headline, { type: "chars" });
+      // SplitText headline — char-by-char with 3D rotation + scale
+      const split = SplitText.create(headline, { type: "chars,words" });
       tl.fromTo(
         split.chars,
-        { opacity: 0, y: 30, rotateX: -40 },
+        { opacity: 0, y: 50, rotateX: -60, scale: 0.8 },
         {
           opacity: 1,
           y: 0,
           rotateX: 0,
-          duration: 0.8,
-          stagger: 0.02,
-          ease: "power3.out",
+          scale: 1,
+          duration: 1,
+          stagger: 0.025,
+          ease: "power4.out",
         },
-        "-=0.3"
+        "-=0.5"
       );
 
-      // Subtitle
+      // Subtitle — word-by-word fade
       tl.fromTo(
         subtextRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+        { opacity: 0, y: 30, filter: "blur(4px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" },
+        "-=0.6"
+      );
+
+      // CTA button — scale spring
+      tl.fromTo(
+        ctaRef.current,
+        { opacity: 0, scale: 0.9, y: 20 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "back.out(1.4)" },
         "-=0.4"
       );
 
-      // CTA button
-      tl.fromTo(
-        ctaRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-        "-=0.3"
-      );
-
-      // Scroll indicator fade in
+      // Scroll indicator
       tl.fromTo(
         scrollIndicatorRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.4 },
+        { opacity: 1, duration: 0.5 },
         "-=0.2"
       );
 
-      // Pin the hero for 0.5x viewport scroll distance
+      // Pin the hero for cinematic scroll distance
       gsap.to(section, {
         scrollTrigger: {
           trigger: section,
@@ -104,10 +106,11 @@ export function BrandHero() {
         },
       });
 
-      // Watermark drifts up during the pin
+      // Watermark drifts up with parallax
       if (watermarkRef.current) {
         gsap.to(watermarkRef.current, {
-          y: -100,
+          y: -120,
+          scale: 1.05,
           ease: "none",
           scrollTrigger: {
             trigger: section,
@@ -118,7 +121,7 @@ export function BrandHero() {
         });
       }
 
-      // Scroll indicator fades out on scroll
+      // Scroll indicator fades out
       if (scrollIndicatorRef.current) {
         gsap.to(scrollIndicatorRef.current, {
           autoAlpha: 0,
@@ -145,46 +148,52 @@ export function BrandHero() {
       data-section-theme="warm"
       className="section-warm bg-grain relative flex min-h-screen items-center overflow-hidden px-6"
     >
+      {/* Aceternity Spotlight — cinematic light sweep */}
+      <Spotlight
+        className="-top-40 left-0 md:-top-20 md:left-60"
+        fill="var(--rebirth-teal)"
+      />
+
       {/* Watermark */}
       <div
         ref={watermarkRef}
         className="pointer-events-none absolute inset-0 flex items-center justify-center select-none"
         aria-hidden="true"
       >
-        <span className="text-mega-lg whitespace-nowrap opacity-[0.04]">
+        <span className="text-mega-lg whitespace-nowrap opacity-[0.03]">
           REBIRTH
         </span>
       </div>
 
-      {/* Teal particles */}
-      <ParallaxLayer speed={-0.3} className="absolute inset-0">
-        <Particles
-          className="pointer-events-none absolute inset-0"
-          quantity={20}
-          color="#2d8a7e"
-          size={0.6}
-          staticity={60}
-          ease={50}
-        />
-      </ParallaxLayer>
+      {/* Ambient glow orbs */}
+      <div className="pointer-events-none absolute -top-20 right-1/4 h-[500px] w-[500px] rounded-full bg-[var(--rebirth-teal)] opacity-[0.04] blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-32 left-1/4 h-[400px] w-[400px] rounded-full bg-[var(--rebirth-amber)] opacity-[0.05] blur-[100px]" />
 
       <ParallaxLayer speed={-0.1} className="relative z-10 mx-auto max-w-[1200px]">
-        <p
+        {/* Eyebrow */}
+        <motion.p
           ref={eyebrowRef}
-          className="mb-6 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-primary opacity-0 font-[family-name:var(--font-dm-mono)]"
+          className="mb-6 text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-primary opacity-0 font-[family-name:var(--font-dm-mono)]"
         >
           Handcrafted from recycled skateboards
-        </p>
+        </motion.p>
 
+        {/* Headline with SparklesText on key word */}
         <h1
           ref={headlineRef}
           className="text-mega max-w-[14ch] opacity-0"
-          style={{ perspective: "600px" }}
+          style={{ perspective: "800px" }}
         >
           Broken boards,{" "}
-          <em className="not-italic text-primary">reborn</em>
+          <SparklesText
+            text="reborn"
+            className="not-italic text-primary"
+            sparklesCount={8}
+            colors={{ first: "#2d8a7e", second: "#cc7e3a" }}
+          />
         </h1>
 
+        {/* Subtitle */}
         <p
           ref={subtextRef}
           className="mt-8 max-w-[48ch] text-lg leading-relaxed text-muted-foreground opacity-0 md:text-xl"
@@ -194,13 +203,19 @@ export function BrandHero() {
           turned into rings you&apos;ll never want to take off.
         </p>
 
+        {/* CTA — Aceternity MovingBorder button */}
         <div ref={ctaRef} className="mt-12 opacity-0">
           <Magnetic strength={0.25}>
-            <Button asChild className="px-8 py-4 text-base">
-              <Link href="/shop">
-                Browse the collection <span className="ml-1">&rarr;</span>
-              </Link>
-            </Button>
+            <Link href="/shop">
+              <ButtonMovingBorder
+                borderRadius="1.75rem"
+                className="bg-background px-8 py-3 text-base font-medium text-foreground"
+                containerClassName="h-auto"
+                duration={3000}
+              >
+                Browse the collection <span className="ml-2">&rarr;</span>
+              </ButtonMovingBorder>
+            </Link>
           </Magnetic>
         </div>
       </ParallaxLayer>
@@ -210,12 +225,16 @@ export function BrandHero() {
         ref={scrollIndicatorRef}
         className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 opacity-0"
       >
-        <div className="flex flex-col items-center gap-2">
+        <motion.div
+          className="flex flex-col items-center gap-2"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
           <span className="text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground font-[family-name:var(--font-dm-mono)]">
             Scroll
           </span>
-          <div className="h-8 w-px bg-muted-foreground/40" />
-        </div>
+          <div className="h-8 w-px bg-gradient-to-b from-muted-foreground/40 to-transparent" />
+        </motion.div>
       </div>
     </section>
   );

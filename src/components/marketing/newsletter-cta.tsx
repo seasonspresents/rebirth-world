@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { TextReveal } from "@/components/ui/text-reveal";
+import { BackgroundGradient } from "@/components/ui/background-gradient";
+import { ButtonMovingBorder } from "@/components/ui/moving-border";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 export function NewsletterCTA() {
   const [email, setEmail] = useState("");
@@ -33,22 +34,23 @@ export function NewsletterCTA() {
   }
 
   return (
-    <section data-section-theme="warm" className="section-warm bg-grain px-6 py-24 md:py-40">
+    <section data-section-theme="warm" className="section-warm bg-grain px-6 py-24 md:py-32 lg:py-40">
       <div className="relative z-10 mx-auto max-w-[1200px]">
-        <TextReveal
-          as="h2"
-          className="text-fluid-display max-w-[18ch]"
-          type="words"
-        >
-          Nothing is wasted. Everything is reborn.
-        </TextReveal>
+        {/* Ambient glow */}
+        <div className="pointer-events-none absolute -top-20 right-0 h-[400px] w-[400px] rounded-full bg-[var(--rebirth-teal)] opacity-[0.04] blur-[120px]" />
+
+        <TextGenerateEffect
+          words="Nothing is wasted. Everything is reborn."
+          className="text-fluid-display max-w-[18ch] text-section-fg"
+          duration={0.5}
+        />
 
         <motion.p
           className="mt-6 max-w-[48ch] text-base leading-relaxed text-muted-foreground md:text-lg"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
         >
           New drops, workshop stories, and first access to limited releases.
           Join the crew that keeps Rebirth rolling.
@@ -59,12 +61,20 @@ export function NewsletterCTA() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
         >
           {status === "success" ? (
-            <p className="text-base font-medium text-primary">
-              You&apos;re in. Keep an eye on your inbox for the good stuff.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 200 }}
+            >
+              <BackgroundGradient className="rounded-2xl bg-background p-6">
+                <p className="text-base font-medium text-primary">
+                  You&apos;re in. Keep an eye on your inbox for the good stuff.
+                </p>
+              </BackgroundGradient>
+            </motion.div>
           ) : (
             <form
               onSubmit={handleSubmit}
@@ -78,9 +88,16 @@ export function NewsletterCTA() {
                 required
                 className="flex-1"
               />
-              <Button type="submit" disabled={status === "loading"}>
+              <ButtonMovingBorder
+                as="button"
+                type="submit"
+                borderRadius="0.75rem"
+                className="bg-background px-6 py-2 text-sm font-medium text-foreground"
+                containerClassName="h-10"
+                duration={3000}
+              >
                 {status === "loading" ? "Joining..." : "Subscribe"}
-              </Button>
+              </ButtonMovingBorder>
             </form>
           )}
           {status === "error" && (

@@ -1,6 +1,8 @@
 import { type EmailOtpType } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { notifyAccountCreated } from "@/lib/ghl";
+import { sendEmail } from "@/lib/emails";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -26,6 +28,25 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
+      // Notify GHL of new OAuth account (fire-and-forget, non-blocking)
+      if (type === "signup") {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          notifyAccountCreated({
+            email: user.email || "",
+            first_name: user.user_metadata?.full_name?.split(" ")[0],
+            auth_method: "google",
+          });
+
+          // Send welcome email (fire-and-forget)
+          sendEmail("welcome", user.email || "", {
+            userFirstname: user.user_metadata?.full_name?.split(" ")[0] || "there",
+          }).catch((err) => {
+            console.error("Failed to send welcome email:", err);
+          });
+        }
+      }
+
       // Redirect to reset-password page if recovery type
       if (type === "recovery") {
         const forwardedHost = request.headers.get("x-forwarded-host");

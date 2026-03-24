@@ -100,9 +100,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="bg-grain px-6 py-12 md:py-20">
+      <section className="bg-grain px-6 py-16 md:py-24 lg:py-32">
         <div className="relative z-10 mx-auto max-w-[1200px]">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16">
+          {/* 60/40 split — luxury editorial PDP layout */}
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.2fr_1fr] md:gap-16 lg:gap-20">
             {/* Image Gallery + optional 3D View */}
             <Product3DToggle
               show3D={
@@ -118,20 +119,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
               }
             />
 
-            {/* Product Details */}
-            <div className="flex flex-col">
-              {/* Collection badge */}
+            {/* Product Details — sticky on desktop */}
+            <div className="flex flex-col md:sticky md:top-24 md:self-start">
+              {/* Collection label — editorial */}
               {product.metadata.collection && (
-                <Badge
-                  variant="outline"
-                  className="mb-3 w-fit uppercase tracking-widest text-[10px] font-semibold"
-                >
+                <p className="label-luxury mb-4 text-muted-foreground">
                   {product.metadata.collection.replace(/-/g, " ")}
-                </Badge>
+                </p>
               )}
 
-              {/* Name */}
-              <h1 className="text-3xl leading-[1.1] tracking-tight md:text-4xl lg:text-5xl font-[family-name:var(--font-display)]">
+              {/* Name — large, editorial */}
+              <h1 className="text-3xl leading-[1.05] tracking-tight md:text-4xl lg:text-5xl font-[family-name:var(--font-display)]">
                 {product.name}
               </h1>
 

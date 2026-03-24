@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { Instagram } from "lucide-react";
+import { motion } from "motion/react";
 import { Logo } from "@/components/shared/logo";
 
 const footerLinks = {
@@ -25,10 +28,15 @@ export function Footer() {
   return (
     <footer className="bg-grain w-full border-t bg-background">
       <div className="relative z-10 mx-auto max-w-[1200px] px-6 py-16 md:py-24">
-        {/* Top: Logo + tagline + columns */}
         <div className="flex flex-col gap-10 md:flex-row md:justify-between">
           {/* Brand */}
-          <div className="shrink-0">
+          <motion.div
+            className="shrink-0"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <Logo />
             <p className="mt-3 max-w-[28ch] text-base text-muted-foreground">
               Handcrafted from recycled skateboards.
@@ -38,46 +46,60 @@ export function Footer() {
             <p className="mt-2 text-sm font-[family-name:var(--font-dm-mono)] tracking-wide text-muted-foreground/70">
               Embrace Change
             </p>
-            <a
+            <motion.a
               href="https://instagram.com/rebirthrings"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 text-base text-muted-foreground transition-colors hover:text-foreground"
+              whileHover={{ x: 4 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
               <Instagram className="size-5" />
               <span>@rebirthrings</span>
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
 
-          {/* Link columns */}
+          {/* Link columns with staggered reveal */}
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:gap-16">
-            {Object.entries(footerLinks).map(([heading, links]) => (
-              <div key={heading}>
+            {Object.entries(footerLinks).map(([heading, links], colIdx) => (
+              <motion.div
+                key={heading}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: colIdx * 0.1 }}
+              >
                 <h3 className="mb-3 text-sm font-semibold">{heading}</h3>
                 <ul className="flex flex-col gap-2.5">
                   {links.map((link) => (
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        className="group relative inline-block text-sm text-muted-foreground transition-colors hover:text-foreground"
                       >
-                        {link.label}
+                        <span>{link.label}</span>
+                        <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-primary transition-all duration-300 group-hover:w-full" />
                       </Link>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Bottom separator + copyright */}
-        <div className="mt-16 border-t pt-6">
+        <motion.div
+          className="mt-16 border-t pt-6"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} Rebirth World LLC. All rights
             reserved.
           </p>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

@@ -3,69 +3,49 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText } from "@/lib/gsap/register";
-import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 const testimonials = [
   {
     quote:
       "I told my wife the ring on my finger used to be a skateboard and she didn't believe me until she saw the layers. The colors in the wood are unreal.",
     name: "Marcus T.",
-    detail: "Skateboard ring, size 10",
+    title: "Skateboard ring, size 10",
   },
   {
     quote:
       "Got this as a gift for my husband — he's skated for 20 years and teared up when he realized it was made from an actual deck. He hasn't taken it off.",
     name: "Sarah K.",
-    detail: "Gift purchase",
+    title: "Gift purchase",
   },
   {
     quote:
       "We wanted wedding bands that actually meant something. The bog oak and steel bands are stunning and people always ask about them. Worth every penny.",
     name: "Lena & James R.",
-    detail: "Wedding band pair",
+    title: "Wedding band pair",
   },
   {
     quote:
       "The engraving was perfect and the ring fits like a glove. You can see the seven layers of maple — each one a different color. Truly one of a kind.",
     name: "Chris W.",
-    detail: "Engraved skateboard ring",
+    title: "Engraved skateboard ring",
   },
   {
     quote:
       "I've bought from a lot of 'sustainable' brands but Rebirth is the real deal. You can tell Daniel actually makes these by hand. The quality is next level.",
     name: "Priya S.",
-    detail: "Repeat customer",
+    title: "Repeat customer",
   },
   {
     quote:
       "Sized up like the guide suggested and it's perfect. The wood grain pattern is completely unique — no two are alike. Already planning my next order.",
     name: "Jake D.",
-    detail: "Skateboard ring, size 12",
+    title: "Skateboard ring, size 12",
   },
 ];
 
 const featured = testimonials[0];
-const secondary = testimonials.slice(1);
-
-function SecondaryCard({
-  quote,
-  name,
-  detail,
-}: (typeof testimonials)[0]) {
-  return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm md:p-8">
-      <p className="text-base leading-relaxed md:text-lg">
-        &ldquo;{quote}&rdquo;
-      </p>
-      <div className="mt-5">
-        <p className="font-medium">{name}</p>
-        <p className="mt-0.5 text-sm opacity-60 font-[family-name:var(--font-dm-mono)]">
-          {detail}
-        </p>
-      </div>
-    </div>
-  );
-}
 
 export function Testimonials() {
   const quoteRef = useRef<HTMLQuoteElement>(null);
@@ -86,6 +66,7 @@ export function Testimonials() {
       gsap.from(split.chars, {
         opacity: 0,
         y: 12,
+        rotateX: -20,
         duration: 0.6,
         stagger: 0.01,
         ease: "power3.out",
@@ -106,12 +87,11 @@ export function Testimonials() {
   return (
     <section
       data-section-theme="ocean"
-      className="section-ocean bg-grain py-24 md:py-40"
+      className="section-ocean bg-grain py-24 md:py-32 lg:py-40"
     >
       <div className="relative z-10 mx-auto max-w-[1200px] px-6">
         {/* Featured editorial pull quote */}
         <div className="relative">
-          {/* Decorative quotation mark */}
           <span
             className="pointer-events-none absolute -top-8 -left-2 select-none text-mega-lg opacity-[0.08] md:-top-12 md:-left-6"
             aria-hidden="true"
@@ -122,6 +102,7 @@ export function Testimonials() {
           <blockquote
             ref={quoteRef}
             className="relative text-mega-sm max-w-[22ch] md:max-w-[28ch]"
+            style={{ perspective: "600px" }}
           >
             {featured.quote}
           </blockquote>
@@ -129,20 +110,20 @@ export function Testimonials() {
           <div className="mt-8">
             <p className="text-lg font-medium">{featured.name}</p>
             <p className="mt-1 text-sm text-section-muted font-[family-name:var(--font-dm-mono)]">
-              {featured.detail}
+              {featured.title}
             </p>
           </div>
         </div>
 
-        {/* Secondary testimonials grid */}
-        <ScrollReveal
-          stagger={0.1}
-          className="mt-20 grid grid-cols-1 gap-6 md:mt-28 md:grid-cols-2 lg:grid-cols-3"
-        >
-          {secondary.map((item) => (
-            <SecondaryCard key={item.name} {...item} />
-          ))}
-        </ScrollReveal>
+        {/* Aceternity InfiniteMovingCards — auto-scrolling testimonial strip */}
+        <div className="mt-20 md:mt-28">
+          <InfiniteMovingCards
+            items={testimonials.slice(1)}
+            direction="left"
+            speed="slow"
+            pauseOnHover
+          />
+        </div>
       </div>
     </section>
   );

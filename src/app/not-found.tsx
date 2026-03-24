@@ -1,31 +1,20 @@
 "use client";
 
-import { useMemo } from "react";
 import { ArrowLeft } from "lucide-react";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/shared/header";
 import { Footer } from "@/components/shared/footer";
-import { Particles } from "@/components/ui/particles";
-import { useTheme } from "next-themes";
+import { Meteors } from "@/components/ui/meteors";
 import Link from "next/link";
 
 export default function NotFound() {
-  const { resolvedTheme } = useTheme();
-  const color = useMemo(
-    () => (resolvedTheme === "dark" ? "#ffffff" : "#000000"),
-    [resolvedTheme]
-  );
-
   return (
     <div className="flex flex-col">
       <Header />
       <div className="relative flex min-h-screen items-center justify-center overflow-hidden">
-        <Particles
-          className="absolute inset-0 z-0"
-          quantity={200}
-          refresh
-          color={color}
-        />
+        {/* Aceternity Meteors — ambient animated streaks */}
+        <Meteors number={15} />
 
         {/* Large 404 background text */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-50">
@@ -35,7 +24,12 @@ export default function NotFound() {
         </div>
 
         {/* Main content */}
-        <div className="relative z-10 px-4 text-center">
+        <motion.div
+          className="relative z-10 px-4 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+        >
           <h2 className="text-foreground mb-6 text-4xl font-semibold font-[family-name:var(--font-display)] sm:mb-8 sm:text-5xl lg:text-6xl">
             This page got recycled
           </h2>
@@ -56,7 +50,7 @@ export default function NotFound() {
               </Link>
             </Button>
           </div>
-        </div>
+        </motion.div>
       </div>
       <Footer />
     </div>

@@ -84,7 +84,7 @@ async function ProductGrid({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
           {products.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
@@ -103,21 +103,22 @@ export default async function ShopPage({
 
   return (
     <>
-      {/* Dramatic header */}
-      <div className="bg-grain px-6 py-20 md:py-32">
+      {/* Editorial header — luxury spacing */}
+      <div className="bg-grain px-6 py-24 md:py-32 lg:py-40">
         <div className="relative z-10 mx-auto max-w-[1200px]">
-          <h1 className="text-5xl leading-[1.05] tracking-tight md:text-7xl font-[family-name:var(--font-display)]">
-            The Collection
+          <p className="label-luxury mb-6 text-primary">The Collection</p>
+          <h1 className="text-mega max-w-[16ch]">
+            Every piece, shaped by hand
           </h1>
-          <p className="mt-4 max-w-[52ch] text-base text-muted-foreground md:text-lg">
+          <p className="mt-6 max-w-[48ch] text-base leading-relaxed text-muted-foreground md:text-lg">
             Recycled skateboard rings, wood-lined wedding bands, and apparel —
             each piece handmade in the North Shore workshop. No two are alike.
           </p>
         </div>
       </div>
 
-      {/* Products */}
-      <section className="px-6 py-12 md:py-20">
+      {/* Products grid — luxury spacing */}
+      <section className="px-6 py-16 md:py-24 lg:py-32">
         <div className="mx-auto max-w-[1200px]">
           <Suspense fallback={<ProductGridSkeleton />}>
             <ProductGrid collection={collection} sort={sort} />

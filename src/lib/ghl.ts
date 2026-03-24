@@ -80,7 +80,7 @@ function ghlApi(
     method,
     headers: {
       "Content-Type": "application/json",
-      Authorization: apiKey,
+      Authorization: `Bearer ${apiKey}`,
       Version: "2021-07-28",
     },
     body: JSON.stringify(body),

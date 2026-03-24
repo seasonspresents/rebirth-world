@@ -1,5 +1,6 @@
 import { getFeaturedProducts } from "@/lib/payments/products";
-import { TextReveal } from "@/components/ui/text-reveal";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { Spotlight } from "@/components/ui/spotlight";
 import { HorizontalProductShowcase } from "@/components/marketing/horizontal-product-showcase";
 
 export async function FeaturedProducts() {
@@ -27,13 +28,21 @@ export async function FeaturedProducts() {
   return (
     <section
       data-section-theme="dark"
-      className="section-dark"
+      className="section-dark relative overflow-hidden"
     >
+      {/* Aceternity Spotlight for dramatic lighting */}
+      <Spotlight
+        className="-top-40 -right-20 md:-top-20"
+        fill="var(--rebirth-amber)"
+      />
+
       <div className="px-6 pt-24 md:pt-40">
         <div className="mx-auto max-w-[1200px]">
-          <TextReveal as="h2" className="text-fluid-display" type="words">
-            Crafted with intention
-          </TextReveal>
+          <TextGenerateEffect
+            words="Crafted with intention"
+            className="text-fluid-display text-section-fg"
+            duration={0.6}
+          />
         </div>
       </div>
 
@@ -41,10 +50,7 @@ export async function FeaturedProducts() {
         <HorizontalProductShowcase products={products} />
       </div>
 
-      {/* Bottom padding for mobile grid */}
-      <div className="px-6 pb-24 md:hidden">
-        {/* spacer for mobile layout */}
-      </div>
+      <div className="px-6 pb-24 md:hidden" />
     </section>
   );
 }
