@@ -64,10 +64,8 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.4 }}
           className="mb-7 max-w-[480px] text-base leading-[1.75] text-white/65"
         >
-          I make handmade rings from broken skateboards donated by the local
-          community — and limited apparel drops that carry deeper messages. Every
-          piece is one of a kind. Every piece means something.{" "}
-          <strong className="text-white/85">Embrace Change.</strong>
+          I make handmade rings crafted from broken skateboards donated by the local skate community and other recycled materials — alongside limited apparel drops that carry the deeper message of Rebirth. Every piece is one of a kind, made with intention, purpose, and a story worth wearing.{" "}
+          <strong className="text-white/85">Embrace change.</strong>
         </motion.p>
 
         {/* Dual CTAs */}
@@ -128,7 +126,7 @@ export function Hero() {
           <div className="hidden h-10 w-px bg-white/10 md:block" />
           <div>
             <div className="font-[family-name:var(--font-caps)] text-4xl leading-none tracking-wider text-[var(--rebirth-teal)]">
-              14
+              10
             </div>
             <div className="max-w-[180px] text-xs leading-snug text-white/45">
               years of craft — started making rings at age 14
@@ -168,11 +166,11 @@ export function Hero() {
               {[
                 {
                   label: "Functional",
-                  text: "A ring that's built to last and unlike anything else in the market",
+                  text: "Lightweight, comfortable, and made to stand out — each ring is crafted from reclaimed materials and designed to feel unlike anything else on your hand.",
                 },
                 {
                   label: "Emotional",
-                  text: "A reminder to embrace change and step into the next chapter",
+                  text: "A reminder that transformation begins the moment we embrace change.",
                 },
                 {
                   label: "Social",

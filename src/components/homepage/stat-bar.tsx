@@ -6,7 +6,7 @@ interface StatItem {
 const STATS: StatItem[] = [
   { num: "1,000+", label: "Customers Worldwide" },
   { num: "4.9★", label: "Average Rating" },
-  { num: "14 Yrs", label: "Of Craft" },
+  { num: "10 Yrs", label: "Of Craft" },
   { num: "100%", label: "Handmade" },
 ];
 
