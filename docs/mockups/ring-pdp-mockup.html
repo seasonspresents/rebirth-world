@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rebirth World — Landing Page Mockup v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<style>
+/* ════════════════════════════════
+   DESIGN TOKENS
+════════════════════════════════ */
+:root {
+  --black:       #1a1a1a;
+  --off-black:   #222222;
+  --warm-white:  #f5f0e8;
+  --cream:       #ede8df;
+  --teal:        #2a9d8f;
+  --teal-dark:   #1e7a6e;
+  --teal-faint:  rgba(42,157,143,0.08);
+  --amber:       #e07a3a;
+  --lotus:       #c49494;
+  --gray:        #8a8578;
+  --light-gray:  #e0dbd2;
+  --mid-gray:    #bfbab2;
+  --moss:        #5a6b4a;
+}
+
+/* ════════════════════════════════
+   RESET & BASE
+════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--warm-white);
+  color: var(--black);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ════════════════════════════════
+   LAYOUT
+════════════════════════════════ */
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.wrap--narrow { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+
+/* ════════════════════════════════
+   TYPOGRAPHY
+════════════════════════════════ */
+.label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+.label--light { color: rgba(255,255,255,0.5); }
+.label--amber { color: var(--amber); }
+
+.heading-xl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 6vw, 80px);
+  letter-spacing: 2px;
+  line-height: 1.0;
+}
+.heading-lg {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(34px, 5vw, 60px);
+  letter-spacing: 2px;
+  line-height: 1.05;
+}
+.heading-md {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: 1.5px;
+  line-height: 1.1;
+}
+.heading-serif {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.body-lg { font-size: 16px; line-height: 1.8; }
+.body-sm { font-size: 13px; line-height: 1.7; color: var(--gray); }
+
+/* ════════════════════════════════
+   BUTTONS
+════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2.5px;
+  padding: 18px 40px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  line-height: 1;
+}
+.btn--primary { background: var(--teal); color: #fff; }
+.btn--primary:hover { background: var(--teal-dark); transform: translateY(-1px); }
+.btn--dark { background: var(--black); color: var(--warm-white); }
+.btn--dark:hover { background: var(--off-black); transform: translateY(-1px); }
+.btn--outline { background: transparent; color: var(--warm-white); border-color: rgba(255,255,255,0.4); }
+.btn--outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+.btn--outline-dark { background: transparent; color: var(--black); border-color: var(--mid-gray); }
+.btn--outline-dark:hover { border-color: var(--teal); color: var(--teal); }
+.btn--full { width: 100%; }
+.btn--amber { background: var(--amber); color: #fff; }
+.btn--amber:hover { background: #c56830; }
+
+/* ════════════════════════════════
+   ASSET ANNOTATION
+════════════════════════════════ */
+.asset-box {
+  position: relative;
+  background: var(--cream);
+  border: 2px dashed var(--amber);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  overflow: hidden;
+}
+.asset-box__tag {
+  position: absolute;
+  top: 0; left: 0;
+  background: var(--amber);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  z-index: 2;
+}
+.asset-box__icon { font-size: 36px; margin-bottom: 10px; }
+.asset-box__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--black);
+  margin-bottom: 6px;
+}
+.asset-box__note {
+  font-size: 11px;
+  color: var(--gray);
+  line-height: 1.5;
+  padding: 0 16px;
+  max-width: 280px;
+}
+
+/* ════════════════════════════════
+   DIVIDER
+════════════════════════════════ */
+.divider { height: 1px; background: var(--light-gray); }
+.divider--teal { background: linear-gradient(90deg, transparent, var(--teal), transparent); }
+
+/* ════════════════════════════════
+   BADGE / TAGS
+════════════════════════════════ */
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+}
+.tag--amber { background: var(--amber); color: #fff; }
+.tag--teal  { background: var(--teal);  color: #fff; }
+.tag--dark  { background: var(--black); color: var(--warm-white); }
+
+/* ════════════════════════════════
+   ① ANNOUNCEMENT BAR
+════════════════════════════════ */
+.bar {
+  background: var(--black);
+  color: rgba(255,255,255,0.7);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: 10px 16px;
+  text-align: center;
+  line-height: 1.5;
+}
+.bar strong { color: var(--amber); }
+.bar span.sep { margin: 0 12px; opacity: 0.3; }
+
+/* ════════════════════════════════
+   ② NAVIGATION
+════════════════════════════════ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--light-gray);
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 16px;
+}
+.nav__logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 4px;
+  color: var(--black);
+  white-space: nowrap;
+}
+.nav__logo em { color: var(--teal); font-style: normal; }
+.nav__links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+.nav__links a {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray);
+  transition: color 0.2s;
+}
+.nav__links a:hover { color: var(--teal); }
+.nav__actions { display: flex; align-items: center; gap: 12px; }
+.nav__cart {
+  background: var(--black);
+  color: var(--warm-white);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  padding: 9px 18px;
+  transition: background 0.2s;
+}
+.nav__cart:hover { background: var(--teal); }
+.nav__hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+.nav__hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--black);
+  transition: all 0.2s;
+}
+.nav__mobile {
+  display: none;
+  flex-direction: column;
+  background: var(--warm-white);
+  border-top: 1px solid var(--light-gray);
+  padding: 20px 24px;
+  gap: 16px;
+}
+.nav__mobile.open { display: flex; }
+.nav__mobile a {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gray);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+/* ════════════════════════════════
+   ③ HERO PRODUCT SECTION
+════════════════════════════════ */
+.hero { padding: 48px 0 64px; }
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+/* Gallery */
+.gallery { position: sticky; top: 80px; }
+.gallery__main { aspect-ratio: 1 / 1; margin-bottom: 10px; }
+.gallery__thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.gallery__thumb {
+  aspect-ratio: 1;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+  font-size: 10px;
+  color: var(--gray);
+}
+.gallery__thumb.active,
+.gallery__thumb:hover { border-color: var(--teal); }
+.gallery__asset-note {
+  margin-top: 12px;
+  background: #fff8ed;
+  border-left: 3px solid var(--amber);
+  padding: 10px 14px;
+  font-size: 11px;
+  color: #6b4c1e;
+  line-height: 1.5;
+}
+.gallery__asset-note strong {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 4px;
+}
+
+/* Product info */
+.product { }
+.product__tag { margin-bottom: 14px; }
+.product__stars {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.product__stars-icons { color: var(--amber); font-size: 16px; letter-spacing: 1px; }
+.product__stars-count { font-size: 12px; color: var(--gray); }
+.product__name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 3.5vw, 38px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 14px;
+  color: var(--black);
+}
+.product__prices {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.product__price-sale {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px;
+  letter-spacing: 1px;
+  color: var(--teal);
+  line-height: 1;
+}
+.product__price-orig {
+  font-size: 18px;
+  color: var(--mid-gray);
+  text-decoration: line-through;
+}
+.product__price-badge {
+  background: var(--amber);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+}
+.product__philosophy {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--teal);
+  margin-bottom: 16px;
+  font-family: 'Playfair Display', serif;
+  padding-left: 14px;
+  border-left: 3px solid var(--teal);
+}
+.product__desc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.75;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--light-gray);
+}
+.product__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 24px;
+}
+.product__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--black);
+  color: var(--warm-white);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 6px 12px;
+}
+
+/* Options */
+.opts { margin-bottom: 22px; }
+.opts__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--black);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.opts__label a { font-size: 11px; color: var(--teal); font-weight: 400; letter-spacing: 0; text-decoration: underline; }
+.opts__swatches { display: flex; gap: 16px; padding-bottom: 6px; }
+.opts__swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.opts__swatch-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  transition: border-color 0.2s;
+}
+.opts__swatch.active .opts__swatch-circle { border-color: var(--black); }
+.opts__swatch-name { font-size: 10px; color: var(--gray); letter-spacing: 0.5px; }
+.opts__btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.opts__btn {
+  height: 42px;
+  min-width: 42px;
+  padding: 0 12px;
+  border: 1.5px solid var(--mid-gray);
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--black);
+}
+.opts__btn.active { background: var(--black); color: var(--warm-white); border-color: var(--black); }
+.opts__btn:hover:not(.active) { border-color: var(--teal); color: var(--teal); }
+
+/* Bundles */
+.bundles { margin-bottom: 22px; }
+.bundles__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.bundles__list { display: flex; flex-direction: column; gap: 8px; }
+.bundle {
+  border: 1.5px solid var(--light-gray);
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+  gap: 12px;
+}
+.bundle.active { border-color: var(--teal); background: rgba(42,157,143,0.04); }
+.bundle:hover:not(.active) { border-color: var(--mid-gray); }
+.bundle__badge {
+  position: absolute;
+  top: -10px; left: 12px;
+  background: var(--teal);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+}
+.bundle__name { font-weight: 600; font-size: 13px; }
+.bundle__desc { font-size: 11px; color: var(--gray); margin-top: 2px; }
+.bundle__price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--teal);
+  white-space: nowrap;
+}
+
+/* Total + CTA */
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--light-gray);
+  border-bottom: 1px solid var(--light-gray);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.total__label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+.total__prices { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.badges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 16px;
+  border: 1px solid var(--light-gray);
+}
+.badge-item {
+  padding: 14px 8px;
+  text-align: center;
+  border-right: 1px solid var(--light-gray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.badge-item:last-child { border-right: none; }
+.badge-item__icon { font-size: 20px; }
+.badge-item__title { font-size: 11px; font-weight: 600; color: var(--black); }
+.badge-item__sub { font-size: 10px; color: var(--gray); }
+
+/* Accordion */
+.accordion { margin-top: 20px; border-top: 1px solid var(--light-gray); }
+.acc__item { border-bottom: 1px solid var(--light-gray); }
+.acc__btn {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--black);
+  text-align: left;
+  letter-spacing: 0.2px;
+  gap: 12px;
+}
+.acc__arrow {
+  font-size: 18px;
+  color: var(--gray);
+  flex-shrink: 0;
+  transition: transform 0.25s;
+}
+.acc__item.open .acc__arrow { transform: rotate(180deg); }
+.acc__body {
+  padding: 0 0 16px;
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.75;
+  display: none;
+}
+.acc__item.open .acc__body { display: block; }
+
+/* ════════════════════════════════
+   ④ SCROLLABLE UGC STRIP
+════════════════════════════════ */
+.ugc-strip {
+  background: var(--black);
+  padding: 64px 0 48px;
+}
+.ugc-strip__header {
+  text-align: center;
+  padding: 0 24px;
+  margin-bottom: 36px;
+}
+.ugc-strip__header h2 { color: var(--warm-white); }
+.ugc-strip__sub { color: var(--gray); font-size: 14px; margin-top: 8px; }
+.ugc-strip__track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 0 24px 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--teal) rgba(255,255,255,0.05);
+}
+.ugc-strip__track::-webkit-scrollbar { height: 4px; }
+.ugc-strip__track::-webkit-scrollbar-track { background: transparent; }
+.ugc-strip__track::-webkit-scrollbar-thumb { background: var(--teal); }
+.ugc-card {
+  flex: 0 0 290px;
+  background: #222;
+  border: 1px solid #2e2e2e;
+  padding: 20px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ugc-card__media {
+  aspect-ratio: 4/3;
+  background: #1a1a1a;
+  flex-shrink: 0;
+}
+.ugc-card__stars { color: var(--amber); font-size: 13px; letter-spacing: 1px; }
+.ugc-card__quote {
+  font-style: italic;
+  font-size: 13px;
+  color: #bbb;
+  line-height: 1.65;
+  flex: 1;
+}
+.ugc-card__author { display: flex; align-items: center; gap: 10px; margin-top: auto; }
+.ugc-card__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--teal);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+.ugc-card__name { font-size: 12px; font-weight: 600; color: var(--warm-white); }
+.ugc-card__detail { font-size: 10px; color: var(--gray); }
+.ugc-strip__cta { text-align: center; margin-top: 36px; padding: 0 24px; }
+
+/* ════════════════════════════════
+   ⑤ BENEFIT ICON STRIP
+════════════════════════════════ */
+.icon-strip {
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--light-gray);
+  padding: 28px 0;
+  overflow-x: auto;
+}
+.icon-strip__row {
+  display: flex;
+  min-width: 560px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.icon-item {
+  flex: 1;
+  text-align: center;
+  padding: 12px 8px;
+  border-right: 1px solid var(--light-gray);
+}
+.icon-item:last-child { border-right: none; }
+.icon-item__icon { font-size: 26px; margin-bottom: 6px; }
+.icon-item__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--black);
+  line-height: 1.3;
+}
+
+/* ════════════════════════════════
+   ⑥ STAT BAR
+════════════════════════════════ */
+.stats {
+  background: var(--teal);
+  padding: 22px 0;
+}
+.stats__row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.stat {
+  text-align: center;
+  padding: 8px 24px;
+  border-right: 1px solid rgba(255,255,255,0.2);
+  flex: 1;
+  min-width: 100px;
+}
+.stat:last-child { border-right: none; }
+.stat__num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  color: #fff;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+.stat__label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-top: 3px; }
+
+/* ════════════════════════════════
+   ⑦ VALUE PROP SECTIONS
+════════════════════════════════ */
+.vp { padding: 80px 0; }
+.vp--dark { background: var(--black); }
+.vp--light { background: var(--warm-white); }
+.vp--cream { background: var(--cream); }
+.vp__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+.vp__grid--flip { }
+.vp__media { aspect-ratio: 4/3; }
+.vp__content { }
+.vp__content .label { display: block; margin-bottom: 12px; }
+.vp__title { margin-bottom: 20px; }
+.vp__title--light { color: var(--black); }
+.vp__title--dark { color: var(--warm-white); }
+.vp__text { font-size: 15px; line-height: 1.8; margin-bottom: 24px; }
+.vp__text--light { color: #555; }
+.vp__text--dark { color: #999; }
+.vp__list { list-style: none; margin-bottom: 28px; }
+.vp__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--light-gray);
+  font-size: 14px;
+  color: #444;
+}
+.vp__list--dark li { border-bottom-color: #2a2a2a; color: #aaa; }
+.vp__list li:last-child { border-bottom: none; }
+.vp__list-check { color: var(--teal); font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+
+/* ════════════════════════════════
+   ⑧ FOUNDER STORY SECTION
+════════════════════════════════ */
+.story { padding: 96px 0; background: var(--black); }
+.story__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.story__media { position: sticky; top: 100px; }
+.story__photo {
+  aspect-ratio: 3/4;
+  margin-bottom: 14px;
+}
+.story__caption { font-size: 11px; color: #444; letter-spacing: 1px; }
+.story__content { }
+.story__content .label { display: block; margin-bottom: 16px; }
+.story__title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 4vw, 46px);
+  color: var(--warm-white);
+  font-style: italic;
+  line-height: 1.2;
+  margin-bottom: 28px;
+}
+.story__chapter {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #2a2a2a;
+}
+.story__chapter:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.story__chapter-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.story__chapter-title { font-weight: 600; font-size: 15px; color: var(--warm-white); margin-bottom: 8px; }
+.story__chapter-text { font-size: 14px; color: #888; line-height: 1.75; }
+.story__chapter-place {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-top: 8px;
+}
+
+/* ════════════════════════════════
+   ⑨ SOCIAL PROOF — TESTIMONIALS
+════════════════════════════════ */
+.testimonials { padding: 80px 0; }
+.testimonials--dark { background: #111; }
+.testimonials--light { background: var(--cream); }
+.testimonials__header { text-align: center; margin-bottom: 48px; }
+.testimonials__header h2 { margin-bottom: 8px; }
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.tcard {
+  padding: 24px;
+  border: 1px solid var(--light-gray);
+  background: var(--warm-white);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.tcard--dark { background: #1a1a1a; border-color: #2a2a2a; }
+.tcard__media { aspect-ratio: 1; }
+.tcard__stars { color: var(--amber); font-size: 13px; letter-spacing: 1.5px; }
+.tcard__quote {
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #444;
+  flex: 1;
+}
+.tcard--dark .tcard__quote { color: #aaa; }
+.tcard__name { font-weight: 700; font-size: 13px; color: var(--black); }
+.tcard--dark .tcard__name { color: var(--warm-white); }
+.tcard__meta { font-size: 11px; color: var(--gray); }
+
+/* ════════════════════════════════
+   ⑩ DIFFERENTIATOR GRID
+════════════════════════════════ */
+.diff { padding: 80px 0; background: var(--warm-white); }
+.diff__header { text-align: center; margin-bottom: 56px; }
+.diff__header h2 { color: var(--black); margin-bottom: 10px; }
+.diff__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 44px;
+}
+.diff-card {
+  padding: 28px;
+  border: 1px solid var(--light-gray);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.diff-card:hover { border-color: var(--teal); box-shadow: 0 4px 24px rgba(42,157,143,0.08); }
+.diff-card__icon { font-size: 30px; margin-bottom: 12px; }
+.diff-card__title { font-weight: 700; font-size: 14px; margin-bottom: 8px; color: var(--black); }
+.diff-card__body { font-size: 12px; color: var(--gray); line-height: 1.65; }
+
+/* ════════════════════════════════
+   ⑪ FEATURES + IMAGE
+════════════════════════════════ */
+.features { padding: 80px 0; background: var(--black); }
+.features__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+.features__header { margin-bottom: 36px; }
+.features__header h2 { color: var(--warm-white); margin-bottom: 8px; }
+.features__header p { color: #777; }
+.features__list { list-style: none; }
+.feature {
+  display: flex;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid #252525;
+}
+.feature:last-child { border-bottom: none; }
+.feature__icon { font-size: 26px; flex-shrink: 0; margin-top: 2px; }
+.feature__title { font-weight: 600; font-size: 15px; color: var(--warm-white); margin-bottom: 6px; }
+.feature__desc { font-size: 13px; color: #777; line-height: 1.65; }
+
+/* ════════════════════════════════
+   ⑫ CLOTHING DROP SECTION
+════════════════════════════════ */
+.drops { padding: 80px 0; background: var(--cream); }
+.drops__header { margin-bottom: 56px; text-align: center; }
+.drops__header h2 { margin-bottom: 10px; }
+.drops__header p { font-size: 15px; color: var(--gray); max-width: 580px; margin: 0 auto; }
+.drops__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+.drop-card {
+  background: var(--warm-white);
+  border: 1px solid var(--light-gray);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.drop-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+.drop-card__image { aspect-ratio: 3/4; }
+.drop-card__content { padding: 18px; }
+.drop-card__season {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+.drop-card__name { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--black); }
+.drop-card__theme { font-size: 12px; color: var(--gray); line-height: 1.5; margin-bottom: 12px; }
+.drop-card__status {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.drop-card__status--live { color: var(--teal); }
+
+/* ════════════════════════════════
+   ⑬ GUARANTEE
+════════════════════════════════ */
+.guarantee {
+  background: var(--teal);
+  padding: 88px 24px;
+  text-align: center;
+}
+.guarantee__inner { max-width: 680px; margin: 0 auto; }
+.guarantee__icon { font-size: 72px; margin-bottom: 20px; }
+.guarantee__title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 7vw, 72px);
+  letter-spacing: 3px;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 18px;
+}
+.guarantee__text { font-size: 16px; color: rgba(255,255,255,0.82); line-height: 1.8; margin-bottom: 32px; }
+.guarantee .btn--dark:hover { background: #111; }
+
+/* ════════════════════════════════
+   ⑭ FAQ
+════════════════════════════════ */
+.faq { padding: 80px 0; background: var(--warm-white); }
+.faq__grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 64px;
+  align-items: start;
+}
+.faq__media {
+  position: sticky;
+  top: 100px;
+  aspect-ratio: 3/4;
+}
+.faq__content { }
+.faq__title { margin-bottom: 32px; }
+.faq__item { border-bottom: 1px solid var(--light-gray); }
+.faq__q {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 18px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--black);
+  text-align: left;
+  gap: 16px;
+  line-height: 1.4;
+}
+.faq__arrow { font-size: 22px; color: var(--gray); flex-shrink: 0; transition: transform 0.2s; }
+.faq__item.open .faq__arrow { transform: rotate(45deg); }
+.faq__a {
+  padding: 0 0 18px;
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.75;
+  display: none;
+}
+.faq__item.open .faq__a { display: block; }
+.faq__cta { margin-top: 28px; }
+
+/* ════════════════════════════════
+   ⑮ SOCIAL PROOF — 4-UP GRID
+════════════════════════════════ */
+.social-grid { padding: 80px 0; background: var(--cream); }
+.social-grid__header { text-align: center; margin-bottom: 40px; }
+.social-grid__cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 36px;
+}
+.sgcard { background: var(--warm-white); border: 1px solid var(--light-gray); overflow: hidden; }
+.sgcard__media { aspect-ratio: 1; }
+.sgcard__body { padding: 14px; }
+.sgcard__stars { color: var(--amber); font-size: 12px; margin-bottom: 6px; }
+.sgcard__quote { font-size: 12px; color: #555; line-height: 1.5; margin-bottom: 8px; font-style: italic; }
+.sgcard__handle { font-size: 10px; font-weight: 700; color: var(--teal); letter-spacing: 0.5px; }
+
+/* ════════════════════════════════
+   ⑯ FINAL CTA
+════════════════════════════════ */
+.final-cta {
+  padding: 120px 24px;
+  background: var(--black);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.final-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 70% at 20% 50%, rgba(42,157,143,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 85% 20%, rgba(224,122,58,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+.final-cta__inner { position: relative; z-index: 1; max-width: 660px; margin: 0 auto; }
+.final-cta__title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(34px, 6vw, 62px);
+  color: var(--warm-white);
+  font-style: italic;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.final-cta__title em { font-style: normal; color: var(--teal); }
+.final-cta__text { font-size: 15px; color: #888; line-height: 1.8; margin-bottom: 40px; max-width: 520px; margin-left: auto; margin-right: auto; }
+.final-cta .btn--primary { max-width: 380px; margin: 0 auto 14px; display: block; font-size: 20px; padding: 20px 40px; }
+.final-cta__fine { font-size: 11px; color: #444; letter-spacing: 0.5px; }
+
+/* ════════════════════════════════
+   ⑰ FOOTER
+════════════════════════════════ */
+.footer { background: #0f0f0f; color: #555; padding: 64px 0 32px; }
+.footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+  padding: 0 24px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.footer__brand-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 4px;
+  color: var(--warm-white);
+  margin-bottom: 14px;
+  display: block;
+}
+.footer__brand-logo em { color: var(--teal); font-style: normal; }
+.footer__tagline { font-size: 12px; color: #555; line-height: 1.7; max-width: 220px; margin-bottom: 20px; }
+.footer__social { display: flex; gap: 10px; }
+.footer__social-link {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #555;
+  transition: all 0.2s;
+}
+.footer__social-link:hover { border-color: var(--teal); color: var(--teal); }
+.footer__col-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2.5px;
+  color: var(--warm-white);
+  margin-bottom: 16px;
+}
+.footer__links { list-style: none; }
+.footer__links li { margin-bottom: 8px; }
+.footer__links a { font-size: 12px; color: #444; transition: color 0.2s; }
+.footer__links a:hover { color: var(--teal); }
+.footer__bottom {
+  border-top: 1px solid #1a1a1a;
+  padding: 20px 24px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.footer__copy { font-size: 11px; color: #333; }
+.footer__payments { display: flex; gap: 6px; flex-wrap: wrap; }
+.footer__pay-badge {
+  background: #1a1a1a;
+  padding: 3px 8px;
+  font-size: 10px;
+  color: #444;
+  letter-spacing: 0.5px;
+}
+
+/* ════════════════════════════════
+   MOBILE RESPONSIVE
+════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Nav */
+  .nav__links { display: none; }
+  .nav__hamburger { display: flex; }
+  .nav__inner { padding: 14px 16px; }
+  .nav__logo { font-size: 20px; }
+  .nav__cart { font-size: 12px; padding: 8px 14px; }
+
+  /* Announcement bar */
+  .bar { font-size: 11px; padding: 8px 12px; }
+  .bar span.sep { display: none; }
+  .bar .sep-item:not(:first-child) { display: none; }
+
+  /* Hero */
+  .hero { padding: 24px 0 40px; }
+  .hero__grid { grid-template-columns: 1fr; gap: 28px; }
+  .gallery { position: static; }
+  .product__name { font-size: 24px; }
+  .product__price-sale { font-size: 30px; }
+  .product__pills { gap: 5px; }
+  .product__pill { font-size: 9px; padding: 5px 9px; }
+  .opts__btns { gap: 5px; }
+  .opts__btn { height: 38px; min-width: 38px; font-size: 12px; }
+  .badges { grid-template-columns: 1fr; }
+  .badge-item { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 12px 16px; }
+  .badge-item { border-right: none; border-bottom: 1px solid var(--light-gray); }
+  .badge-item:last-child { border-bottom: none; }
+  .total { flex-direction: column; align-items: flex-start; }
+  .bundle { padding: 12px; }
+
+  /* UGC strip */
+  .ugc-strip { padding: 48px 0 40px; }
+  .ugc-card { flex: 0 0 260px; }
+
+  /* Icon strip — horizontal scroll */
+  .icon-strip { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .icon-strip__row { min-width: 500px; }
+
+  /* Stats */
+  .stats__row { gap: 0; }
+  .stat { flex: 0 0 50%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px; }
+  .stat:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.1); }
+  .stat:last-child, .stat:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+  .stat__num { font-size: 28px; }
+
+  /* Value props */
+  .vp { padding: 56px 0; }
+  .vp__grid { grid-template-columns: 1fr; gap: 28px; }
+  .vp__grid--flip .vp__media { order: -1; }
+  .vp__title { font-size: clamp(28px, 8vw, 42px); }
+
+  /* Story */
+  .story { padding: 56px 0; }
+  .story__inner { grid-template-columns: 1fr; gap: 32px; }
+  .story__media { position: static; display: none; } /* hide sticky photo on mobile */
+  .story__title { font-size: clamp(24px, 7vw, 36px); }
+
+  /* Testimonials */
+  .testimonials { padding: 56px 0; }
+  .testimonials__grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Differentiators */
+  .diff { padding: 56px 0; }
+  .diff__grid { grid-template-columns: 1fr; gap: 14px; }
+
+  /* Features */
+  .features { padding: 56px 0; }
+  .features__grid { grid-template-columns: 1fr; gap: 32px; }
+  .features__grid .asset-box { display: none; } /* hide decorative on mobile */
+
+  /* Drops */
+  .drops { padding: 56px 0; }
+  .drops__grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Guarantee */
+  .guarantee { padding: 64px 20px; }
+  .guarantee__title { font-size: 44px; }
+  .guarantee__icon { font-size: 56px; }
+
+  /* FAQ */
+  .faq { padding: 56px 0; }
+  .faq__grid { grid-template-columns: 1fr; gap: 0; }
+  .faq__media { display: none; }
+  .faq__title { font-size: clamp(28px, 8vw, 40px); }
+
+  /* Social 4-grid → 2-col */
+  .social-grid { padding: 56px 0; }
+  .social-grid__cards { grid-template-columns: repeat(2, 1fr); }
+
+  /* Final CTA */
+  .final-cta { padding: 80px 20px; }
+  .final-cta__title { font-size: clamp(28px, 8vw, 44px); }
+  .final-cta .btn--primary { max-width: 100%; }
+
+  /* Footer */
+  .footer { padding: 48px 0 24px; }
+  .footer__grid { grid-template-columns: 1fr; gap: 32px; padding: 0 20px; }
+  .footer__bottom { flex-direction: column; text-align: center; padding: 20px 20px 0; }
+  .footer__payments { justify-content: center; }
+
+  /* Wrap */
+  .wrap { padding: 0 16px; }
+  .wrap--narrow { padding: 0 16px; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero__grid { gap: 36px; }
+  .vp__grid { gap: 48px; }
+  .testimonials__grid { grid-template-columns: repeat(2, 1fr); }
+  .diff__grid { grid-template-columns: repeat(2, 1fr); }
+  .drops__grid { grid-template-columns: repeat(2, 1fr); }
+  .social-grid__cards { grid-template-columns: repeat(2, 1fr); }
+  .footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .story__inner { gap: 48px; }
+  .features__grid { gap: 48px; }
+  .faq__grid { gap: 40px; }
+}
+
+@media (max-width: 380px) {
+  .product__name { font-size: 20px; }
+  .opts__btn { height: 36px; min-width: 36px; font-size: 11px; }
+  .guarantee__title { font-size: 36px; }
+  .ugc-card { flex: 0 0 240px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ① ANNOUNCEMENT BAR ────────────────────────────────── -->
+<div class="bar">
+  <span class="sep-item">🚚 <strong>Free US Shipping</strong> on orders $75+</span>
+  <span class="sep">|</span>
+  <span class="sep-item">⭐ <strong>4.9/5</strong> — 200+ happy customers</span>
+  <span class="sep">|</span>
+  <span class="sep-item">🔁 <strong>30-Day</strong> Satisfaction Guarantee</span>
+</div>
+
+<!-- ② NAVIGATION ────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="#" class="nav__logo">REBIRTH<em>.</em>WORLD</a>
+    <ul class="nav__links">
+      <li><a href="#product">The Ring</a></li>
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#drops">Collections</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav__actions">
+      <button class="nav__hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="#" class="nav__cart">🛒 Cart (0)</a>
+    </div>
+  </div>
+  <div class="nav__mobile" id="mobileMenu">
+    <a href="#product">The Ring</a>
+    <a href="#story">Our Story</a>
+    <a href="#drops">Collections</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</nav>
+
+<!-- ③ HERO — PRODUCT ────────────────────────────────────── -->
+<section class="hero" id="product">
+  <div class="wrap">
+    <div class="hero__grid">
+
+      <!-- Gallery (left) -->
+      <div class="gallery">
+        <div class="gallery__main">
+          <div class="asset-box" style="aspect-ratio:1; width:100%;">
+            <div class="asset-box__tag">📸 Asset Needed</div>
+            <div class="asset-box__icon">💍</div>
+            <div class="asset-box__title">Hero Product Shot</div>
+            <div class="asset-box__note">Ring on dark slate or driftwood. Macro lens or iPhone portrait mode. Natural window light. Show wood grain meeting metal edge. Square format works best here.</div>
+          </div>
+        </div>
+        <div class="gallery__thumbs">
+          <div class="asset-box gallery__thumb active" style="aspect-ratio:1;">
+            <div class="asset-box__tag" style="font-size:8px;">Thumb 1</div>
+            <div style="font-size:20px;">💍</div>
+            <div style="font-size:9px; color:var(--gray); margin-top:4px;">Main shot</div>
+          </div>
+          <div class="asset-box gallery__thumb" style="aspect-ratio:1;">
+            <div class="asset-box__tag" style="font-size:8px;">Thumb 2</div>
+            <div style="font-size:20px;">🔍</div>
+            <div style="font-size:9px; color:var(--gray); margin-top:4px;">Grain close-up</div>
+          </div>
+          <div class="asset-box gallery__thumb" style="aspect-ratio:1;">
+            <div class="asset-box__tag" style="font-size:8px;">Thumb 3</div>
+            <div style="font-size:20px;">🤙</div>
+            <div style="font-size:9px; color:var(--gray); margin-top:4px;">On hand</div>
+          </div>
+          <div class="asset-box gallery__thumb" style="aspect-ratio:1;">
+            <div class="asset-box__tag" style="font-size:8px;">Thumb 4</div>
+            <div style="font-size:20px;">🛹</div>
+            <div style="font-size:9px; color:var(--gray); margin-top:4px;">Lifestyle</div>
+          </div>
+        </div>
+        <div class="gallery__asset-note">
+          <strong>📸 4 images to shoot:</strong>
+          1) Ring on dark slate/driftwood — hero shot · 2) Extreme macro: wood grain detail · 3) Ring on Daniel's hand, outdoor light · 4) Ring beside a skateboard deck or truck — culture context
+        </div>
+      </div>
+
+      <!-- Product Info (right) -->
+      <div class="product">
+        <div class="product__tag"><span class="tag tag--amber">★ Best Seller</span></div>
+
+        <div class="product__stars">
+          <span class="product__stars-icons">★★★★★</span>
+          <span class="product__stars-count">Rated 4.9/5 by 200+ customers</span>
+        </div>
+
+        <h1 class="product__name">Handcrafted Wood-Lined Wedding Band — <em style="font-style:italic; color:var(--teal)">A Ring for Your Next Chapter</em></h1>
+
+        <div class="product__prices">
+          <span class="product__price-sale">$149</span>
+          <span class="product__price-orig">$229</span>
+          <span class="product__price-badge">SAVE $80 (35%)</span>
+        </div>
+
+        <p class="product__philosophy">"We are all going through miniature spiritual rebirths — this ring is a reminder to embrace yours."</p>
+
+        <p class="product__desc">
+          I make each of these by hand in Mapleton, Utah. Gold-plated stainless steel shell, hand-fitted with a stabilized wood liner — cut, fitted, and finished by me, one ring at a time. No two are exactly alike, because no two pieces of wood ever are. Worn as a commitment — to your partner, and to the person you're choosing to become.
+        </p>
+
+        <div class="product__pills">
+          <span class="product__pill">✋ Handmade in Utah</span>
+          <span class="product__pill">🌿 Sustainably Sourced Wood</span>
+          <span class="product__pill">💎 Gold-Plated Shell</span>
+          <span class="product__pill">🛡️ 1-Year Warranty</span>
+          <span class="product__pill">🌍 Gives Back</span>
+        </div>
+
+        <!-- Metal finish -->
+        <div class="opts">
+          <div class="opts__label">1. Choose Metal Finish <span style="font-weight:400; color:var(--gray)">(3 options)</span></div>
+          <div class="opts__swatches">
+            <div class="opts__swatch active" onclick="selectSwatch(this, 'finish')">
+              <div class="opts__swatch-circle" style="background: linear-gradient(135deg, #c9a84c, #f0cc6e);"></div>
+              <span class="opts__swatch-name">Gold</span>
+            </div>
+            <div class="opts__swatch" onclick="selectSwatch(this, 'finish')">
+              <div class="opts__swatch-circle" style="background: linear-gradient(135deg, #888, #ccc);"></div>
+              <span class="opts__swatch-name">Steel</span>
+            </div>
+            <div class="opts__swatch" onclick="selectSwatch(this, 'finish')">
+              <div class="opts__swatch-circle" style="background: linear-gradient(135deg, #222, #555);"></div>
+              <span class="opts__swatch-name">Black</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wood liner -->
+        <div class="opts">
+          <div class="opts__label">2. Choose Wood Liner <span style="font-weight:400; color:var(--gray)">(4 options)</span></div>
+          <div class="opts__btns" id="woodBtns">
+            <button class="opts__btn active">Irish Bog Oak</button>
+            <button class="opts__btn">Hawaiian Koa</button>
+            <button class="opts__btn">Maple Burl</button>
+            <button class="opts__btn">Ebony</button>
+          </div>
+        </div>
+
+        <!-- Ring size -->
+        <div class="opts">
+          <div class="opts__label">3. Ring Size <span style="font-weight:400; color:var(--gray)">(6–14)</span> <a href="#">Size Guide</a></div>
+          <div class="opts__btns" id="sizeBtns">
+            <button class="opts__btn">6</button>
+            <button class="opts__btn">7</button>
+            <button class="opts__btn">8</button>
+            <button class="opts__btn active">9</button>
+            <button class="opts__btn">10</button>
+            <button class="opts__btn">11</button>
+            <button class="opts__btn">12</button>
+            <button class="opts__btn">13</button>
+            <button class="opts__btn">14</button>
+          </div>
+        </div>
+
+        <!-- Bundles -->
+        <div class="bundles">
+          <div class="bundles__label">4. Choose Your Package</div>
+          <div class="bundles__list">
+            <div class="bundle" onclick="selectBundle(this)">
+              <div><div class="bundle__name">Single Ring</div><div class="bundle__desc">One handmade wedding band</div></div>
+              <div class="bundle__price">$149</div>
+            </div>
+            <div class="bundle active" onclick="selectBundle(this)">
+              <div class="bundle__badge">Most Popular</div>
+              <div><div class="bundle__name">Matching Set</div><div class="bundle__desc">His + hers — save $40 when bundled</div></div>
+              <div class="bundle__price">$258</div>
+            </div>
+            <div class="bundle" onclick="selectBundle(this)">
+              <div><div class="bundle__name">Ring + Engraving</div><div class="bundle__desc">Add a personal message inside — $9 add-on</div></div>
+              <div class="bundle__price">$158</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total + CTA -->
+        <div class="total">
+          <span class="total__label">Total:</span>
+          <div class="total__prices">
+            <span class="product__price-orig" style="font-size:16px;">$229</span>
+            <span class="product__price-sale" style="font-size:30px;">$149</span>
+            <span class="product__price-badge">SAVE $80</span>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" style="font-size:20px; padding:20px;">ADD TO CART — $149</button>
+
+        <div class="badges">
+          <div class="badge-item"><div class="badge-item__icon">🔄</div><div class="badge-item__title">30-Day Returns</div><div class="badge-item__sub">No questions asked</div></div>
+          <div class="badge-item"><div class="badge-item__icon">🚚</div><div class="badge-item__title">Free US Shipping</div><div class="badge-item__sub">Orders over $75</div></div>
+          <div class="badge-item"><div class="badge-item__icon">🛡️</div><div class="badge-item__title">1-Year Warranty</div><div class="badge-item__sub">Craftsmanship backed</div></div>
+        </div>
+
+        <!-- Accordion -->
+        <div class="accordion">
+          <div class="acc__item open">
+            <button class="acc__btn" onclick="toggleAcc(this)">Product Details<span class="acc__arrow">⌄</span></button>
+            <div class="acc__body">
+              <strong>Materials:</strong> Gold-plated stainless steel shell · Stabilized wood liner (Irish Bog Oak, Hawaiian Koa, Maple Burl, or Ebony) · CA glue interior finish.<br><br>
+              <strong>Width:</strong> 8mm standard · <strong>Liner:</strong> 0.8mm — slim profile<br>
+              <strong>Made in:</strong> Mapleton, Utah, USA<br>
+              <strong>Sizing note:</strong> True to US ring sizing. Free resize within 30 days.
+            </div>
+          </div>
+          <div class="acc__item">
+            <button class="acc__btn" onclick="toggleAcc(this)">How It's Made<span class="acc__arrow">⌄</span></button>
+            <div class="acc__body">
+              I hand-select each wood blank, cut it to a precise 0.8mm liner, and fit it inside the metal shell by hand using CA glue and accelerator. The interior gets a final CA coat for water resistance and durability. I inspect every ring before it leaves the workshop. No two are identical — that's the point.
+            </div>
+          </div>
+          <div class="acc__item">
+            <button class="acc__btn" onclick="toggleAcc(this)">FAQ<span class="acc__arrow">⌄</span></button>
+            <div class="acc__body">
+              <strong>Is it waterproof?</strong> CA-finished interior is water-resistant for daily wear — surfing, showering, washing.<br><br>
+              <strong>Can I engrave it?</strong> Yes — add engraving at checkout for $9. Up to 10 characters inside the band.<br><br>
+              <strong>How long to make?</strong> Handmade to order — allow 5–10 business days before shipping.
+            </div>
+          </div>
+          <div class="acc__item">
+            <button class="acc__btn" onclick="toggleAcc(this)">Shipping & Returns<span class="acc__arrow">⌄</span></button>
+            <div class="acc__body">
+              Free standard shipping on US orders over $75. 30-day hassle-free returns on non-engraved rings. One free resize within 30 days. International shipping available — we've shipped to 25+ countries.
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /product -->
+    </div><!-- /hero__grid -->
+  </div>
+</section>
+
+<!-- ④ UGC SCROLL STRIP ──────────────────────────────────── -->
+<section class="ugc-strip" id="reviews">
+  <div class="ugc-strip__header">
+    <span class="label label--amber" style="display:block; margin-bottom:10px;">Real Customers · Real Rings</span>
+    <h2 class="heading-lg" style="color:var(--warm-white);">WHAT PEOPLE<br>ARE SAYING</h2>
+    <p class="ugc-strip__sub">4.9 ★ average · 200+ rings shipped worldwide</p>
+  </div>
+
+  <div class="ugc-strip__track">
+
+    <div class="ugc-card">
+      <div class="asset-box ugc-card__media">
+        <div class="asset-box__tag">🎥 Video Testimonial</div>
+        <div class="asset-box__icon">🎥</div>
+        <div class="asset-box__note">Ask a happy customer for a 30–60 sec selfie video. "I ordered this for our wedding and…" — iPhone, natural light, showing the ring.</div>
+      </div>
+      <div class="ugc-card__stars">★★★★★</div>
+      <p class="ugc-card__quote">"The quality blew me away. My wife cried when she saw it. Nothing generic about it — it's real craft."</p>
+      <div class="ugc-card__author">
+        <div class="ugc-card__avatar">JC</div>
+        <div><div class="ugc-card__name">Jake C.</div><div class="ugc-card__detail">Married 2025 · Laie, HI</div></div>
+      </div>
+    </div>
+
+    <div class="ugc-card">
+      <div class="asset-box ugc-card__media">
+        <div class="asset-box__tag">📸 Customer Photo</div>
+        <div class="asset-box__icon">📸</div>
+        <div class="asset-box__note">Customer photo of ring in real life — on their hand outdoors. Email 2 weeks post-purchase and offer 10% off next order as incentive.</div>
+      </div>
+      <div class="ugc-card__stars">★★★★★</div>
+      <p class="ugc-card__quote">"This ring is *me*. I've been skating 15 years and wearing this feels like that story is on my hand. Koa wood option is stunning."</p>
+      <div class="ugc-card__author">
+        <div class="ugc-card__avatar" style="background:var(--amber);">MR</div>
+        <div><div class="ugc-card__name">Marco R.</div><div class="ugc-card__detail">Wedding Band · San Diego, CA</div></div>
+      </div>
+    </div>
+
+    <div class="ugc-card">
+      <div class="ugc-card__stars">★★★★★</div>
+      <p class="ugc-card__quote">"Daniel answered my DM personally to help me with sizing. A real person who cares. Arrived in 8 days. Could not have asked for more."</p>
+      <div class="ugc-card__author">
+        <div class="ugc-card__avatar" style="background:var(--lotus); color:#333;">TW</div>
+        <div><div class="ugc-card__name">Tyler W.</div><div class="ugc-card__detail">Verified Buyer · Portland, OR</div></div>
+      </div>
+    </div>
+
+    <div class="ugc-card">
+      <div class="asset-box ugc-card__media">
+        <div class="asset-box__tag">📱 Instagram Post</div>
+        <div class="asset-box__icon">📱</div>
+        <div class="asset-box__note">Screenshot of real post tagging @rebirthrings. Set up a UGC campaign: "Tag us in your ring photo." Works great as a social proof card.</div>
+      </div>
+      <div class="ugc-card__stars">★★★★★</div>
+      <p class="ugc-card__quote">"My husband didn't want a generic band. Found Rebirth World — he wore it out of the box before we left the house."</p>
+      <div class="ugc-card__author">
+        <div class="ugc-card__avatar" style="background:var(--moss);">AS</div>
+        <div><div class="ugc-card__name">Amanda S.</div><div class="ugc-card__detail">Gift Purchase · Austin, TX</div></div>
+      </div>
+    </div>
+
+    <div class="ugc-card">
+      <div class="ugc-card__stars">★★★★★</div>
+      <p class="ugc-card__quote">"Wore it on our wedding day in Guatemala. Had no idea Daniel had a connection there too until I read his story — felt like fate."</p>
+      <div class="ugc-card__author">
+        <div class="ugc-card__avatar" style="background:#6b5b42;">EG</div>
+        <div><div class="ugc-card__name">Elena G.</div><div class="ugc-card__detail">Matching Set · Provo, UT</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ugc-strip__cta">
+    <a href="#product" class="btn btn--outline">SHOP THE COLLECTION</a>
+  </div>
+</section>
+
+<!-- ⑤ ICON BENEFIT STRIP ────────────────────────────────── -->
+<div class="icon-strip">
+  <div class="icon-strip__row">
+    <div class="icon-item"><div class="icon-item__icon">✋</div><div class="icon-item__label">Handmade<br>in Utah</div></div>
+    <div class="icon-item"><div class="icon-item__icon">🌿</div><div class="icon-item__label">Sustainably<br>Sourced Wood</div></div>
+    <div class="icon-item"><div class="icon-item__icon">💎</div><div class="icon-item__label">Premium<br>Metal Shell</div></div>
+    <div class="icon-item"><div class="icon-item__icon">✍️</div><div class="icon-item__label">Custom<br>Engraving</div></div>
+    <div class="icon-item"><div class="icon-item__icon">🛡️</div><div class="icon-item__label">1-Year<br>Warranty</div></div>
+    <div class="icon-item"><div class="icon-item__icon">🚚</div><div class="icon-item__label">Free US<br>Shipping $75+</div></div>
+    <div class="icon-item"><div class="icon-item__icon">🌍</div><div class="icon-item__label">Gives Back to<br>Community</div></div>
+  </div>
+</div>
+
+<!-- ⑥ STAT BAR ───────────────────────────────────────────── -->
+<div class="stats">
+  <div class="stats__row">
+    <div class="stat"><div class="stat__num">1,000+</div><div class="stat__label">Happy Customers</div></div>
+    <div class="stat"><div class="stat__num">4.9★</div><div class="stat__label">Average Rating</div></div>
+    <div class="stat"><div class="stat__num">100%</div><div class="stat__label">Handmade</div></div>
+    <div class="stat"><div class="stat__num">30-Day</div><div class="stat__label">Guarantee</div></div>
+  </div>
+</div>
+
+<!-- ⑦ VALUE PROP 1 — The Craft ──────────────────────────── -->
+<section class="vp vp--light">
+  <div class="wrap">
+    <div class="vp__grid">
+      <div class="asset-box vp__media">
+        <div class="asset-box__tag">📸 Process Shot</div>
+        <div class="asset-box__icon">🪵</div>
+        <div class="asset-box__title">Daniel's Hands — The Craft</div>
+        <div class="asset-box__note">Close-up of Daniel fitting the wood liner into the metal shell. Workshop setting, Mapleton Utah. Natural light. This is the hero "made by a real person" shot. A Reel of this process will perform incredibly well on Meta and IG.</div>
+      </div>
+      <div class="vp__content">
+        <span class="label">The Craft</span>
+        <h2 class="heading-lg vp__title vp__title--light">ONE OF A KIND.<br>MADE BY HAND.<br>EVERY TIME.</h2>
+        <p class="vp__text vp__text--light">
+          I don't run a factory. I run a workshop. Every ring is hand-sourced, hand-fitted, hand-finished — the same way my father was taught during a six-year apprenticeship under the jeweler who crafted pieces for the Austrian emperor. That precision, that care — it's in my hands. It's in yours.
+        </p>
+        <ul class="vp__list">
+          <li><span class="vp__list-check">✓</span> Wood grain varies ring to ring — yours is genuinely one of a kind</li>
+          <li><span class="vp__list-check">✓</span> My father's Austrian master jeweler training runs through everything I make</li>
+          <li><span class="vp__list-check">✓</span> I inspect and finish every ring by hand before it ships</li>
+        </ul>
+        <a href="#product" class="btn btn--dark">SHOP NOW</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑦b VALUE PROP 2 — The Philosophy ───────────────────── -->
+<section class="vp vp--dark">
+  <div class="wrap">
+    <div class="vp__grid vp__grid--flip">
+      <div class="vp__content">
+        <span class="label">Why We Exist</span>
+        <h2 class="heading-lg vp__title vp__title--dark">A RING THAT<br>MEANS SOMETHING</h2>
+        <ul class="vp__list vp__list--dark">
+          <li>
+            <span class="vp__list-check">🪷</span>
+            <div>
+              <strong style="color:var(--warm-white); display:block; margin-bottom:4px;">The Rebirth Philosophy</strong>
+              <span>I believe we're all moving through miniature spiritual rebirths. I started by turning broken skateboards into rings at 14 — and I've been chasing transformation ever since. Every ring I make carries that belief.</span>
+            </div>
+          </li>
+          <li>
+            <span class="vp__list-check">🌊</span>
+            <div>
+              <strong style="color:var(--warm-white); display:block; margin-bottom:4px;">Inspired by Many Cultures, Made in Utah</strong>
+              <span>I've been shaped by everywhere I've been — Hawaii, Guatemala, solo travels through Latin America. That's not background noise. It's in the philosophy, the materials, the way I think about craft. Now I build in Mapleton, Utah, and every ring carries all of it.</span>
+            </div>
+          </li>
+          <li>
+            <span class="vp__list-check">🌍</span>
+            <div>
+              <strong style="color:var(--warm-white); display:block; margin-bottom:4px;">Service at the Core</strong>
+              <span>During my service mission in Guatemala, I collaborated with a small group of Mayan women who live by Lake Atitlán — one of the most beautiful places on earth. We made handwoven bags together. It was about community, love for the people, and showing up for something bigger than yourself. That spirit lives in everything I make.</span>
+            </div>
+          </li>
+        </ul>
+        <a href="#product" class="btn btn--primary">SHOP NOW</a>
+      </div>
+      <div class="asset-box vp__media" style="background:#1e1e1e; border-color:#333;">
+        <div class="asset-box__tag">📸 Lifestyle Shot</div>
+        <div class="asset-box__icon" style="filter:brightness(0.6);">🌄</div>
+        <div class="asset-box__title" style="color:var(--warm-white);">Daniel in His Environment</div>
+        <div class="asset-box__note">Daniel holding or wearing a ring — outdoors, Wasatch Mountains or skate park. Candid or directed. This image should feel like: "you are buying from a real person with a real story." Golden hour preferred.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ FULL TESTIMONIALS ─────────────────────────────────── -->
+<section class="testimonials testimonials--light" id="reviews2">
+  <div class="wrap">
+    <div class="testimonials__header">
+      <span class="label label--amber" style="display:block; margin-bottom:10px;">Verified Reviews</span>
+      <h2 class="heading-lg">THE RINGS SPEAK<br>FOR THEMSELVES</h2>
+      <p style="color:var(--gray); margin-top:8px;">Real couples · Real stories · 4.9 ★ from 200+ reviews</p>
+    </div>
+    <div class="testimonials__grid">
+
+      <div class="tcard">
+        <div class="asset-box tcard__media">
+          <div class="asset-box__tag">🎥 Video Testimonial</div>
+          <div class="asset-box__icon">🎥</div>
+          <div class="asset-box__note">Couple showing matching set on wedding day. 20–40 sec selfie video. Ask via post-purchase email sequence — 7 days after delivery.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"We ordered matching sets and both felt the weight of them — the real, handmade weight. Not the usual factory ring. Something else entirely."</p>
+        <div class="tcard__name">Sarah & Luis M.</div>
+        <div class="tcard__meta">Matching Set · June 2025</div>
+      </div>
+
+      <div class="tcard">
+        <div class="asset-box tcard__media">
+          <div class="asset-box__tag">📸 Customer UGC</div>
+          <div class="asset-box__icon">📸</div>
+          <div class="asset-box__note">Customer photo: ring on hand in real setting — outdoors, beach, skate spot. DM them 2 weeks after purchase. Offer a feature on Instagram or 10% off as thanks.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"Wearing this every day — surfing, working, living. It holds up and it means something. That combination is rare."</p>
+        <div class="tcard__name">Brendan T.</div>
+        <div class="tcard__meta">Irish Bog Oak · Verified Buyer</div>
+      </div>
+
+      <div class="tcard">
+        <div class="asset-box tcard__media">
+          <div class="asset-box__tag">📱 Instagram UGC</div>
+          <div class="asset-box__icon">📱</div>
+          <div class="asset-box__note">Screenshot or embed of a @rebirthrings tag or story mention. Set up an automated post-purchase email asking customers to tag you. Raw screenshots = trust.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"I read Daniel's story and immediately knew this was different. A skateboarder, a jeweler's son, two years in Guatemala. The ring carries all of it."</p>
+        <div class="tcard__name">Kayla N.</div>
+        <div class="tcard__meta">Gift Purchase · Holiday 2025</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ⑨ FOUNDER STORY ─────────────────────────────────────── -->
+<section class="story" id="story">
+  <div class="wrap">
+    <div class="story__inner">
+
+      <div class="story__media">
+        <div class="asset-box story__photo">
+          <div class="asset-box__tag">📸 Portrait of Daniel</div>
+          <div class="asset-box__icon">🧑‍🎨</div>
+          <div class="asset-box__title" style="color:var(--warm-white);">Daniel in the Workshop</div>
+          <div class="asset-box__note">A thoughtful, editorial-quality portrait. Daniel at his workbench — mid-process. Or a close-up of his face with hands in frame. This is the face people are buying from. Make it feel real, not styled.</div>
+        </div>
+        <div class="story__caption">Daniel Malzl · Founder, Rebirth World · Mapleton, Utah</div>
+      </div>
+
+      <div class="story__content">
+        <span class="label label--amber">The Story Behind Rebirth</span>
+        <h2 class="story__title">From a Broken Board<br>to a Ring for Your<br>Forever Chapter</h2>
+
+        <div class="story__chapter">
+          <div class="story__chapter-num">Chapter 01</div>
+          <div class="story__chapter-title">Where It Started — Age 14</div>
+          <p class="story__chapter-text">I've been skateboarding since I was eight. By fourteen, I had a collection of broken boards I couldn't bring myself to throw away. My dad — an Austrian master jeweler trained under the craftsman who made jewels for the emperor — sat down with me one day and we made our first ring together. Something reborn from something broken. That was the moment.</p>
+          <span class="story__chapter-place">📍 Utah, USA</span>
+        </div>
+
+        <div class="story__chapter">
+          <div class="story__chapter-num">Chapter 02</div>
+          <div class="story__chapter-title">The Community Builds It — Local Boards, Local Love</div>
+          <p class="story__chapter-text">Word spread. Skaters in the community started donating their snapped decks. I started repurposing them — ring by ring, layer by layer. Each one carrying the story of a session that ended and something new that began. Every skateboard ring I make is handmade from broken decks donated by the local skate community. Each ring is one of a kind. Each one carries a story.</p>
+          <span class="story__chapter-place">📍 Provo, Utah</span>
+        </div>
+
+        <div class="story__chapter">
+          <div class="story__chapter-num">Chapter 03</div>
+          <div class="story__chapter-title">Hawaii — The Philosophy Deepens</div>
+          <p class="story__chapter-text">I moved to Oahu to attend BYU–Hawaii in Laie and opened my first real workshop there. The culture of Hawaii — the ocean, the people, the constant motion — inspired me deeply. The name Rebirth started to mean something bigger. Not just recycled material. Unavoidable change. Spiritual rebirth. The lotus growing through mud. Embrace it or be buried by it.</p>
+          <span class="story__chapter-place">📍 Laie, Oahu, Hawaii</span>
+        </div>
+
+        <div class="story__chapter">
+          <div class="story__chapter-num">Chapter 04</div>
+          <div class="story__chapter-title">Guatemala — Service, Connection, & a New Collection</div>
+          <p class="story__chapter-text">A two-year service mission brought me to Guatemala, where I found myself beside Lake Atitlán in San Lucas Tolimán — one of the most beautiful places on earth. I collaborated with a small group of Mayan women who live by that lake and together we created a limited handwoven bag collection. Part art. Part service. Pure love for the people and the place. It wasn't the rings — but it was entirely Rebirth.</p>
+          <span class="story__chapter-place">📍 San Lucas Tolimán, Lake Atitlán, Guatemala</span>
+        </div>
+
+        <div class="story__chapter">
+          <div class="story__chapter-num">Chapter 05 — Current</div>
+          <div class="story__chapter-title">The Wedding Band — A Ring for Your Next Chapter</div>
+          <p class="story__chapter-text">Now based in Mapleton, Utah — in the shadow of the Wasatch Mountains — I'm building the next chapter of Rebirth World: premium wood-lined metal wedding bands. For the person stepping into their commitment chapter. For anyone who wants to wear their values, their story, and their willingness to change and grow on their hand every single day.</p>
+          <span class="story__chapter-place">📍 Mapleton, Utah</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑩ DIFFERENTIATOR GRID ───────────────────────────────── -->
+<section class="diff">
+  <div class="wrap">
+    <div class="diff__header">
+      <h2 class="heading-lg">WHY REBIRTH IS UNLIKE<br>ANYTHING ELSE</h2>
+      <p style="color:var(--gray); margin-top:10px; font-size:15px;">Mass-produced rings are made for everyone. Ours are made for the person you're becoming.</p>
+    </div>
+    <div class="diff__grid">
+      <div class="diff-card">
+        <div class="diff-card__icon">🛹</div>
+        <div class="diff-card__title">Born from Skateboard Culture</div>
+        <div class="diff-card__body">I've been skating since I was 8. Every skateboard ring I make comes from broken decks donated by the local skate community. That's not a marketing angle — that's how this started.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card__icon">🏔️</div>
+        <div class="diff-card__title">Austrian Master Jeweler Lineage</div>
+        <div class="diff-card__body">My father apprenticed under the jeweler who crafted for the Austrian emperor — six years of old-world technique. I learned from him. That standard runs in everything I make.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card__icon">🌊</div>
+        <div class="diff-card__title">Inspired by Many Cultures</div>
+        <div class="diff-card__body">Hawaii shaped my philosophy. Guatemala deepened my purpose. Solo travels through Latin America broadened my perspective. I build in Utah — but every ring carries all of it.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card__icon">🌿</div>
+        <div class="diff-card__title">Materials With History</div>
+        <div class="diff-card__body">Irish bog oak preserved for thousands of years. Koa. Stabilized exotic woods from around the world. Your ring has a past as rich as yours.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card__icon">💛</div>
+        <div class="diff-card__title">Service at the Core</div>
+        <div class="diff-card__body">During my service mission, I collaborated with a small group of Mayan women who live by Lake Atitlán, Guatemala — creating handwoven bags together, built on community and love. That spirit of service is woven into everything I do.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card__icon">🪷</div>
+        <div class="diff-card__title">The Philosophy Is Real</div>
+        <div class="diff-card__body">Embrace Change. I believe we are all in miniature spiritual rebirths throughout our lives. Your ring is a reminder to keep stepping into the next chapter — whatever it holds.</div>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <a href="#product" class="btn btn--dark">SHOP NOW</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑪ FEATURES + IMAGE ──────────────────────────────────── -->
+<section class="features">
+  <div class="wrap">
+    <div class="features__grid">
+      <div>
+        <div class="features__header">
+          <span class="label" style="display:block; margin-bottom:12px;">Built to Last</span>
+          <h2 class="heading-md" style="color:var(--warm-white);">A Ring as Durable<br>as Your Commitment</h2>
+          <p style="color:#666; margin-top:10px; font-size:14px;">Made to be worn every day — surfing, skating, working, living.</p>
+        </div>
+        <ul class="features__list">
+          <li class="feature">
+            <div class="feature__icon">💧</div>
+            <div><div class="feature__title">Water-Resistant Finish</div><div class="feature__desc">CA glue interior seals the wood against daily water exposure. Built for real life — not a display case.</div></div>
+          </li>
+          <li class="feature">
+            <div class="feature__icon">🔩</div>
+            <div><div class="feature__title">Stainless Steel Shell</div><div class="feature__desc">Gold-plated, black, or brushed steel — won't tarnish or corrode. Looks as good in 10 years as it does today.</div></div>
+          </li>
+          <li class="feature">
+            <div class="feature__icon">📐</div>
+            <div><div class="feature__title">Precision 0.8mm Wood Liner</div><div class="feature__desc">Slim enough to sit comfortably, thick enough to show the grain. Hand-fitted to fractions of a millimeter.</div></div>
+          </li>
+          <li class="feature">
+            <div class="feature__icon">🛡️</div>
+            <div><div class="feature__title">1-Year Craftsmanship Warranty</div><div class="feature__desc">If anything goes wrong with the work, we make it right. That's the Rebirth promise.</div></div>
+          </li>
+        </ul>
+        <a href="#product" class="btn btn--primary" style="margin-top:12px;">SHOP NOW</a>
+      </div>
+      <div class="asset-box" style="background:#1a1a1a; border-color:#2a2a2a;">
+        <div class="asset-box__tag">📸 Macro Detail Shot</div>
+        <div class="asset-box__icon">💍</div>
+        <div class="asset-box__title" style="color:var(--warm-white);">Ring Close-Up — Material Quality</div>
+        <div class="asset-box__note">Dramatic close-up — wood grain texture meeting the metal edge. Or ring on a hand against dark background. Goal: show the material quality so clearly someone can almost feel it through the screen. Macro lens or portrait mode.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOTHING COLLECTION DROP SECTION ───────────────────── -->
+<section class="drops" id="drops">
+  <div class="wrap">
+    <div class="drops__header">
+      <span class="label label--amber" style="display:block; margin-bottom:12px;">Limited Collections</span>
+      <h2 class="heading-lg">EVERY COLLECTION<br>TELLS A STORY</h2>
+      <p>Each clothing drop is a one-of-a-kind seasonal collection — released once, tied to a theme that speaks to the current Rebirth message. When it's gone, it's gone. These aren't basics. They're chapters.</p>
+    </div>
+    <div class="drops__grid">
+
+      <div class="drop-card">
+        <div class="asset-box drop-card__image">
+          <div class="asset-box__tag">📸 Collection Hero Shot</div>
+          <div class="asset-box__icon">👕</div>
+          <div class="asset-box__note">Lifestyle shot of the hoodie or tee worn in a real setting. Mountains, skate park, urban. The collection aesthetic should be visible — not a flat lay, a real person living in it.</div>
+        </div>
+        <div class="drop-card__content">
+          <div class="drop-card__season">Spring 2026 · Limited Drop</div>
+          <div class="drop-card__name">The "Letting Go" Collection</div>
+          <div class="drop-card__theme">Inspired by releasing what no longer serves you to move into the next chapter. Earthy tones, loose silhouettes, minimal graphics — wearable intention.</div>
+          <div class="drop-card__status drop-card__status--live">● Live Now</div>
+        </div>
+      </div>
+
+      <div class="drop-card">
+        <div class="asset-box drop-card__image">
+          <div class="asset-box__tag">📸 Collection Hero Shot</div>
+          <div class="asset-box__icon">🧥</div>
+          <div class="asset-box__note">Flat lay of collection items OR a worn lifestyle shot outdoors. Show the quality of the fabric — textured, warm, intentional. Could include ring + apparel styled together for cross-sell.</div>
+        </div>
+        <div class="drop-card__content">
+          <div class="drop-card__season">Winter 2025 · Sold Out</div>
+          <div class="drop-card__name">The "Roots" Collection</div>
+          <div class="drop-card__theme">A tribute to origin — family, craft, skateboarding, Salzburg to Oahu. Dark colorways, heavyweight fleece, embroidered lotus detail.</div>
+          <div class="drop-card__status" style="color:var(--gray);">✦ Sold Out — Join Waitlist</div>
+        </div>
+      </div>
+
+      <div class="drop-card">
+        <div class="asset-box drop-card__image" style="background:#e8e3dc;">
+          <div class="asset-box__tag" style="background:#1a1a1a;">🔜 Coming Soon</div>
+          <div class="asset-box__icon">🪷</div>
+          <div class="asset-box__note">Teaser image for upcoming drop. Could be an abstract texture, a detail of upcoming fabric/colorway, or just a "coming soon" aesthetic image. Builds anticipation.</div>
+        </div>
+        <div class="drop-card__content">
+          <div class="drop-card__season">Summer 2026 · Coming Soon</div>
+          <div class="drop-card__name">Untitled Summer Drop</div>
+          <div class="drop-card__theme">Theme TBD — join the list to be the first to know. If history is any guide, it'll be worth the wait.</div>
+          <div class="drop-card__status">◎ Notify Me</div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;">
+      <a href="#" class="btn btn--dark">VIEW ALL COLLECTIONS</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑬ GUARANTEE ─────────────────────────────────────────── -->
+<section class="guarantee">
+  <div class="guarantee__inner">
+    <div class="guarantee__icon">🛡️</div>
+    <h2 class="guarantee__title">30-DAY SATISFACTION<br>GUARANTEE</h2>
+    <p class="guarantee__text">We make every ring by hand with everything we've got. If you're not completely satisfied — for any reason — send it back within 30 days for a full refund or exchange. No paperwork. No questions. No friction. That's our word.</p>
+    <a href="#product" class="btn btn--dark">SHOP RISK-FREE</a>
+  </div>
+</section>
+
+<!-- MORE TESTIMONIALS ────────────────────────────────────── -->
+<section class="testimonials testimonials--dark">
+  <div class="wrap">
+    <div class="testimonials__header">
+      <span class="label label--amber" style="display:block; margin-bottom:10px;">More Love</span>
+      <h2 class="heading-lg" style="color:var(--warm-white);">REAL PEOPLE.<br>REAL RINGS.</h2>
+    </div>
+    <div class="testimonials__grid">
+
+      <div class="tcard tcard--dark">
+        <div class="asset-box tcard__media" style="background:#1a1a1a; border-color:#2a2a2a;">
+          <div class="asset-box__tag">🎥 Skater Testimonial</div>
+          <div class="asset-box__icon" style="color:#444;">🛹</div>
+          <div class="asset-box__note" style="color:#555;">Skater showing the ring during or after a session. "Been wearing it through every skate sesh for months—" Authentic durability proof. Shot on iPhone is fine, even preferred.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"Worn it every day — skate sessions included — for 4 months. Not a scratch on the metal. Wood still looks perfect."</p>
+        <div class="tcard__name">Jordan F.</div>
+        <div class="tcard__meta">Koa Wood · Skater, Portland OR</div>
+      </div>
+
+      <div class="tcard tcard--dark">
+        <div class="asset-box tcard__media" style="background:#1a1a1a; border-color:#2a2a2a;">
+          <div class="asset-box__tag">📸 Before / After</div>
+          <div class="asset-box__icon" style="color:#444;">🔄</div>
+          <div class="asset-box__note" style="color:#555;">"I went from this basic band to this." Visual side-by-side. Great for Meta ads and organic. Shows the transformation clearly. Gets strong engagement.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"My old ring looked like every other guy's. This one starts conversations everywhere. Best $149 I've ever spent."</p>
+        <div class="tcard__name">Alex T.</div>
+        <div class="tcard__meta">Gold Shell · Maple Burl</div>
+      </div>
+
+      <div class="tcard tcard--dark">
+        <div class="asset-box tcard__media" style="background:#1a1a1a; border-color:#2a2a2a;">
+          <div class="asset-box__tag">💬 DM Screenshot</div>
+          <div class="asset-box__icon" style="color:#444;">💌</div>
+          <div class="asset-box__note" style="color:#555;">Screenshot of a real DM or email from a happy customer. Raw = trustworthy. Block username if needed. "Daniel answered my message within an hour and—" moments are gold.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"Daniel answered my DM personally about sizing. Delivered on time for the wedding. He genuinely cares — you can feel it in the ring."</p>
+        <div class="tcard__name">Chris & Mia L.</div>
+        <div class="tcard__meta">Matching Set · Black Shell</div>
+      </div>
+
+    </div>
+    <div style="text-align:center; margin-top:40px;">
+      <a href="#" class="btn btn--outline">SEE ALL REVIEWS</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑭ FAQ ───────────────────────────────────────────────── -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="faq__grid">
+      <div class="asset-box faq__media" style="aspect-ratio:3/4;">
+        <div class="asset-box__tag">📸 Trust Image</div>
+        <div class="asset-box__icon">🪵</div>
+        <div class="asset-box__title">Calm, Confident Shot</div>
+        <div class="asset-box__note">Ring on a journal, book, or table beside a coffee. "Considering" energy — calm and trustworthy. Or Daniel holding the ring up to natural light. This section is about reassurance, so the image should feel unhurried.</div>
+      </div>
+      <div class="faq__content">
+        <h2 class="heading-md faq__title">FREQUENTLY<br>ASKED QUESTIONS</h2>
+
+        <div class="faq__item open">
+          <button class="faq__q" onclick="toggleFaq(this)">Is the wood really durable for daily wear?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">Yes. We use stabilized wood — vacuum-infused with resin, making it significantly harder and more moisture-resistant than raw wood. The interior is also finished with thin CA glue, creating a protective seal. Hundreds of customers wear these daily — including surfers and skaters.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">How do I know my ring size?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">We have a free printable ring sizer guide. If you're between sizes, size up. We also offer a free first-time resize within 30 days of purchase.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">Can I get custom engraving?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">Yes — add laser engraving at checkout for $9. Up to 10 characters (text), or submit a graphic URL. Coordinates, dates, initials, a meaningful word. Custom/engraved rings are final sale.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">How long will my order take?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">Each ring is handmade to order — allow 5–10 business days before it ships. US orders arrive in 2–4 days after shipping. Need it faster? DM Daniel on Instagram — he'll do everything he can.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">What if it doesn't fit or I'm not happy?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">30-day hassle-free returns on non-engraved rings. One free resize available within 30 days. We want you to love it — if you don't, we make it right.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">Do you ship internationally?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">Yes — we ship worldwide. International orders typically take 10–15 business days. We've shipped to 25+ countries.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">How is each clothing collection different?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">Every clothing drop is a one-of-a-kind limited season collection tied to a specific Rebirth theme. When the collection sells out, it doesn't come back. The design, the message, and the story belong to that moment. It's wearable intention — not basics.</div>
+        </div>
+
+        <div class="faq__cta">
+          <a href="#product" class="btn btn--dark btn--full">SHOP NOW</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑮ SOCIAL PROOF 4-UP ──────────────────────────────────── -->
+<section class="social-grid">
+  <div class="wrap">
+    <div class="social-grid__header">
+      <span class="label" style="display:block; margin-bottom:10px;">Community</span>
+      <h2 class="heading-lg">THE COMMUNITY<br>LOVES REBIRTH</h2>
+    </div>
+    <div class="social-grid__cards">
+
+      <div class="sgcard">
+        <div class="asset-box sgcard__media">
+          <div class="asset-box__tag">📸 IG Post</div>
+          <div class="asset-box__icon">📸</div>
+          <div class="asset-box__note">Real IG post screenshot — customer wearing the ring. Tag campaign: "Tag @rebirthrings to be featured."</div>
+        </div>
+        <div class="sgcard__body">
+          <div class="sgcard__stars">★★★★★</div>
+          <p class="sgcard__quote">"Obsessed with this ring 🤙 #rebirthrings #embracechange"</p>
+          <div class="sgcard__handle">@jake_surfsnorth</div>
+        </div>
+      </div>
+
+      <div class="sgcard">
+        <div class="asset-box sgcard__media">
+          <div class="asset-box__tag">📸 Couple Shot</div>
+          <div class="asset-box__icon">💍</div>
+          <div class="asset-box__note">Two Rebirth bands side by side — hands together, wedding day or outdoors. Highly shareable. Great for Pinterest and Meta ads.</div>
+        </div>
+        <div class="sgcard__body">
+          <div class="sgcard__stars">★★★★★</div>
+          <p class="sgcard__quote">"Our forever rings 💍 couldn't be more us"</p>
+          <div class="sgcard__handle">@themalonecouple</div>
+        </div>
+      </div>
+
+      <div class="sgcard">
+        <div class="asset-box sgcard__media">
+          <div class="asset-box__tag">📸 Skate Flatlay</div>
+          <div class="asset-box__icon">🛹</div>
+          <div class="asset-box__note">Ring on a skateboard deck or beside skate trucks. Perfect crossover content for the skate audience. Culture + craft in one frame.</div>
+        </div>
+        <div class="sgcard__body">
+          <div class="sgcard__stars">★★★★★</div>
+          <p class="sgcard__quote">"Skate forever. Rebirth always 🛹"</p>
+          <div class="sgcard__handle">@coastalskatelife</div>
+        </div>
+      </div>
+
+      <div class="sgcard">
+        <div class="asset-box sgcard__media">
+          <div class="asset-box__tag">📸 Nature Flatlay</div>
+          <div class="asset-box__icon">🌿</div>
+          <div class="asset-box__note">Ring beside natural elements — driftwood, moss, mountain rocks, pine needles. Shows eco/sustainability angle organically. Very Pinterest-friendly for alternative wedding audience.</div>
+        </div>
+        <div class="sgcard__body">
+          <div class="sgcard__stars">★★★★★</div>
+          <p class="sgcard__quote">"The grain is insane. Nothing like it 🌿"</p>
+          <div class="sgcard__handle">@sustainablestyled</div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;">
+      <a href="#product" class="btn btn--outline-dark">SHOP THE COLLECTION</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑯ FINAL CTA ──────────────────────────────────────────── -->
+<section class="final-cta">
+  <div class="final-cta__bg-label" style="display:none;">📸 ASSET: Full-bleed background — ring on Daniel's hand at golden hour. Wasatch Mountains or dusk light. Emotional, cinematic.</div>
+  <div class="final-cta__inner">
+    <span class="label label--amber" style="display:block; text-align:center; margin-bottom:16px;">Your Next Chapter</span>
+    <h2 class="final-cta__title">Your Ring Should<br><em>Mean Something.</em></h2>
+    <p class="final-cta__text">I make these by hand in Mapleton, Utah — shaped by everything I've lived through. Hawaii. Guatemala. The Mayan women by Lake Atitlán. A father who learned his craft from the emperor's jeweler. It's all in here. Wear it as a reminder: you are always in the middle of a rebirth. Embrace it.</p>
+    <a href="#product" class="btn btn--primary">SHOP NOW — FROM $149</a>
+    <p class="final-cta__fine">Free US Shipping · 30-Day Returns · 1-Year Warranty · Handmade in Utah</p>
+  </div>
+</section>
+
+<!-- ⑰ FOOTER ─────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer__grid">
+    <div>
+      <span class="footer__brand-logo">REBIRTH<em>.</em>WORLD</span>
+      <p class="footer__tagline">I make handmade rings and limited apparel — starting with broken skateboards donated by the local skate community, each one carrying its own story. Embrace Change. 🪷</p>
+      <div class="footer__social">
+        <a href="#" class="footer__social-link" aria-label="Instagram">📸</a>
+        <a href="#" class="footer__social-link" aria-label="TikTok">🎵</a>
+        <a href="#" class="footer__social-link" aria-label="Pinterest">📌</a>
+        <a href="#" class="footer__social-link" aria-label="Facebook">📘</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Shop</div>
+      <ul class="footer__links">
+        <li><a href="#">Wedding Bands</a></li>
+        <li><a href="#">Skateboard Rings</a></li>
+        <li><a href="#">Necklaces</a></li>
+        <li><a href="#">Current Collection Drop</a></li>
+        <li><a href="#">Gift Cards</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Support</div>
+      <ul class="footer__links">
+        <li><a href="#">Size Guide</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Shipping Info</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">The Brand</div>
+      <ul class="footer__links">
+        <li><a href="#">Daniel's Story</a></li>
+        <li><a href="#">The Craft</a></li>
+        <li><a href="#">Service Work</a></li>
+        <li><a href="#">@rebirthrings</a></li>
+        <li><a href="#">Collection Archive</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">© 2026 Rebirth World. Embrace Change. 🪷 Handmade in Mapleton, Utah.</span>
+    <div class="footer__payments">
+      <span class="footer__pay-badge">VISA</span>
+      <span class="footer__pay-badge">MASTERCARD</span>
+      <span class="footer__pay-badge">AMEX</span>
+      <span class="footer__pay-badge">APPLE PAY</span>
+      <span class="footer__pay-badge">PAYPAL</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Mobile menu
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+// Close mobile menu when link clicked
+document.querySelectorAll('.nav__mobile a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.remove('open');
+  });
+});
+
+// Product option buttons
+function initBtnGroup(id) {
+  const group = document.getElementById(id);
+  if (!group) return;
+  group.querySelectorAll('.opts__btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      group.querySelectorAll('.opts__btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+}
+initBtnGroup('woodBtns');
+initBtnGroup('sizeBtns');
+
+// Color swatches
+function selectSwatch(el, group) {
+  el.closest('.opts__swatches').querySelectorAll('.opts__swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Bundles
+function selectBundle(el) {
+  el.closest('.bundles__list').querySelectorAll('.bundle').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Gallery thumbnails
+document.querySelectorAll('.gallery__thumb').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.gallery__thumb').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+
+// Accordion
+function toggleAcc(btn) {
+  const item = btn.closest('.acc__item');
+  const wasOpen = item.classList.contains('open');
+  item.closest('.accordion').querySelectorAll('.acc__item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// FAQ
+function toggleFaq(btn) {
+  btn.closest('.faq__item').classList.toggle('open');
+}
+</script>
+
+</body>
+</html>

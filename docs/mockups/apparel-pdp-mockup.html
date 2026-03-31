@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rebirth Apparel — Wear the Message</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+<style>
+/* ════════════════════════════════
+   DESIGN TOKENS — Apparel Palette
+   Warm, earthy, editorial — distinct
+   from the ring page but same brand
+════════════════════════════════ */
+:root {
+  --ink:         #1c1a17;
+  --clay:        #c4603a;
+  --clay-dark:   #a04e2e;
+  --clay-faint:  rgba(196,96,58,0.08);
+  --linen:       #f2ece0;
+  --linen-dark:  #e6ddd0;
+  --parchment:   #ede5d8;
+  --olive:       #5c6644;
+  --olive-light: #7a8a5a;
+  --warm-gray:   #9a9186;
+  --mid-gray:    #c4bdb4;
+  --charcoal:    #2e2a24;
+  --teal:        #2a9d8f;
+  --gold:        #b8922a;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--linen);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+/* ════════════════════════════════
+   LAYOUT
+════════════════════════════════ */
+.wrap        { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.wrap--narrow { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+/* ════════════════════════════════
+   TYPE
+════════════════════════════════ */
+.label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--clay);
+  display: block;
+  margin-bottom: 10px;
+}
+.label--olive { color: var(--olive); }
+.label--teal  { color: var(--teal); }
+.label--light { color: rgba(255,255,255,0.45); }
+
+.display {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  line-height: 1.05;
+}
+.display--xl  { font-size: clamp(44px, 6.5vw, 90px); }
+.display--lg  { font-size: clamp(34px, 5vw, 64px); }
+.display--md  { font-size: clamp(26px, 3.5vw, 46px); }
+.display--sm  { font-size: clamp(22px, 2.5vw, 34px); }
+.display--italic { font-style: italic; }
+
+.caps {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 2px;
+  line-height: 1.05;
+}
+.caps--xl { font-size: clamp(36px, 5.5vw, 72px); }
+.caps--lg { font-size: clamp(28px, 4.5vw, 56px); }
+.caps--md { font-size: clamp(22px, 3vw, 40px); }
+.caps--sm { font-size: 16px; }
+
+.body-lg  { font-size: 16px; line-height: 1.8; }
+.body-sm  { font-size: 13px; line-height: 1.7; color: var(--warm-gray); }
+
+/* ════════════════════════════════
+   BUTTONS
+════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: 2.5px;
+  padding: 16px 36px;
+  border: 2px solid transparent;
+  cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.btn--clay     { background: var(--clay); color: #fff; }
+.btn--clay:hover { background: var(--clay-dark); transform: translateY(-1px); }
+.btn--ink      { background: var(--ink); color: var(--linen); }
+.btn--ink:hover { background: var(--charcoal); transform: translateY(-1px); }
+.btn--olive    { background: var(--olive); color: #fff; }
+.btn--olive:hover { background: #4a5535; transform: translateY(-1px); }
+.btn--outline  { background: transparent; border-color: var(--mid-gray); color: var(--ink); }
+.btn--outline:hover { border-color: var(--clay); color: var(--clay); }
+.btn--outline-light { background: transparent; border-color: rgba(255,255,255,0.35); color: #fff; }
+.btn--outline-light:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+.btn--full     { width: 100%; }
+.btn--lg       { font-size: 20px; padding: 20px 48px; }
+
+/* ════════════════════════════════
+   ASSET BOXES
+════════════════════════════════ */
+.asset {
+  position: relative;
+  background: var(--parchment);
+  border: 2px dashed var(--clay);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; text-align: center; overflow: hidden;
+}
+.asset__tag {
+  position: absolute; top: 0; left: 0;
+  background: var(--clay); color: #fff;
+  font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  padding: 4px 10px; z-index: 2;
+}
+.asset__icon { font-size: 40px; margin-bottom: 10px; }
+.asset__title { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--ink); margin-bottom: 6px; }
+.asset__note  { font-size: 11px; color: var(--warm-gray); line-height: 1.5; padding: 0 16px; max-width: 280px; }
+
+.asset-note-block {
+  background: #fdf5e8;
+  border-left: 3px solid var(--clay);
+  padding: 10px 14px;
+  font-size: 11px;
+  color: #7a4e1e;
+  line-height: 1.5;
+  margin-top: 12px;
+}
+.asset-note-block strong {
+  display: block; font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--clay); margin-bottom: 3px;
+}
+
+/* ════════════════════════════════
+   DECORATIVE
+════════════════════════════════ */
+.divider       { height: 1px; background: var(--linen-dark); }
+.divider--clay { background: linear-gradient(90deg, transparent, var(--clay), transparent); }
+.tag {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px;
+}
+.tag--clay   { background: var(--clay);  color: #fff; }
+.tag--olive  { background: var(--olive); color: #fff; }
+.tag--ink    { background: var(--ink);   color: var(--linen); }
+.tag--sold   { background: var(--warm-gray); color: #fff; }
+.tag--gold   { background: var(--gold);  color: #fff; }
+
+/* Textile pattern background */
+.textile-bg {
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 30px,
+      rgba(196,96,58,0.04) 30px,
+      rgba(196,96,58,0.04) 31px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 30px,
+      rgba(196,96,58,0.04) 30px,
+      rgba(196,96,58,0.04) 31px
+    );
+}
+
+/* ════════════════════════════════
+   ① ANNOUNCEMENT BAR
+════════════════════════════════ */
+.bar {
+  background: var(--ink);
+  color: rgba(255,255,255,0.65);
+  font-size: 12px; letter-spacing: 0.5px;
+  padding: 10px 16px; text-align: center; line-height: 1.5;
+}
+.bar strong { color: var(--clay); }
+.bar .sep   { margin: 0 12px; opacity: 0.25; }
+
+/* ════════════════════════════════
+   ② NAV
+════════════════════════════════ */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--linen);
+  border-bottom: 1px solid var(--linen-dark);
+}
+.nav__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; max-width: 1200px; margin: 0 auto; gap: 16px;
+}
+.nav__logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 4px; color: var(--ink); white-space: nowrap;
+}
+.nav__logo em { color: var(--clay); font-style: normal; }
+.nav__links { display: flex; gap: 28px; list-style: none; }
+.nav__links a {
+  font-size: 11px; font-weight: 500; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--warm-gray); transition: color 0.2s;
+}
+.nav__links a:hover { color: var(--clay); }
+.nav__actions { display: flex; align-items: center; gap: 10px; }
+.nav__cart {
+  background: var(--ink); color: var(--linen);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px; letter-spacing: 1.5px; padding: 9px 18px; transition: background 0.2s;
+}
+.nav__cart:hover { background: var(--clay); }
+.nav__hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  flex-direction: column; gap: 5px; padding: 4px;
+}
+.nav__hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); }
+.nav__mobile {
+  display: none; flex-direction: column; background: var(--linen);
+  border-top: 1px solid var(--linen-dark); padding: 20px 24px; gap: 16px;
+}
+.nav__mobile.open { display: flex; }
+.nav__mobile a {
+  font-size: 13px; font-weight: 500; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--warm-gray);
+  padding: 8px 0; border-bottom: 1px solid var(--linen-dark);
+}
+
+/* ════════════════════════════════
+   ③ HERO PRODUCT — THE CREWNECK
+════════════════════════════════ */
+.hero { padding: 52px 0 68px; }
+.hero__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+
+/* Gallery */
+.gallery { position: sticky; top: 80px; }
+.gallery__main { aspect-ratio: 3/4; margin-bottom: 10px; }
+.gallery__thumbs { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.gallery__thumb {
+  aspect-ratio: 1; cursor: pointer;
+  border: 2px solid transparent; transition: border-color 0.2s;
+  font-size: 10px; color: var(--warm-gray);
+}
+.gallery__thumb.active, .gallery__thumb:hover { border-color: var(--clay); }
+
+/* Product info */
+.product__tag    { margin-bottom: 16px; }
+.product__stars  { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.product__stars-icons { color: var(--clay); font-size: 16px; letter-spacing: 1px; }
+.product__stars-count { font-size: 12px; color: var(--warm-gray); }
+.product__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px, 3.5vw, 42px);
+  font-weight: 700; line-height: 1.1; margin-bottom: 6px; color: var(--ink);
+}
+.product__subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; font-style: italic; color: var(--warm-gray);
+  margin-bottom: 16px;
+}
+.product__prices {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-bottom: 6px;
+}
+.product__price-sale {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px; letter-spacing: 1px; color: var(--clay); line-height: 1;
+}
+.product__price-orig { font-size: 18px; color: var(--mid-gray); text-decoration: line-through; }
+.product__price-save { background: var(--clay); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 8px; }
+.product__philosophy {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-style: italic; color: var(--clay);
+  padding: 14px 0 14px 16px;
+  border-left: 3px solid var(--clay);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+.product__desc {
+  font-size: 14px; color: #555; line-height: 1.8;
+  margin-bottom: 20px; padding-bottom: 20px;
+  border-bottom: 1px solid var(--linen-dark);
+}
+.product__pills { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 24px; }
+.product__pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--ink); color: var(--linen);
+  font-size: 10px; font-weight: 600; letter-spacing: 0.5px; padding: 6px 12px;
+}
+.product__pill--olive { background: var(--olive); }
+
+/* Options */
+.opts { margin-bottom: 22px; }
+.opts__label {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+}
+.opts__label a { font-size: 11px; color: var(--clay); font-weight: 400; letter-spacing: 0; text-decoration: underline; }
+.opts__btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.opts__btn {
+  height: 42px; min-width: 42px; padding: 0 14px;
+  border: 1.5px solid var(--mid-gray); background: transparent;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer;
+  transition: all 0.15s; color: var(--ink);
+}
+.opts__btn.active { background: var(--ink); color: var(--linen); border-color: var(--ink); }
+.opts__btn:hover:not(.active) { border-color: var(--clay); color: var(--clay); }
+.opts__btn.sold { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+
+.opts__colors { display: flex; gap: 14px; flex-wrap: wrap; }
+.opts__color {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer;
+}
+.opts__color-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2.5px solid transparent; transition: border-color 0.2s;
+}
+.opts__color.active .opts__color-circle { border-color: var(--ink); }
+.opts__color-name { font-size: 10px; color: var(--warm-gray); }
+
+/* ════════════════════════════════
+   SUSTAINABILITY CALLOUT INLINE
+════════════════════════════════ */
+.eco-callout {
+  background: var(--olive);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 18px;
+}
+.eco-callout__icon { font-size: 22px; flex-shrink: 0; }
+.eco-callout__text { font-size: 12px; color: rgba(255,255,255,0.9); line-height: 1.5; }
+.eco-callout__text strong { color: #fff; display: block; margin-bottom: 1px; }
+
+/* ════════════════════════════════
+   TOTAL / CTA / BADGES
+════════════════════════════════ */
+.total {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-top: 1px solid var(--linen-dark);
+  border-bottom: 1px solid var(--linen-dark); margin-bottom: 16px;
+  flex-wrap: wrap; gap: 8px;
+}
+.total__label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+.total__prices { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.badges { display: grid; grid-template-columns: repeat(3,1fr); margin-top: 16px; border: 1px solid var(--linen-dark); }
+.badge-item {
+  padding: 14px 8px; text-align: center;
+  border-right: 1px solid var(--linen-dark);
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.badge-item:last-child { border-right: none; }
+.badge-item__icon { font-size: 20px; }
+.badge-item__title { font-size: 11px; font-weight: 600; }
+.badge-item__sub   { font-size: 10px; color: var(--warm-gray); }
+
+/* Accordion */
+.accordion { margin-top: 20px; border-top: 1px solid var(--linen-dark); }
+.acc__item { border-bottom: 1px solid var(--linen-dark); }
+.acc__btn {
+  width: 100%; background: none; border: none; padding: 15px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600; color: var(--ink); text-align: left; gap: 12px;
+}
+.acc__arrow { font-size: 18px; color: var(--warm-gray); flex-shrink: 0; transition: transform 0.25s; }
+.acc__item.open .acc__arrow { transform: rotate(180deg); }
+.acc__body { padding: 0 0 16px; font-size: 13px; color: var(--warm-gray); line-height: 1.75; display: none; }
+.acc__item.open .acc__body { display: block; }
+
+/* ════════════════════════════════
+   ④ UGC SCROLL STRIP
+════════════════════════════════ */
+.ugc-strip { background: var(--ink); padding: 64px 0 48px; }
+.ugc-strip__header { text-align: center; padding: 0 24px; margin-bottom: 36px; }
+.ugc-strip__sub    { color: var(--warm-gray); font-size: 14px; margin-top: 8px; }
+.ugc-strip__track {
+  display: flex; gap: 14px; overflow-x: auto; padding: 0 24px 16px;
+  scroll-snap-type: x mandatory; scrollbar-width: thin;
+  scrollbar-color: var(--clay) rgba(255,255,255,0.05);
+}
+.ugc-strip__track::-webkit-scrollbar { height: 4px; }
+.ugc-strip__track::-webkit-scrollbar-thumb { background: var(--clay); }
+.ugc-card {
+  flex: 0 0 290px; background: #272320; border: 1px solid #332e28;
+  padding: 20px; scroll-snap-align: start; display: flex; flex-direction: column; gap: 12px;
+}
+.ugc-card__media { aspect-ratio: 3/4; background: #1e1b17; flex-shrink: 0; }
+.ugc-card__stars  { color: var(--clay); font-size: 13px; letter-spacing: 1px; }
+.ugc-card__quote  { font-style: italic; font-size: 13px; color: #bbb; line-height: 1.65; flex: 1; }
+.ugc-card__author { display: flex; align-items: center; gap: 10px; margin-top: auto; }
+.ugc-card__avatar {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--clay);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+}
+.ugc-card__name   { font-size: 12px; font-weight: 600; color: var(--linen); }
+.ugc-card__detail { font-size: 10px; color: var(--warm-gray); }
+.ugc-strip__cta   { text-align: center; margin-top: 36px; padding: 0 24px; }
+
+/* ════════════════════════════════
+   ⑤ ICON BENEFIT STRIP
+════════════════════════════════ */
+.icon-strip { background: var(--linen); border-bottom: 1px solid var(--linen-dark); padding: 28px 0; overflow-x: auto; }
+.icon-strip__row { display: flex; min-width: 540px; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.icon-item { flex: 1; text-align: center; padding: 12px 6px; border-right: 1px solid var(--linen-dark); }
+.icon-item:last-child { border-right: none; }
+.icon-item__icon  { font-size: 24px; margin-bottom: 6px; }
+.icon-item__label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; color: var(--ink); line-height: 1.3; }
+
+/* ════════════════════════════════
+   ⑥ STAT BAR
+════════════════════════════════ */
+.stats { background: var(--clay); padding: 22px 0; }
+.stats__row {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 0; padding: 0 24px; max-width: 1200px; margin: 0 auto;
+}
+.stat { text-align: center; padding: 8px 32px; border-right: 1px solid rgba(255,255,255,0.2); flex: 1; min-width: 100px; }
+.stat:last-child { border-right: none; }
+.stat__num   { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #fff; letter-spacing: 2px; line-height: 1; }
+.stat__label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-top: 3px; }
+
+/* ════════════════════════════════
+   ⑦ PHILOSOPHY SECTION
+════════════════════════════════ */
+.philosophy { padding: 96px 0; background: var(--ink); position: relative; overflow: hidden; }
+.philosophy::before {
+  content: 'EMBRACE CHANGE';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(60px, 12vw, 180px);
+  color: rgba(255,255,255,0.03); white-space: nowrap; pointer-events: none;
+  letter-spacing: 8px; font-weight: 700;
+}
+.philosophy__inner { position: relative; z-index: 1; }
+.philosophy__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.philosophy__quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-style: italic; color: var(--linen);
+  line-height: 1.25; font-weight: 400;
+}
+.philosophy__quote em { color: var(--clay); font-style: normal; }
+.philosophy__text { font-size: 15px; color: #888; line-height: 1.85; margin-bottom: 24px; }
+.philosophy__attribution {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px; font-style: italic; color: var(--clay); margin-top: 20px;
+}
+
+/* ════════════════════════════════
+   ⑧ COLLECTION GRID — ALL DROPS
+════════════════════════════════ */
+.collections { padding: 88px 0; background: var(--parchment); }
+.collections__header { text-align: center; margin-bottom: 60px; }
+.collections__header h2 { color: var(--ink); margin-bottom: 10px; }
+.collections__header p { font-size: 15px; color: var(--warm-gray); max-width: 560px; margin: 0 auto; }
+.coll-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-bottom: 48px; }
+.coll-card {
+  background: var(--linen); border: 1px solid var(--linen-dark);
+  overflow: hidden; transition: transform 0.25s, box-shadow 0.25s;
+}
+.coll-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(28,26,23,0.1); }
+.coll-card__image { aspect-ratio: 3/4; position: relative; }
+.coll-card__image .asset { aspect-ratio: 3/4; width: 100%; height: 100%; }
+.coll-card__badge {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+}
+.coll-card__body { padding: 22px; }
+.coll-card__season { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--clay); margin-bottom: 6px; }
+.coll-card__name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 8px; line-height: 1.2; }
+.coll-card__theme { font-size: 12px; color: var(--warm-gray); line-height: 1.6; margin-bottom: 14px; }
+.coll-card__status-row { display: flex; justify-content: space-between; align-items: center; }
+.coll-card__status-live { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--olive); }
+.coll-card__status-sold { font-size: 11px; color: var(--warm-gray); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+.coll-card__status-coming { font-size: 11px; color: var(--clay); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+.coll-card__price { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--clay); }
+
+/* ════════════════════════════════
+   ⑨ TEJIDOS COLLAB — SPECIAL SECTION
+════════════════════════════════ */
+.tejidos {
+  padding: 96px 0;
+  background: var(--charcoal);
+  position: relative; overflow: hidden;
+}
+.tejidos::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(196,96,58,0.05) 40px, rgba(196,96,58,0.05) 41px),
+    repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(92,102,68,0.05) 40px, rgba(92,102,68,0.05) 41px);
+  pointer-events: none;
+}
+.tejidos__inner { position: relative; z-index: 1; }
+.tejidos__grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+.tejidos__images { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tejidos__img-main { grid-column: 1 / -1; aspect-ratio: 16/9; }
+.tejidos__img-sm   { aspect-ratio: 1; }
+.tejidos__content { }
+.tejidos__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 4vw, 50px);
+  font-style: italic; color: var(--linen);
+  font-weight: 600; line-height: 1.15; margin-bottom: 20px;
+}
+.tejidos__title em { font-style: normal; color: var(--clay); }
+.tejidos__text { font-size: 14px; color: #999; line-height: 1.85; margin-bottom: 20px; }
+.tejidos__items { list-style: none; margin-bottom: 28px; }
+.tejidos__items li {
+  display: flex; gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 13px; color: #aaa;
+}
+.tejidos__items li:last-child { border-bottom: none; }
+.tejidos__check { color: var(--clay); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.tejidos__note {
+  background: rgba(196,96,58,0.12);
+  border-left: 3px solid var(--clay);
+  padding: 14px 16px;
+  font-size: 13px; color: #bbb; line-height: 1.6; font-style: italic;
+}
+
+/* ════════════════════════════════
+   ⑩ SUSTAINABILITY SECTION
+════════════════════════════════ */
+.sustainability { padding: 88px 0; background: var(--olive); }
+.sustainability__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+.sustainability__content {}
+.sustainability__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(30px, 4.5vw, 56px);
+  color: #fff; font-weight: 700; line-height: 1.1; margin-bottom: 20px;
+}
+.sustainability__text { font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.8; margin-bottom: 28px; }
+.sustainability__specs { list-style: none; margin-bottom: 28px; }
+.sustainability__specs li {
+  display: flex; gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  font-size: 13px; color: rgba(255,255,255,0.75);
+}
+.sustainability__specs li:last-child { border-bottom: none; }
+.sustainability__check { color: rgba(255,255,255,0.9); font-size: 16px; flex-shrink: 0; }
+.sustainability__highlight {
+  background: rgba(255,255,255,0.12);
+  padding: 20px; display: flex; gap: 14px; align-items: center;
+}
+.sustainability__highlight-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: #fff;
+  letter-spacing: 1px; line-height: 1; flex-shrink: 0;
+}
+.sustainability__highlight-text { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+.sustainability__highlight-text strong { display: block; color: #fff; font-size: 14px; margin-bottom: 3px; }
+.sustainability__media { }
+
+/* ════════════════════════════════
+   ⑪ SOCIAL PROOF — TESTIMONIALS
+════════════════════════════════ */
+.testimonials { padding: 80px 0; }
+.testimonials--light { background: var(--linen); }
+.testimonials--parchment { background: var(--parchment); }
+.testimonials__header { text-align: center; margin-bottom: 48px; }
+.testimonials__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.tcard { padding: 24px; border: 1px solid var(--linen-dark); background: var(--linen); display: flex; flex-direction: column; gap: 14px; }
+.tcard__media  { aspect-ratio: 1; }
+.tcard__stars  { color: var(--clay); font-size: 13px; letter-spacing: 1.5px; }
+.tcard__quote  { font-style: italic; font-size: 13px; line-height: 1.7; color: #555; flex: 1; font-family: 'Cormorant Garamond', serif; font-size: 15px; }
+.tcard__name   { font-weight: 700; font-size: 13px; }
+.tcard__meta   { font-size: 11px; color: var(--warm-gray); }
+
+/* ════════════════════════════════
+   ⑫ DIFFERENTIATOR GRID
+════════════════════════════════ */
+.diff { padding: 80px 0; background: var(--linen); }
+.diff__header { text-align: center; margin-bottom: 52px; }
+.diff__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; margin-bottom: 40px; }
+.diff-card { padding: 26px; border: 1px solid var(--linen-dark); transition: border-color 0.2s, box-shadow 0.2s; }
+.diff-card:hover { border-color: var(--clay); box-shadow: 0 4px 24px rgba(196,96,58,0.08); }
+.diff-card__icon  { font-size: 28px; margin-bottom: 12px; }
+.diff-card__title { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+.diff-card__body  { font-size: 12px; color: var(--warm-gray); line-height: 1.65; }
+
+/* ════════════════════════════════
+   ⑬ GUARANTEE
+════════════════════════════════ */
+.guarantee { background: var(--clay); padding: 80px 24px; text-align: center; }
+.guarantee__inner { max-width: 640px; margin: 0 auto; }
+.guarantee__icon  { font-size: 64px; margin-bottom: 20px; }
+.guarantee__title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 6vw, 64px); letter-spacing: 3px;
+  color: #fff; line-height: 1; margin-bottom: 16px;
+}
+.guarantee__text { font-size: 15px; color: rgba(255,255,255,0.82); line-height: 1.8; margin-bottom: 28px; }
+
+/* ════════════════════════════════
+   ⑭ FAQ
+════════════════════════════════ */
+.faq { padding: 80px 0; background: var(--parchment); }
+.faq__grid { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; }
+.faq__media { position: sticky; top: 100px; aspect-ratio: 3/4; }
+.faq__title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(28px, 4vw, 44px); letter-spacing: 2px; margin-bottom: 32px; }
+.faq__item { border-bottom: 1px solid var(--linen-dark); }
+.faq__q {
+  width: 100%; background: none; border: none; padding: 18px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 500; color: var(--ink); text-align: left; gap: 16px; line-height: 1.4;
+}
+.faq__arrow { font-size: 22px; color: var(--warm-gray); flex-shrink: 0; transition: transform 0.2s; }
+.faq__item.open .faq__arrow { transform: rotate(45deg); }
+.faq__a { padding: 0 0 18px; font-size: 13px; color: var(--warm-gray); line-height: 1.75; display: none; }
+.faq__item.open .faq__a { display: block; }
+.faq__cta { margin-top: 28px; }
+
+/* ════════════════════════════════
+   ⑮ SOCIAL 4-GRID
+════════════════════════════════ */
+.social-grid { padding: 80px 0; background: var(--linen); }
+.social-grid__header { text-align: center; margin-bottom: 40px; }
+.social-grid__cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 36px; }
+.sgcard { background: var(--parchment); border: 1px solid var(--linen-dark); overflow: hidden; }
+.sgcard__media { aspect-ratio: 1; }
+.sgcard__body  { padding: 14px; }
+.sgcard__stars { color: var(--clay); font-size: 12px; margin-bottom: 6px; }
+.sgcard__quote { font-size: 12px; color: #555; line-height: 1.5; margin-bottom: 8px; font-style: italic; }
+.sgcard__handle { font-size: 10px; font-weight: 700; color: var(--clay); letter-spacing: 0.5px; }
+
+/* ════════════════════════════════
+   ⑯ FINAL CTA
+════════════════════════════════ */
+.final-cta {
+  padding: 120px 24px; background: var(--ink);
+  text-align: center; position: relative; overflow: hidden;
+}
+.final-cta::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 15% 50%, rgba(196,96,58,0.14) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 85% 30%, rgba(92,102,68,0.10) 0%, transparent 65%);
+  pointer-events: none;
+}
+.final-cta__inner { position: relative; z-index: 1; max-width: 660px; margin: 0 auto; }
+.final-cta__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(34px, 6vw, 64px);
+  color: var(--linen); font-style: italic;
+  line-height: 1.15; margin-bottom: 16px; font-weight: 600;
+}
+.final-cta__title em { font-style: normal; color: var(--clay); }
+.final-cta__text { font-size: 15px; color: #777; line-height: 1.8; margin-bottom: 40px; max-width: 520px; margin-left: auto; margin-right: auto; }
+.final-cta .btn--clay { max-width: 380px; margin: 0 auto 14px; display: block; }
+.final-cta__fine { font-size: 11px; color: #444; letter-spacing: 0.5px; }
+
+/* ════════════════════════════════
+   ⑰ FOOTER
+════════════════════════════════ */
+.footer { background: #111009; color: #555; padding: 64px 0 32px; }
+.footer__grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px; margin-bottom: 48px; padding: 0 24px;
+  max-width: 1200px; margin-left: auto; margin-right: auto;
+}
+.footer__logo { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 4px; color: var(--linen); margin-bottom: 14px; display: block; }
+.footer__logo em { color: var(--clay); font-style: normal; }
+.footer__tagline { font-size: 12px; color: #444; line-height: 1.7; max-width: 220px; margin-bottom: 20px; }
+.footer__social { display: flex; gap: 10px; }
+.footer__social-link {
+  width: 34px; height: 34px; border: 1px solid #222; display: flex;
+  align-items: center; justify-content: center; font-size: 14px; color: #555; transition: all 0.2s;
+}
+.footer__social-link:hover { border-color: var(--clay); color: var(--clay); }
+.footer__col-title { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 2.5px; color: var(--linen); margin-bottom: 16px; }
+.footer__links { list-style: none; }
+.footer__links li { margin-bottom: 8px; }
+.footer__links a { font-size: 12px; color: #444; transition: color 0.2s; }
+.footer__links a:hover { color: var(--clay); }
+.footer__bottom {
+  border-top: 1px solid #1a1a1a; padding: 20px 24px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px; max-width: 1200px; margin: 0 auto;
+}
+.footer__copy { font-size: 11px; color: #333; }
+.footer__payments { display: flex; gap: 6px; flex-wrap: wrap; }
+.footer__pay { background: #1a1a1a; padding: 3px 8px; font-size: 10px; color: #444; }
+
+/* ════════════════════════════════
+   RESPONSIVE
+════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Nav */
+  .nav__links { display: none; }
+  .nav__hamburger { display: flex; }
+  .nav__inner { padding: 14px 16px; }
+
+  /* Hero */
+  .hero { padding: 24px 0 40px; }
+  .hero__grid { grid-template-columns: 1fr; gap: 32px; }
+  .gallery { position: static; }
+  .gallery__main { aspect-ratio: 4/3; }
+  .product__name { font-size: 26px; }
+  .product__price-sale { font-size: 32px; }
+  .opts__btns { gap: 5px; }
+  .opts__btn { height: 38px; min-width: 38px; font-size: 12px; }
+  .badges { grid-template-columns: 1fr; }
+  .badge-item { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 12px 16px; }
+  .badge-item { border-right: none; border-bottom: 1px solid var(--linen-dark); }
+  .badge-item:last-child { border-bottom: none; }
+  .total { flex-direction: column; align-items: flex-start; }
+
+  /* UGC */
+  .ugc-card { flex: 0 0 260px; }
+
+  /* Icon strip */
+  .icon-strip { overflow-x: auto; }
+  .icon-strip__row { min-width: 480px; }
+
+  /* Stats */
+  .stats__row { flex-wrap: wrap; gap: 0; }
+  .stat { flex: 0 0 50%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px; }
+  .stat:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.1); }
+  .stat:last-child, .stat:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+
+  /* Philosophy */
+  .philosophy { padding: 64px 0; }
+  .philosophy__grid { grid-template-columns: 1fr; gap: 32px; }
+
+  /* Collections */
+  .collections { padding: 56px 0; }
+  .coll-grid { grid-template-columns: 1fr; gap: 20px; }
+
+  /* Tejidos */
+  .tejidos { padding: 56px 0; }
+  .tejidos__grid { grid-template-columns: 1fr; gap: 36px; }
+  .tejidos__images { grid-template-columns: 1fr 1fr; }
+
+  /* Sustainability */
+  .sustainability { padding: 56px 0; }
+  .sustainability__grid { grid-template-columns: 1fr; gap: 36px; }
+  .sustainability__media { display: none; }
+
+  /* Testimonials */
+  .testimonials { padding: 56px 0; }
+  .testimonials__grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Diff */
+  .diff { padding: 56px 0; }
+  .diff__grid { grid-template-columns: 1fr; gap: 14px; }
+
+  /* Guarantee */
+  .guarantee { padding: 64px 20px; }
+  .guarantee__title { font-size: 40px; }
+
+  /* FAQ */
+  .faq { padding: 56px 0; }
+  .faq__grid { grid-template-columns: 1fr; }
+  .faq__media { display: none; }
+
+  /* Social grid */
+  .social-grid { padding: 56px 0; }
+  .social-grid__cards { grid-template-columns: repeat(2,1fr); }
+
+  /* Final CTA */
+  .final-cta { padding: 80px 20px; }
+  .final-cta .btn--clay { max-width: 100%; }
+
+  /* Footer */
+  .footer__grid { grid-template-columns: 1fr; gap: 32px; padding: 0 20px; }
+  .footer__bottom { flex-direction: column; text-align: center; padding: 20px 20px 0; }
+  .footer__payments { justify-content: center; }
+
+  .wrap { padding: 0 16px; }
+  .wrap--narrow { padding: 0 16px; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero__grid { gap: 40px; }
+  .coll-grid { grid-template-columns: repeat(2,1fr); }
+  .testimonials__grid { grid-template-columns: repeat(2,1fr); }
+  .diff__grid { grid-template-columns: repeat(2,1fr); }
+  .social-grid__cards { grid-template-columns: repeat(2,1fr); }
+  .footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .philosophy__grid { gap: 48px; }
+  .tejidos__grid { gap: 48px; }
+  .sustainability__grid { gap: 48px; }
+}
+
+@media (max-width: 380px) {
+  .product__name { font-size: 22px; }
+  .guarantee__title { font-size: 34px; }
+  .ugc-card { flex: 0 0 240px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ① ANNOUNCEMENT BAR ─────────────────────────────────── -->
+<div class="bar">
+  <span>🌿 <strong>Eco-Conscious</strong> — 80% cotton, 20% recycled polyester</span>
+  <span class="sep">|</span>
+  <span>🤝 <strong>Locally Produced</strong> — Quality that carries meaning</span>
+  <span class="sep">|</span>
+  <span>🎨 <strong>Limited Drops</strong> — Each collection tells one story</span>
+</div>
+
+<!-- ② NAV ──────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav__inner">
+    <a href="#" class="nav__logo">REBIRTH<em>.</em>WORLD</a>
+    <ul class="nav__links">
+      <li><a href="#product">Current Drop</a></li>
+      <li><a href="#collections">All Collections</a></li>
+      <li><a href="#tejidos">Collaborations</a></li>
+      <li><a href="#story">Why Apparel</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav__actions">
+      <button class="nav__hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="#" class="nav__cart">🛒 Cart (0)</a>
+    </div>
+  </div>
+  <div class="nav__mobile" id="mobileMenu">
+    <a href="#product">Current Drop</a>
+    <a href="#collections">All Collections</a>
+    <a href="#tejidos">Collaborations</a>
+    <a href="#story">Why Apparel</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</nav>
+
+<!-- ③ HERO PRODUCT — THE CREWNECK ─────────────────────── -->
+<section class="hero" id="product">
+  <div class="wrap">
+    <div class="hero__grid">
+
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="gallery__main">
+          <div class="asset" style="aspect-ratio:3/4; width:100%;">
+            <div class="asset__tag">📸 Asset Needed</div>
+            <div class="asset__icon">👕</div>
+            <div class="asset__title">Crewneck Hero Shot</div>
+            <div class="asset__note">Worn lifestyle shot — person wearing the crewneck outdoors or in a warm interior. Earthy, natural light. Shows relaxed fit and drop shoulder. NOT a mannequin or flat lay as the main image.</div>
+          </div>
+        </div>
+        <div class="gallery__thumbs">
+          <div class="asset gallery__thumb active" style="aspect-ratio:1;">
+            <div class="asset__tag" style="font-size:8px;">1</div>
+            <div style="font-size:18px;">👕</div>
+            <div style="font-size:9px; color:var(--warm-gray); margin-top:4px;">Worn</div>
+          </div>
+          <div class="asset gallery__thumb" style="aspect-ratio:1;">
+            <div class="asset__tag" style="font-size:8px;">2</div>
+            <div style="font-size:18px;">🔍</div>
+            <div style="font-size:9px; color:var(--warm-gray); margin-top:4px;">Detail</div>
+          </div>
+          <div class="asset gallery__thumb" style="aspect-ratio:1;">
+            <div class="asset__tag" style="font-size:8px;">3</div>
+            <div style="font-size:18px;">🎨</div>
+            <div style="font-size:9px; color:var(--warm-gray); margin-top:4px;">Graphic</div>
+          </div>
+          <div class="asset gallery__thumb" style="aspect-ratio:1;">
+            <div class="asset__tag" style="font-size:8px;">4</div>
+            <div style="font-size:18px;">📐</div>
+            <div style="font-size:9px; color:var(--warm-gray); margin-top:4px;">Flat lay</div>
+          </div>
+        </div>
+        <div class="asset-note-block">
+          <strong>📸 4 shots to capture:</strong>
+          1) Worn outdoors — full relaxed fit visible · 2) Close-up of graphic/artwork detail · 3) Label / tear-out tag detail + fabric texture · 4) Clean flat lay showing colorways side by side
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div>
+        <div class="product__tag"><span class="tag tag--clay">Current Drop</span></div>
+
+        <div class="product__stars">
+          <span class="product__stars-icons">★★★★★</span>
+          <span class="product__stars-count">Rated 4.9/5 · Limited stock remaining</span>
+        </div>
+
+        <h1 class="product__name">Rebirth Crewneck</h1>
+        <p class="product__subtitle">Spring 2026 Drop — "A1–B2: Bless What Is Breaking"</p>
+
+        <div class="product__prices">
+          <span class="product__price-sale">$68</span>
+        </div>
+
+        <p class="product__philosophy">"In order to obtain that next chapter in life, you must bless the places in you that are breaking — and embrace the rebirth of what is blooming within you."</p>
+
+        <p class="product__desc">
+          This collection is born from insights I've received over the years from real people and real life experiences — brought to life on a 90s inspired house record. A1–B2 are deep messages and insights that have been guiding me into my current projects. Each message is meant to be worn. Not just read.
+        </p>
+
+        <div class="product__pills">
+          <span class="product__pill product__pill--olive">🌿 80% Cotton 20% Recycled Poly</span>
+          <span class="product__pill">🎨 Collab with Local Artists</span>
+          <span class="product__pill">♻️ Saves ~7 Plastic Bottles</span>
+          <span class="product__pill">🏷️ Tear-Out Label</span>
+        </div>
+
+        <div class="opts">
+          <div class="opts__label">1. Choose Color</div>
+          <div class="opts__colors">
+            <div class="opts__color active" onclick="selectColor(this)">
+              <div class="opts__color-circle" style="background:#2e2a24; border-color:#2e2a24;"></div>
+              <span class="opts__color-name">Charcoal</span>
+            </div>
+            <div class="opts__color" onclick="selectColor(this)">
+              <div class="opts__color-circle" style="background:#c4b49a;"></div>
+              <span class="opts__color-name">Sand</span>
+            </div>
+            <div class="opts__color" onclick="selectColor(this)">
+              <div class="opts__color-circle" style="background:#5c6644;"></div>
+              <span class="opts__color-name">Olive</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="opts">
+          <div class="opts__label">2. Choose Size <a href="#">Size Guide</a></div>
+          <div class="opts__btns" id="sizeBtns">
+            <button class="opts__btn">XS</button>
+            <button class="opts__btn">S</button>
+            <button class="opts__btn active">M</button>
+            <button class="opts__btn">L</button>
+            <button class="opts__btn">XL</button>
+            <button class="opts__btn">2XL</button>
+          </div>
+        </div>
+
+        <div class="eco-callout">
+          <div class="eco-callout__icon">♻️</div>
+          <div class="eco-callout__text">
+            <strong>AS Colour Relax Crew — 9.4 oz Mid-Weight Fleece</strong>
+            80% cotton, 20% recycled polyester · Each garment saves approx. 7 × 500ml plastic bottles from landfill
+          </div>
+        </div>
+
+        <div class="total">
+          <span class="total__label">Total:</span>
+          <div class="total__prices">
+            <span class="product__price-sale" style="font-size:30px;">$68</span>
+          </div>
+        </div>
+
+        <button class="btn btn--clay btn--full btn--lg">ADD TO CART — $68</button>
+
+        <div class="badges">
+          <div class="badge-item"><div class="badge-item__icon">🔄</div><div class="badge-item__title">30-Day Returns</div><div class="badge-item__sub">Unworn, tags on</div></div>
+          <div class="badge-item"><div class="badge-item__icon">🚚</div><div class="badge-item__title">Free US Shipping</div><div class="badge-item__sub">Orders over $75</div></div>
+          <div class="badge-item"><div class="badge-item__icon">🎨</div><div class="badge-item__title">Artist Collab</div><div class="badge-item__sub">Limited edition</div></div>
+        </div>
+
+        <div class="accordion">
+          <div class="acc__item open">
+            <button class="acc__btn" onclick="toggleAcc(this)">Fabric Details<span class="acc__arrow">⌄</span></button>
+            <div class="acc__body">
+              <strong>AS Colour Relax Crew</strong><br>
+              Weight: 9.4 oz mid-weight fleece · Construction: 80% cotton, 20% recycled polyester CVC · Cotton facing on fleece · Relaxed fit, drop shoulder, crew neck · Sleeve cuff ribbing · Tear-out label for a clean finish<br><br>
+              <strong>Why this fabric:</strong> Locally produced, quality and comfortable. The recycled poly content saves approximately 7 × 500ml plastic bottles from landfill per garment — without sacrificing the feel.
+            </div>
+          </div>
+          <div class="acc__item">
+            <button class="acc__btn" onclick="toggleAcc(this)">The Collection Story<span class="acc__arrow">⌄</span></button>
+            <div class="acc__body">
+              This collection is born from insights I've received from real people and real life experiences over the years. I named each piece A1–B2 like tracks on a vinyl record — because these messages deserve to be played, felt, carried. The overarching message: in order to step into your next chapter, you must bless the places that are breaking and embrace what is blooming within you. Embrace the Rebirth.
+            </div>
+          </div>
+          <div class="acc__item">
+            <button class="acc__btn" onclick="toggleAcc(this)">Sizing & Fit<span class="acc__arrow">⌄</span></button>
+            <div class="acc__body">
+              Relaxed fit with drop shoulder construction — runs true to size or slightly oversized depending on your preference. Unisex sizing. If you want a more fitted look, size down. View the size guide for chest and body measurements. All pieces are pre-washed to minimize shrinkage.
+            </div>
+          </div>
+          <div class="acc__item">
+            <button class="acc__btn" onclick="toggleAcc(this)">Shipping & Returns<span class="acc__arrow">⌄</span></button>
+            <div class="acc__body">
+              Free standard shipping on US orders over $75. 30-day returns on unworn items with tags attached. Exchanges available for size. Final sale on last-of-season pieces. We ship worldwide — rates at checkout.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ④ UGC SCROLL STRIP ─────────────────────────────────── -->
+<section class="ugc-strip">
+  <div class="ugc-strip__header">
+    <span class="label label--light" style="text-align:center;">Worn by the Community</span>
+    <h2 class="caps caps--xl" style="color:var(--linen);">WEARING<br>THE MESSAGE</h2>
+    <p class="ugc-strip__sub">Real people · Real chapters · 4.9 ★ average</p>
+  </div>
+
+  <div class="ugc-strip__track">
+
+    <div class="ugc-card">
+      <div class="asset ugc-card__media">
+        <div class="asset__tag">🎥 Video</div>
+        <div class="asset__icon">🎥</div>
+        <div class="asset__note">Short video — person in the crewneck in their natural environment. Talking about what the message means to them personally. 30–60 sec. Raw iPhone is great.</div>
+      </div>
+      <div class="ugc-card__stars">★★★★★</div>
+      <p class="ugc-card__quote">"I wear mine every time I'm going through something hard. It's become a ritual. The message on the back hits differently when you need it."</p>
+      <div class="ugc-card__author">
+        <div class="ugc-card__avatar">KL</div>
+        <div><div class="ugc-card__name">Kayla L.</div><div class="ugc-card__detail">Crewneck · Olive · Size M</div></div>
+      </div>
+    </div>
+
+    <div class="ugc-card">
+      <div class="asset ugc-card__media">
+        <div class="asset__tag">📸 Lifestyle</div>
+        <div class="asset__icon">📸</div>
+        <div class="asset__note">Customer wearing the piece in real life — hiking, at a café, skating. Shows the versatility of the relaxed fit. Natural light, candid energy.</div>
+      </div>
+      <div class="ugc-card__stars">★★★★★</div>
+      <p class="ugc-card__quote">"The quality is real. This isn't a band tee — it's built. The fleece weight is perfect and the graphic is something I actually want to talk about."</p>
+      <div class="ugc-card__author">
+        <div class="ugc-card__avatar" style="background:var(--olive);">JM</div>
+        <div><div class="ugc-card__name">James M.</div><div class="ugc-card__detail">Crewneck · Charcoal · Size L</div></div>
+      </div>
+    </div>
+
+    <div class="ugc-card">
+      <div class="ugc-card__stars">★★★★★</div>
+      <p class="ugc-card__quote">"I bought it because of the story. I kept wearing it because of the quality. Both reasons are still true six months later."</p>
+      <div class="ugc-card__author">
+        <div class="ugc-card__avatar" style="background:var(--gold);">RN</div>
+        <div><div class="ugc-card__name">Rachel N.</div><div class="ugc-card__detail">Verified Buyer · Portland, OR</div></div>
+      </div>
+    </div>
+
+    <div class="ugc-card">
+      <div class="asset ugc-card__media">
+        <div class="asset__tag">📱 IG Post</div>
+        <div class="asset__icon">📱</div>
+        <div class="asset__note">Screenshot of a post tagging @rebirthrings. "What does your Rebirth piece mean to you?" — great UGC prompt to seed after purchase via email.</div>
+      </div>
+      <div class="ugc-card__stars">★★★★★</div>
+      <p class="ugc-card__quote">"People keep stopping me to ask about my crew. I love getting to tell them the story behind it. That's rare for a piece of clothing."</p>
+      <div class="ugc-card__author">
+        <div class="ugc-card__avatar" style="background:#8b6b4a;">TS</div>
+        <div><div class="ugc-card__name">Talia S.</div><div class="ugc-card__detail">Sand · Austin, TX</div></div>
+      </div>
+    </div>
+
+    <div class="ugc-card">
+      <div class="ugc-card__stars">★★★★★</div>
+      <p class="ugc-card__quote">"I've been going through a transition in my life and this piece found me at exactly the right time. Feels like it was made for this moment."</p>
+      <div class="ugc-card__author">
+        <div class="ugc-card__avatar" style="background:var(--clay);">DW</div>
+        <div><div class="ugc-card__name">Dan W.</div><div class="ugc-card__detail">Crewneck · Olive · Size XL</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ugc-strip__cta">
+    <a href="#collections" class="btn btn--outline-light">SEE ALL COLLECTIONS</a>
+  </div>
+</section>
+
+<!-- ⑤ ICON BENEFIT STRIP ───────────────────────────────── -->
+<div class="icon-strip">
+  <div class="icon-strip__row">
+    <div class="icon-item"><div class="icon-item__icon">🎨</div><div class="icon-item__label">Artist<br>Collaborations</div></div>
+    <div class="icon-item"><div class="icon-item__icon">🌿</div><div class="icon-item__label">Eco-Conscious<br>Materials</div></div>
+    <div class="icon-item"><div class="icon-item__icon">♻️</div><div class="icon-item__label">Recycled<br>Polyester</div></div>
+    <div class="icon-item"><div class="icon-item__icon">✂️</div><div class="icon-item__label">Limited<br>Drops Only</div></div>
+    <div class="icon-item"><div class="icon-item__icon">💬</div><div class="icon-item__label">Wearable<br>Message</div></div>
+    <div class="icon-item"><div class="icon-item__icon">🤝</div><div class="icon-item__label">Community<br>Service</div></div>
+    <div class="icon-item"><div class="icon-item__icon">🚚</div><div class="icon-item__label">Free US<br>Shipping $75+</div></div>
+  </div>
+</div>
+
+<!-- ⑥ STAT BAR ─────────────────────────────────────────── -->
+<div class="stats">
+  <div class="stats__row">
+    <div class="stat"><div class="stat__num">100%</div><div class="stat__label">Limited Drops</div></div>
+    <div class="stat"><div class="stat__num">~7</div><div class="stat__label">Bottles Saved / Garment</div></div>
+    <div class="stat"><div class="stat__num">4.9★</div><div class="stat__label">Average Rating</div></div>
+    <div class="stat"><div class="stat__num">Local</div><div class="stat__label">Artist Collabs</div></div>
+  </div>
+</div>
+
+<!-- ⑦ PHILOSOPHY — WHY APPAREL ──────────────────────────── -->
+<section class="philosophy" id="story">
+  <div class="wrap philosophy__inner">
+    <div class="philosophy__grid">
+      <div>
+        <p class="philosophy__quote">
+          "These messages are to be worn as a <em>reminder</em> — for the person wearing, and for everyone who sees it."
+        </p>
+        <p class="philosophy__attribution">— Daniel Malzl, Founder · Rebirth World</p>
+      </div>
+      <div>
+        <span class="label label--light">Why I Make Apparel</span>
+        <p class="philosophy__text">
+          Rebirth Apparel carries the deeper message of what Rebirth is about. I collaborate with local, talented artists to bring each collection to life — from maté gourds to clothing. Every collection represents a different theme I'm currently resonating with. A message I'm living. Something I want to pass on.
+        </p>
+        <p class="philosophy__text">
+          These aren't basics. They're not trend pieces. Each collection is one of a kind — released once, for that season, for that chapter. When it sells out, it doesn't come back. The design, the story, and the moment belong to that drop.
+        </p>
+        <p class="philosophy__text">
+          My goal is simple: put something on your body that reminds you — and everyone around you — to embrace the change, enjoy the ride, and keep stepping into who you're becoming.
+        </p>
+        <a href="#collections" class="btn btn--outline-light" style="margin-top:8px;">SEE THE COLLECTIONS</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ COLLECTION GRID ───────────────────────────────────── -->
+<section class="collections textile-bg" id="collections">
+  <div class="wrap">
+    <div class="collections__header">
+      <span class="label" style="text-align:center;">All Drops</span>
+      <h2 class="caps caps--xl">EVERY COLLECTION<br>TELLS A STORY</h2>
+      <p>Each drop is a one-of-a-kind seasonal release tied to a theme I'm living. Once it's gone, it's gone. These are chapters — not catalog items.</p>
+    </div>
+
+    <div class="coll-grid">
+
+      <!-- Current Drop: Crewneck -->
+      <div class="coll-card">
+        <div class="coll-card__image">
+          <div class="asset" style="aspect-ratio:3/4; width:100%; height:100%;">
+            <div class="asset__tag">📸 Collection Shot</div>
+            <div class="asset__icon">👕</div>
+            <div class="asset__note">Editorial lifestyle shot — the crewneck worn in an evocative setting. Should capture the "90s house record" energy. Moody, textured, intentional.</div>
+          </div>
+          <div class="coll-card__badge"><span class="tag tag--clay">● Live Now</span></div>
+        </div>
+        <div class="coll-card__body">
+          <div class="coll-card__season">Spring 2026 · Limited Drop</div>
+          <div class="coll-card__name">A1–B2: Bless What Is Breaking</div>
+          <div class="coll-card__theme">Born from insights received over years of real people and real life experiences. Brought to life on a 90s inspired house record. Each piece is a track. Each track is a message. Wear it like you mean it.</div>
+          <div class="coll-card__status-row">
+            <span class="coll-card__status-live">● Available Now</span>
+            <span class="coll-card__price">$68</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flower Tee -->
+      <div class="coll-card">
+        <div class="coll-card__image">
+          <div class="asset" style="aspect-ratio:3/4; width:100%; height:100%;">
+            <div class="asset__tag">📸 Collection Shot</div>
+            <div class="asset__icon">🌸</div>
+            <div class="asset__note">Lifestyle shot capturing the Latin America travel energy. Rich color, movement, cultural warmth. Could feature the floral graphic prominently against a textured outdoor background.</div>
+          </div>
+          <div class="coll-card__badge"><span class="tag tag--sold">Sold Out</span></div>
+        </div>
+        <div class="coll-card__body">
+          <div class="coll-card__season">Fall 2025 · Sold Out</div>
+          <div class="coll-card__name">Rebirth Flower Tee</div>
+          <div class="coll-card__theme">Born from the inner shifts I experienced while traveling Latin America. Each flower carries a dual meaning — a reflection of the rebirths we go through in life, and a celebration of the diverse cultures that remind us we are all connected. Different in expression, yet rooted in the same source.</div>
+          <div class="coll-card__status-row">
+            <span class="coll-card__status-sold">✦ Sold Out — Join Waitlist</span>
+            <span class="coll-card__price" style="color:var(--warm-gray);">$45</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coming Soon -->
+      <div class="coll-card">
+        <div class="coll-card__image">
+          <div class="asset" style="aspect-ratio:3/4; width:100%; height:100%; background:var(--linen-dark);">
+            <div class="asset__tag" style="background:var(--ink);">🔜 Coming Soon</div>
+            <div class="asset__icon">🪷</div>
+            <div class="asset__note">Teaser image — abstract texture, color palette hint, or a behind-the-scenes of the design process. Builds anticipation without revealing too much.</div>
+          </div>
+          <div class="coll-card__badge"><span class="tag tag--ink">Coming Soon</span></div>
+        </div>
+        <div class="coll-card__body">
+          <div class="coll-card__season">Summer 2026 · Dropping Soon</div>
+          <div class="coll-card__name">Untitled Summer Drop</div>
+          <div class="coll-card__theme">Theme in progress — I'm living it before I put it on a garment. That's how these always start. Join the list and you'll be the first to know when it's ready.</div>
+          <div class="coll-card__status-row">
+            <span class="coll-card__status-coming">◎ Join the Waitlist</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;">
+      <a href="#" class="btn btn--ink">VIEW FULL ARCHIVE</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑨ TEJIDOS DE SANTIAGITOS — COLLAB ──────────────────── -->
+<section class="tejidos" id="tejidos">
+  <div class="wrap tejidos__inner">
+    <div class="tejidos__grid">
+
+      <div class="tejidos__images">
+        <div class="asset tejidos__img-main">
+          <div class="asset__tag">📸 Primary Collab Shot</div>
+          <div class="asset__icon">🧶</div>
+          <div class="asset__title" style="color:var(--ink);">The Women of San Lucas Tolimán</div>
+          <div class="asset__note">Photo of the woven pieces — huipiles, bags, table runners — displayed or in use. Or a photo of the collaboration in process if you have it. This section deserves real imagery more than any other.</div>
+        </div>
+        <div class="asset tejidos__img-sm">
+          <div class="asset__tag" style="font-size:8px;">📸 Detail</div>
+          <div style="font-size:24px;">🪡</div>
+          <div class="asset__note" style="font-size:10px;">Close-up of the weave texture and color — shows the craftsmanship</div>
+        </div>
+        <div class="asset tejidos__img-sm">
+          <div class="asset__tag" style="font-size:8px;">📸 Portrait</div>
+          <div style="font-size:24px;">🌊</div>
+          <div class="asset__note" style="font-size:10px;">Lake Atitlán backdrop or a portrait from the collaboration</div>
+        </div>
+      </div>
+
+      <div class="tejidos__content">
+        <span class="label label--amber" style="color:var(--clay);">Collaboration</span>
+        <h2 class="tejidos__title">Rebirth × <em>Tejidos de Santiagitos</em></h2>
+        <p class="tejidos__text">
+          During my service mission in Guatemala, I found myself beside Lake Atitlán — one of the most beautiful places on earth. In San Lucas Tolimán, I connected with an extraordinary group of Mayan women whose hands weave stories into fabric the way I shape stories into rings. This collaboration was born out of that connection.
+        </p>
+        <p class="tejidos__text">
+          This was a non-profit collection. Every piece was handwoven by these incredible women. The proceeds went directly back to support them and their community. It wasn't about product — it was about showing up for people who show up for each other.
+        </p>
+
+        <ul class="tejidos__items">
+          <li><span class="tejidos__check">🪡</span><div><strong style="color:var(--linen); display:block; margin-bottom:3px;">Shoulder Bags</strong><span>Handwoven with traditional Mayan patterns and natural dyes from the region</span></div></li>
+          <li><span class="tejidos__check">🧣</span><div><strong style="color:var(--linen); display:block; margin-bottom:3px;">Table Runners</strong><span>Backstrap-loom woven textiles — each one carrying the weaver's individual touch</span></div></li>
+          <li><span class="tejidos__check">👗</span><div><strong style="color:var(--linen); display:block; margin-bottom:3px;">Huipiles & Fabrics</strong><span>Traditional woven garments from the Tz'utujil tradition of Lake Atitlán</span></div></li>
+        </ul>
+
+        <div class="tejidos__note">
+          "It was part art, part service, part love — for the people and the place. These women don't just weave fabric. They weave culture, community, and meaning into everything they make. Working alongside them was one of the great honors of my life."
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ⑩ SUSTAINABILITY SECTION ────────────────────────────── -->
+<section class="sustainability">
+  <div class="wrap">
+    <div class="sustainability__grid">
+      <div class="sustainability__content">
+        <span class="label" style="color:rgba(255,255,255,0.5);">Conscious Construction</span>
+        <h2 class="sustainability__title">Clothing That Carries<br>Its Values Too</h2>
+        <p class="sustainability__text">
+          I'm intentional about what I put Rebirth on. The garments I choose aren't picked for margin — they're picked because they reflect the same values I put into the rings. Quality that lasts. Materials that matter. A footprint worth being proud of.
+        </p>
+        <ul class="sustainability__specs">
+          <li><span class="sustainability__check">✓</span> <div><strong style="color:#fff;">AS Colour Relax Crew</strong> — relaxed fit, drop shoulder, crew neck, sleeve cuff ribbing</div></li>
+          <li><span class="sustainability__check">✓</span> <div><strong style="color:#fff;">9.4 oz Mid-Weight Fleece</strong> — substantial, not flimsy. The right weight for real wear</div></li>
+          <li><span class="sustainability__check">✓</span> <div><strong style="color:#fff;">80% Cotton / 20% Recycled Polyester</strong> — cotton-facing on fleece for softness</div></li>
+          <li><span class="sustainability__check">✓</span> <div><strong style="color:#fff;">Tear-Out Label</strong> — clean finish, no scratchy tags against your skin</div></li>
+          <li><span class="sustainability__check">✓</span> <div><strong style="color:#fff;">Locally Produced</strong> — quality sourcing you can trace</div></li>
+        </ul>
+        <div class="sustainability__highlight">
+          <div class="sustainability__highlight-num">~7</div>
+          <div class="sustainability__highlight-text">
+            <strong>Plastic Bottles Saved Per Garment</strong>
+            The recycled polyester content of each crewneck keeps approximately 7 × 500ml plastic bottles out of landfill. Small number. Meaningful intention.
+          </div>
+        </div>
+      </div>
+      <div class="asset sustainability__media" style="aspect-ratio:3/4;">
+        <div class="asset__tag">📸 Fabric / Detail Shot</div>
+        <div class="asset__icon">🧵</div>
+        <div class="asset__title">Fabric Texture Close-Up</div>
+        <div class="asset__note">Extreme close-up of the fleece texture — shows the quality and weight visually. Can also show the tear-out label, ribbing detail, or a shot of the garment folded/stacked to communicate the weight and build of the fabric.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑪ FULL TESTIMONIALS ─────────────────────────────────── -->
+<section class="testimonials testimonials--light">
+  <div class="wrap">
+    <div class="testimonials__header">
+      <span class="label label--amber" style="text-align:center; display:block; margin-bottom:10px;">Verified Reviews</span>
+      <h2 class="caps caps--xl">WORN WITH<br>INTENTION</h2>
+      <p style="color:var(--warm-gray); margin-top:8px;">Real people who found the right message at the right time</p>
+    </div>
+    <div class="testimonials__grid">
+
+      <div class="tcard">
+        <div class="asset tcard__media">
+          <div class="asset__tag">🎥 Video</div>
+          <div class="asset__icon">🎥</div>
+          <div class="asset__note">Customer talking about what the collection message means to them personally. "I was going through a hard time when I got this…" — emotional, authentic, filmed casually.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"I've had this crewneck for four months. I reach for it when I need a reminder. There's something about wearing a message you actually believe."</p>
+        <div class="tcard__name">Marcus T.</div>
+        <div class="tcard__meta">A1–B2 Crewneck · Charcoal</div>
+      </div>
+
+      <div class="tcard">
+        <div class="asset tcard__media">
+          <div class="asset__tag">📸 Customer Photo</div>
+          <div class="asset__icon">📸</div>
+          <div class="asset__note">Customer wearing the flower tee or crewneck in a meaningful setting — travel, outdoors, a moment. Ask post-purchase via email: "Show us where your Rebirth piece has been."</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"I wore the Flower Tee through six countries in Latin America. Every time someone asked about the flowers, I got to share something real. That's what I call a conversation piece."</p>
+        <div class="tcard__name">Sofia R.</div>
+        <div class="tcard__meta">Rebirth Flower Tee · Verified Buyer</div>
+      </div>
+
+      <div class="tcard">
+        <div class="asset tcard__media">
+          <div class="asset__tag">📱 Instagram UGC</div>
+          <div class="asset__icon">📱</div>
+          <div class="asset__note">Screenshot of @rebirthrings tag or story mention. Seed with post-purchase email: "Tag us and tell us what chapter you're in." The story-based UGC from apparel customers is unique — leverage it.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"The quality alone would justify the price. But the fact that there's a real story behind it — and that Daniel made it with his own community — makes it worth ten times more."</p>
+        <div class="tcard__name">Brendan O.</div>
+        <div class="tcard__meta">A1–B2 Crewneck · Olive · Size XL</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ⑫ DIFFERENTIATORS ───────────────────────────────────── -->
+<section class="diff">
+  <div class="wrap">
+    <div class="diff__header">
+      <span class="label" style="text-align:center; display:block; margin-bottom:12px;">Why It's Different</span>
+      <h2 class="caps caps--xl">NOT ANOTHER<br>BRAND TEE</h2>
+      <p style="color:var(--warm-gray); margin-top:10px;">There's a difference between wearing a logo and wearing a message.</p>
+    </div>
+    <div class="diff__grid">
+      <div class="diff-card">
+        <div class="diff-card__icon">🎨</div>
+        <div class="diff-card__title">Collaborative by Nature</div>
+        <div class="diff-card__body">I work with local, talented artists on every collection. The designs aren't produced in isolation — they're born from real relationships and real creative conversations.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card__icon">✂️</div>
+        <div class="diff-card__title">One Season, One Story</div>
+        <div class="diff-card__body">Each collection represents a theme I'm currently resonating with. When the season ends, that drop ends. It doesn't come back. You're not buying inventory — you're buying a moment.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card__icon">💬</div>
+        <div class="diff-card__title">Messages Worth Wearing</div>
+        <div class="diff-card__body">From maté gourds to clothing — every Rebirth piece carries a message that can be in service of whatever chapter the wearer is in. Not decoration. Intention.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card__icon">🌿</div>
+        <div class="diff-card__title">Eco-Conscious Construction</div>
+        <div class="diff-card__body">I use locally produced clothing that's quality, comfortable, and thoughtful. Recycled polyester content. Cotton-facing. Materials selected with the same care I put into the rings.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card__icon">🤝</div>
+        <div class="diff-card__title">Community Is the Foundation</div>
+        <div class="diff-card__body">From woven pieces made alongside the Mayan women of Lake Atitlán, to local artist collaborations — service and community aren't marketing. They're how I operate.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card__icon">🪷</div>
+        <div class="diff-card__title">Part of a Bigger Philosophy</div>
+        <div class="diff-card__body">Rebirth Apparel isn't separate from Rebirth Rings. It's the same philosophy — embracing change, honoring the journey, wearing your values — just in a different form.</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:8px;">
+      <a href="#product" class="btn btn--ink">SHOP CURRENT DROP</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑬ GUARANTEE ─────────────────────────────────────────── -->
+<section class="guarantee">
+  <div class="guarantee__inner">
+    <div class="guarantee__icon">🛡️</div>
+    <h2 class="guarantee__title">30-DAY SATISFACTION<br>GUARANTEE</h2>
+    <p class="guarantee__text">If your piece doesn't fit right or you're not happy with it, return it unworn within 30 days. I want you to love what you're wearing — and wearing what you love.</p>
+    <a href="#product" class="btn btn--ink">SHOP RISK-FREE</a>
+  </div>
+</section>
+
+<!-- SECOND TESTIMONIAL ROW ──────────────────────────────── -->
+<section class="testimonials testimonials--parchment">
+  <div class="wrap">
+    <div class="testimonials__header">
+      <span class="label" style="display:block; text-align:center; margin-bottom:10px;">More From the Community</span>
+      <h2 class="caps caps--lg">REAL PEOPLE.<br>REAL CHAPTERS.</h2>
+    </div>
+    <div class="testimonials__grid">
+
+      <div class="tcard">
+        <div class="asset tcard__media">
+          <div class="asset__tag">🎥 Unboxing</div>
+          <div class="asset__icon">📦</div>
+          <div class="asset__note">Short unboxing video — first reaction to seeing the garment and reading the collection message. The moment of "oh wow, this is real quality" captured on camera is powerful social proof.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"Opened the package and the fabric immediately felt different. Then I read the message and it hit me — I'm literally in this chapter right now. Gave me chills."</p>
+        <div class="tcard__name">Jasmine K.</div>
+        <div class="tcard__meta">A1–B2 Crewneck · Sand</div>
+      </div>
+
+      <div class="tcard">
+        <div class="asset tcard__media">
+          <div class="asset__tag">📸 Before / After</div>
+          <div class="asset__icon">🔄</div>
+          <div class="asset__note">Visual: "This is what I used to wear" vs "This is what I wear now." Or a before/after of the wearer's chapter — what they were going through vs. where they are now. Rare but powerful UGC.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"I bought the Flower Tee during a hard year. Wore it through the hardest parts. Looking at it now feels like proof I made it through."</p>
+        <div class="tcard__name">Elena V.</div>
+        <div class="tcard__meta">Rebirth Flower Tee · Verified</div>
+      </div>
+
+      <div class="tcard">
+        <div class="asset tcard__media">
+          <div class="asset__tag">💬 DM Screenshot</div>
+          <div class="asset__icon">💌</div>
+          <div class="asset__note">Screenshot of a DM or email from a customer sharing what the message meant to them. "I just wanted you to know—" type messages. With permission, these are the most powerful testimonials you can share.</div>
+        </div>
+        <div class="tcard__stars">★★★★★</div>
+        <p class="tcard__quote">"I DM'd Daniel after wearing the crewneck through a job loss and a new start. He actually responded. A real human behind a real brand. Hard to find."</p>
+        <div class="tcard__name">Carlos M.</div>
+        <div class="tcard__meta">Crewneck · Charcoal · Size L</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ⑭ FAQ ───────────────────────────────────────────────── -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="faq__grid">
+      <div class="asset faq__media" style="background:var(--linen-dark);">
+        <div class="asset__tag">📸 Trust Image</div>
+        <div class="asset__icon">👕</div>
+        <div class="asset__title">Calm, Confident Shot</div>
+        <div class="asset__note">The crewneck folded or displayed against a warm, textured surface. Or someone wearing it, reading, or journaling. "Considering" energy — calm and intentional. Reinforces quality.</div>
+      </div>
+      <div>
+        <h2 class="faq__title">FREQUENTLY<br>ASKED QUESTIONS</h2>
+
+        <div class="faq__item open">
+          <button class="faq__q" onclick="toggleFaq(this)">Does each collection really sell out forever?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">Yes. Each Rebirth collection is a one-of-a-kind seasonal drop tied to a specific theme and moment. When it's gone, it doesn't come back. This is intentional — not scarcity marketing. The design, the story, and the message belong to that chapter. A new collection will carry a new one.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">How does the crewneck fit?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">The AS Colour Relax Crew has a relaxed fit with a drop shoulder construction. It's designed to feel easy, not boxy. Runs true to size — if you want a more fitted look, size down. View the size guide linked on the product page for exact measurements.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">What makes the fabric eco-conscious?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">The crewneck is 80% cotton / 20% recycled polyester. That recycled polyester content saves approximately 7 × 500ml plastic bottles from landfill per garment. It's not a greenwash claim — it's a specific, measurable impact built into the fabric choice.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">Who designs the graphics?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">I collaborate with local, talented artists on every collection. The designs are thoughtfully developed through real creative relationships — not outsourced to generic design services. Each collab is credited and celebrated.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">What was the Tejidos de Santiagitos collection?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">This was a non-profit collaboration I organized with a small group of Mayan women who live by Lake Atitlán in San Lucas Tolimán, Guatemala — during my service mission there. Together we made handwoven shoulder bags, table runners, huipiles, and other textiles. All proceeds went directly back to the women and their community. It was one of the most meaningful things I've ever been part of.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">How do I care for the garments?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">Machine wash cold, inside out. Tumble dry low or lay flat to dry. Do not bleach. Iron on low if needed — avoid the graphic directly. The garments are pre-washed to minimize shrinkage, but cold wash will keep them looking best longest.</div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" onclick="toggleFaq(this)">Can I return if it doesn't fit?<span class="faq__arrow">+</span></button>
+          <div class="faq__a">Yes — 30-day returns on unworn items with original tags attached. Exchanges available for size within the same collection while stock lasts. Final sale on last-of-season clearance pieces.</div>
+        </div>
+
+        <div class="faq__cta">
+          <a href="#product" class="btn btn--clay btn--full">SHOP CURRENT DROP</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑮ SOCIAL 4-GRID ─────────────────────────────────────── -->
+<section class="social-grid">
+  <div class="wrap">
+    <div class="social-grid__header">
+      <span class="label" style="text-align:center; display:block; margin-bottom:10px;">Community</span>
+      <h2 class="caps caps--lg">WEARING IT<br>INTO THE WORLD</h2>
+    </div>
+    <div class="social-grid__cards">
+      <div class="sgcard">
+        <div class="asset sgcard__media"><div class="asset__tag">📸 IG Post</div><div style="font-size:24px;">👕</div><div class="asset__note" style="font-size:10px;">Customer wearing the crewneck — tag @rebirthrings for feature</div></div>
+        <div class="sgcard__body"><div class="sgcard__stars">★★★★★</div><p class="sgcard__quote">"This piece goes everywhere with me 🪷 #embracechange"</p><div class="sgcard__handle">@liveingrowth</div></div>
+      </div>
+      <div class="sgcard">
+        <div class="asset sgcard__media"><div class="asset__tag">📸 Travel Shot</div><div style="font-size:24px;">🌎</div><div class="asset__note" style="font-size:10px;">Customer wearing the Flower Tee while traveling — shows the cultural connection</div></div>
+        <div class="sgcard__body"><div class="sgcard__stars">★★★★★</div><p class="sgcard__quote">"Traveled through 4 countries in this tee. Still my favorite."</p><div class="sgcard__handle">@wandersofia</div></div>
+      </div>
+      <div class="sgcard">
+        <div class="asset sgcard__media"><div class="asset__tag">📸 Detail Shot</div><div style="font-size:24px;">🔍</div><div class="asset__note" style="font-size:10px;">Close-up of the graphic or message on the garment — shows the design quality</div></div>
+        <div class="sgcard__body"><div class="sgcard__stars">★★★★★</div><p class="sgcard__quote">"The message hits every time someone asks about it 🙏"</p><div class="sgcard__handle">@chaptersbychris</div></div>
+      </div>
+      <div class="sgcard">
+        <div class="asset sgcard__media"><div class="asset__tag">📸 Group/Community</div><div style="font-size:24px;">🤙</div><div class="asset__note" style="font-size:10px;">Group shot — friends in Rebirth pieces, or the brand at a community event/skate session</div></div>
+        <div class="sgcard__body"><div class="sgcard__stars">★★★★★</div><p class="sgcard__quote">"The whole crew got one. We wore them to the session. 🛹"</p><div class="sgcard__handle">@skateculture_sd</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <a href="#product" class="btn btn--outline">SHOP CURRENT DROP</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑯ FINAL CTA ──────────────────────────────────────────── -->
+<section class="final-cta">
+  <div class="final-cta__inner">
+    <span class="label label--light" style="text-align:center; display:block; margin-bottom:16px;">Wear the Message</span>
+    <h2 class="final-cta__title">Every Chapter Deserves<br>Something <em>Worth Wearing.</em></h2>
+    <p class="final-cta__text">I make these collections for the person in the middle of something — a transition, a growth, a letting go. These aren't basics. They're reminders. Thoughtfully designed, collaboratively made, and meant to be worn into whatever you're walking toward.</p>
+    <a href="#product" class="btn btn--clay btn--lg">SHOP CURRENT DROP — $68</a>
+    <p class="final-cta__fine">Free US Shipping $75+ · 30-Day Returns · Eco-Conscious Materials · Limited Edition</p>
+  </div>
+</section>
+
+<!-- ⑰ FOOTER ─────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer__grid">
+    <div>
+      <span class="footer__logo">REBIRTH<em>.</em>WORLD</span>
+      <p class="footer__tagline">Limited apparel drops and handmade rings — each one carrying a message, a story, and the belief that embracing change is how we grow. 🪷</p>
+      <div class="footer__social">
+        <a href="#" class="footer__social-link">📸</a>
+        <a href="#" class="footer__social-link">🎵</a>
+        <a href="#" class="footer__social-link">📌</a>
+        <a href="#" class="footer__social-link">📘</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Shop</div>
+      <ul class="footer__links">
+        <li><a href="#">Current Apparel Drop</a></li>
+        <li><a href="#">Collection Archive</a></li>
+        <li><a href="#">Wedding Bands</a></li>
+        <li><a href="#">Skateboard Rings</a></li>
+        <li><a href="#">Gift Cards</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Support</div>
+      <ul class="footer__links">
+        <li><a href="#">Size Guide</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Shipping Info</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">The Brand</div>
+      <ul class="footer__links">
+        <li><a href="#">Daniel's Story</a></li>
+        <li><a href="#">Service Work</a></li>
+        <li><a href="#">Tejidos Collab</a></li>
+        <li><a href="#">@rebirthrings</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">© 2026 Rebirth World. Embrace Change. 🪷 Handmade in Mapleton, Utah.</span>
+    <div class="footer__payments">
+      <span class="footer__pay">VISA</span>
+      <span class="footer__pay">MASTERCARD</span>
+      <span class="footer__pay">AMEX</span>
+      <span class="footer__pay">APPLE PAY</span>
+      <span class="footer__pay">PAYPAL</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+document.querySelectorAll('.nav__mobile a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+});
+function toggleAcc(btn) {
+  const item = btn.closest('.acc__item');
+  const open = item.classList.contains('open');
+  item.closest('.accordion').querySelectorAll('.acc__item').forEach(i => i.classList.remove('open'));
+  if (!open) item.classList.add('open');
+}
+function toggleFaq(btn) { btn.closest('.faq__item').classList.toggle('open'); }
+document.querySelectorAll('.gallery__thumb').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.gallery__thumb').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+document.getElementById('sizeBtns').querySelectorAll('.opts__btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('sizeBtns').querySelectorAll('.opts__btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+function selectColor(el) {
+  el.closest('.opts__colors').querySelectorAll('.opts__color').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

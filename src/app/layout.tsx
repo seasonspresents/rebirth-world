@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, DM_Mono, Cormorant_Garamond } from "next/font/google";
+import { DM_Sans, DM_Mono, Cormorant_Garamond, Bebas_Neue, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -55,6 +55,21 @@ const cormorantGaramond = Cormorant_Garamond({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-editorial",
+  display: "swap",
+});
+
+const bebasNeue = Bebas_Neue({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-caps",
+  display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-serif",
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -160,7 +175,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${dmSans.variable} ${clashDisplay.variable} ${dmMono.variable} ${cormorantGaramond.variable} ${dmSans.className} antialiased`}
+        className={`${dmSans.variable} ${clashDisplay.variable} ${dmMono.variable} ${cormorantGaramond.variable} ${bebasNeue.variable} ${playfairDisplay.variable} ${dmSans.className} antialiased`}
         suppressHydrationWarning
       >
         <Preloader />
