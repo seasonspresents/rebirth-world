@@ -34,6 +34,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "files.cdn.printful.com",
       },
+      {
+        protocol: "https",
+        hostname: "rebirth.world",
+      },
+      {
+        protocol: "https",
+        hostname: "www.rebirth.world",
+      },
     ],
   },
 };
