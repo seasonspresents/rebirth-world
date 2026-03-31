@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getProductBySlug, listProducts } from "@/lib/payments/products";
 import { RingPDP } from "@/components/pdp/ring/ring-pdp";
+import { ApparelPDP } from "@/components/pdp/apparel/apparel-pdp";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -60,11 +61,10 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
   // Route to appropriate PDP template based on collection
   if (collection === "apparel") {
-    // Phase 3: Apparel PDP template — for now fall back to Ring PDP
     return (
       <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
-        <RingPDP product={product} />
+        <ApparelPDP product={product} />
       </>
     );
   }

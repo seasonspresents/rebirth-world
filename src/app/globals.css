@@ -180,6 +180,13 @@
   --rebirth-rose: #b87272;
   --rebirth-driftwood: #876f4c;
 
+  /* Apparel-specific palette */
+  --apparel-clay: #A0522D;
+  --apparel-olive: #6B7F3A;
+  --apparel-linen: #F5F0E1;
+  --apparel-parchment: #E8DCC8;
+  --apparel-charcoal: #2C2C2C;
+
   /* Film Cream background (#f3ece1) */
   --background: oklch(0.948 0.017 80);
   /* Warm Black foreground (#1c1917) */

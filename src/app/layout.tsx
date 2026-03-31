@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, DM_Mono } from "next/font/google";
+import { DM_Sans, DM_Mono, Cormorant_Garamond } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -49,6 +49,13 @@ const dmMono = DM_Mono({
   weight: ["400", "500"],
   subsets: ["latin"],
   variable: "--font-dm-mono",
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-editorial",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -153,7 +160,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${dmSans.variable} ${clashDisplay.variable} ${dmMono.variable} ${dmSans.className} antialiased`}
+        className={`${dmSans.variable} ${clashDisplay.variable} ${dmMono.variable} ${cormorantGaramond.variable} ${dmSans.className} antialiased`}
         suppressHydrationWarning
       >
         <Preloader />
