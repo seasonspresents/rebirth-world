@@ -5,9 +5,10 @@ import { Marquee } from "@/components/ui/marquee";
 const proofItems = [
   "1,000+ Rings Crafted",
   "\u2B50 4.9 Average Rating",
-  "Handmade in Hawaii",
+  "Handmade in Mapleton, Utah",
   "100% Recycled Materials",
   "1-Year Warranty",
+  "Free Custom Engraving",
 ];
 
 export function SocialProofBar() {

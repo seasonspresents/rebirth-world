@@ -214,9 +214,9 @@ export function BrandHero({ heroImage }: BrandHeroProps) {
             ref={subtextRef}
             className="mt-8 max-w-[48ch] text-lg leading-relaxed text-muted-foreground opacity-0 md:text-xl"
           >
-            Local skaters donate their broken decks. Daniel shapes them by hand
-            in his North Shore workshop — seven layers of maple, sanded, sealed,
-            and turned into rings you&apos;ll never want to take off.
+            Handcrafted rings and apparel born from broken skateboards, inspired
+            by many cultures — Hawaii, Guatemala, solo travels through Latin
+            America. Made in Mapleton, Utah.
           </p>
 
           <div ref={ctaRef} className="mt-12 flex items-center gap-4 opacity-0">
