@@ -1,7 +1,17 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
+
+const HERO_IMAGES = [
+  "/images/hero/rebirth-1-3.webp",
+  "/images/hero/img_0572.webp",
+  "/images/hero/rebirth-1-1-2.webp",
+  "/images/hero/rebirth-1-14.webp",
+  "/images/hero/img_0681.webp",
+];
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -144,52 +154,95 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Right: Hero Media */}
-      <div className="relative z-10 flex items-stretch min-h-[260px] md:min-h-[500px]">
-        <div className="relative w-full bg-[#111] flex items-center justify-center flex-col text-center">
-          <div className="text-6xl mb-2">💍</div>
-          <div className="text-xs font-bold uppercase tracking-wider text-[var(--rebirth-film-cream)]">
-            Hero Visual
-          </div>
-          <p className="mt-2 max-w-[260px] px-3 text-[11px] leading-snug text-[#8a8578]">
-            Autoplay looping video — Daniel&apos;s hands making a ring, or a
-            ring in an evocative setting. This is the single most important
-            visual asset on the site.
-          </p>
+      {/* Right: Hero Media — Cinematic Slideshow */}
+      <HeroSlideshow />
+    </section>
+  );
+}
 
-          {/* Buying dimensions overlay */}
-          <div className="absolute bottom-8 left-5 right-5 z-[3] hidden border border-white/[0.08] bg-[rgba(26,26,26,0.88)] p-4 backdrop-blur-sm md:block">
-            <div className="mb-2.5 text-[9px] font-bold uppercase tracking-[2.5px] text-[var(--rebirth-teal)]">
-              Why people buy Rebirth
+/* ── Cinematic Hero Slideshow ── */
+function HeroSlideshow() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="relative z-10 flex items-stretch min-h-[300px] md:min-h-[500px] overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          className="absolute inset-0"
+          initial={{ opacity: 0, scale: 1.08 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            opacity: { duration: 1.2, ease: "easeInOut" },
+            scale: { duration: 6, ease: "easeOut" },
+          }}
+        >
+          <Image
+            src={HERO_IMAGES[current]}
+            alt="Rebirth World handcrafted ring"
+            fill
+            className="object-cover"
+            sizes="50vw"
+            priority={current === 0}
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Subtle overlay gradient */}
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[var(--rebirth-warm-black)]/30 to-transparent" />
+
+      {/* Buying dimensions overlay */}
+      <div className="absolute bottom-8 left-5 right-5 z-[3] hidden border border-white/[0.08] bg-[rgba(26,26,26,0.88)] p-4 backdrop-blur-sm md:block">
+        <div className="mb-2.5 text-[9px] font-bold uppercase tracking-[2.5px] text-[var(--rebirth-teal)]">
+          Why people buy Rebirth
+        </div>
+        <div className="flex gap-4">
+          {[
+            {
+              label: "Functional",
+              text: "Lightweight, comfortable, and made to stand out — crafted from reclaimed materials.",
+            },
+            {
+              label: "Emotional",
+              text: "A reminder that transformation begins the moment we embrace change.",
+            },
+            {
+              label: "Social",
+              text: "A conversation starter that reflects your values, story, and culture.",
+            },
+          ].map((dim) => (
+            <div key={dim.label} className="flex-1">
+              <div className="mb-0.5 text-[10px] font-bold uppercase tracking-wider text-white/50">
+                {dim.label}
+              </div>
+              <div className="text-[11px] leading-snug text-white/75">
+                {dim.text}
+              </div>
             </div>
-            <div className="flex gap-4">
-              {[
-                {
-                  label: "Functional",
-                  text: "Lightweight, comfortable, and made to stand out — each ring is crafted from reclaimed materials and designed to feel unlike anything else on your hand.",
-                },
-                {
-                  label: "Emotional",
-                  text: "A reminder that transformation begins the moment we embrace change.",
-                },
-                {
-                  label: "Social",
-                  text: "A conversation starter that reflects your values, story, and culture",
-                },
-              ].map((dim) => (
-                <div key={dim.label} className="flex-1">
-                  <div className="mb-0.5 text-[10px] font-bold uppercase tracking-wider text-white/50">
-                    {dim.label}
-                  </div>
-                  <div className="text-[11px] leading-snug text-white/75">
-                    {dim.text}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
-    </section>
+
+      {/* Slide indicators */}
+      <div className="absolute bottom-3 left-1/2 z-[3] flex -translate-x-1/2 gap-1.5 md:hidden">
+        {HERO_IMAGES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`h-1 rounded-full transition-all duration-300 ${
+              i === current ? "w-6 bg-white" : "w-1.5 bg-white/30"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
