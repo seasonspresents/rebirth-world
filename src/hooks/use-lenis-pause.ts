@@ -1,22 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
-import { useLenis } from "lenis/react";
-
 /**
- * Pause/resume Lenis smooth scroll when a modal or overlay is open.
- * Prevents background scrolling while cart drawer, mobile nav, etc. are visible.
+ * Previously paused/resumed Lenis smooth scroll.
+ * Lenis is now disabled globally — this is a no-op stub
+ * to avoid breaking existing imports.
  */
-export function useLenisPause(isOpen: boolean) {
-  const lenis = useLenis();
-
-  useEffect(() => {
-    if (!lenis) return;
-
-    if (isOpen) {
-      lenis.stop();
-    } else {
-      lenis.start();
-    }
-  }, [lenis, isOpen]);
+export function useLenisPause(_isOpen: boolean) {
+  // No-op — Lenis disabled
 }
