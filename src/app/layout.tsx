@@ -18,6 +18,7 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
 });
 
+/* Clash Display kept as --font-clash for legacy references */
 const clashDisplay = localFont({
   src: [
     {
@@ -41,7 +42,7 @@ const clashDisplay = localFont({
       style: "normal",
     },
   ],
-  variable: "--font-display",
+  variable: "--font-clash",
   display: "swap",
 });
 
@@ -65,7 +66,17 @@ const bebasNeue = Bebas_Neue({
   display: "swap",
 });
 
+/* Playfair Display — PRIMARY heading font across all pages */
 const playfairDisplay = Playfair_Display({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-display",
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+/* Also keep --font-serif alias for explicit serif references */
+const playfairSerif = Playfair_Display({
   weight: ["400", "700"],
   subsets: ["latin"],
   variable: "--font-serif",
@@ -175,7 +186,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${dmSans.variable} ${clashDisplay.variable} ${dmMono.variable} ${cormorantGaramond.variable} ${bebasNeue.variable} ${playfairDisplay.variable} ${dmSans.className} antialiased`}
+        className={`${dmSans.variable} ${clashDisplay.variable} ${dmMono.variable} ${cormorantGaramond.variable} ${bebasNeue.variable} ${playfairDisplay.variable} ${playfairSerif.variable} ${dmSans.className} antialiased`}
         suppressHydrationWarning
       >
         <Preloader />
