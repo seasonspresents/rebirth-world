@@ -4,7 +4,7 @@ import { Marquee } from "@/components/ui/marquee";
 
 const phrases = [
   "Embrace Change",
-  "Handmade on the North Shore",
+  "Handmade in Mapleton, Utah",
   "Recycled Skateboard Rings",
   "Free Shipping on Orders $75+",
   "Wood-Lined Wedding Bands",

@@ -41,7 +41,7 @@ export function Footer() {
             <p className="mt-3 max-w-[28ch] text-base text-muted-foreground">
               Handcrafted from recycled skateboards.
               <br />
-              Born on the North Shore.
+              Made in Mapleton, Utah.
             </p>
             <p className="mt-2 text-sm font-[family-name:var(--font-dm-mono)] tracking-wide text-muted-foreground/70">
               Embrace Change

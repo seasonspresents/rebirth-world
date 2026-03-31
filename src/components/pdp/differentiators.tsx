@@ -13,7 +13,7 @@ interface Differentiator {
 const DEFAULT_DIFFERENTIATORS: Differentiator[] = [
   {
     title: "Handcrafted, Not Mass-Produced",
-    description: "Every ring is shaped by hand on a lathe in Daniel's North Shore workshop. No factories, no molds.",
+    description: "Every ring is shaped by hand on a lathe in Daniel's Mapleton, Utah workshop. No factories, no molds.",
   },
   {
     title: "Recycled Skateboard Wood",
@@ -33,7 +33,7 @@ const DEFAULT_DIFFERENTIATORS: Differentiator[] = [
   },
   {
     title: "Community-Sourced Materials",
-    description: "Boards donated by North Shore skaters instead of being thrown away. Waste becomes wearable art.",
+    description: "Boards donated by local skaters instead of being thrown away. Waste becomes wearable art.",
   },
 ];
 

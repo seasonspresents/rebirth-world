@@ -4,6 +4,7 @@ import { FeaturedEditorial } from "@/components/marketing/featured-editorial";
 import { BrandStory } from "@/components/marketing/brand-story";
 import { CollectionsSection } from "@/components/marketing/collections-section";
 import { Testimonials } from "@/components/marketing/testimonials";
+import { ValueProps } from "@/components/marketing/value-props";
 import { FAQ } from "@/components/marketing/faq";
 import { NewsletterCTA } from "@/components/marketing/newsletter-cta";
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
@@ -78,10 +79,13 @@ export default async function Home() {
         {/* 6. Social Proof / Testimonials */}
         <Testimonials />
 
-        {/* 7. FAQ */}
+        {/* 7. Value Propositions */}
+        <ValueProps />
+
+        {/* 8. FAQ */}
         <FAQ />
 
-        {/* 8. Newsletter CTA */}
+        {/* 9. Newsletter CTA */}
         <NewsletterCTA />
       </div>
     </>

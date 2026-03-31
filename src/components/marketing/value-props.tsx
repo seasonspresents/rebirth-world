@@ -11,7 +11,7 @@ const values = [
     icon: Hammer,
     title: "Made by Hand, One at a Time",
     description:
-      "Daniel shapes every ring in his North Shore workshop. No factories, no assembly lines — just a craftsman, his tools, and the wood.",
+      "Daniel shapes every ring in his Mapleton workshop. No factories, no assembly lines — just a craftsman, his tools, and the wood.",
     accent: "var(--rebirth-teal)",
   },
   {
@@ -23,9 +23,9 @@ const values = [
   },
   {
     icon: Heart,
-    title: "Humanitarian at Heart",
+    title: "Service at the Core",
     description:
-      "Rebirth started with a simple belief: waste is just potential waiting to be unlocked. Every purchase supports that mission.",
+      "From working with the Mayan women of Lake Atitlan to donating to local communities — service drives everything we do. Every purchase supports that mission.",
     accent: "var(--rebirth-rose)",
   },
   {

@@ -15,7 +15,7 @@ interface PDPFinalCTAProps {
 
 export function PDPFinalCTA({
   heading = "Find the ring that carries your story",
-  description = "Each piece is handcrafted from recycled skateboards in our North Shore workshop. No two are alike — yours is waiting.",
+  description = "Each piece is handcrafted from recycled skateboards in our Mapleton, Utah workshop. No two are alike — yours is waiting.",
   ctaText = "Shop Now",
   ctaHref = "/shop",
   backgroundImage,
