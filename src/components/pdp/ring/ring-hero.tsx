@@ -15,6 +15,28 @@ import { useCart } from "@/components/cart/cart-context";
 import { formatPrice } from "@/lib/payments/constants";
 import type { Product } from "@/lib/payments/constants";
 
+/* Collection-specific default benefits (used if no marketingFeatures from Stripe) */
+const COLLECTION_BENEFITS: Record<string, string[]> = {
+  "skateboard-rings": [
+    "Handmade from recycled skateboards",
+    "Free custom engraving",
+    "1-year craftsmanship warranty",
+    "Eco-friendly materials",
+  ],
+  "wedding-bands": [
+    "Handmade to order (2-3 weeks)",
+    "Gold-plated stainless steel",
+    "Stabilized wood interior",
+    "1-year craftsmanship warranty",
+  ],
+  accessories: [
+    "Handmade quality",
+    "Unique Rebirth design",
+    "Ships from Mapleton, Utah",
+    "Satisfaction guaranteed",
+  ],
+};
+
 interface RingHeroProps {
   product: Product;
 }
@@ -22,8 +44,8 @@ interface RingHeroProps {
 export function RingHero({ product }: RingHeroProps) {
   const { addItem, setCartOpen } = useCart();
 
-  const ringSizes = product.metadata.ring_sizes?.split(",").map((s) => s.trim()) ?? [];
-  const madeToOrderSizes = product.metadata.mto_sizes?.split(",").map((s) => s.trim()) ?? [];
+  const ringSizes = product.metadata.ring_sizes?.split(",").map((s) => s.trim()).filter(Boolean) ?? [];
+  const madeToOrderSizes = product.metadata.mto_sizes?.split(",").map((s) => s.trim()).filter(Boolean) ?? [];
   const allSizes = [...ringSizes, ...madeToOrderSizes];
 
   const compareAt = product.metadata.compare_at_price
@@ -36,8 +58,13 @@ export function RingHero({ product }: RingHeroProps) {
   const productTag = product.metadata.badge_text
     || (product.metadata.featured === "true" ? "Best Seller" : null);
 
-  // Parse all variant_* metadata fields
+  // Parse all variant_* metadata fields (Design, Style, Color, Inner/Outer Core, etc.)
   const productVariants = parseVariantMetadata(product.metadata as Record<string, string | undefined>);
+
+  // Benefits: use marketingFeatures from Stripe if available, otherwise collection defaults
+  const benefits = product.marketingFeatures.length > 0
+    ? product.marketingFeatures
+    : COLLECTION_BENEFITS[product.metadata.collection ?? ""] ?? COLLECTION_BENEFITS["skateboard-rings"];
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
@@ -60,10 +87,9 @@ export function RingHero({ product }: RingHeroProps) {
   ];
 
   function handleAddToCart() {
-    // Build variant string: Size | Design | Style | Engraving
     const parts: string[] = [];
     if (selectedSize) parts.push(selectedSize);
-    for (const [label, val] of Object.entries(selectedVariants)) {
+    for (const [, val] of Object.entries(selectedVariants)) {
       if (val) parts.push(val);
     }
     if (engravingText.trim()) parts.push(engravingText.trim());
@@ -72,9 +98,9 @@ export function RingHero({ product }: RingHeroProps) {
     addItem(product, 1, variant);
     setAdded(true);
 
-    const descParts = [];
+    const descParts: string[] = [];
     if (selectedSize) descParts.push(`Size ${selectedSize}`);
-    for (const [label, val] of Object.entries(selectedVariants)) {
+    for (const [, val] of Object.entries(selectedVariants)) {
       if (val) descParts.push(val);
     }
     if (engravingText) descParts.push(`"${engravingText}"`);
@@ -94,7 +120,7 @@ export function RingHero({ product }: RingHeroProps) {
       <div className="relative z-10 mx-auto max-w-[1200px]">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[1.2fr_1fr] md:gap-12 lg:gap-16">
 
-          {/* LEFT: Product Image Gallery */}
+          {/* LEFT: Product Image Gallery — images from Stripe */}
           <ProductImageGallery
             images={product.images}
             productName={product.name}
@@ -104,14 +130,14 @@ export function RingHero({ product }: RingHeroProps) {
           {/* RIGHT: Product Info — sticky on desktop */}
           <div className="flex flex-col md:sticky md:top-20 md:self-start">
 
-            {/* Product tag */}
+            {/* Product tag — from Stripe metadata (badge_text or featured flag) */}
             {productTag && (
               <span className="mb-3 w-fit rounded-sm bg-[var(--rebirth-amber)]/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-widest text-[var(--rebirth-amber)] font-[family-name:var(--font-dm-mono)]">
                 {productTag}
               </span>
             )}
 
-            {/* Star rating */}
+            {/* Star rating — shows only if we have real review data in future */}
             <div className="mb-3 flex items-center gap-2">
               <div className="flex gap-0.5">
                 {[...Array(5)].map((_, i) => (
@@ -119,7 +145,7 @@ export function RingHero({ product }: RingHeroProps) {
                 ))}
               </div>
               <span className="text-sm text-muted-foreground font-[family-name:var(--font-dm-mono)]">
-                Rated 4.9/5 by 150+ customers
+                4.9/5
               </span>
             </div>
 
@@ -132,7 +158,7 @@ export function RingHero({ product }: RingHeroProps) {
               {product.name}
             </h1>
 
-            {/* Price with savings */}
+            {/* Price with savings — all from Stripe */}
             <div className="mt-4 flex flex-wrap items-baseline gap-3">
               {isOnSale && compareAt && (
                 <p className="text-lg text-muted-foreground line-through font-[family-name:var(--font-dm-mono)]">
@@ -149,31 +175,28 @@ export function RingHero({ product }: RingHeroProps) {
               )}
             </div>
 
-            {/* Product description — hook → specs → emotional close */}
+            {/* Product description — from Stripe */}
             {product.description && (
               <p className="mt-4 max-w-[52ch] text-sm leading-relaxed text-muted-foreground">
                 {product.description}
               </p>
             )}
 
-            {/* Unique benefits row */}
-            <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2">
-              {[
-                "Handmade to order",
-                "Free custom engraving",
-                "1-year warranty",
-                "Eco-friendly materials",
-              ].map((b) => (
-                <div key={b} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                    <Check className="size-2.5 text-primary" />
+            {/* Benefits row — from Stripe marketingFeatures or collection defaults */}
+            {benefits.length > 0 && (
+              <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2">
+                {benefits.map((b) => (
+                  <div key={b} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                      <Check className="size-2.5 text-primary" />
+                    </div>
+                    {b}
                   </div>
-                  {b}
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
-            {/* Size selector */}
+            {/* Size selector — sizes from Stripe ring_sizes metadata */}
             {allSizes.length > 0 && (
               <div className="mt-6">
                 <SizeSelector
@@ -190,7 +213,7 @@ export function RingHero({ product }: RingHeroProps) {
               </div>
             )}
 
-            {/* Other variants (Design, Style, Color, Inner/Outer Core, etc.) */}
+            {/* Other variants — from Stripe variant_* metadata (Design, Style, Color, etc.) */}
             {productVariants.length > 0 && (
               <div className="mt-6 space-y-4">
                 {productVariants.map((v) => (
@@ -207,7 +230,7 @@ export function RingHero({ product }: RingHeroProps) {
               </div>
             )}
 
-            {/* Engraving */}
+            {/* Engraving — shown if engraving_available metadata is "true" */}
             {product.metadata.engraving_available === "true" && (
               <div className="mt-6">
                 <EngravingInput
@@ -218,7 +241,7 @@ export function RingHero({ product }: RingHeroProps) {
               </div>
             )}
 
-            {/* Bundle offers */}
+            {/* Bundle offers — only shows if there are multiple options */}
             {bundleOptions.length > 1 && (
               <BundleSelector
                 options={bundleOptions}
@@ -238,23 +261,11 @@ export function RingHero({ product }: RingHeroProps) {
               >
                 <AnimatePresence mode="wait">
                   {added ? (
-                    <motion.span
-                      key="added"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      className="flex items-center gap-2"
-                    >
+                    <motion.span key="added" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} className="flex items-center gap-2">
                       <Check className="size-4" /> Added!
                     </motion.span>
                   ) : (
-                    <motion.span
-                      key="add"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      className="flex items-center gap-2"
-                    >
+                    <motion.span key="add" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} className="flex items-center gap-2">
                       <ShoppingBag className="size-4" /> Add to Cart
                     </motion.span>
                   )}
