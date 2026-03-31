@@ -10,6 +10,8 @@ export interface ProductMetadata {
   collection?: string;
   material?: string;
   ring_sizes?: string; // comma-separated: "6,7,8,9,10,11,12"
+  mto_sizes?: string; // made-to-order sizes: "7,12,13"
+  care_kit_price?: string; // cents, for care kit bundle add-on
   slug?: string;
   featured?: string; // "true" | "false"
   subtitle?: string; // poetic material descriptor
