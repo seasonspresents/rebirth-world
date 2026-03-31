@@ -1,21 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import { usePathname } from "next/navigation";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap/register";
-
-/**
- * Section Color Blender
- *
- * Layout-level component that smoothly blends background and text colors
- * between adjacent `[data-section-theme]` sections using GSAP ScrollTrigger.
- *
- * Instead of hard-cutting between section-warm → section-dark → section-ocean,
- * colors tween over a ~200px overlap zone as sections scroll into view.
- *
- * Place this once in the marketing layout. It targets a wrapper element
- * containing all themed sections.
- */
 
 const THEME_COLORS: Record<string, { bg: string; fg: string }> = {
   warm: { bg: "#f3ece1", fg: "#1c1917" },
@@ -35,10 +23,21 @@ function getThemeColors(isDark: boolean) {
   return isDark ? DARK_THEME_COLORS : THEME_COLORS;
 }
 
+/**
+ * Section Color Blender — only runs on homepage and shop listing.
+ * DISABLED on individual product pages (PDP) to prevent GSAP ScrollTrigger
+ * from interfering with native scroll behavior.
+ */
 export function SectionColorBlender() {
   const hasSetup = useRef(false);
+  const pathname = usePathname();
+
+  // Only enable on homepage and shop listing — NOT on individual product pages
+  const isProductPage = pathname?.startsWith("/shop/") && pathname !== "/shop";
+  const shouldRun = !isProductPage;
 
   useGSAP(() => {
+    if (!shouldRun) return;
     if (hasSetup.current) return;
     hasSetup.current = true;
 
@@ -47,7 +46,6 @@ export function SectionColorBlender() {
     ).matches;
     if (prefersReducedMotion) return;
 
-    // Small delay to ensure sections are rendered
     const setupBlending = () => {
       const sections = gsap.utils.toArray<HTMLElement>(
         "[data-section-theme]"
@@ -67,7 +65,6 @@ export function SectionColorBlender() {
         const nextColors = colors[nextTheme];
         if (!prevColors || !nextColors) continue;
 
-        // Tween the section's own background as it enters
         gsap.fromTo(
           sections[i],
           {
@@ -89,12 +86,10 @@ export function SectionColorBlender() {
       }
     };
 
-    // Wait one frame for DOM to be ready
     requestAnimationFrame(() => {
       requestAnimationFrame(setupBlending);
     });
 
-    // Re-setup on theme change
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         if (
@@ -122,7 +117,7 @@ export function SectionColorBlender() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [shouldRun]);
 
   return null;
 }
