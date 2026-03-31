@@ -7,11 +7,10 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ProductImageGallery } from "@/components/shop/product-image-gallery";
 import { useCart } from "@/components/cart/cart-context";
+import { VariantSelector, parseVariantMetadata } from "@/components/pdp/shared/variant-selector";
 import { formatPrice } from "@/lib/payments/constants";
 import type { Product } from "@/lib/payments/constants";
 import { cn } from "@/lib/utils";
-
-const APPAREL_SIZES = ["S", "M", "L", "XL", "XXL"];
 
 interface ApparelHeroProps {
   product: Product;
@@ -19,17 +18,34 @@ interface ApparelHeroProps {
 
 export function ApparelHero({ product }: ApparelHeroProps) {
   const { addItem, setCartOpen } = useCart();
+
+  // Read sizes from metadata (GHL-synced) or fall back
+  const APPAREL_SIZES = product.metadata.ring_sizes
+    ?.split(",").map((s) => s.trim()).filter(Boolean) ?? ["S", "M", "L", "XL", "XXL"];
+
+  // Parse color and other variants from metadata
+  const productVariants = parseVariantMetadata(product.metadata as Record<string, string | undefined>);
+
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
   const [added, setAdded] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>(null);
 
-  const needsSize = !selectedSize;
+  const needsSize = APPAREL_SIZES.length > 0 && !selectedSize;
 
   function handleAddToCart() {
-    addItem(product, 1, selectedSize);
+    const parts: string[] = [];
+    if (selectedSize) parts.push(selectedSize);
+    for (const val of Object.values(selectedVariants)) {
+      if (val) parts.push(val);
+    }
+    const variant = parts.length > 0 ? parts.join("|") : selectedSize;
+
+    addItem(product, 1, variant);
     setAdded(true);
+    const desc = parts.length > 0 ? ` — ${parts.join(" · ")}` : "";
     toast.success("Added to cart", {
-      description: `${product.name}${selectedSize ? ` — Size ${selectedSize}` : ""}`,
+      description: `${product.name}${desc}`,
     });
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
@@ -114,6 +130,23 @@ export function ApparelHero({ product }: ApparelHeroProps) {
                 ))}
               </div>
             </div>
+
+            {/* Color / other variants from GHL metadata */}
+            {productVariants.length > 0 && (
+              <div className="mt-6 space-y-4">
+                {productVariants.map((v) => (
+                  <VariantSelector
+                    key={v.label}
+                    label={v.label}
+                    options={v.options}
+                    selected={selectedVariants[v.label] ?? null}
+                    onSelect={(val) =>
+                      setSelectedVariants((prev) => ({ ...prev, [v.label]: val }))
+                    }
+                  />
+                ))}
+              </div>
+            )}
 
             {/* ADD TO CART */}
             <div className="mt-8">

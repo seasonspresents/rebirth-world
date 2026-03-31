@@ -10,6 +10,7 @@ import { SizeSelector } from "@/components/pdp/shared/size-selector";
 import { EngravingInput } from "@/components/pdp/shared/engraving-input";
 import { BundleSelector } from "@/components/pdp/shared/bundle-selector";
 import { TrustRow } from "@/components/pdp/shared/trust-row";
+import { VariantSelector, parseVariantMetadata } from "@/components/pdp/shared/variant-selector";
 import { useCart } from "@/components/cart/cart-context";
 import { formatPrice } from "@/lib/payments/constants";
 import type { Product } from "@/lib/payments/constants";
@@ -35,7 +36,11 @@ export function RingHero({ product }: RingHeroProps) {
   const productTag = product.metadata.badge_text
     || (product.metadata.featured === "true" ? "Best Seller" : null);
 
+  // Parse all variant_* metadata fields
+  const productVariants = parseVariantMetadata(product.metadata as Record<string, string | undefined>);
+
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
   const [engravingText, setEngravingText] = useState("");
   const [selectedBundle, setSelectedBundle] = useState<string | null>("ring-only");
   const [added, setAdded] = useState(false);
@@ -55,15 +60,26 @@ export function RingHero({ product }: RingHeroProps) {
   ];
 
   function handleAddToCart() {
-    let variant = selectedSize ?? null;
-    if (engravingText.trim()) {
-      variant = variant ? `${variant}|${engravingText.trim()}` : engravingText.trim();
+    // Build variant string: Size | Design | Style | Engraving
+    const parts: string[] = [];
+    if (selectedSize) parts.push(selectedSize);
+    for (const [label, val] of Object.entries(selectedVariants)) {
+      if (val) parts.push(val);
     }
+    if (engravingText.trim()) parts.push(engravingText.trim());
+    const variant = parts.length > 0 ? parts.join("|") : null;
 
     addItem(product, 1, variant);
     setAdded(true);
+
+    const descParts = [];
+    if (selectedSize) descParts.push(`Size ${selectedSize}`);
+    for (const [label, val] of Object.entries(selectedVariants)) {
+      if (val) descParts.push(val);
+    }
+    if (engravingText) descParts.push(`"${engravingText}"`);
     toast.success("Added to cart", {
-      description: `${product.name}${selectedSize ? ` — Size ${selectedSize}` : ""}${engravingText ? ` — "${engravingText}"` : ""}`,
+      description: `${product.name}${descParts.length ? ` — ${descParts.join(" · ")}` : ""}`,
     });
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -171,6 +187,23 @@ export function RingHero({ product }: RingHeroProps) {
                     </button>
                   }
                 />
+              </div>
+            )}
+
+            {/* Other variants (Design, Style, Color, Inner/Outer Core, etc.) */}
+            {productVariants.length > 0 && (
+              <div className="mt-6 space-y-4">
+                {productVariants.map((v) => (
+                  <VariantSelector
+                    key={v.label}
+                    label={v.label}
+                    options={v.options}
+                    selected={selectedVariants[v.label] ?? null}
+                    onSelect={(val) =>
+                      setSelectedVariants((prev) => ({ ...prev, [v.label]: val }))
+                    }
+                  />
+                ))}
               </div>
             )}
 
