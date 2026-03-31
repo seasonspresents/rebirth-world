@@ -32,7 +32,7 @@ export function ValuePropBlock({
   ctaHref = "/shop",
 }: ValuePropBlockProps) {
   return (
-    <section data-section-theme={theme.replace("section-", "")} className={`${theme} bg-grain py-16 md:py-24 lg:py-32`}>
+    <section /* no data-section-theme to avoid SectionColorBlender ScrollTrigger conflict */ className={`${theme} bg-grain py-16 md:py-24 lg:py-32`}>
       <div className="relative z-10 mx-auto max-w-[1200px] px-6">
         <div className={`grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16 ${reversed ? "md:[&>*:first-child]:order-2" : ""}`}>
           {/* Image */}

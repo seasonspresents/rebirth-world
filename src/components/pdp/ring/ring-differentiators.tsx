@@ -28,7 +28,7 @@ interface RingDifferentiatorsProps {
 
 export function RingDifferentiators({ ctaHref = "/shop" }: RingDifferentiatorsProps) {
   return (
-    <section data-section-theme="dark" className="section-dark bg-grain py-16 md:py-24 lg:py-32">
+    <section className="section-dark bg-grain py-16 md:py-24 lg:py-32">
       <div className="relative z-10 mx-auto max-w-[1200px] px-6">
         <h2 className="mb-12 text-center text-fluid-heading font-[family-name:var(--font-display)]">
           Why Rebirth is Different
