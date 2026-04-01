@@ -19,60 +19,60 @@ interface UgcTestimonial {
 
 const TESTIMONIALS: UgcTestimonial[] = [
   {
-    initials: "JC",
+    initials: "JJ",
     initialsColor: "bg-[var(--rebirth-teal)]",
-    name: "Jake C.",
-    detail: "Wedding Band · Hawaii",
+    name: "Jackson J.",
+    detail: "Wedding Band · @jacksonnjudd",
     quote:
-      "\u201CThe quality hit me the second I put it on. My wife cried. This ring tells our story better than I ever could.\u201D",
-    hasMedia: true,
-    mediaLabel: "Video",
-    mediaNote:
-      "Customer video testimonial — 30-60 sec, selfie style, showing their ring",
-    mediaImage: "/images/people/men-wedding-ring.webp",
-  },
-  {
-    initials: "MR",
-    initialsColor: "bg-[var(--rebirth-amber)]",
-    name: "Marco R.",
-    detail: "Skate Ring · San Diego",
-    quote:
-      "\u201CI've been skating 15 years. Wearing this ring feels like my whole journey is on my hand. Nobody else has one like it.\u201D",
-    hasMedia: true,
-    mediaLabel: "Customer Photo",
-    mediaNote:
-      "Customer photo of their ring or apparel in the wild",
-    mediaImage: "/images/people/img_9537.webp",
-  },
-  {
-    initials: "SR",
-    initialsColor: "bg-[#5a6b4a]",
-    name: "Sofia R.",
-    detail: "Flower Tee · Verified Buyer",
-    quote:
-      "\u201CI wore the crewneck through six countries in Latin America. Every time someone asked about it, I got to share something real.\u201D",
-    hasMedia: false,
-  },
-  {
-    initials: "TW",
-    initialsColor: "bg-[#c49494]",
-    name: "Tyler W.",
-    detail: "Wedding Band · Portland",
-    quote:
-      "\u201CDaniel personally answered my DM about sizing. A real human behind a real brand. The ring arrived in 8 days, perfect.\u201D",
+      "\u201CIn love with this new ring that @rebirthrings made for me. Hit up my boy if you want one!\u201D",
     hasMedia: true,
     mediaLabel: "Instagram",
     mediaNote:
-      "Screenshot of real @rebirthrings tag or story",
+      "Customer Instagram post showing their Rebirth ring",
+    mediaImage: "/images/people/men-wedding-ring.webp",
+  },
+  {
+    initials: "SF",
+    initialsColor: "bg-[var(--rebirth-amber)]",
+    name: "Sierra F.",
+    detail: "Engraved Ring · @sierra.fernald",
+    quote:
+      "\u201COne of the members in The Unbound makes these really sick rings out of old skateboard decks & he engraved a few for me & some of the other members... how stinking cool\u201D",
+    hasMedia: true,
+    mediaLabel: "Customer Photo",
+    mediaNote:
+      "Customer photo of engraved skateboard ring",
+    mediaImage: "/images/people/img_9537.webp",
+  },
+  {
+    initials: "VB",
+    initialsColor: "bg-[#5a6b4a]",
+    name: "Verified Buyer",
+    detail: "Custom Ring · DM",
+    quote:
+      "\u201CEverything looks incredible, I\u2019m so stoked. Thank you. My mom FaceTimed me as she opened it and it looks better than I could have ever imagined, thank you for turning my dreams into reality\u201D",
+    hasMedia: false,
+  },
+  {
+    initials: "MJ",
+    initialsColor: "bg-[#c49494]",
+    name: "Jared",
+    detail: "Engagement Ring · @mormonjared",
+    quote:
+      "\u201CUs looking at my engagement ring made by @danielmalzl \u2014 It has one of my first / favorite skateboards inside!\u201D",
+    hasMedia: true,
+    mediaLabel: "Instagram",
+    mediaNote:
+      "Customer showing engagement ring with skateboard inside",
     mediaImage: "/images/people/dame-in-rebirth.webp",
   },
   {
-    initials: "KN",
+    initials: "JJ",
     initialsColor: "bg-[#8b6b4a]",
-    name: "Kayla N.",
-    detail: "Gift Purchase · Austin",
+    name: "Jackson J.",
+    detail: "Rebirth Hoodie · @jacksonnjudd",
     quote:
-      "\u201CI read the story behind these rings and immediately knew this was different. A skateboarder, a jeweler\u2019s son, Guatemala. It carries all of it.\u201D",
+      "\u201CFavorite hoodie fr @rebirthrings\u201D",
     hasMedia: false,
   },
 ];

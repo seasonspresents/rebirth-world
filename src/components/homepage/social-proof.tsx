@@ -16,29 +16,29 @@ interface Testimonial {
 const LIGHT_TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "\u201CWe ordered matching sets. Both felt the weight of them — real, handmade weight. Not the usual factory ring. Something else entirely.\u201D",
-    name: "Sarah & Luis M.",
-    meta: "Matching Set · Verified Buyers",
+      "\u201CEverything looks incredible, I\u2019m so stoked. My mom FaceTimed me as she opened it and it looks better than I could have ever imagined. Thank you for turning my dreams into reality.\u201D",
+    name: "Verified Buyer",
+    meta: "Custom Ring · DM",
     mediaNote:
-      "Wedding couple showing their matching set — 20-40 sec selfie video",
+      "Customer DM screenshot showing genuine reaction",
     mediaImage: "/images/people/malzl002722-r1-066-31a.webp",
   },
   {
     quote:
-      "\u201CI wear mine surfing, skating, everywhere. The finish holds up and the story behind it means I\u2019ll never take it off anyway.\u201D",
-    name: "Brendan T.",
-    meta: "Irish Bog Oak · Surfer, CA",
+      "\u201CUs looking at my engagement ring made by Daniel \u2014 it has one of my first favorite skateboards inside! Shoutout + thank you @rebirthrings\u201D",
+    name: "Jared",
+    meta: "Engagement Ring · @mormonjared",
     mediaNote:
-      "Customer photo — ring on hand in real setting",
+      "Customer showing engagement ring with skateboard inside",
     mediaImage: "/images/people/dame-in-rebirth.webp",
   },
   {
     quote:
-      "\u201CBought the crewneck during a hard stretch. Wore it through the whole thing. Looking at it now feels like proof I made it through.\u201D",
-    name: "Elena V.",
-    meta: "A1\u2013B2 Crewneck · Verified",
+      "\u201CI\u2019ve been addicted to using this journal. I am obsessed.\u201D",
+    name: "Lexx H.",
+    meta: "Rebirth Journal · @lexxhidalgo",
     mediaNote:
-      "Screenshot of @rebirthrings tag. Raw = trustworthy.",
+      "Customer photo with Rebirth journal",
     mediaImage: "/images/testimonials/img_0651.webp",
   },
 ];
@@ -101,29 +101,29 @@ export function SocialProofLight() {
 const DARK_TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "\u201CWorn it every skate session for 4 months. Not a scratch. The wood still looks perfect. Insane quality for the price.\u201D",
-    name: "Jordan F.",
-    meta: "Koa Wood · Portland OR",
+      "\u201CIn love with this new ring that @rebirthrings made for me. Hit up my boy if you want one!\u201D",
+    name: "Jackson J.",
+    meta: "Wedding Band",
     mediaNote:
-      "Skater showing the ring during/after a session — durability proof",
+      "Customer Instagram post with Rebirth ring",
     mediaImage: "/images/people/000041.webp",
   },
   {
     quote:
-      "\u201CMy old ring looked like everyone else\u2019s. This one starts conversations everywhere I go. Best $149 I\u2019ve ever spent.\u201D",
-    name: "Alex T.",
-    meta: "Gold Shell · Maple Burl",
+      "\u201CShe makes these really sick rings out of old skateboard decks & he engraved a few for me & some of the other members... how stinking cool\u201D",
+    name: "Sierra F.",
+    meta: "Engraved Ring · @sierra.fernald",
     mediaNote:
-      "Before/After visual side-by-side. Great for Meta ads.",
+      "Customer photo of engraved skateboard ring",
     mediaImage: "/images/people/men-wedding-ring.webp",
   },
   {
     quote:
-      "\u201CGave one as a wedding gift and my friend messaged me three times to say he\u2019s obsessed. The story behind it makes it even better.\u201D",
-    name: "Amanda S.",
-    meta: "Gift Purchase · Austin TX",
+      "\u201CThank you guys so much!!! They are PERFECT\u201D",
+    name: "Emma",
+    meta: "Verified Buyer",
     mediaNote:
-      "Screenshot of a DM from a happy customer. Raw and real = trustworthy.",
+      "Customer DM showing genuine excitement",
     mediaImage: "/images/testimonials/img_0648.webp",
   },
 ];

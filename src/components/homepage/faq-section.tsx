@@ -8,7 +8,7 @@ import Link from "next/link";
 const FAQ_ITEMS = [
   {
     q: "What makes your rings different from other wood rings?",
-    a: "A few things no other brand can claim: I\u2019ve been making rings from broken skateboards donated by the local community since I was 14. My father is an Austrian master jeweler trained under the craftsman who made pieces for the emperor. And the philosophy behind every piece — Rebirth, embracing unavoidable change — isn\u2019t a tagline. It\u2019s my actual life.",
+    a: "These rings are made from recycled materials \u2014 broken skateboards donated by the local skate community. Boards that would\u2019ve ended up in a landfill get a second life on your finger. I finish every ring with CA glue so the wood is long-lasting and durable enough for daily wear. You can tell they were handmade with love \u2014 because they were. Every single ring is one of a kind because no two broken boards are ever the same. The colors, the layers, the wear patterns \u2014 that\u2019s all real history from real sessions. And my father is an Austrian master jeweler, so the craft runs deep in my family.",
   },
   {
     q: "Are the rings durable enough for daily wear?",

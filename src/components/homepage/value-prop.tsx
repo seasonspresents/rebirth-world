@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { type LucideIcon, Flower2, Zap, Palette, Heart } from "lucide-react";
@@ -94,8 +94,26 @@ const WEDDING_BENEFITS: BenefitItem[] = [
   },
 ];
 
+const WEDDING_SLIDESHOW_IMAGES = [
+  "/images/wedding-bands/red-amboyna-burl/red-amboyna-main.webp",
+  "/images/wedding-bands/spalted-maple-burl/spalted-maple-main.webp",
+  "/images/wedding-bands/red-amboyna-burl/deep-lifestyle-.webp",
+  "/images/wedding-bands/spalted-maple-burl/cinematic-lifestyle-.webp",
+  "/images/wedding-bands/spalted-maple-burl/hand-lifestyle-shot-.webp",
+];
+
 export function ValueProp2() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  const nextSlide = useCallback(() => {
+    setSlideIndex((prev) => (prev + 1) % WEDDING_SLIDESHOW_IMAGES.length);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 4000);
+    return () => clearInterval(interval);
+  }, [nextSlide]);
 
   return (
     <section className="bg-[var(--rebirth-warm-black)] py-14 md:py-20">
@@ -157,10 +175,31 @@ export function ValueProp2() {
           </Link>
         </div>
 
-        {/* Media */}
+        {/* Media — Cinematic Slideshow */}
         <div className="order-1 md:order-2">
           <div className="relative aspect-[4/3] overflow-hidden">
-            <Image src="/images/wedding-bands/red-amboyna-burl/deep-lifestyle-.webp" alt="Wood-lined wedding band in warm dramatic light" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+            <AnimatePresence mode="sync">
+              <motion.div
+                key={slideIndex}
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1.12 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  opacity: { duration: 1.2, ease: "easeInOut" },
+                  scale: { duration: 4, ease: "easeOut" },
+                }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={WEDDING_SLIDESHOW_IMAGES[slideIndex]}
+                  alt="Handcrafted wood-lined wedding band"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={slideIndex === 0}
+                />
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>
@@ -246,7 +285,7 @@ export function ValueProp3() {
         {/* Right: Daniel portrait */}
         <div className="hidden md:block">
           <div className="relative aspect-[3/4] overflow-hidden">
-            <Image src="/images/rebirth-2026/malzl007910-r1-023-10.webp" alt="Daniel Malzl, founder of Rebirth World" fill className="object-cover" sizes="50vw" />
+            <Image src="/images/rebirth-2026/malzl007585-r1-046-21a.webp" alt="Daniel Malzl handcrafting a ring in his workshop" fill className="object-cover" sizes="50vw" />
           </div>
         </div>
       </div>
