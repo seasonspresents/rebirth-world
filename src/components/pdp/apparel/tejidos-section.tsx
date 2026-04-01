@@ -50,19 +50,19 @@ export function TejidosSection() {
               className="col-span-2 relative overflow-hidden"
               style={{ aspectRatio: "16/9" }}
             >
-              <Image src="/images/rebirth-2026/rebirth-atitlan-.webp" alt="Lake Atitlan, Guatemala — Rebirth collaboration with Mayan weavers" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+              <Image src="/images/tejidos/daniel-with-women.webp" alt="Daniel standing with the Mayan women of San Lucas Tolimán, Guatemala" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             <div
               className="relative overflow-hidden"
               style={{ aspectRatio: "1" }}
             >
-              <Image src="/images/rebirth-2026/malzl007585-r1-046-21a.webp" alt="Detail of handwoven Mayan textile" fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
+              <Image src="/images/tejidos/weaving-closeup.webp" alt="Mayan woman weaving on backstrap loom — close-up of hands and textile" fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
             </div>
             <div
               className="relative overflow-hidden"
               style={{ aspectRatio: "1" }}
             >
-              <Image src="/images/rebirth-2026/malzl007585-r1-048-22a.webp" alt="Portrait from Guatemala service mission" fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
+              <Image src="/images/tejidos/weaving-backstrap-loom.webp" alt="Mayan woman weaving traditional textile on backstrap loom by Lake Atitlán" fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
             </div>
           </motion.div>
 
