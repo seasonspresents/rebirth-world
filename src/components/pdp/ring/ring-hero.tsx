@@ -100,25 +100,34 @@ export function RingHero({ product }: RingHeroProps) {
     product.metadata.badge_text ||
     (product.metadata.featured === "true" ? "Best Seller" : null);
 
-  // Parse variant_* metadata for wood liner options
+  // Detect product type
+  const isSkateRing = product.metadata.collection === "skateboard-rings";
+  const isWeddingBand = product.metadata.collection === "wedding-bands";
+
+  // Parse variant_* metadata for wood liner options (wedding bands only)
   const productVariants = parseVariantMetadata(
     product.metadata as Record<string, string | undefined>
   );
 
-  // Wood liner options from variant metadata or fallback
-  const woodOptions =
-    productVariants.find(
-      (v) =>
-        v.label.toLowerCase().includes("design") ||
-        v.label.toLowerCase().includes("wood") ||
-        v.label.toLowerCase().includes("liner")
-    )?.options ?? ["Irish Bog Oak", "Hawaiian Koa", "Maple Burl", "Ebony"];
+  // Wood liner options from variant metadata or fallback (wedding bands only)
+  const woodOptions = isWeddingBand
+    ? (productVariants.find(
+        (v) =>
+          v.label.toLowerCase().includes("design") ||
+          v.label.toLowerCase().includes("wood") ||
+          v.label.toLowerCase().includes("liner")
+      )?.options ?? ["Irish Bog Oak", "Hawaiian Koa", "Maple Burl", "Ebony"])
+    : [];
+
+  // Width options for skateboard rings
+  const widthOptions = isSkateRing ? ["5mm (Narrow)", "8mm (Standard)"] : [];
 
   /* ── State ── */
   const [selectedMetal, setSelectedMetal] = useState("gold");
   const [selectedWood, setSelectedWood] = useState(woodOptions[0] ?? null);
+  const [selectedWidth, setSelectedWidth] = useState(widthOptions[0] ?? null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedBundle, setSelectedBundle] = useState("matching");
+  const [selectedBundle, setSelectedBundle] = useState(isSkateRing ? "single" : "matching");
   const [openAcc, setOpenAcc] = useState(0);
   const [added, setAdded] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>(null);
@@ -134,17 +143,23 @@ export function RingHero({ product }: RingHeroProps) {
   /* ── Add to cart ── */
   function handleAddToCart() {
     const parts: string[] = [];
-    if (selectedMetal) parts.push(selectedMetal);
-    if (selectedWood) parts.push(selectedWood);
+    if (isWeddingBand && selectedMetal) parts.push(selectedMetal);
+    if (isWeddingBand && selectedWood) parts.push(selectedWood);
+    if (isSkateRing && selectedWidth) parts.push(selectedWidth);
     if (selectedSize) parts.push(selectedSize);
-    parts.push(selectedBundle);
+    if (!isSkateRing) parts.push(selectedBundle);
     const variant = parts.join("|");
 
     addItem(product, selectedBundle === "matching" ? 2 : 1, variant);
     setAdded(true);
 
+    const descParts: string[] = [];
+    if (isWeddingBand) descParts.push(selectedMetal ?? "Gold");
+    if (isWeddingBand && selectedWood) descParts.push(selectedWood);
+    if (isSkateRing && selectedWidth) descParts.push(selectedWidth);
+    if (selectedSize) descParts.push(`Size ${selectedSize}`);
     toast.success("Added to cart", {
-      description: `${product.name} — ${selectedMetal}, ${selectedWood ?? "Default"}, Size ${selectedSize ?? "TBD"}`,
+      description: `${product.name}${descParts.length ? ` — ${descParts.join(", ")}` : ""}`,
     });
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -240,74 +255,104 @@ export function RingHero({ product }: RingHeroProps) {
               ))}
             </div>
 
-            {/* ── 1. Metal Finish ── */}
-            <div className="mt-6">
-              <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-[2px]">
-                <span>
-                  1. Choose Metal Finish{" "}
-                  <span className="font-normal text-[var(--gray)] tracking-normal">
-                    (3 options)
-                  </span>
-                </span>
-              </div>
-              <div className="flex gap-4 pb-1.5">
-                {METAL_FINISHES.map((m) => (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => setSelectedMetal(m.id)}
-                    className="flex flex-col items-center gap-1.5 cursor-pointer"
-                  >
-                    <div
-                      className={cn(
-                        "size-[34px] rounded-full border-[2.5px] transition-colors",
-                        selectedMetal === m.id
-                          ? "border-[var(--black)]"
-                          : "border-transparent"
-                      )}
-                      style={{ background: m.gradient }}
-                    />
-                    <span className="text-[10px] text-[var(--gray)] tracking-wide">
-                      {m.label}
+            {/* ── 1. Metal Finish (wedding bands only) ── */}
+            {isWeddingBand && (
+              <div className="mt-6">
+                <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-[2px]">
+                  <span>
+                    1. Choose Metal Finish{" "}
+                    <span className="font-normal text-[var(--gray)] tracking-normal">
+                      (3 options)
                     </span>
-                  </button>
-                ))}
+                  </span>
+                </div>
+                <div className="flex gap-4 pb-1.5">
+                  {METAL_FINISHES.map((m) => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => setSelectedMetal(m.id)}
+                      className="flex flex-col items-center gap-1.5 cursor-pointer"
+                    >
+                      <div
+                        className={cn(
+                          "size-[34px] rounded-full border-[2.5px] transition-colors",
+                          selectedMetal === m.id
+                            ? "border-[var(--black)]"
+                            : "border-transparent"
+                        )}
+                        style={{ background: m.gradient }}
+                      />
+                      <span className="text-[10px] text-[var(--gray)] tracking-wide">
+                        {m.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* ── 2. Wood Liner ── */}
-            <div className="mt-5">
-              <div className="mb-2.5 text-[11px] font-bold uppercase tracking-[2px]">
-                2. Choose Wood Liner{" "}
-                <span className="font-normal text-[var(--gray)] tracking-normal">
-                  ({woodOptions.length} options)
-                </span>
+            {/* ── 2. Wood Liner (wedding bands only) ── */}
+            {isWeddingBand && woodOptions.length > 0 && (
+              <div className="mt-5">
+                <div className="mb-2.5 text-[11px] font-bold uppercase tracking-[2px]">
+                  2. Choose Wood Liner{" "}
+                  <span className="font-normal text-[var(--gray)] tracking-normal">
+                    ({woodOptions.length} options)
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {woodOptions.map((w) => (
+                    <button
+                      key={w}
+                      type="button"
+                      onClick={() => setSelectedWood(w)}
+                      className={cn(
+                        "h-[42px] min-w-[42px] border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
+                        selectedWood === w
+                          ? "border-[var(--black)] bg-[var(--black)] text-[var(--warm-white)]"
+                          : "border-[var(--mid-gray)] bg-transparent text-[var(--black)] hover:border-[var(--teal)] hover:text-[var(--teal)]"
+                      )}
+                    >
+                      {w}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-1.5">
-                {woodOptions.map((w) => (
-                  <button
-                    key={w}
-                    type="button"
-                    onClick={() => setSelectedWood(w)}
-                    className={cn(
-                      "h-[42px] min-w-[42px] border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
-                      selectedWood === w
-                        ? "border-[var(--black)] bg-[var(--black)] text-[var(--warm-white)]"
-                        : "border-[var(--mid-gray)] bg-transparent text-[var(--black)] hover:border-[var(--teal)] hover:text-[var(--teal)]"
-                    )}
-                  >
-                    {w}
-                  </button>
-                ))}
-              </div>
-            </div>
+            )}
 
-            {/* ── 3. Ring Size ── */}
+            {/* ── 1. Choose Width (skateboard rings only) ── */}
+            {isSkateRing && widthOptions.length > 0 && (
+              <div className="mt-6">
+                <div className="mb-2.5 text-[11px] font-bold uppercase tracking-[2px]">
+                  1. Choose Width
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {widthOptions.map((w) => (
+                    <button
+                      key={w}
+                      type="button"
+                      onClick={() => setSelectedWidth(w)}
+                      className={cn(
+                        "h-[42px] min-w-[42px] border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
+                        selectedWidth === w
+                          ? "border-[var(--black)] bg-[var(--black)] text-[var(--warm-white)]"
+                          : "border-[var(--mid-gray)] bg-transparent text-[var(--black)] hover:border-[var(--teal)] hover:text-[var(--teal)]"
+                      )}
+                    >
+                      {w}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── Ring Size ── */}
             {ringSizes.length > 0 && (
               <div className="mt-5">
                 <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-[2px]">
                   <span>
-                    3. Ring Size{" "}
+                    {isSkateRing ? "2" : "3"}. Ring Size{" "}
                     <span className="font-normal text-[var(--gray)] tracking-normal">
                       ({ringSizes[0]}&ndash;{ringSizes[ringSizes.length - 1]})
                     </span>
@@ -339,8 +384,8 @@ export function RingHero({ product }: RingHeroProps) {
               </div>
             )}
 
-            {/* ── 4. Bundle Offers ── */}
-            <div className="mt-5">
+            {/* ── 4. Bundle Offers (wedding bands only) ── */}
+            {isWeddingBand && <div className="mt-5">
               <div className="mb-2.5 text-[11px] font-bold uppercase tracking-[2px]">
                 4. Choose Your Package
               </div>
@@ -381,7 +426,7 @@ export function RingHero({ product }: RingHeroProps) {
                   );
                 })}
               </div>
-            </div>
+            </div>}
 
             {/* ── Total + CTA ── */}
             <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-y border-[var(--light-gray)] py-4">
@@ -395,7 +440,7 @@ export function RingHero({ product }: RingHeroProps) {
                   </span>
                 )}
                 <span className="font-[family-name:var(--font-caps)] text-[30px] leading-none text-[var(--teal)]">
-                  {formatPrice(bundlePrice, product.currency)}
+                  {formatPrice(isSkateRing ? product.price : bundlePrice, product.currency)}
                 </span>
                 {isOnSale && savings > 0 && (
                   <span className="bg-[var(--amber)] px-2 py-0.5 text-[11px] font-bold text-white">
