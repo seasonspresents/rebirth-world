@@ -100,6 +100,8 @@ const WEDDING_SLIDESHOW_IMAGES = [
   "/images/wedding-bands/red-amboyna-burl/deep-lifestyle-.webp",
   "/images/wedding-bands/spalted-maple-burl/cinematic-lifestyle-.webp",
   "/images/wedding-bands/spalted-maple-burl/hand-lifestyle-shot-.webp",
+  "/images/wedding-bands/floral-bloom/floral-bloom-main.webp",
+  "/images/wedding-bands/floral-bloom/lifestyle-shot.webp",
 ];
 
 export function ValueProp2() {
@@ -285,7 +287,7 @@ export function ValueProp3() {
         {/* Right: Daniel portrait */}
         <div className="hidden md:block">
           <div className="relative aspect-[3/4] overflow-hidden">
-            <Image src="/images/rebirth-2026/malzl007585-r1-046-21a.webp" alt="Daniel Malzl handcrafting a ring in his workshop" fill className="object-cover" sizes="50vw" />
+            <Image src="/images/rebirth-2026/malzl007585-r1-048-22a.webp" alt="Daniel Malzl handcrafting a ring in his workshop" fill className="object-cover" sizes="50vw" />
           </div>
         </div>
       </div>

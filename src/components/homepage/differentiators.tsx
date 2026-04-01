@@ -42,7 +42,7 @@ const DIFFS: Diff[] = [
 
 export function Differentiators() {
   return (
-    <section className="bg-[var(--rebirth-film-cream)] py-14 md:py-20">
+    <section className="bg-[var(--rebirth-film-cream)] py-14 md:py-20 text-[var(--rebirth-warm-black)]">
       <div className="mx-auto max-w-[1200px] px-4 md:px-6">
         {/* Header */}
         <div className="mb-12 text-center">

@@ -15,12 +15,27 @@ const TABS = [
   { key: "apparel", label: "Apparel" },
 ] as const;
 
+/** Curated slugs per tab — show these specific products in this order */
+const CURATED_SLUGS: Record<string, string[]> = {
+  "wedding-bands": ["ocean-breeze", "midnight-forge", "the-haven", "floral-bloom"],
+};
+
 export function Bestsellers({ products }: BestsellersProps) {
   const [activeTab, setActiveTab] = useState<string>("wedding-bands");
 
-  const filtered = products.filter(
-    (p) => p.metadata.collection === activeTab
-  );
+  const curatedSlugs = CURATED_SLUGS[activeTab];
+  let filtered: Product[];
+
+  if (curatedSlugs) {
+    // Show curated products in the specified order
+    filtered = curatedSlugs
+      .map((slug) => products.find((p) => p.slug === slug))
+      .filter((p): p is Product => p !== undefined);
+  } else {
+    filtered = products.filter(
+      (p) => p.metadata.collection === activeTab
+    );
+  }
 
   // If no products match the tab, show all products as fallback
   const displayProducts = filtered.length > 0 ? filtered.slice(0, 4) : products.slice(0, 4);

@@ -42,7 +42,7 @@ export function FaqSection() {
           {/* Left: Sticky image (hidden on mobile) */}
           <div className="hidden md:block md:sticky md:top-[100px]">
             <div className="relative aspect-[3/4] overflow-hidden">
-              <Image src="/images/rebirth-2026/rebirth-1-5.webp" alt="Rebirth ring in a calm, considered setting" fill className="object-cover" sizes="40vw" />
+              <Image src="/images/rebirth-2026/rebirth-1-12.webp" alt="Daniel handcrafting a ring — workshop hands close-up" fill className="object-cover" sizes="40vw" />
             </div>
           </div>
 

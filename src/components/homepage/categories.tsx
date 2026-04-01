@@ -45,7 +45,7 @@ const CATEGORIES: Category[] = [
     tag: "Drop Live",
     tagColor: "bg-[#5a6b4a] text-white",
     mediaNote: "Current apparel drop — person wearing the crewneck outdoors",
-    image: "/images/apparel/08c19d89-2593-4fc8-8ce3-af1ae307ca8d.webp",
+    image: "/images/people/dame-in-rebirth.webp",
   },
   {
     name: "Necklaces & More",
