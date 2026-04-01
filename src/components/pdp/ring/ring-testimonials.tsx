@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 
@@ -7,20 +8,21 @@ interface TestimonialCard {
   quote: string;
   name: string;
   meta: string;
+  image?: string;
 }
 
 /* ── Light testimonials (after philosophy section) ── */
 const LIGHT_CARDS: TestimonialCard[] = [
-  { quote: "We ordered matching sets and both felt the weight of them — the real, handmade weight. Not the usual factory ring. Something else entirely.", name: "Sarah & Luis M.", meta: "Matching Set \u00B7 June 2025" },
-  { quote: "Wearing this every day — surfing, working, living. It holds up and it means something. That combination is rare.", name: "Brendan T.", meta: "Irish Bog Oak \u00B7 Verified Buyer" },
-  { quote: "I read Daniel's story and immediately knew this was different. A skateboarder, a jeweler's son, two years in Guatemala. The ring carries all of it.", name: "Kayla N.", meta: "Gift Purchase \u00B7 Holiday 2025" },
+  { quote: "We ordered matching sets and both felt the weight of them — the real, handmade weight. Not the usual factory ring. Something else entirely.", name: "Sarah & Luis M.", meta: "Matching Set \u00B7 June 2025", image: "/images/people/img_8995.webp" },
+  { quote: "Wearing this every day — surfing, working, living. It holds up and it means something. That combination is rare.", name: "Brendan T.", meta: "Irish Bog Oak \u00B7 Verified Buyer", image: "/images/people/000007.webp" },
+  { quote: "I read Daniel's story and immediately knew this was different. A skateboarder, a jeweler's son, two years in Guatemala. The ring carries all of it.", name: "Kayla N.", meta: "Gift Purchase \u00B7 Holiday 2025", image: "/images/testimonials/img_0645.webp" },
 ];
 
 /* ── Dark testimonials (after guarantee) ── */
 const DARK_CARDS: TestimonialCard[] = [
-  { quote: "Worn it every day — skate sessions included — for 4 months. Not a scratch on the metal. Wood still looks perfect.", name: "Jordan F.", meta: "Koa Wood \u00B7 Skater, Portland OR" },
-  { quote: "My old ring looked like every other guy's. This one starts conversations everywhere. Best $149 I've ever spent.", name: "Alex T.", meta: "Gold Shell \u00B7 Maple Burl" },
-  { quote: "Daniel answered my DM personally about sizing. Delivered on time for the wedding. He genuinely cares — you can feel it in the ring.", name: "Chris & Mia L.", meta: "Matching Set \u00B7 Black Shell" },
+  { quote: "Worn it every day — skate sessions included — for 4 months. Not a scratch on the metal. Wood still looks perfect.", name: "Jordan F.", meta: "Koa Wood \u00B7 Skater, Portland OR", image: "/images/people/000041.webp" },
+  { quote: "My old ring looked like every other guy's. This one starts conversations everywhere. Best $149 I've ever spent.", name: "Alex T.", meta: "Gold Shell \u00B7 Maple Burl", image: "/images/testimonials/img_0650.webp" },
+  { quote: "Daniel answered my DM personally about sizing. Delivered on time for the wedding. He genuinely cares — you can feel it in the ring.", name: "Chris & Mia L.", meta: "Matching Set \u00B7 Black Shell", image: "/images/testimonials/img_0642.webp" },
 ];
 
 function Stars() {
@@ -69,8 +71,12 @@ export function RingTestimonials({ variant, ctaHref = "/shop" }: RingTestimonial
               transition={{ duration: 0.5, delay: i * 0.06 }}
               className={`flex flex-col gap-3.5 border p-6 ${isDark ? "border-[#2a2a2a] bg-[#1a1a1a]" : "border-[var(--light-gray)] bg-[var(--warm-white)]"}`}
             >
-              {/* Media placeholder */}
-              <div className={`aspect-square ${isDark ? "bg-[#1a1a1a]" : "bg-[var(--cream)]"}`} />
+              {/* Media */}
+              <div className={`relative aspect-square overflow-hidden ${isDark ? "bg-[#1a1a1a]" : "bg-[var(--cream)]"}`}>
+                {card.image && (
+                  <Image src={card.image} alt={`${card.name} with Rebirth ring`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                )}
+              </div>
               <Stars />
               <p className={`flex-1 text-[13px] italic leading-[1.7] ${isDark ? "text-[#aaa]" : "text-[#444]"}`}>
                 &ldquo;{card.quote}&rdquo;

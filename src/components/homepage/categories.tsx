@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 interface Category {
@@ -9,6 +10,7 @@ interface Category {
   tagColor: string;
   icon: string;
   mediaNote: string;
+  image: string;
 }
 
 const CATEGORIES: Category[] = [
@@ -22,6 +24,7 @@ const CATEGORIES: Category[] = [
     tagColor: "bg-[var(--rebirth-teal)] text-white",
     icon: "💍",
     mediaNote: "Wedding band lifestyle — ring on hand, outdoor warm light",
+    image: "/images/wedding-bands/red-amboyna-burl/red-amboyna-main.webp",
   },
   {
     name: "Skateboard Rings",
@@ -34,6 +37,7 @@ const CATEGORIES: Category[] = [
     icon: "🛹",
     mediaNote:
       "Skateboard ring collection flatlay — show the colorful layers",
+    image: "/images/rebirth-2026/rebirth-1-14.webp",
   },
   {
     name: "Apparel Drops",
@@ -45,6 +49,7 @@ const CATEGORIES: Category[] = [
     tagColor: "bg-[#5a6b4a] text-white",
     icon: "👕",
     mediaNote: "Current apparel drop — person wearing the crewneck outdoors",
+    image: "/images/apparel/08c19d89-2593-4fc8-8ce3-af1ae307ca8d.webp",
   },
   {
     name: "Necklaces & More",
@@ -57,6 +62,7 @@ const CATEGORIES: Category[] = [
     icon: "📿",
     mediaNote:
       "Necklace and accessories — lifestyle shot showing the piece worn",
+    image: "/images/rebirth-2026/dsc02733_vsco.webp",
   },
 ];
 
@@ -82,17 +88,12 @@ export function Categories() {
               href={`/shop?collection=${cat.slug}`}
               className="group overflow-hidden border border-[#e0dbd2] bg-[var(--rebirth-film-cream)] transition-all hover:-translate-y-0.5 hover:shadow-lg"
             >
-              {/* Image placeholder */}
-              <div className="relative flex aspect-square items-center justify-center bg-[#ede8df] text-center">
+              {/* Category image */}
+              <div className="relative aspect-square overflow-hidden bg-[#ede8df]">
                 <span className={`absolute left-2.5 top-2.5 z-10 px-2 py-1 text-[9px] font-bold uppercase tracking-[2px] ${cat.tagColor}`}>
                   {cat.tag}
                 </span>
-                <div>
-                  <div className="text-4xl">{cat.icon}</div>
-                  <p className="mx-auto mt-1 max-w-[200px] px-2 text-[10px] leading-snug text-[#8a8578]">
-                    {cat.mediaNote}
-                  </p>
-                </div>
+                <Image src={cat.image} alt={cat.name} fill className="object-cover" sizes="(max-width: 400px) 100vw, (max-width: 1024px) 50vw, 25vw" />
               </div>
 
               {/* Body */}

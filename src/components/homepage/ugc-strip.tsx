@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 
 interface UgcTestimonial {
@@ -13,6 +14,7 @@ interface UgcTestimonial {
   hasMedia: boolean;
   mediaLabel?: string;
   mediaNote?: string;
+  mediaImage?: string;
 }
 
 const TESTIMONIALS: UgcTestimonial[] = [
@@ -27,6 +29,7 @@ const TESTIMONIALS: UgcTestimonial[] = [
     mediaLabel: "Video",
     mediaNote:
       "Customer video testimonial — 30-60 sec, selfie style, showing their ring",
+    mediaImage: "/images/people/men-wedding-ring.webp",
   },
   {
     initials: "MR",
@@ -39,6 +42,7 @@ const TESTIMONIALS: UgcTestimonial[] = [
     mediaLabel: "Customer Photo",
     mediaNote:
       "Customer photo of their ring or apparel in the wild",
+    mediaImage: "/images/people/img_9537.webp",
   },
   {
     initials: "SR",
@@ -60,6 +64,7 @@ const TESTIMONIALS: UgcTestimonial[] = [
     mediaLabel: "Instagram",
     mediaNote:
       "Screenshot of real @rebirthrings tag or story",
+    mediaImage: "/images/people/dame-in-rebirth.webp",
   },
   {
     initials: "KN",
@@ -108,8 +113,14 @@ export function UgcStrip() {
             className="flex w-[290px] flex-none snap-start flex-col gap-3 border border-[#2e2e2e] bg-[#222] p-5"
           >
             {t.hasMedia && (
-              <div className="flex aspect-[4/3] items-center justify-center bg-[#1a1a1a] text-center text-[11px] text-[#8a8578]">
-                {t.mediaNote}
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#1a1a1a]">
+                {t.mediaImage ? (
+                  <Image src={t.mediaImage} alt={`${t.name} wearing Rebirth product`} fill className="object-cover" sizes="290px" />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-center text-[11px] text-[#8a8578]">
+                    {t.mediaNote}
+                  </div>
+                )}
               </div>
             )}
             <div className="text-sm tracking-wider text-[var(--rebirth-amber)]">

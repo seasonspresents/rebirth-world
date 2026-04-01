@@ -1,13 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 
 const SOCIAL_CARDS = [
-  { quote: "Obsessed with this ring \u{1F919} #rebirthrings #embracechange", handle: "@jake_surfsnorth" },
-  { quote: "Our forever rings \u{1F48D} couldn't be more us", handle: "@themalonecouple" },
-  { quote: "Skate forever. Rebirth always \u{1F6F9}", handle: "@coastalskatelife" },
-  { quote: "The grain is insane. Nothing like it \u{1F33F}", handle: "@sustainablestyled" },
+  { quote: "Obsessed with this ring \u{1F919} #rebirthrings #embracechange", handle: "@jake_surfsnorth", image: "/images/people/_29a9586.webp" },
+  { quote: "Our forever rings \u{1F48D} couldn't be more us", handle: "@themalonecouple", image: "/images/people/malzl002721-r1-051-24.webp" },
+  { quote: "Skate forever. Rebirth always \u{1F6F9}", handle: "@coastalskatelife", image: "/images/people/malzl002722-r1-066-31a.webp" },
+  { quote: "The grain is insane. Nothing like it \u{1F33F}", handle: "@sustainablestyled", image: "/images/people/malzl007586-r1-023-10.webp" },
 ];
 
 interface RingSocialGridProps {
@@ -39,9 +40,9 @@ export function RingSocialGrid({ ctaHref = "/shop" }: RingSocialGridProps) {
               transition={{ duration: 0.4, delay: i * 0.06 }}
               className="overflow-hidden border border-[var(--light-gray)] bg-[var(--warm-white)]"
             >
-              {/* Media placeholder */}
-              <div className="flex aspect-square items-center justify-center bg-[var(--cream)] text-sm text-[var(--gray)]">
-                Social image
+              {/* Social image */}
+              <div className="relative aspect-square overflow-hidden bg-[var(--cream)]">
+                <Image src={card.image} alt={`Community post from ${card.handle}`} fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="p-3.5">
                 <div className="mb-1.5 text-xs text-[var(--amber)]">

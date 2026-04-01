@@ -79,8 +79,8 @@ export function RingFeatures({ image, ctaHref = "/shop" }: RingFeaturesProps) {
                 <Image src={image} alt="Ring close-up showing material quality" fill className="object-cover" sizes="50vw" />
               </div>
             ) : (
-              <div className="flex aspect-[4/3] items-center justify-center bg-[#1a1a1a] text-sm text-[var(--gray)]">
-                Macro detail shot placeholder
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <Image src="/images/wedding-bands/spalted-maple-burl/design-4-detail.webp" alt="Ring close-up showing material quality and wood grain detail" fill className="object-cover" sizes="50vw" />
               </div>
             )}
           </motion.div>

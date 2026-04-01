@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 
 /* ——————————————————————————————————
@@ -12,18 +13,9 @@ export function ValueProp1() {
   return (
     <section className="bg-[var(--rebirth-film-cream)] py-14 md:py-20">
       <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-7 px-4 md:grid-cols-2 md:gap-[72px] md:px-6">
-        {/* Media placeholder */}
-        <div className="flex aspect-[4/3] items-center justify-center border-2 border-dashed border-[var(--rebirth-amber)] bg-[#ede8df] text-center">
-          <div>
-            <div className="text-4xl">🛹</div>
-            <div className="mt-2 text-[11px] font-bold uppercase tracking-wider">
-              Broken Board → Ring
-            </div>
-            <p className="mx-auto mt-1 max-w-[260px] px-3 text-[11px] leading-snug text-[#8a8578]">
-              The transformation — a broken skateboard deck next to a finished
-              ring. Or Daniel&apos;s hands in the act of making.
-            </p>
-          </div>
+        {/* Media */}
+        <div className="relative aspect-[4/3] overflow-hidden">
+          <Image src="/images/rebirth-2026/rebirth-1-4.webp" alt="Handcrafted skateboard ring product shot" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
         </div>
 
         {/* Content */}
@@ -164,16 +156,10 @@ export function ValueProp2() {
           </Link>
         </div>
 
-        {/* Media placeholder */}
+        {/* Media */}
         <div className="order-1 md:order-2">
-          <div className="flex aspect-[4/3] items-center justify-center border-2 border-dashed border-[#2a2a2a] bg-[#1e1e1e] text-center">
-            <div>
-              <div className="text-4xl">💍</div>
-              <p className="mx-auto mt-2 max-w-[260px] px-3 text-[11px] leading-snug text-[#8a8578]">
-                Wedding band in a meaningful setting — on a hand, on a dark
-                surface, beside nature. Warm, dramatic light.
-              </p>
-            </div>
+          <div className="relative aspect-[4/3] overflow-hidden">
+            <Image src="/images/wedding-bands/red-amboyna-burl/deep-lifestyle-.webp" alt="Wood-lined wedding band in warm dramatic light" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
         </div>
       </div>
@@ -249,19 +235,10 @@ export function ValueProp3() {
           </Link>
         </div>
 
-        {/* Right: Media placeholder */}
+        {/* Right: Daniel portrait */}
         <div className="hidden md:block">
-          <div className="flex aspect-[3/4] items-center justify-center border-2 border-dashed border-[#2a2a2a] bg-[#1a1a1a] text-center">
-            <div>
-              <div className="text-4xl">🧑‍🎨</div>
-              <div className="mt-2 text-[11px] font-bold uppercase tracking-wider text-[var(--rebirth-film-cream)]">
-                Daniel in the Workshop
-              </div>
-              <p className="mx-auto mt-1 max-w-[260px] px-3 text-[11px] leading-snug text-[#8a8578]">
-                Daniel at his workbench — mid-process, hands working on a ring.
-                Editorial quality, not styled. Real &gt; polished.
-              </p>
-            </div>
+          <div className="relative aspect-[3/4] overflow-hidden">
+            <Image src="/images/rebirth-2026/malzl007910-r1-023-10.webp" alt="Daniel Malzl, founder of Rebirth World" fill className="object-cover" sizes="50vw" />
           </div>
         </div>
       </div>

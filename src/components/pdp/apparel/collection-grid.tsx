@@ -21,6 +21,7 @@ const COLLECTIONS = [
     price: "$68",
     badge: "\u25cf Live Now",
     badgeBg: "#c4603a",
+    image: "/images/apparel/08c19d89-2593-4fc8-8ce3-af1ae307ca8d.webp",
   },
   {
     season: "Fall 2025 \u00b7 Sold Out",
@@ -32,6 +33,7 @@ const COLLECTIONS = [
     price: "$45",
     badge: "Sold Out",
     badgeBg: "#9a9186",
+    image: "/images/apparel/4eff2918-76af-433a-b334-f4f8c1ace087.webp",
   },
   {
     season: "Summer 2026 \u00b7 Dropping Soon",
@@ -42,6 +44,7 @@ const COLLECTIONS = [
     statusText: "\u25ce Join the Waitlist",
     badge: "Coming Soon",
     badgeBg: "#1c1a17",
+    image: "/images/rebirth-2026/crewneck-pre-sale_socials.webp",
   },
 ];
 
@@ -101,19 +104,20 @@ export function CollectionGrid({ product }: CollectionGridProps) {
               transition={{ duration: 0.5, delay: i * 0.08 }}
             >
               {/* Image */}
-              <div className="relative" style={{ aspectRatio: "3/4" }}>
-                <div
-                  className="w-full h-full flex items-center justify-center text-xs"
-                  style={{
-                    backgroundColor:
-                      coll.status === "coming" ? "#e6ddd0" : "#ede5d8",
-                    color: "#9a9186",
-                  }}
-                >
-                  {coll.status === "coming"
-                    ? "Coming Soon"
-                    : "Collection Shot"}
-                </div>
+              <div className="relative overflow-hidden" style={{ aspectRatio: "3/4" }}>
+                {coll.image ? (
+                  <Image src={coll.image} alt={coll.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                ) : (
+                  <div
+                    className="w-full h-full flex items-center justify-center text-xs"
+                    style={{
+                      backgroundColor: coll.status === "coming" ? "#e6ddd0" : "#ede5d8",
+                      color: "#9a9186",
+                    }}
+                  >
+                    {coll.status === "coming" ? "Coming Soon" : "Collection Shot"}
+                  </div>
+                )}
                 <div className="absolute top-3.5 left-3.5 z-[2]">
                   <span
                     className="text-[9px] font-bold tracking-[2px] uppercase px-2.5 py-1 text-white"

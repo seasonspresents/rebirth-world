@@ -2,12 +2,14 @@
 
 import { useRef } from "react";
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 
 const UGC_CARDS = [
   {
     hasMedia: true,
     mediaLabel: "Video",
+    mediaImage: "/images/people/dame-in-rebirth.webp",
     stars: 5,
     quote:
       "I wear mine every time I\u2019m going through something hard. It\u2019s become a ritual. The message on the back hits differently when you need it.",
@@ -19,6 +21,7 @@ const UGC_CARDS = [
   {
     hasMedia: true,
     mediaLabel: "Lifestyle",
+    mediaImage: "/images/apparel/122dcf0a-03c9-4c37-a334-4583ba382edb.webp",
     stars: 5,
     quote:
       "The quality is real. This isn\u2019t a band tee \u2014 it\u2019s built. The fleece weight is perfect and the graphic is something I actually want to talk about.",
@@ -40,6 +43,7 @@ const UGC_CARDS = [
   {
     hasMedia: true,
     mediaLabel: "IG Post",
+    mediaImage: "/images/people/fullsizerender.webp",
     stars: 5,
     quote:
       "People keep stopping me to ask about my crew. I love getting to tell them the story behind it. That\u2019s rare for a piece of clothing.",
@@ -113,14 +117,19 @@ export function UgcScrollStrip() {
           >
             {card.hasMedia && (
               <div
-                className="flex items-center justify-center text-xs"
+                className="relative overflow-hidden"
                 style={{
                   aspectRatio: "3/4",
                   backgroundColor: "#1e1b17",
-                  color: "#9a9186",
                 }}
               >
-                {card.mediaLabel}
+                {card.mediaImage ? (
+                  <Image src={card.mediaImage} alt={`${card.name} wearing Rebirth apparel`} fill className="object-cover" sizes="290px" />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-xs" style={{ color: "#9a9186" }}>
+                    {card.mediaLabel}
+                  </div>
+                )}
               </div>
             )}
             <div style={{ color: "#c4603a", fontSize: 13, letterSpacing: 1 }}>

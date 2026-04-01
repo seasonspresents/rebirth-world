@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 
 interface Testimonial {
@@ -8,6 +9,7 @@ interface Testimonial {
   meta: string;
   hasMedia?: boolean;
   mediaLabel?: string;
+  mediaImage?: string;
 }
 
 interface TestimonialsSectionProps {
@@ -74,15 +76,19 @@ export function TestimonialsSection({
             >
               {t.hasMedia && (
                 <div
-                  className="flex items-center justify-center text-xs"
+                  className="relative overflow-hidden"
                   style={{
                     aspectRatio: "1",
                     backgroundColor: "#ede5d8",
-                    border: "2px dashed #c4603a",
-                    color: "#9a9186",
                   }}
                 >
-                  {t.mediaLabel}
+                  {t.mediaImage ? (
+                    <Image src={t.mediaImage} alt={`${t.name} with Rebirth apparel`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-xs" style={{ border: "2px dashed #c4603a", color: "#9a9186" }}>
+                      {t.mediaLabel}
+                    </div>
+                  )}
                 </div>
               )}
               <div

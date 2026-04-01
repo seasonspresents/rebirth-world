@@ -52,8 +52,8 @@ export function RingFounderStory({ image }: RingFounderStoryProps) {
                 <Image src={image} alt="Daniel Malzl in his workshop" fill className="object-cover" sizes="50vw" />
               </div>
             ) : (
-              <div className="mb-3.5 flex aspect-[3/4] items-center justify-center bg-[#1e1e1e] text-sm text-[var(--gray)]">
-                Portrait placeholder
+              <div className="relative mb-3.5 aspect-[3/4] overflow-hidden">
+                <Image src="/images/people/malzl007910-r1-021-9.webp" alt="Daniel Malzl, founder of Rebirth World" fill className="object-cover" sizes="50vw" />
               </div>
             )}
             <div className="text-[11px] tracking-wide text-[#444]">

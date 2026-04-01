@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 
 const FAQ_ITEMS = [
@@ -38,20 +39,10 @@ export function FaqSection() {
     <section className="bg-[#ede8df] py-14 md:py-20">
       <div className="mx-auto max-w-[1200px] px-4 md:px-6">
         <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-[5fr_7fr] md:gap-16">
-          {/* Left: Media placeholder (hidden on mobile) */}
+          {/* Left: Sticky image (hidden on mobile) */}
           <div className="hidden md:block md:sticky md:top-[100px]">
-            <div className="flex aspect-[3/4] items-center justify-center border-2 border-dashed border-[var(--rebirth-amber)] bg-[#ede8df] text-center">
-              <div>
-                <div className="text-4xl">🪵</div>
-                <div className="mt-2 text-[11px] font-bold uppercase tracking-wider">
-                  Calm, Confident Shot
-                </div>
-                <p className="mx-auto mt-1 max-w-[260px] px-3 text-[11px] leading-snug text-[#8a8578]">
-                  Ring on a book, journal, or beside a coffee. &quot;Considering&quot;
-                  energy. This section is about reassurance — the image should
-                  feel unhurried and trustworthy.
-                </p>
-              </div>
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src="/images/rebirth-2026/rebirth-1-5.webp" alt="Rebirth ring in a calm, considered setting" fill className="object-cover" sizes="40vw" />
             </div>
           </div>
 

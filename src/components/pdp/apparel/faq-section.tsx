@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 
 const FAQS = [
@@ -44,15 +45,10 @@ export function FaqSection() {
         <div className="grid grid-cols-1 md:grid-cols-[5fr_7fr] gap-10 md:gap-16 items-start">
           {/* Left: Sticky image */}
           <div
-            className="hidden md:flex md:sticky md:top-[100px] items-center justify-center text-xs"
-            style={{
-              aspectRatio: "3/4",
-              backgroundColor: "#e6ddd0",
-              border: "2px dashed #c4603a",
-              color: "#9a9186",
-            }}
+            className="hidden md:block md:sticky md:top-[100px] relative overflow-hidden"
+            style={{ aspectRatio: "3/4" }}
           >
-            Trust Image
+            <Image src="/images/apparel/5fe5e7a2-b53b-42b9-9c07-635af0572e15.webp" alt="Rebirth apparel crewneck in a lifestyle setting" fill className="object-cover" sizes="40vw" />
           </div>
 
           {/* Right: FAQ list */}

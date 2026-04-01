@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 
 const ITEMS = [
@@ -46,37 +47,22 @@ export function TejidosSection() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
-              className="col-span-2 flex items-center justify-center text-xs"
-              style={{
-                aspectRatio: "16/9",
-                backgroundColor: "#ede5d8",
-                border: "2px dashed #c4603a",
-                color: "#9a9186",
-              }}
+              className="col-span-2 relative overflow-hidden"
+              style={{ aspectRatio: "16/9" }}
             >
-              Primary Collab Shot
+              <Image src="/images/rebirth-2026/rebirth-atitlan-.webp" alt="Lake Atitlan, Guatemala — Rebirth collaboration with Mayan weavers" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             <div
-              className="flex items-center justify-center text-xs"
-              style={{
-                aspectRatio: "1",
-                backgroundColor: "#ede5d8",
-                border: "2px dashed #c4603a",
-                color: "#9a9186",
-              }}
+              className="relative overflow-hidden"
+              style={{ aspectRatio: "1" }}
             >
-              Detail
+              <Image src="/images/rebirth-2026/malzl007585-r1-046-21a.webp" alt="Detail of handwoven Mayan textile" fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
             </div>
             <div
-              className="flex items-center justify-center text-xs"
-              style={{
-                aspectRatio: "1",
-                backgroundColor: "#ede5d8",
-                border: "2px dashed #c4603a",
-                color: "#9a9186",
-              }}
+              className="relative overflow-hidden"
+              style={{ aspectRatio: "1" }}
             >
-              Portrait
+              <Image src="/images/rebirth-2026/malzl007585-r1-048-22a.webp" alt="Portrait from Guatemala service mission" fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
             </div>
           </motion.div>
 

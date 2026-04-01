@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 
@@ -11,6 +12,7 @@ const DROPS = [
     status: "Live Now",
     statusClass: "text-[var(--teal)]",
     statusIcon: "\u25CF",
+    image: "/images/apparel/08c19d89-2593-4fc8-8ce3-af1ae307ca8d.webp",
   },
   {
     season: "Winter 2025 \u00B7 Sold Out",
@@ -19,6 +21,7 @@ const DROPS = [
     status: "Sold Out \u2014 Join Waitlist",
     statusClass: "text-[var(--gray)]",
     statusIcon: "\u2726",
+    image: "/images/apparel/4eff2918-76af-433a-b334-f4f8c1ace087.webp",
   },
   {
     season: "Summer 2026 \u00B7 Coming Soon",
@@ -27,6 +30,7 @@ const DROPS = [
     status: "Notify Me",
     statusClass: "text-[var(--amber)]",
     statusIcon: "\u25CE",
+    image: "/images/rebirth-2026/crewneck-pre-sale_socials.webp",
   },
 ];
 
@@ -58,9 +62,13 @@ export function RingClothingDrops() {
               transition={{ duration: 0.5, delay: i * 0.06 }}
               className="overflow-hidden border border-[var(--light-gray)] bg-[var(--warm-white)] transition-all hover:-translate-y-0.5 hover:shadow-lg"
             >
-              {/* Image placeholder */}
-              <div className="flex aspect-[3/4] items-center justify-center bg-[var(--cream)] text-sm text-[var(--gray)]">
-                Collection image
+              {/* Collection image */}
+              <div className="relative aspect-[3/4] overflow-hidden bg-[var(--cream)]">
+                {drop.image ? (
+                  <Image src={drop.image} alt={drop.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-sm text-[var(--gray)]">Coming soon</div>
+                )}
               </div>
               <div className="p-[18px]">
                 <div className="mb-1.5 text-[10px] font-bold uppercase tracking-[2px] text-[var(--teal)]">

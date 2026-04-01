@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 
 const SPECS = [
@@ -113,21 +114,16 @@ export function SustainabilitySection() {
             </div>
           </motion.div>
 
-          {/* Media placeholder */}
+          {/* Fabric texture image */}
           <motion.div
-            className="hidden md:flex items-center justify-center text-xs"
-            style={{
-              aspectRatio: "3/4",
-              backgroundColor: "#ede5d8",
-              border: "2px dashed #c4603a",
-              color: "#9a9186",
-            }}
+            className="hidden md:block relative overflow-hidden"
+            style={{ aspectRatio: "3/4" }}
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           >
-            Fabric Texture Close-Up
+            <Image src="/images/apparel/c8089c71-b87e-4707-8057-5c02d6277417.webp" alt="Close-up of Rebirth crewneck fabric texture" fill className="object-cover" sizes="50vw" />
           </motion.div>
         </div>
       </div>

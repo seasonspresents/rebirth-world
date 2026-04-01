@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 interface Testimonial {
@@ -7,6 +8,7 @@ interface Testimonial {
   mediaNote?: string;
   mediaIcon?: string;
   mediaLabel?: string;
+  mediaImage?: string;
 }
 
 /* ——————————————————————————————————
@@ -23,6 +25,7 @@ const LIGHT_TESTIMONIALS: Testimonial[] = [
       "Wedding couple showing their matching set — 20-40 sec selfie video",
     mediaIcon: "🎥",
     mediaLabel: "Video",
+    mediaImage: "/images/people/img_8995.webp",
   },
   {
     quote:
@@ -33,6 +36,7 @@ const LIGHT_TESTIMONIALS: Testimonial[] = [
       "Customer photo — ring on hand in real setting",
     mediaIcon: "📸",
     mediaLabel: "UGC Photo",
+    mediaImage: "/images/people/000007.webp",
   },
   {
     quote:
@@ -43,6 +47,7 @@ const LIGHT_TESTIMONIALS: Testimonial[] = [
       "Screenshot of @rebirthrings tag. Raw = trustworthy.",
     mediaIcon: "📱",
     mediaLabel: "Instagram",
+    mediaImage: "/images/people/fullsizerender.webp",
   },
 ];
 
@@ -68,13 +73,19 @@ export function SocialProofLight() {
               className="flex flex-col gap-3.5 border border-[#e0dbd2] bg-[var(--rebirth-film-cream)] p-6"
             >
               {t.mediaNote && (
-                <div className="flex aspect-square items-center justify-center border-2 border-dashed border-[var(--rebirth-amber)] bg-[#ede8df] text-center">
-                  <div>
-                    <div className="text-4xl">{t.mediaIcon}</div>
-                    <p className="mx-auto mt-1 max-w-[220px] px-2 text-[11px] leading-snug text-[#8a8578]">
-                      {t.mediaNote}
-                    </p>
-                  </div>
+                <div className="relative aspect-square overflow-hidden bg-[#ede8df]">
+                  {t.mediaImage ? (
+                    <Image src={t.mediaImage} alt={`${t.name} with Rebirth product`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center border-2 border-dashed border-[var(--rebirth-amber)] text-center">
+                      <div>
+                        <div className="text-4xl">{t.mediaIcon}</div>
+                        <p className="mx-auto mt-1 max-w-[220px] px-2 text-[11px] leading-snug text-[#8a8578]">
+                          {t.mediaNote}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
               <div className="text-sm tracking-[1.5px] text-[var(--rebirth-amber)]">
@@ -116,6 +127,7 @@ const DARK_TESTIMONIALS: Testimonial[] = [
       "Skater showing the ring during/after a session — durability proof",
     mediaIcon: "🛹",
     mediaLabel: "Skater Video",
+    mediaImage: "/images/people/000041.webp",
   },
   {
     quote:
@@ -126,6 +138,7 @@ const DARK_TESTIMONIALS: Testimonial[] = [
       "Before/After visual side-by-side. Great for Meta ads.",
     mediaIcon: "🔄",
     mediaLabel: "Before/After",
+    mediaImage: "/images/testimonials/img_0643.webp",
   },
   {
     quote:
@@ -136,6 +149,7 @@ const DARK_TESTIMONIALS: Testimonial[] = [
       "Screenshot of a DM from a happy customer. Raw and real = trustworthy.",
     mediaIcon: "💌",
     mediaLabel: "DM Screenshot",
+    mediaImage: "/images/testimonials/img_0648.webp",
   },
 ];
 
@@ -161,13 +175,19 @@ export function SocialProofDark() {
               className="flex flex-col gap-3.5 border border-[#2a2a2a] bg-[#1a1a1a] p-6"
             >
               {t.mediaNote && (
-                <div className="flex aspect-square items-center justify-center border-2 border-dashed border-[#2a2a2a] bg-[#111] text-center">
-                  <div>
-                    <div className="text-4xl text-[#444]">{t.mediaIcon}</div>
-                    <p className="mx-auto mt-1 max-w-[220px] px-2 text-[11px] leading-snug text-[#555]">
-                      {t.mediaNote}
-                    </p>
-                  </div>
+                <div className="relative aspect-square overflow-hidden bg-[#111]">
+                  {t.mediaImage ? (
+                    <Image src={t.mediaImage} alt={`${t.name} with Rebirth product`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center border-2 border-dashed border-[#2a2a2a] text-center">
+                      <div>
+                        <div className="text-4xl text-[#444]">{t.mediaIcon}</div>
+                        <p className="mx-auto mt-1 max-w-[220px] px-2 text-[11px] leading-snug text-[#555]">
+                          {t.mediaNote}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
               <div className="text-sm tracking-[1.5px] text-[var(--rebirth-amber)]">

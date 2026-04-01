@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 
 const UGC_CARDS = [
@@ -12,6 +13,7 @@ const UGC_CARDS = [
     name: "Jake C.",
     detail: "Married 2025 \u00B7 Laie, HI",
     color: "var(--teal)",
+    image: "/images/people/men-wedding-ring.webp",
   },
   {
     stars: 5,
@@ -20,6 +22,7 @@ const UGC_CARDS = [
     name: "Marco R.",
     detail: "Wedding Band \u00B7 San Diego, CA",
     color: "var(--amber)",
+    image: "/images/people/000009.webp",
   },
   {
     stars: 5,
@@ -28,6 +31,7 @@ const UGC_CARDS = [
     name: "Tyler W.",
     detail: "Verified Buyer \u00B7 Portland, OR",
     color: "var(--lotus,#c49494)",
+    image: "/images/people/img_0681.webp",
   },
   {
     stars: 5,
@@ -36,6 +40,7 @@ const UGC_CARDS = [
     name: "Amanda S.",
     detail: "Gift Purchase \u00B7 Austin, TX",
     color: "var(--moss,#5a6b4a)",
+    image: "/images/people/000018.webp",
   },
   {
     stars: 5,
@@ -44,6 +49,7 @@ const UGC_CARDS = [
     name: "Elena G.",
     detail: "Matching Set \u00B7 Provo, UT",
     color: "#6b5b42",
+    image: "/images/people/000013-copy.webp",
   },
 ];
 
@@ -86,6 +92,11 @@ export function RingUgcStrip({ ctaHref = "/shop" }: RingUgcStripProps) {
             transition={{ duration: 0.5, delay: i * 0.06 }}
             className="flex w-[290px] flex-none snap-start flex-col gap-3 border border-[#2e2e2e] bg-[#222] p-5"
           >
+            {card.image && (
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#1a1a1a]">
+                <Image src={card.image} alt={`${card.name} wearing Rebirth ring`} fill className="object-cover" sizes="290px" />
+              </div>
+            )}
             <div className="text-[13px] tracking-wide text-[var(--amber)]">
               {"\u2605\u2605\u2605\u2605\u2605"}
             </div>

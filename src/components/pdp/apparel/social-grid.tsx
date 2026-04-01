@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 import Link from "next/link";
 
@@ -8,21 +9,25 @@ const SOCIAL_CARDS = [
     label: "IG Post",
     quote: "This piece goes everywhere with me #embracechange",
     handle: "@liveingrowth",
+    image: "/images/people/img_9537.webp",
   },
   {
     label: "Travel Shot",
     quote: "Traveled through 4 countries in this tee. Still my favorite.",
     handle: "@wandersofia",
+    image: "/images/people/000009.webp",
   },
   {
     label: "Detail Shot",
     quote: "The message hits every time someone asks about it",
     handle: "@chaptersbychris",
+    image: "/images/people/img_0681.webp",
   },
   {
     label: "Group/Community",
     quote: "The whole crew got one. We wore them to the session.",
     handle: "@skateculture_sd",
+    image: "/images/people/000041.webp",
   },
 ];
 
@@ -67,15 +72,10 @@ export function SocialGrid() {
               transition={{ duration: 0.5, delay: i * 0.06 }}
             >
               <div
-                className="flex items-center justify-center text-xs"
-                style={{
-                  aspectRatio: "1",
-                  backgroundColor: "#ede5d8",
-                  border: "2px dashed #c4603a",
-                  color: "#9a9186",
-                }}
+                className="relative overflow-hidden"
+                style={{ aspectRatio: "1" }}
               >
-                {card.label}
+                <Image src={card.image} alt={`Community post from ${card.handle}`} fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
               <div className="p-3.5">
                 <div
