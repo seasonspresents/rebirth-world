@@ -8,7 +8,6 @@ interface Category {
   price: string;
   tag: string;
   tagColor: string;
-  icon: string;
   mediaNote: string;
   image: string;
 }
@@ -22,7 +21,6 @@ const CATEGORIES: Category[] = [
     price: "From $149",
     tag: "Wedding Bands",
     tagColor: "bg-[var(--rebirth-teal)] text-white",
-    icon: "💍",
     mediaNote: "Wedding band lifestyle — ring on hand, outdoor warm light",
     image: "/images/wedding-bands/red-amboyna-burl/red-amboyna-main.webp",
   },
@@ -34,7 +32,6 @@ const CATEGORIES: Category[] = [
     price: "From $25",
     tag: "Skate Rings",
     tagColor: "bg-[var(--rebirth-amber)] text-white",
-    icon: "🛹",
     mediaNote:
       "Skateboard ring collection flatlay — show the colorful layers",
     image: "/images/rebirth-2026/rebirth-1-14.webp",
@@ -47,7 +44,6 @@ const CATEGORIES: Category[] = [
     price: "From $45",
     tag: "Drop Live",
     tagColor: "bg-[#5a6b4a] text-white",
-    icon: "👕",
     mediaNote: "Current apparel drop — person wearing the crewneck outdoors",
     image: "/images/apparel/08c19d89-2593-4fc8-8ce3-af1ae307ca8d.webp",
   },
@@ -59,7 +55,6 @@ const CATEGORIES: Category[] = [
     price: "From $25",
     tag: "Accessories",
     tagColor: "bg-[var(--rebirth-warm-black)] text-[var(--rebirth-film-cream)]",
-    icon: "📿",
     mediaNote:
       "Necklace and accessories — lifestyle shot showing the piece worn",
     image: "/images/rebirth-2026/dsc02733_vsco.webp",

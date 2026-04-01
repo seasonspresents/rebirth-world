@@ -1,27 +1,37 @@
 import Link from "next/link";
+import { type LucideIcon, Gem, Gift, Mail } from "lucide-react";
 
-const OFFERS = [
+interface Offer {
+  icon: LucideIcon;
+  title: string;
+  desc: string;
+  cta: string;
+  href: string;
+  btnClass: string;
+}
+
+const OFFERS: Offer[] = [
   {
-    icon: "💍",
+    icon: Gem,
     title: "Custom Ring\nConsultation",
-    desc: "Not sure which ring is right for you? I offer personal consultations to help you find the right metal, wood, size, and engraving for your chapter. DM me directly or fill out the form — I respond personally.",
+    desc: "Not sure which ring is right for you? I offer personal consultations to help you find the right metal, wood, size, and engraving for your chapter. DM me directly or fill out the form \u2014 I respond personally.",
     cta: "GET IN TOUCH",
     href: "/contact",
     btnClass:
       "bg-[var(--rebirth-teal)] text-white hover:bg-[#1e7a6e]",
   },
   {
-    icon: "🎁",
+    icon: Gift,
     title: "Gift a Ring\nor Collection Drop",
-    desc: "Every Rebirth piece makes a meaningful gift — for a wedding, a birthday, a milestone, or just because someone you love is in the middle of a chapter. Gift cards and gift packaging available.",
+    desc: "Every Rebirth piece makes a meaningful gift \u2014 for a wedding, a birthday, a milestone, or just because someone you love is in the middle of a chapter. Gift cards and gift packaging available.",
     cta: "SHOP GIFTS",
     href: "/shop?collection=accessories",
     btnClass:
       "bg-[var(--rebirth-amber)] text-white hover:bg-[#c05f22]",
   },
   {
-    icon: "📩",
-    title: "Join the List —\nNever Miss a Drop",
+    icon: Mail,
+    title: "Join the List \u2014\nNever Miss a Drop",
     desc: "Collections sell out. Wedding band batches go fast. Get early access to every drop, behind-the-scenes from the workshop, and first notice of new rings before they hit the site.",
     cta: "JOIN THE LIST",
     href: "/newsletter",
@@ -53,7 +63,7 @@ export function Offers() {
               key={i}
               className="flex flex-col gap-4 border border-[#2e2a24] bg-[#2e2b26] p-7 transition-colors hover:border-[var(--rebirth-teal)]"
             >
-              <div className="text-4xl">{offer.icon}</div>
+              <offer.icon className="size-9 text-[var(--rebirth-teal)]" />
               <h3 className="font-[family-name:var(--font-caps)] text-[26px] leading-[1.1] tracking-[1.5px] text-[var(--rebirth-film-cream)] whitespace-pre-line">
                 {offer.title}
               </h3>

@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { Shield } from "lucide-react";
 
 export function Guarantee() {
   return (
     <section className="bg-[var(--rebirth-amber)] px-5 py-16 text-center md:py-20">
       <div className="mx-auto max-w-[680px]">
-        <div className="mb-5 text-7xl">🛡️</div>
+        <div className="mb-5 flex justify-center">
+          <Shield className="size-16 text-white" strokeWidth={1.5} />
+        </div>
         <h2 className="mb-4 font-[family-name:var(--font-caps)] text-[clamp(38px,6vw,68px)] leading-none tracking-[3px] text-white">
           30-DAY SATISFACTION
           <br />

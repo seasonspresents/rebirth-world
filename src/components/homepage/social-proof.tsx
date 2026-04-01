@@ -6,8 +6,6 @@ interface Testimonial {
   name: string;
   meta: string;
   mediaNote?: string;
-  mediaIcon?: string;
-  mediaLabel?: string;
   mediaImage?: string;
 }
 
@@ -23,9 +21,7 @@ const LIGHT_TESTIMONIALS: Testimonial[] = [
     meta: "Matching Set · Verified Buyers",
     mediaNote:
       "Wedding couple showing their matching set — 20-40 sec selfie video",
-    mediaIcon: "🎥",
-    mediaLabel: "Video",
-    mediaImage: "/images/people/img_8995.webp",
+    mediaImage: "/images/people/malzl002722-r1-066-31a.webp",
   },
   {
     quote:
@@ -34,9 +30,7 @@ const LIGHT_TESTIMONIALS: Testimonial[] = [
     meta: "Irish Bog Oak · Surfer, CA",
     mediaNote:
       "Customer photo — ring on hand in real setting",
-    mediaIcon: "📸",
-    mediaLabel: "UGC Photo",
-    mediaImage: "/images/people/000007.webp",
+    mediaImage: "/images/people/dame-in-rebirth.webp",
   },
   {
     quote:
@@ -45,9 +39,7 @@ const LIGHT_TESTIMONIALS: Testimonial[] = [
     meta: "A1\u2013B2 Crewneck · Verified",
     mediaNote:
       "Screenshot of @rebirthrings tag. Raw = trustworthy.",
-    mediaIcon: "📱",
-    mediaLabel: "Instagram",
-    mediaImage: "/images/people/fullsizerender.webp",
+    mediaImage: "/images/testimonials/img_0651.webp",
   },
 ];
 
@@ -72,20 +64,9 @@ export function SocialProofLight() {
               key={i}
               className="flex flex-col gap-3.5 border border-[#e0dbd2] bg-[var(--rebirth-film-cream)] p-6"
             >
-              {t.mediaNote && (
-                <div className="relative aspect-square overflow-hidden bg-[#ede8df]">
-                  {t.mediaImage ? (
-                    <Image src={t.mediaImage} alt={`${t.name} with Rebirth product`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
-                  ) : (
-                    <div className="flex h-full items-center justify-center border-2 border-dashed border-[var(--rebirth-amber)] text-center">
-                      <div>
-                        <div className="text-4xl">{t.mediaIcon}</div>
-                        <p className="mx-auto mt-1 max-w-[220px] px-2 text-[11px] leading-snug text-[#8a8578]">
-                          {t.mediaNote}
-                        </p>
-                      </div>
-                    </div>
-                  )}
+              {t.mediaImage && (
+                <div className="relative aspect-square overflow-hidden">
+                  <Image src={t.mediaImage} alt={`${t.name} with Rebirth product`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
                 </div>
               )}
               <div className="text-sm tracking-[1.5px] text-[var(--rebirth-amber)]">
@@ -125,8 +106,6 @@ const DARK_TESTIMONIALS: Testimonial[] = [
     meta: "Koa Wood · Portland OR",
     mediaNote:
       "Skater showing the ring during/after a session — durability proof",
-    mediaIcon: "🛹",
-    mediaLabel: "Skater Video",
     mediaImage: "/images/people/000041.webp",
   },
   {
@@ -136,9 +115,7 @@ const DARK_TESTIMONIALS: Testimonial[] = [
     meta: "Gold Shell · Maple Burl",
     mediaNote:
       "Before/After visual side-by-side. Great for Meta ads.",
-    mediaIcon: "🔄",
-    mediaLabel: "Before/After",
-    mediaImage: "/images/testimonials/img_0643.webp",
+    mediaImage: "/images/people/men-wedding-ring.webp",
   },
   {
     quote:
@@ -147,8 +124,6 @@ const DARK_TESTIMONIALS: Testimonial[] = [
     meta: "Gift Purchase · Austin TX",
     mediaNote:
       "Screenshot of a DM from a happy customer. Raw and real = trustworthy.",
-    mediaIcon: "💌",
-    mediaLabel: "DM Screenshot",
     mediaImage: "/images/testimonials/img_0648.webp",
   },
 ];
@@ -174,20 +149,9 @@ export function SocialProofDark() {
               key={i}
               className="flex flex-col gap-3.5 border border-[#2a2a2a] bg-[#1a1a1a] p-6"
             >
-              {t.mediaNote && (
-                <div className="relative aspect-square overflow-hidden bg-[#111]">
-                  {t.mediaImage ? (
-                    <Image src={t.mediaImage} alt={`${t.name} with Rebirth product`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
-                  ) : (
-                    <div className="flex h-full items-center justify-center border-2 border-dashed border-[#2a2a2a] text-center">
-                      <div>
-                        <div className="text-4xl text-[#444]">{t.mediaIcon}</div>
-                        <p className="mx-auto mt-1 max-w-[220px] px-2 text-[11px] leading-snug text-[#555]">
-                          {t.mediaNote}
-                        </p>
-                      </div>
-                    </div>
-                  )}
+              {t.mediaImage && (
+                <div className="relative aspect-square overflow-hidden">
+                  <Image src={t.mediaImage} alt={`${t.name} with Rebirth product`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
                 </div>
               )}
               <div className="text-sm tracking-[1.5px] text-[var(--rebirth-amber)]">

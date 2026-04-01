@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
+import { type LucideIcon, Flower2, Zap, Palette, Heart } from "lucide-react";
 
 /* ——————————————————————————————————
    VP1 — "The Original" (skateboard rings)
@@ -171,24 +172,30 @@ export function ValueProp2() {
    VP3 — "The Philosophy"
    4 benefit headlines on dark bg
 —————————————————————————————————— */
-const PHILOSOPHY_ITEMS = [
+interface PhilosophyItem {
+  icon: LucideIcon;
+  title: string;
+  desc: string;
+}
+
+const PHILOSOPHY_ITEMS: PhilosophyItem[] = [
   {
-    icon: "🪷",
+    icon: Flower2,
     title: "Every Piece Is a Reminder",
     desc: "I make everything with one intention — to put something in your hands or on your body that reminds you to embrace the change you\u2019re going through.",
   },
   {
-    icon: "🛹",
+    icon: Zap,
     title: "Nothing Is Wasted",
     desc: "Broken skateboards become rings. Old chapters become new ones. The Rebirth philosophy started with a broken board and a master jeweler dad — and it\u2019s in every piece I make.",
   },
   {
-    icon: "🎨",
+    icon: Palette,
     title: "Thoughtfully Designed, Always",
     desc: "From handwoven bags with Mayan women in Guatemala to apparel drops designed with local artists — everything is collaborative, intentional, and built to mean something.",
   },
   {
-    icon: "💛",
+    icon: Heart,
     title: "Service Is the Foundation",
     desc: "I believe in giving back — with specific people, in specific places. The Mayan women of Lake Atitl\u00E1n. The skate community. The people around me. Community is how Rebirth was built.",
   },
@@ -218,8 +225,9 @@ export function ValueProp3() {
                 key={i}
                 className="border-b border-[#2a2a2a] py-5 last:border-b-0"
               >
-                <div className="mb-1.5 text-[15px] font-bold text-[var(--rebirth-film-cream)]">
-                  {item.icon} {item.title}
+                <div className="mb-1.5 flex items-center gap-2 text-[15px] font-bold text-[var(--rebirth-film-cream)]">
+                  <item.icon className="size-5 flex-shrink-0 text-[var(--rebirth-teal)]" />
+                  {item.title}
                 </div>
                 <div className="text-[13px] leading-relaxed text-[#777]">
                   {item.desc}
