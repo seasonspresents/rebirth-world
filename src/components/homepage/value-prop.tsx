@@ -287,7 +287,7 @@ export function ValueProp3() {
         {/* Right: Daniel portrait */}
         <div className="hidden md:block">
           <div className="relative aspect-[3/4] overflow-hidden">
-            <Image src="/images/rebirth-2026/malzl007585-r1-048-22a.webp" alt="Daniel Malzl handcrafting a ring in his workshop" fill className="object-cover" sizes="50vw" />
+            <Image src="/images/people/daniel-workshop.webp" alt="Daniel Malzl at the drill press making rings in his workshop" fill className="object-cover" sizes="50vw" />
           </div>
         </div>
       </div>
