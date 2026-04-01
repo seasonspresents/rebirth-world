@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     siteName: "Rebirth World",
     images: [
       {
-        url: "/og/blog.png",
+        url: "/og/default.jpg",
         width: 1200,
         height: 630,
         alt: "Rebirth World Blog",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     title: "Blog | Rebirth World",
     description:
       "Read our latest articles about web development, Next.js, React, and more.",
-    images: ["/og/blog.png"],
+    images: ["/og/default.jpg"],
   },
 };
 

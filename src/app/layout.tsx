@@ -91,7 +91,7 @@ export const metadata: Metadata = {
     template: "%s | Rebirth World",
   },
   description:
-    "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu, Hawaii.",
+    "Handcrafted rings and apparel born from broken skateboards. Made in Mapleton, Utah. Embrace Change.",
   keywords: [
     "recycled skateboard rings",
     "skateboard jewelry",
@@ -100,9 +100,9 @@ export const metadata: Metadata = {
     "recycled jewelry",
     "sustainable rings",
     "rebirth world",
-    "handmade rings hawaii",
+    "handmade rings",
     "wood-lined wedding bands",
-    "north shore jewelry",
+    "rings made in utah",
   ],
   authors: [{ name: "Rebirth World" }],
   creator: "Rebirth World",
@@ -113,10 +113,10 @@ export const metadata: Metadata = {
     siteName: "Rebirth World",
     title: "Rebirth World — Recycled Skateboard Rings & Wedding Bands",
     description:
-      "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu.",
+      "Handcrafted rings and apparel born from broken skateboards. Made in Mapleton, Utah. Embrace Change.",
     images: [
       {
-        url: "/og/homepage.png",
+        url: "/og/default.jpg",
         width: 1200,
         height: 630,
         alt: "Rebirth World — Recycled Skateboard Rings & Wedding Bands",
@@ -127,8 +127,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Rebirth World — Recycled Skateboard Rings & Wedding Bands",
     description:
-      "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu.",
-    images: ["/og/homepage.png"],
+      "Handcrafted rings and apparel born from broken skateboards. Made in Mapleton, Utah. Embrace Change.",
+    images: ["/og/default.jpg"],
   },
   robots: {
     index: true,
@@ -171,7 +171,7 @@ export default async function RootLayout({
     url: "https://rebirth.world",
     logo: "https://rebirth.world/logo.png",
     description:
-      "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu, Hawaii.",
+      "Handcrafted rings and apparel born from broken skateboards. Made in Mapleton, Utah. Embrace Change.",
     sameAs: ["https://instagram.com/rebirthrings"],
   };
 

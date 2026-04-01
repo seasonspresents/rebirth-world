@@ -79,7 +79,7 @@ export async function generateMetadata({
           ]
         : [
             {
-              url: "https://rebirth.world/og/blog.png",
+              url: "https://rebirth.world/og/default.jpg",
               width: 1200,
               height: 630,
               alt: "Rebirth World Blog",
@@ -92,7 +92,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: post.title,
       description: post.description,
-      images: post.thumbnail ? [getImageUrl(post.thumbnail)] : ["/og/blog.png"],
+      images: post.thumbnail ? [getImageUrl(post.thumbnail)] : ["/og/default.jpg"],
     },
   };
 }
@@ -126,7 +126,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     },
     image: post.thumbnail
       ? `https://rebirth.world${post.thumbnail}`
-      : "https://rebirth.world/og/blog.png",
+      : "https://rebirth.world/og/default.jpg",
     url: `https://rebirth.world/blog/${slug}`,
     keywords: post.tags?.join(", "),
     mainEntityOfPage: {
