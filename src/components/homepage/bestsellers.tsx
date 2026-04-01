@@ -15,9 +15,11 @@ const TABS = [
   { key: "apparel", label: "Apparel" },
 ] as const;
 
-/** Curated slugs per tab — show these specific products in this order */
+/** Curated slugs per tab — show these specific products in this order.
+ * Uses partial matching (slug.includes) so we don't need full Stripe slugs */
 const CURATED_SLUGS: Record<string, string[]> = {
-  "wedding-bands": ["ocean-breeze", "midnight-forge", "the-haven", "floral-bloom"],
+  "wedding-bands": ["the-haven", "floral-bloom", "ocean-breeze", "midnight-forge"],
+  "skateboard-rings": ["reb-earth", "organic", "pura-vida", "pine-haze"],
 };
 
 export function Bestsellers({ products }: BestsellersProps) {
@@ -29,7 +31,7 @@ export function Bestsellers({ products }: BestsellersProps) {
   if (curatedSlugs) {
     // Show curated products in the specified order
     filtered = curatedSlugs
-      .map((slug) => products.find((p) => p.slug === slug))
+      .map((slug) => products.find((p) => p.slug.includes(slug)))
       .filter((p): p is Product => p !== undefined);
   } else {
     filtered = products.filter(
