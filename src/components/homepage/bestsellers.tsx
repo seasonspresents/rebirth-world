@@ -18,7 +18,7 @@ const TABS = [
 /** Curated slugs per tab — show these specific products in this order.
  * Uses partial matching (slug.includes) so we don't need full Stripe slugs */
 const CURATED_SLUGS: Record<string, string[]> = {
-  "wedding-bands": ["the-haven", "floral-bloom", "ocean-breeze", "midnight-forge"],
+  "wedding-bands": ["floral-bloom", "the-haven", "ocean-breeze", "midnight-forge"],
   "skateboard-rings": ["reb-earth", "organic", "pura-vida", "pine-haze"],
 };
 
