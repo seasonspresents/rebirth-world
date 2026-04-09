@@ -71,7 +71,7 @@
     "react-dom": "19.2.0",
     "react-hook-form": "^7.66.0",
     "react-phone-number-input": "^3.4.14",
-    "recharts": "2.15.4",
+    "recharts": "3.8.1",
     "rehype-pretty-code": "^0.14.1",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
