@@ -215,6 +215,18 @@ export async function POST(req: NextRequest) {
       },
       shipping_options: shippingOptions,
       allow_promotion_codes: true,
+      // O1 — always create a Stripe Customer so guests get Radar fingerprinting
+      // + LTV stitching by email.
+      customer_creation: "always",
+      // O2 — compute tax using Stripe Tax. With zero registrations, Stripe
+      // returns tax=$0 on every session but tracks would-have-been-charged
+      // in the Tax Monitor dashboard. Flip on registrations in the Dashboard
+      // when we cross economic nexus in a state.
+      automatic_tax: { enabled: true },
+      // O4 — auto-generate a downloadable invoice PDF for every order. The
+      // buyer gets a link in their Stripe receipt email; we can reference
+      // the invoice_id later for B2B buyers.
+      invoice_creation: { enabled: true },
       metadata: {
         // R6: tag every session with brand so shared-account reports can
         // filter to Rebirth World cleanly. If we later split into a dedicated
