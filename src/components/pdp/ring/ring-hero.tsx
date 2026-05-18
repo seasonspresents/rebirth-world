@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Ruler } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { ProductImageGallery } from "@/components/shop/product-image-gallery";
+import { WishlistButton } from "@/components/shop/wishlist-button";
 import { useCart } from "@/components/cart/cart-context";
 import { formatPrice } from "@/lib/payments/constants";
 import { parseVariantMetadata } from "@/components/pdp/shared/variant-selector";
@@ -13,23 +14,55 @@ import { cn } from "@/lib/utils";
 
 /* ── Metal finish swatches ── */
 const METAL_FINISHES = [
-  { id: "gold", label: "Gold", gradient: "linear-gradient(135deg, #c9a84c, #f0cc6e)" },
-  { id: "steel", label: "Steel", gradient: "linear-gradient(135deg, #888, #ccc)" },
-  { id: "black", label: "Black", gradient: "linear-gradient(135deg, #222, #555)" },
+  {
+    id: "gold",
+    label: "Gold",
+    gradient: "linear-gradient(135deg, #c9a84c, #f0cc6e)",
+  },
+  {
+    id: "steel",
+    label: "Steel",
+    gradient: "linear-gradient(135deg, #888, #ccc)",
+  },
+  {
+    id: "black",
+    label: "Black",
+    gradient: "linear-gradient(135deg, #222, #555)",
+  },
 ];
 
 /* ── Bundle options ── */
 const BUNDLE_OPTIONS = [
-  { id: "single", name: "Single Ring", desc: "One handmade wedding band", priceMultiplier: 1 },
-  { id: "matching", name: "Matching Set", desc: "His + hers — save $40 when bundled", priceMultiplier: 1.73, popular: true },
-  { id: "engraving", name: "Ring + Engraving", desc: "Add a personal message inside — $9 add-on", priceAdd: 900 },
+  {
+    id: "single",
+    name: "Single Ring",
+    desc: "One handmade wedding band",
+    priceMultiplier: 1,
+  },
+  {
+    id: "matching",
+    name: "Matching Set",
+    desc: "His + hers — save $40 when bundled",
+    priceMultiplier: 1.73,
+    popular: true,
+  },
+  {
+    id: "engraving",
+    name: "Ring + Engraving",
+    desc: "Add a personal message inside — $9 add-on",
+    priceAdd: 900,
+  },
 ];
 
 /* ── Trust badges ── */
 const TRUST_BADGES = [
   { icon: "\u{1F504}", title: "30-Day Returns", sub: "No questions asked" },
   { icon: "\u{1F69A}", title: "Free US Shipping", sub: "Orders over $75" },
-  { icon: "\u{1F6E1}\uFE0F", title: "1-Year Warranty", sub: "Craftsmanship backed" },
+  {
+    icon: "\u{1F6E1}\uFE0F",
+    title: "1-Year Warranty",
+    sub: "Craftsmanship backed",
+  },
 ];
 
 /* ── Product pills ── */
@@ -127,7 +160,9 @@ export function RingHero({ product }: RingHeroProps) {
   const [selectedWood, setSelectedWood] = useState(woodOptions[0] ?? null);
   const [selectedWidth, setSelectedWidth] = useState(widthOptions[0] ?? null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedBundle, setSelectedBundle] = useState(isSkateRing ? "single" : "matching");
+  const [selectedBundle, setSelectedBundle] = useState(
+    isSkateRing ? "single" : "matching"
+  );
   const [openAcc, setOpenAcc] = useState(0);
   const [added, setAdded] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>(null);
@@ -172,7 +207,7 @@ export function RingHero({ product }: RingHeroProps) {
   return (
     <section className="px-6 pt-8 pb-12 md:pt-12 md:pb-16">
       <div className="mx-auto max-w-[1200px]">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-14 items-start">
+        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-14">
           {/* ── LEFT: Gallery (sticky on desktop) ── */}
           <div className="md:sticky md:top-20">
             <ProductImageGallery
@@ -186,28 +221,31 @@ export function RingHero({ product }: RingHeroProps) {
           <div className="flex flex-col">
             {/* Tag */}
             {productTag && (
-              <span className="mb-3 w-fit bg-[var(--amber)]/15 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[2px] text-[var(--amber)]">
+              <span className="mb-3 w-fit bg-[var(--amber)]/15 px-2.5 py-1 text-[11px] font-bold tracking-[2px] text-[var(--amber)] uppercase">
                 {"\u2605"} {productTag}
               </span>
             )}
 
             {/* Stars */}
-            <div className="mb-3 flex items-center gap-2 flex-wrap">
+            <div className="mb-3 flex flex-wrap items-center gap-2">
               <span className="text-base tracking-wide text-[var(--amber)]">
                 {"\u2605\u2605\u2605\u2605\u2605"}
               </span>
-              <span className="text-xs text-[var(--gray)]">
+              <a
+                href="#reviews"
+                className="text-xs text-[var(--gray)] underline-offset-4 hover:text-[var(--teal)] hover:underline"
+              >
                 Rated 4.9/5 by 200+ customers
-              </span>
+              </a>
             </div>
 
             {/* Product name — Playfair Display */}
-            <h1 className="text-2xl font-bold leading-[1.15] md:text-[clamp(24px,3.5vw,38px)] font-[family-name:var(--font-serif)]">
+            <h1 className="font-[family-name:var(--font-serif)] text-2xl leading-[1.15] font-bold md:text-[clamp(24px,3.5vw,38px)]">
               {product.name}
               {product.metadata.subtitle && (
                 <>
                   {" — "}
-                  <em className="italic text-[var(--teal)]">
+                  <em className="text-[var(--teal)] italic">
                     {product.metadata.subtitle}
                   </em>
                 </>
@@ -226,14 +264,16 @@ export function RingHero({ product }: RingHeroProps) {
               )}
               {isOnSale && savings > 0 && (
                 <span className="bg-[var(--amber)] px-2 py-0.5 text-[11px] font-bold text-white">
-                  SAVE {formatPrice(savings, product.currency)} ({savingsPercent}%)
+                  SAVE {formatPrice(savings, product.currency)} (
+                  {savingsPercent}%)
                 </span>
               )}
             </div>
 
             {/* Philosophy quote */}
-            <p className="mt-4 border-l-[3px] border-[var(--teal)] pl-3.5 text-sm italic text-[var(--teal)] font-[family-name:var(--font-serif)]">
-              &ldquo;We are all going through miniature spiritual rebirths — this ring is a reminder to embrace yours.&rdquo;
+            <p className="mt-4 border-l-[3px] border-[var(--teal)] pl-3.5 font-[family-name:var(--font-serif)] text-sm text-[var(--teal)] italic">
+              &ldquo;We are all going through miniature spiritual rebirths —
+              this ring is a reminder to embrace yours.&rdquo;
             </p>
 
             {/* Description */}
@@ -258,10 +298,10 @@ export function RingHero({ product }: RingHeroProps) {
             {/* ── 1. Metal Finish (wedding bands only) ── */}
             {isWeddingBand && (
               <div className="mt-6">
-                <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-[2px]">
+                <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold tracking-[2px] uppercase">
                   <span>
                     1. Choose Metal Finish{" "}
-                    <span className="font-normal text-[var(--gray)] tracking-normal">
+                    <span className="font-normal tracking-normal text-[var(--gray)]">
                       (3 options)
                     </span>
                   </span>
@@ -272,7 +312,7 @@ export function RingHero({ product }: RingHeroProps) {
                       key={m.id}
                       type="button"
                       onClick={() => setSelectedMetal(m.id)}
-                      className="flex flex-col items-center gap-1.5 cursor-pointer"
+                      className="flex min-h-11 min-w-11 cursor-pointer flex-col items-center gap-1.5"
                     >
                       <div
                         className={cn(
@@ -283,7 +323,7 @@ export function RingHero({ product }: RingHeroProps) {
                         )}
                         style={{ background: m.gradient }}
                       />
-                      <span className="text-[10px] text-[var(--gray)] tracking-wide">
+                      <span className="text-[10px] tracking-wide text-[var(--gray)]">
                         {m.label}
                       </span>
                     </button>
@@ -295,9 +335,9 @@ export function RingHero({ product }: RingHeroProps) {
             {/* ── 2. Wood Liner (wedding bands only) ── */}
             {isWeddingBand && woodOptions.length > 0 && (
               <div className="mt-5">
-                <div className="mb-2.5 text-[11px] font-bold uppercase tracking-[2px]">
+                <div className="mb-2.5 text-[11px] font-bold tracking-[2px] uppercase">
                   2. Choose Wood Liner{" "}
-                  <span className="font-normal text-[var(--gray)] tracking-normal">
+                  <span className="font-normal tracking-normal text-[var(--gray)]">
                     ({woodOptions.length} options)
                   </span>
                 </div>
@@ -308,7 +348,7 @@ export function RingHero({ product }: RingHeroProps) {
                       type="button"
                       onClick={() => setSelectedWood(w)}
                       className={cn(
-                        "h-[42px] min-w-[42px] border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
+                        "min-h-11 min-w-11 cursor-pointer border-[1.5px] px-3 text-[13px] transition-all",
                         selectedWood === w
                           ? "border-[var(--black)] bg-[var(--black)] text-[var(--warm-white)]"
                           : "border-[var(--mid-gray)] bg-transparent text-[var(--black)] hover:border-[var(--teal)] hover:text-[var(--teal)]"
@@ -324,7 +364,7 @@ export function RingHero({ product }: RingHeroProps) {
             {/* ── 1. Choose Width (skateboard rings only) ── */}
             {isSkateRing && widthOptions.length > 0 && (
               <div className="mt-6">
-                <div className="mb-2.5 text-[11px] font-bold uppercase tracking-[2px]">
+                <div className="mb-2.5 text-[11px] font-bold tracking-[2px] uppercase">
                   1. Choose Width
                 </div>
                 <div className="flex flex-wrap gap-1.5">
@@ -334,7 +374,7 @@ export function RingHero({ product }: RingHeroProps) {
                       type="button"
                       onClick={() => setSelectedWidth(w)}
                       className={cn(
-                        "h-[42px] min-w-[42px] border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
+                        "min-h-11 min-w-11 cursor-pointer border-[1.5px] px-3 text-[13px] transition-all",
                         selectedWidth === w
                           ? "border-[var(--black)] bg-[var(--black)] text-[var(--warm-white)]"
                           : "border-[var(--mid-gray)] bg-transparent text-[var(--black)] hover:border-[var(--teal)] hover:text-[var(--teal)]"
@@ -350,17 +390,18 @@ export function RingHero({ product }: RingHeroProps) {
             {/* ── Ring Size ── */}
             {ringSizes.length > 0 && (
               <div className="mt-5">
-                <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-[2px]">
+                <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold tracking-[2px] uppercase">
                   <span>
                     {isSkateRing ? "2" : "3"}. Ring Size{" "}
-                    <span className="font-normal text-[var(--gray)] tracking-normal">
+                    <span className="font-normal tracking-normal text-[var(--gray)]">
                       ({ringSizes[0]}&ndash;{ringSizes[ringSizes.length - 1]})
                     </span>
                   </span>
                   <a
                     href="/size-guide"
-                    className="text-[11px] font-normal text-[var(--teal)] underline tracking-normal normal-case"
+                    className="inline-flex min-h-11 items-center gap-1.5 px-2 text-[11px] font-normal tracking-normal text-[var(--teal)] normal-case underline"
                   >
+                    <Ruler className="size-3.5" />
                     Size Guide
                   </a>
                 </div>
@@ -371,7 +412,7 @@ export function RingHero({ product }: RingHeroProps) {
                       type="button"
                       onClick={() => setSelectedSize(s)}
                       className={cn(
-                        "h-[42px] min-w-[42px] border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
+                        "min-h-11 min-w-11 cursor-pointer border-[1.5px] px-3 text-[13px] transition-all",
                         selectedSize === s
                           ? "border-[var(--black)] bg-[var(--black)] text-[var(--warm-white)]"
                           : "border-[var(--mid-gray)] bg-transparent text-[var(--black)] hover:border-[var(--teal)] hover:text-[var(--teal)]"
@@ -385,52 +426,54 @@ export function RingHero({ product }: RingHeroProps) {
             )}
 
             {/* ── 4. Bundle Offers (wedding bands only) ── */}
-            {isWeddingBand && <div className="mt-5">
-              <div className="mb-2.5 text-[11px] font-bold uppercase tracking-[2px]">
-                4. Choose Your Package
-              </div>
-              <div className="flex flex-col gap-2">
-                {BUNDLE_OPTIONS.map((b) => {
-                  const bPrice = b.priceAdd
-                    ? product.price + b.priceAdd
-                    : Math.round(product.price * (b.priceMultiplier ?? 1));
-                  return (
-                    <button
-                      key={b.id}
-                      type="button"
-                      onClick={() => setSelectedBundle(b.id)}
-                      className={cn(
-                        "relative flex items-center justify-between border-[1.5px] px-4 py-3.5 text-left transition-all cursor-pointer gap-3",
-                        selectedBundle === b.id
-                          ? "border-[var(--teal)] bg-[var(--teal)]/[0.04]"
-                          : "border-[var(--light-gray)] hover:border-[var(--mid-gray)]"
-                      )}
-                    >
-                      {b.popular && (
-                        <span className="absolute -top-2.5 left-3 bg-[var(--teal)] px-2 py-0.5 text-[9px] font-bold uppercase tracking-[2px] text-white">
-                          Most Popular
+            {isWeddingBand && (
+              <div className="mt-5">
+                <div className="mb-2.5 text-[11px] font-bold tracking-[2px] uppercase">
+                  4. Choose Your Package
+                </div>
+                <div className="flex flex-col gap-2">
+                  {BUNDLE_OPTIONS.map((b) => {
+                    const bPrice = b.priceAdd
+                      ? product.price + b.priceAdd
+                      : Math.round(product.price * (b.priceMultiplier ?? 1));
+                    return (
+                      <button
+                        key={b.id}
+                        type="button"
+                        onClick={() => setSelectedBundle(b.id)}
+                        className={cn(
+                          "relative flex cursor-pointer items-center justify-between gap-3 border-[1.5px] px-4 py-3.5 text-left transition-all",
+                          selectedBundle === b.id
+                            ? "border-[var(--teal)] bg-[var(--teal)]/[0.04]"
+                            : "border-[var(--light-gray)] hover:border-[var(--mid-gray)]"
+                        )}
+                      >
+                        {b.popular && (
+                          <span className="absolute -top-2.5 left-3 bg-[var(--teal)] px-2 py-0.5 text-[9px] font-bold tracking-[2px] text-white uppercase">
+                            Most Popular
+                          </span>
+                        )}
+                        <div>
+                          <div className="text-[13px] font-semibold">
+                            {b.name}
+                          </div>
+                          <div className="mt-0.5 text-[11px] text-[var(--gray)]">
+                            {b.desc}
+                          </div>
+                        </div>
+                        <span className="shrink-0 font-[family-name:var(--font-caps)] text-[22px] text-[var(--teal)]">
+                          {formatPrice(bPrice, product.currency)}
                         </span>
-                      )}
-                      <div>
-                        <div className="text-[13px] font-semibold">
-                          {b.name}
-                        </div>
-                        <div className="text-[11px] text-[var(--gray)] mt-0.5">
-                          {b.desc}
-                        </div>
-                      </div>
-                      <span className="shrink-0 font-[family-name:var(--font-caps)] text-[22px] text-[var(--teal)]">
-                        {formatPrice(bPrice, product.currency)}
-                      </span>
-                    </button>
-                  );
-                })}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>}
+            )}
 
             {/* ── Total + CTA ── */}
             <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-y border-[var(--light-gray)] py-4">
-              <span className="text-xs font-bold uppercase tracking-[2px]">
+              <span className="text-xs font-bold tracking-[2px] uppercase">
                 Total:
               </span>
               <div className="flex flex-wrap items-baseline gap-2.5">
@@ -440,7 +483,10 @@ export function RingHero({ product }: RingHeroProps) {
                   </span>
                 )}
                 <span className="font-[family-name:var(--font-caps)] text-[30px] leading-none text-[var(--teal)]">
-                  {formatPrice(isSkateRing ? product.price : bundlePrice, product.currency)}
+                  {formatPrice(
+                    isSkateRing ? product.price : bundlePrice,
+                    product.currency
+                  )}
                 </span>
                 {isOnSale && savings > 0 && (
                   <span className="bg-[var(--amber)] px-2 py-0.5 text-[11px] font-bold text-white">
@@ -456,10 +502,10 @@ export function RingHero({ product }: RingHeroProps) {
               disabled={needsSize}
               onClick={handleAddToCart}
               className={cn(
-                "mt-4 w-full font-[family-name:var(--font-caps)] text-xl tracking-[2.5px] py-5 transition-all",
+                "mt-4 w-full py-5 font-[family-name:var(--font-caps)] text-xl tracking-[2.5px] transition-all",
                 needsSize
-                  ? "bg-[var(--mid-gray)] text-white cursor-not-allowed"
-                  : "bg-[var(--teal)] text-white hover:bg-[var(--teal-dark,#1e7a6e)] hover:-translate-y-px cursor-pointer"
+                  ? "cursor-not-allowed bg-[var(--mid-gray)] text-white"
+                  : "cursor-pointer bg-[var(--teal)] text-white hover:-translate-y-px hover:bg-[var(--teal-dark,#1e7a6e)]"
               )}
             >
               <AnimatePresence mode="wait">
@@ -481,7 +527,8 @@ export function RingHero({ product }: RingHeroProps) {
                     exit={{ opacity: 0, scale: 0.8 }}
                     className="inline-flex items-center gap-2"
                   >
-                    ADD TO CART &mdash; {formatPrice(bundlePrice, product.currency)}
+                    ADD TO CART &mdash;{" "}
+                    {formatPrice(bundlePrice, product.currency)}
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -491,21 +538,28 @@ export function RingHero({ product }: RingHeroProps) {
                 Please select a size
               </p>
             )}
+            <WishlistButton
+              product={product}
+              showLabel
+              className="mt-3 w-full rounded-none"
+            />
 
             {/* Trust Badges — 3 col */}
-            <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 border border-[var(--light-gray)]">
+            <div className="mt-4 grid grid-cols-1 border border-[var(--light-gray)] sm:grid-cols-3">
               {TRUST_BADGES.map((b) => (
                 <div
                   key={b.title}
                   className={cn(
-                    "flex flex-col items-center gap-1 py-3.5 px-2 text-center",
+                    "flex flex-col items-center gap-1 px-2 py-3.5 text-center",
                     "sm:border-r sm:border-[var(--light-gray)] sm:last:border-r-0",
-                    "border-b border-[var(--light-gray)] sm:border-b-0 last:border-b-0"
+                    "border-b border-[var(--light-gray)] last:border-b-0 sm:border-b-0"
                   )}
                 >
                   <span className="text-xl">{b.icon}</span>
                   <span className="text-[11px] font-semibold">{b.title}</span>
-                  <span className="text-[10px] text-[var(--gray)]">{b.sub}</span>
+                  <span className="text-[10px] text-[var(--gray)]">
+                    {b.sub}
+                  </span>
                 </div>
               ))}
             </div>
@@ -520,7 +574,7 @@ export function RingHero({ product }: RingHeroProps) {
                   <button
                     type="button"
                     onClick={() => setOpenAcc(openAcc === i ? -1 : i)}
-                    className="flex w-full items-center justify-between py-4 text-left text-[13px] font-semibold cursor-pointer"
+                    className="flex w-full cursor-pointer items-center justify-between py-4 text-left text-[13px] font-semibold"
                   >
                     {item.title}
                     <ChevronDown
@@ -542,7 +596,7 @@ export function RingHero({ product }: RingHeroProps) {
                         }}
                         className="overflow-hidden"
                       >
-                        <div className="pb-4 text-[13px] leading-[1.75] text-[var(--gray)] space-y-2">
+                        <div className="space-y-2 pb-4 text-[13px] leading-[1.75] text-[var(--gray)]">
                           {item.lines.map((line, li) => (
                             <p key={li}>{line}</p>
                           ))}

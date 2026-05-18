@@ -1,4 +1,9 @@
 import { test, expect } from "@playwright/test";
+import {
+  AUTH_ENV_REQUIREMENT,
+  getTestUserCredentials,
+  hasTestUserCredentials,
+} from "../helpers/auth";
 
 test.describe("Sign In Page", () => {
   test.beforeEach(async ({ page }) => {
@@ -6,7 +11,7 @@ test.describe("Sign In Page", () => {
   });
 
   test("should load sign in page successfully", async ({ page }) => {
-    await expect(page).toHaveTitle(/Acme/);
+    await expect(page).toHaveTitle(/Rebirth|Sign in/i);
     await expect(page).toHaveURL("/sign-in");
   });
 
@@ -106,25 +111,20 @@ test.describe("Sign In Page", () => {
     await expect(page).toHaveURL("/sign-up");
   });
 
-  // NOTE: Actual authentication test with credentials
-  // Uncomment and configure when test credentials are available
-  test.skip("should successfully sign in with valid credentials", async ({
+  test("should successfully sign in with valid credentials", async ({
     page,
   }) => {
-    // TODO: Add test user credentials to .env.test
-    const TEST_EMAIL = process.env.TEST_USER_EMAIL;
-    const TEST_PASSWORD = process.env.TEST_USER_PASSWORD;
-
-    if (!TEST_EMAIL || !TEST_PASSWORD) {
-      test.skip();
-    }
+    test.skip(!hasTestUserCredentials(), AUTH_ENV_REQUIREMENT);
+    const { email, password } = getTestUserCredentials();
 
     // Fill in credentials
     const emailInput = page.locator('input[type="email"]').first();
-    await emailInput.fill(TEST_EMAIL);
+    await emailInput.fill(email);
+    await page.getByRole("button", { name: /continue/i }).click();
+    await expect(page).toHaveURL(/\/sign-in\/confirm/);
 
     const passwordInput = page.locator('input[type="password"]').first();
-    await passwordInput.fill(TEST_PASSWORD);
+    await passwordInput.fill(password);
 
     // Submit form
     const submitButton = page.locator('button[type="submit"]').first();

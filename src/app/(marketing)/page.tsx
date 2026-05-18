@@ -1,5 +1,10 @@
-import { OrganizationJsonLd } from "@/components/seo/json-ld";
-import { listProducts, getFeaturedProducts } from "@/lib/payments/products";
+import { FAQPageJsonLd, OrganizationJsonLd } from "@/components/seo/json-ld";
+import { listProducts } from "@/lib/payments/products";
+import { HOMEPAGE_FAQ_ITEMS } from "@/lib/seo";
+import {
+  getApprovedReviews,
+  getReviewSummariesForProducts,
+} from "@/lib/review-data";
 import { Metadata } from "next";
 import type { WebSite, WithContext } from "schema-dts";
 
@@ -9,9 +14,16 @@ import { Bestsellers } from "@/components/homepage/bestsellers";
 import { UgcStrip } from "@/components/homepage/ugc-strip";
 import { IconStrip } from "@/components/homepage/icon-strip";
 import { StatBar } from "@/components/homepage/stat-bar";
-import { ValueProp1, ValueProp2, ValueProp3 } from "@/components/homepage/value-prop";
+import {
+  ValueProp1,
+  ValueProp2,
+  ValueProp3,
+} from "@/components/homepage/value-prop";
 import { Categories } from "@/components/homepage/categories";
-import { SocialProofLight, SocialProofDark } from "@/components/homepage/social-proof";
+import {
+  SocialProofLight,
+  SocialProofDark,
+} from "@/components/homepage/social-proof";
 import { Differentiators } from "@/components/homepage/differentiators";
 import { Guarantee } from "@/components/homepage/guarantee";
 import { FaqSection } from "@/components/homepage/faq-section";
@@ -34,7 +46,8 @@ export const metadata: Metadata = {
     "handmade rings",
   ],
   openGraph: {
-    title: "Rebirth World — Recycled Skateboard Rings & Wood-Lined Wedding Bands",
+    title:
+      "Rebirth World — Recycled Skateboard Rings & Wood-Lined Wedding Bands",
     description:
       "Handcrafted rings and apparel born from broken skateboards. Made in Mapleton, Utah.",
     url: "https://rebirth.world",
@@ -43,7 +56,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rebirth World — Recycled Skateboard Rings & Wood-Lined Wedding Bands",
+    title:
+      "Rebirth World — Recycled Skateboard Rings & Wood-Lined Wedding Bands",
     description:
       "Handcrafted rings and apparel born from broken skateboards. Made in Mapleton, Utah.",
   },
@@ -72,6 +86,10 @@ const ICON_STRIP_2 = [
 
 export default async function Home() {
   const allProducts = await listProducts();
+  const reviewSummaries = await getReviewSummariesForProducts(
+    allProducts.map((product) => product.id)
+  );
+  const approvedReviews = await getApprovedReviews(6);
 
   // JSON-LD — static trusted content, safe to inline
   const jsonLdContent = JSON.stringify({
@@ -79,19 +97,29 @@ export default async function Home() {
     "@type": "WebSite",
     name: "Rebirth World",
     url: "https://rebirth.world",
-    description: "Handcrafted rings and apparel born from broken skateboards. Made in Mapleton, Utah.",
+    description:
+      "Handcrafted rings and apparel born from broken skateboards. Made in Mapleton, Utah.",
   } satisfies WithContext<WebSite>).replace(/</g, "\\u003c");
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdContent }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdContent }}
+      />
       <OrganizationJsonLd />
+      <FAQPageJsonLd
+        questions={HOMEPAGE_FAQ_ITEMS.map((item) => ({
+          question: item.q,
+          answer: item.a,
+        }))}
+      />
       <div>
         {/* 1. Hero */}
         <Hero />
 
         {/* 2. Bestselling Products — tabbed grid */}
-        <Bestsellers products={allProducts} />
+        <Bestsellers products={allProducts} reviewSummaries={reviewSummaries} />
 
         {/* 3. UGC Scroll Strip */}
         <UgcStrip />
@@ -112,7 +140,7 @@ export default async function Home() {
         <Categories />
 
         {/* 9. Social Proof Full — Light */}
-        <SocialProofLight />
+        <SocialProofLight reviews={approvedReviews.slice(0, 3)} />
 
         {/* 10. Differentiator Grid */}
         <Differentiators />
@@ -130,7 +158,7 @@ export default async function Home() {
         <Guarantee />
 
         {/* 15. Social Proof Dark */}
-        <SocialProofDark />
+        <SocialProofDark reviews={approvedReviews.slice(3, 6)} />
 
         {/* 16. FAQ */}
         <FaqSection />

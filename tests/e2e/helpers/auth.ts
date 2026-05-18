@@ -1,188 +1,117 @@
-import { Page } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
+import { createClient } from "@supabase/supabase-js";
 
-/**
- * Authentication Helper for E2E Tests
- *
- * This file contains utilities for setting up authenticated user sessions
- * in Playwright tests.
- *
- * SETUP INSTRUCTIONS:
- * 1. Create a test user in your Supabase database
- * 2. Add credentials to .env.test file:
- *    - TEST_USER_EMAIL=test@example.com
- *    - TEST_USER_PASSWORD=your_secure_password
- * 3. Ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set
- * 4. Uncomment the implementation below and update as needed
- */
+export interface TestUserCredentials {
+  email: string;
+  password: string;
+}
 
-/**
- * Set up an authenticated user session for testing
- *
- * This function logs in a test user and establishes their session
- * so that protected routes can be accessed in tests.
- *
- * Usage:
- * ```typescript
- * test.beforeEach(async ({ page }) => {
- *   await setupAuthenticatedUser(page);
- *   await page.goto('/dashboard');
- * });
- * ```
- */
-export async function setupAuthenticatedUser(page: Page): Promise<void> {
-  // Method 1: Direct Supabase API call (faster, recommended)
-  // This method uses Supabase client to establish session directly
+export const AUTH_ENV_REQUIREMENT =
+  "Set TEST_USER_EMAIL and TEST_USER_PASSWORD for authenticated Playwright specs.";
 
-  const { createClient } = await import("@supabase/supabase-js");
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+export function hasTestUserCredentials() {
+  return Boolean(process.env.TEST_USER_EMAIL && process.env.TEST_USER_PASSWORD);
+}
 
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: process.env.TEST_USER_EMAIL!,
-    password: process.env.TEST_USER_PASSWORD!,
-  });
+export function getTestUserCredentials(): TestUserCredentials {
+  const email = process.env.TEST_USER_EMAIL;
+  const password = process.env.TEST_USER_PASSWORD;
 
-  if (error) {
-    throw new Error(`Failed to authenticate test user: ${error.message}`);
+  if (!email || !password) {
+    throw new Error(AUTH_ENV_REQUIREMENT);
   }
 
-  // Set session cookies in the browser
-  await page.context().addCookies([
-    {
-      name: "sb-access-token",
-      value: data.session.access_token,
-      domain: "localhost",
-      path: "/",
-      httpOnly: true,
-      secure: false,
-      sameSite: "Lax",
-    },
-    {
-      name: "sb-refresh-token",
-      value: data.session.refresh_token,
-      domain: "localhost",
-      path: "/",
-      httpOnly: true,
-      secure: false,
-      sameSite: "Lax",
-    },
-  ]);
+  return { email, password };
+}
 
-  // Method 2: UI-based login (slower, but tests the actual UI)
-  // This method goes through the sign-in page
-  //
-  // await page.goto('/sign-in');
-  // await page.locator('input[type="email"]').fill(process.env.TEST_USER_EMAIL!);
-  // await page.locator('input[type="password"]').fill(process.env.TEST_USER_PASSWORD!);
-  // await page.locator('button[type="submit"]').click();
-  // await page.waitForURL('/dashboard', { timeout: 10000 });
-
-  console.warn(
-    "setupAuthenticatedUser is not implemented yet. Add test credentials to .env.test and uncomment the implementation."
+export function hasSupabaseAdminEnv() {
+  return Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SECRET_KEY
   );
 }
 
-/**
- * Clean up test user data after tests
- *
- * This function removes any data created during tests to ensure
- * test isolation and repeatability.
- *
- * Usage:
- * ```typescript
- * test.afterEach(async ({ page }) => {
- *   await cleanupTestUser();
- * });
- * ```
- */
-export async function cleanupTestUser(): Promise<void> {
-  // TODO: Implement cleanup logic if needed
-  //
-  // Examples:
-  // - Delete test data created during tests
-  // - Reset user preferences
-  // - Clear uploaded files
-  // - Sign out
+function getAdminSupabase() {
+  if (
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.SUPABASE_SECRET_KEY
+  ) {
+    throw new Error(
+      "Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SECRET_KEY for test-user admin operations."
+    );
+  }
 
-  // Sign out (optional - test isolation via browser contexts usually handles this)
-  // await page.goto('/dashboard');
-  // await page.locator('[data-testid="user-menu"]').click();
-  // await page.locator('text=Sign Out').click();
-
-  console.warn("cleanupTestUser is not implemented yet.");
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SECRET_KEY
+  );
 }
 
-/**
- * Create a test user programmatically
- *
- * This function creates a new test user in the database.
- * Useful for testing registration flows or user-specific features.
- *
- * @returns User data
- */
-export async function createTestUser(): Promise<{ id: string; email: string }> {
-  // TODO: Implement user creation
-  //
-  // const { createClient } = await import('@supabase/supabase-js');
-  // const supabase = createClient(
-  //   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  //   process.env.SUPABASE_SERVICE_ROLE_KEY! // Need service role for admin operations
-  // );
-  //
-  // const { data, error } = await supabase.auth.admin.createUser({
-  //   email,
-  //   password,
-  //   email_confirm: true, // Skip email confirmation in tests
-  // });
-  //
-  // if (error) {
-  //   throw new Error(`Failed to create test user: ${error.message}`);
-  // }
-  //
-  // return data.user;
+export async function setupAuthenticatedUser(page: Page): Promise<void> {
+  const { email, password } = getTestUserCredentials();
 
-  throw new Error("createTestUser is not implemented yet");
+  await page.goto("/sign-in");
+  await page.getByLabel(/email/i).fill(email);
+  await page.getByRole("button", { name: /continue/i }).click();
+  await expect(page).toHaveURL(/\/sign-in\/confirm/);
+  await page.getByLabel(/^password$/i).fill(password);
+  await page.getByRole("button", { name: /^sign in$/i }).click();
+  await expect(page).toHaveURL(/\/dashboard/, { timeout: 15000 });
 }
 
-/**
- * Delete a test user programmatically
- *
- * This function removes a test user from the database.
- * Use this in test cleanup to remove users created during tests.
- */
-export async function deleteTestUser(): Promise<void> {
-  // TODO: Implement user deletion
-  //
-  // const { createClient } = await import('@supabase/supabase-js');
-  // const supabase = createClient(
-  //   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  //   process.env.SUPABASE_SERVICE_ROLE_KEY! // Need service role for admin operations
-  // );
-  //
-  // const { error } = await supabase.auth.admin.deleteUser(userId);
-  //
-  // if (error) {
-  //   throw new Error(`Failed to delete test user: ${error.message}`);
-  // }
+export async function cleanupTestUser(page?: Page): Promise<void> {
+  if (!page) return;
 
-  throw new Error("deleteTestUser is not implemented yet");
+  await page.context().clearCookies();
+  await page.evaluate(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+  });
 }
 
-/**
- * Check if user is authenticated
- *
- * This function verifies that a user session is active.
- *
- * @param page - Playwright page object
- * @returns True if authenticated, false otherwise
- */
+export async function createTestUser(
+  overrides: Partial<TestUserCredentials> = {}
+): Promise<{ id: string; email: string }> {
+  const timestamp = Date.now();
+  const email = overrides.email || `rebirth-e2e+${timestamp}@example.com`;
+  const password =
+    overrides.password ||
+    process.env.TEST_USER_PASSWORD ||
+    `RebirthE2E-${timestamp}!`;
+  const supabase = getAdminSupabase();
+
+  const { data, error } = await supabase.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+  });
+
+  if (error || !data.user?.id) {
+    throw new Error(`Failed to create test user: ${error?.message}`);
+  }
+
+  return { id: data.user.id, email };
+}
+
+export async function deleteTestUser(
+  userId = process.env.TEST_USER_ID
+): Promise<void> {
+  if (!userId) {
+    throw new Error(
+      "Pass a userId or set TEST_USER_ID before deleting a test user."
+    );
+  }
+
+  const supabase = getAdminSupabase();
+  const { error } = await supabase.auth.admin.deleteUser(userId);
+
+  if (error) {
+    throw new Error(`Failed to delete test user: ${error.message}`);
+  }
+}
+
 export async function isAuthenticated(page: Page): Promise<boolean> {
-  // Check if user is redirected to dashboard (simple approach)
   await page.goto("/dashboard");
-  await page.waitForTimeout(1000);
+  await page.waitForURL(/\/(dashboard|sign-in)/, { timeout: 5000 });
 
-  const url = page.url();
-  return url.includes("/dashboard") && !url.includes("/sign-in");
+  return new URL(page.url()).pathname.startsWith("/dashboard");
 }

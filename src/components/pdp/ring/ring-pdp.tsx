@@ -1,13 +1,19 @@
 import { Suspense } from "react";
 import type { Product } from "@/lib/payments/constants";
+import type { ReviewDisplayItem, ReviewSummary } from "@/lib/review-types";
 import { RelatedProducts } from "@/components/shop/related-products";
+import { ProductReviews } from "@/components/shop/reviews";
+import { ProductStoryBlock } from "@/components/pdp/shared/product-story-block";
 
 /* Ring PDP sections — matching mockup order */
 import { RingHero } from "@/components/pdp/ring/ring-hero";
 import { RingUgcStrip } from "@/components/pdp/ring/ring-ugc-strip";
 import { RingIconStrip } from "@/components/pdp/ring/ring-icon-strip";
 import { RingStatBar } from "@/components/pdp/ring/ring-stat-bar";
-import { RingCraft, RingPhilosophy } from "@/components/pdp/ring/ring-value-props";
+import {
+  RingCraft,
+  RingPhilosophy,
+} from "@/components/pdp/ring/ring-value-props";
 import { RingTestimonials } from "@/components/pdp/ring/ring-testimonials";
 import { RingFounderStory } from "@/components/pdp/ring/ring-founder-story";
 import { RingDifferentiators } from "@/components/pdp/ring/ring-differentiators";
@@ -20,9 +26,15 @@ import { RingFinalCTA } from "@/components/pdp/ring/ring-final-cta";
 
 interface RingPDPProps {
   product: Product;
+  reviews?: ReviewDisplayItem[];
+  reviewSummary?: ReviewSummary;
 }
 
-export function RingPDP({ product }: RingPDPProps) {
+export function RingPDP({
+  product,
+  reviews = [],
+  reviewSummary,
+}: RingPDPProps) {
   const ctaHref = `/shop/${product.slug}`;
 
   return (
@@ -30,7 +42,10 @@ export function RingPDP({ product }: RingPDPProps) {
       {/* ─── 1. Hero Product Section ─── */}
       <RingHero product={product} />
 
-      {/* ─── 2. UGC Scroll Strip ─── */}
+      {/* ─── 2. Product Story Block ─── */}
+      <ProductStoryBlock product={product} tone="dark" />
+
+      {/* ─── 3. UGC Scroll Strip ─── */}
       <RingUgcStrip ctaHref={ctaHref} />
 
       {/* ─── 3. Icon Benefit Strip ─── */}
@@ -47,6 +62,14 @@ export function RingPDP({ product }: RingPDPProps) {
 
       {/* ─── 7. Full Testimonials (light) ─── */}
       <RingTestimonials variant="light" ctaHref={ctaHref} />
+
+      {reviewSummary && (
+        <ProductReviews
+          productName={product.name}
+          reviews={reviews}
+          summary={reviewSummary}
+        />
+      )}
 
       {/* ─── 8. Founder Story ─── */}
       <RingFounderStory image={product.images[3]} />

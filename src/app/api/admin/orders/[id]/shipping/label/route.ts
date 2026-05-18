@@ -94,7 +94,9 @@ export async function POST(
   } catch (err) {
     console.error("Failed to purchase label:", err);
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : "Failed to purchase label" },
+      {
+        error: err instanceof Error ? err.message : "Failed to purchase label",
+      },
       { status: 500 }
     );
   }

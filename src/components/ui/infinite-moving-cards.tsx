@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
+import { useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface InfiniteMovingCardsProps {
@@ -24,42 +25,43 @@ export function InfiniteMovingCards({
 }: InfiniteMovingCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLUListElement>(null);
-  const [start, setStart] = useState(false);
+  const hasDuplicated = useRef(false);
+  const shouldReduceMotion = useReducedMotion();
 
-  const addAnimation = useCallback(() => {
-    if (containerRef.current && scrollerRef.current) {
-      const scrollerContent = Array.from(scrollerRef.current.children);
-      scrollerContent.forEach((item) => {
-        const duplicatedItem = item.cloneNode(true);
-        scrollerRef.current?.appendChild(duplicatedItem);
-      });
-
-      setDirection();
-      setSpeed();
-      setStart(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    addAnimation();
-  }, [addAnimation]);
-
-  const setDirection = () => {
+  const setDirection = useCallback(() => {
     if (containerRef.current) {
       containerRef.current.style.setProperty(
         "--animation-direction",
         direction === "left" ? "forwards" : "reverse"
       );
     }
-  };
+  }, [direction]);
 
-  const setSpeed = () => {
+  const setSpeed = useCallback(() => {
     if (containerRef.current) {
       const duration =
         speed === "fast" ? "20s" : speed === "normal" ? "40s" : "80s";
       containerRef.current.style.setProperty("--animation-duration", duration);
     }
-  };
+  }, [speed]);
+
+  useEffect(() => {
+    if (containerRef.current && scrollerRef.current) {
+      setDirection();
+      setSpeed();
+
+      if (shouldReduceMotion || hasDuplicated.current) return;
+      const scrollerContent = Array.from(scrollerRef.current.children);
+      scrollerContent.forEach((item) => {
+        const duplicatedItem = item.cloneNode(true);
+        if (duplicatedItem instanceof HTMLElement) {
+          duplicatedItem.setAttribute("aria-hidden", "true");
+        }
+        scrollerRef.current?.appendChild(duplicatedItem);
+      });
+      hasDuplicated.current = true;
+    }
+  }, [setDirection, setSpeed, shouldReduceMotion]);
 
   return (
     <div
@@ -73,7 +75,7 @@ export function InfiniteMovingCards({
         ref={scrollerRef}
         className={cn(
           "flex w-max min-w-full shrink-0 flex-nowrap gap-4 py-4",
-          start && "animate-scroll",
+          !shouldReduceMotion && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
       >

@@ -4,10 +4,12 @@ import { useRef, useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap/register";
 import type { Product } from "@/lib/payments/constants";
+import type { ReviewSummary } from "@/lib/review-types";
 import { ProductCard } from "@/components/shop/product-card";
 
 interface HorizontalProductShowcaseProps {
   products: Product[];
+  reviewSummaries?: Record<string, ReviewSummary>;
 }
 
 /**
@@ -17,6 +19,7 @@ interface HorizontalProductShowcaseProps {
  */
 export function HorizontalProductShowcase({
   products,
+  reviewSummaries = {},
 }: HorizontalProductShowcaseProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -74,7 +77,8 @@ export function HorizontalProductShowcase({
             opacity: 1,
             scrollTrigger: {
               trigger: card,
-              containerAnimation: gsap.getById("horizontal-scroll") || undefined,
+              containerAnimation:
+                gsap.getById("horizontal-scroll") || undefined,
               start: "left 80%",
               end: "left 40%",
               scrub: true,
@@ -91,7 +95,12 @@ export function HorizontalProductShowcase({
     return (
       <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2">
         {products.map((product, index) => (
-          <ProductCard key={product.id} product={product} index={index} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            index={index}
+            reviewSummary={reviewSummaries[product.id]}
+          />
         ))}
       </div>
     );
@@ -99,18 +108,19 @@ export function HorizontalProductShowcase({
 
   // Desktop: horizontal scroll
   return (
-    <div ref={sectionRef} className="relative min-h-screen flex items-center">
-      <div
-        ref={trackRef}
-        className="flex gap-8 pl-6 pr-[30vw]"
-      >
+    <div ref={sectionRef} className="relative flex min-h-screen items-center">
+      <div ref={trackRef} className="flex gap-8 pr-[30vw] pl-6">
         {products.map((product, index) => (
           <div
             key={product.id}
             data-product-card
             className="w-[380px] shrink-0"
           >
-            <ProductCard product={product} index={index} />
+            <ProductCard
+              product={product}
+              index={index}
+              reviewSummary={reviewSummaries[product.id]}
+            />
           </div>
         ))}
       </div>

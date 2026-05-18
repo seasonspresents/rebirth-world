@@ -11,6 +11,23 @@
 
 const GHL_BASE_URL = "https://services.leadconnectorhq.com";
 
+export const GHL_CUSTOM_FIELDS = {
+  lastOrderNumber: "contact.last_order_number",
+  lastOrderTotal: "contact.last_order_total",
+  lastOrderCurrency: "contact.last_order_currency",
+  lastOrderItems: "contact.last_order_items",
+  abandonedCartItems: "contact.abandoned_cart_items",
+  abandonedCartValue: "contact.abandoned_cart_value",
+  abandonedCartUrl: "contact.abandoned_cart_url",
+  wishlistItems: "contact.wishlist_items",
+  wishlistValue: "contact.wishlist_value",
+  wishlistUrl: "contact.wishlist_url",
+  authMethod: "contact.auth_method",
+  rebirthSource: "contact.rebirth_source",
+  rebirthSourceDetail: "contact.rebirth_source_detail",
+  contactMessage: "contact.contact_message",
+} as const;
+
 // ---------------------------------------------------------------------------
 // Payload interfaces (unchanged — calling code stays the same)
 // ---------------------------------------------------------------------------
@@ -56,6 +73,16 @@ export interface AccountPayload {
   auth_method: string;
 }
 
+export interface WishlistPayload {
+  email: string;
+  first_name?: string;
+  item_count: number;
+  wishlist_value: number;
+  wishlist_url: string;
+  item_names: string[];
+  last_activity: string;
+}
+
 // ---------------------------------------------------------------------------
 // Core API helper
 // ---------------------------------------------------------------------------
@@ -68,7 +95,7 @@ export interface AccountPayload {
 function ghlApi(
   path: string,
   body: Record<string, unknown>,
-  method: "POST" | "DELETE" = "POST",
+  method: "POST" | "DELETE" = "POST"
 ): Promise<Record<string, unknown> | null> {
   const apiKey = process.env.GHL_API_KEY;
   if (!apiKey) {
@@ -156,10 +183,7 @@ function removeTags(contactId: string, tags: string[]): Promise<void> {
 /**
  * Enroll a contact in a GHL workflow.
  */
-function addToWorkflow(
-  contactId: string,
-  workflowId: string,
-): Promise<void> {
+function addToWorkflow(contactId: string, workflowId: string): Promise<void> {
   ghlApi(`/contacts/${contactId}/workflow/${workflowId}`, {});
   return Promise.resolve();
 }
@@ -176,20 +200,34 @@ export function notifyPurchase(data: PurchasePayload): void {
     tags: ["customer", "purchased"],
     source: "rebirth.world",
     customFields: [
-      { key: "last_order_number", field_value: data.order_number },
       {
-        key: "last_order_total",
+        key: GHL_CUSTOM_FIELDS.lastOrderNumber,
+        field_value: data.order_number,
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.lastOrderTotal,
         field_value: (data.order_total / 100).toFixed(2),
       },
-      { key: "last_order_currency", field_value: data.currency },
+      { key: GHL_CUSTOM_FIELDS.lastOrderCurrency, field_value: data.currency },
       {
-        key: "last_order_items",
+        key: GHL_CUSTOM_FIELDS.lastOrderItems,
         field_value: data.items.map((i) => i.product_name).join(", "),
       },
+      { key: GHL_CUSTOM_FIELDS.rebirthSource, field_value: "purchase" },
+      {
+        key: GHL_CUSTOM_FIELDS.rebirthSourceDetail,
+        field_value: "stripe_checkout",
+      },
     ],
-  }).catch(() => {
-    // already logged inside ghlApi
-  });
+  })
+    .then((contactId) => {
+      if (contactId) {
+        removeTags(contactId, ["abandoned_cart"]);
+      }
+    })
+    .catch(() => {
+      // already logged inside ghlApi
+    });
 }
 
 export function notifyNewsletterSignup(data: NewsletterPayload): void {
@@ -198,6 +236,13 @@ export function notifyNewsletterSignup(data: NewsletterPayload): void {
     firstName: data.first_name,
     tags: ["subscriber", "lead"],
     source: data.source || "rebirth.world",
+    customFields: [
+      { key: GHL_CUSTOM_FIELDS.rebirthSource, field_value: "newsletter" },
+      {
+        key: GHL_CUSTOM_FIELDS.rebirthSourceDetail,
+        field_value: data.source || "rebirth.world",
+      },
+    ],
   }).catch(() => {
     // already logged inside ghlApi
   });
@@ -210,12 +255,86 @@ export function notifyAbandonedCart(data: AbandonedCartPayload): void {
     tags: ["abandoned_cart"],
     source: "rebirth.world",
     customFields: [
-      { key: "abandoned_cart_items", field_value: String(data.item_count) },
       {
-        key: "abandoned_cart_value",
+        key: GHL_CUSTOM_FIELDS.abandonedCartItems,
+        field_value: String(data.item_count),
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.abandonedCartValue,
         field_value: (data.cart_value / 100).toFixed(2),
       },
-      { key: "abandoned_cart_url", field_value: data.recovery_url },
+      {
+        key: GHL_CUSTOM_FIELDS.abandonedCartUrl,
+        field_value: data.recovery_url,
+      },
+      { key: GHL_CUSTOM_FIELDS.rebirthSource, field_value: "abandoned_cart" },
+      {
+        key: GHL_CUSTOM_FIELDS.rebirthSourceDetail,
+        field_value: data.last_activity,
+      },
+    ],
+  }).catch(() => {
+    // already logged inside ghlApi
+  });
+}
+
+export function notifyWishlistCreated(data: WishlistPayload): void {
+  upsertContact({
+    email: data.email,
+    firstName: data.first_name,
+    tags: ["wishlist", "lead"],
+    source: "rebirth.world",
+    customFields: [
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistItems,
+        field_value: data.item_names.join(", "),
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistValue,
+        field_value: (data.wishlist_value / 100).toFixed(2),
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistUrl,
+        field_value: data.wishlist_url,
+      },
+      { key: GHL_CUSTOM_FIELDS.rebirthSource, field_value: "wishlist" },
+      {
+        key: GHL_CUSTOM_FIELDS.rebirthSourceDetail,
+        field_value: data.last_activity,
+      },
+    ],
+  }).catch(() => {
+    // already logged inside ghlApi
+  });
+}
+
+export function notifyDormantWishlist(data: WishlistPayload): void {
+  upsertContact({
+    email: data.email,
+    firstName: data.first_name,
+    tags: ["wishlist", "wishlist_dormant"],
+    source: "rebirth.world",
+    customFields: [
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistItems,
+        field_value: data.item_names.join(", "),
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistValue,
+        field_value: (data.wishlist_value / 100).toFixed(2),
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistUrl,
+        field_value: data.wishlist_url,
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.rebirthSource,
+        field_value: "wishlist_dormant",
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.rebirthSourceDetail,
+        field_value: data.last_activity,
+      },
     ],
   }).catch(() => {
     // already logged inside ghlApi
@@ -229,7 +348,12 @@ export function notifyAccountCreated(data: AccountPayload): void {
     tags: ["account"],
     source: "rebirth.world",
     customFields: [
-      { key: "auth_method", field_value: data.auth_method },
+      { key: GHL_CUSTOM_FIELDS.authMethod, field_value: data.auth_method },
+      { key: GHL_CUSTOM_FIELDS.rebirthSource, field_value: "account" },
+      {
+        key: GHL_CUSTOM_FIELDS.rebirthSourceDetail,
+        field_value: data.auth_method,
+      },
     ],
   }).catch(() => {
     // already logged inside ghlApi

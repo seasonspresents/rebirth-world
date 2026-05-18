@@ -50,18 +50,18 @@ REBIRTH WORLD (rebirth.world)          GoHighLevel (REST API v2)
 
 ## The Split (Resend vs GHL)
 
-| Responsibility | Tool | Why |
-|---------------|------|-----|
-| Order confirmation email | **Resend** | Fires instantly from webhook, must land in <5 seconds |
-| Shipping notification | **Resend** | Fires instantly when admin marks fulfilled |
-| Auth emails (signup, password reset) | **Resend** (via Supabase) | Built into auth system |
-| Welcome sequence (5 emails / 10 days) | **GHL** | Drip timing, automation logic |
-| Abandon cart recovery (3 emails / 48 hrs) | **GHL** | Delay triggers, conditional logic |
-| Post-purchase sequence (4 emails / 30 days) | **GHL** | Timed drip, cross-sell logic |
-| Drop announcements | **GHL** | Bulk sends, segmentation |
-| Newsletter campaigns | **GHL** | List management, templates |
-| SMS campaigns | **GHL** | SMS is GHL's strength |
-| Wedding band nurture sequence | **GHL** | Long-form drip for engaged leads |
+| Responsibility                              | Tool                      | Why                                                   |
+| ------------------------------------------- | ------------------------- | ----------------------------------------------------- |
+| Order confirmation email                    | **Resend**                | Fires instantly from webhook, must land in <5 seconds |
+| Shipping notification                       | **Resend**                | Fires instantly when admin marks fulfilled            |
+| Auth emails (signup, password reset)        | **Resend** (via Supabase) | Built into auth system                                |
+| Welcome sequence (5 emails / 10 days)       | **GHL**                   | Drip timing, automation logic                         |
+| Abandon cart recovery (3 emails / 48 hrs)   | **GHL**                   | Delay triggers, conditional logic                     |
+| Post-purchase sequence (4 emails / 30 days) | **GHL**                   | Timed drip, cross-sell logic                          |
+| Drop announcements                          | **GHL**                   | Bulk sends, segmentation                              |
+| Newsletter campaigns                        | **GHL**                   | List management, templates                            |
+| SMS campaigns                               | **GHL**                   | SMS is GHL's strength                                 |
+| Wedding band nurture sequence               | **GHL**                   | Long-form drip for engaged leads                      |
 
 ---
 
@@ -74,11 +74,13 @@ REBIRTH WORLD (rebirth.world)          GoHighLevel (REST API v2)
 **API call:** `POST /contacts/upsert` with tags `["customer", "purchased"]`
 
 **Contact data sent:**
+
 - `email`, `firstName`, `lastName`
 - Tags: `customer`, `purchased`
 - Custom fields: `last_order_number`, `last_order_total`, `last_order_currency`, `last_order_items`
 
 **GHL workflow triggered by:** Tag `purchased` added
+
 - Day 7: "Share your ring" — encourage UGC
 - Day 14: Cross-sell / referral ask
 - Day 30: New drop preview
@@ -94,11 +96,13 @@ REBIRTH WORLD (rebirth.world)          GoHighLevel (REST API v2)
 **API call:** `POST /contacts/upsert` with tags `["subscriber", "lead"]`
 
 **Contact data sent:**
+
 - `email`, `firstName`
 - Tags: `subscriber`, `lead`
 - Source: form source (e.g., `website_footer`)
 
 **GHL workflow triggered by:** Tag `subscriber` added
+
 - Email 1: Daniel's story + brand origin (immediate)
 - Email 2: How the rings are made (Day 2)
 - Email 3: Customer stories / social proof (Day 4)
@@ -116,17 +120,22 @@ REBIRTH WORLD (rebirth.world)          GoHighLevel (REST API v2)
 **API call:** `POST /contacts/upsert` with tag `["abandoned_cart"]`
 
 **Contact data sent:**
+
 - `email`, `firstName`
 - Tags: `abandoned_cart`
 - Custom fields: `abandoned_cart_items`, `abandoned_cart_value`, `abandoned_cart_url`
 
 **GHL workflow triggered by:** Tag `abandoned_cart` added
+
 - Email 1: "Still thinking about it?" + product reminder (1 hour)
 - Email 2: Social proof + craft story (24 hours)
 - Email 3: Personal note from Daniel + soft urgency (48 hours)
 
 **Tags applied:** `abandoned_cart`
-**Remove tag when:** Purchase completed (contact is upserted with `customer` tag; configure GHL workflow to remove `abandoned_cart` on `purchased` tag)
+**Remove tag when:** Purchase completed. The app removes `abandoned_cart`
+from the GHL contact after a successful purchase upsert, and the GHL workflow
+should also remove/stop the abandoned-cart workflow when the `purchased` tag is
+added.
 
 ---
 
@@ -136,6 +145,7 @@ REBIRTH WORLD (rebirth.world)          GoHighLevel (REST API v2)
 **API call:** `POST /contacts/upsert` with tag `["account"]`
 
 **Contact data sent:**
+
 - `email`, `firstName`
 - Tags: `account`
 - Custom fields: `auth_method`
@@ -148,6 +158,7 @@ REBIRTH WORLD (rebirth.world)          GoHighLevel (REST API v2)
 **API call:** `POST /contacts/upsert` with tags `["wedding_lead", "hot_lead"]`
 
 **GHL workflow triggered by:** Tag `wedding_lead` added
+
 - Custom ring consultation CTA
 - Material education series
 - Matching set upsell
@@ -172,6 +183,11 @@ GHL_LOCATION_ID=your-location-id
 # Cron authentication (unchanged)
 CRON_SECRET=your-random-secret-here
 ```
+
+Cron endpoints must require `Authorization: Bearer $CRON_SECRET`. The Vercel
+cron for abandoned carts calls `/api/cron/abandoned-carts`; manual or external
+invocations must use the same bearer token and must never expose the secret in
+query params.
 
 ### Step 2: GHL Helper Library (API-based)
 
@@ -225,12 +241,12 @@ export function notifyAccountCreated(data) {
 
 In GoHighLevel, set up workflows with **Tag Added** triggers instead of Inbound Webhooks:
 
-| Workflow | Trigger | Tag |
-|----------|---------|-----|
-| Post-Purchase Sequence | Tag Added: `purchased` | `purchased` |
-| Welcome Sequence | Tag Added: `subscriber` | `subscriber` |
-| Abandon Cart Recovery | Tag Added: `abandoned_cart` | `abandoned_cart` |
-| Wedding Band Nurture | Tag Added: `wedding_lead` | `wedding_lead` |
+| Workflow               | Trigger                     | Tag              |
+| ---------------------- | --------------------------- | ---------------- |
+| Post-Purchase Sequence | Tag Added: `purchased`      | `purchased`      |
+| Welcome Sequence       | Tag Added: `subscriber`     | `subscriber`     |
+| Abandon Cart Recovery  | Tag Added: `abandoned_cart` | `abandoned_cart` |
+| Wedding Band Nurture   | Tag Added: `wedding_lead`   | `wedding_lead`   |
 
 This approach is simpler — all automation logic stays in GHL, triggered by tags the API applies.
 
@@ -238,16 +254,19 @@ This approach is simpler — all automation logic stays in GHL, triggered by tag
 
 Create these custom fields in GHL → Contacts → Custom Fields:
 
-| Field Key | Type | Purpose |
-|-----------|------|---------|
-| `last_order_number` | Text | Most recent order number |
-| `last_order_total` | Text | Order total (formatted) |
-| `last_order_currency` | Text | Currency code |
-| `last_order_items` | Text | Product names |
-| `abandoned_cart_items` | Text | Number of items in cart |
-| `abandoned_cart_value` | Text | Cart value (formatted) |
-| `abandoned_cart_url` | Text | Recovery URL |
-| `auth_method` | Text | How the user signed up |
+| Field Key                       | Type | Purpose                                                |
+| ------------------------------- | ---- | ------------------------------------------------------ |
+| `contact.last_order_number`     | Text | Most recent order number                               |
+| `contact.last_order_total`      | Text | Order total (formatted)                                |
+| `contact.last_order_currency`   | Text | Currency code                                          |
+| `contact.last_order_items`      | Text | Product names                                          |
+| `contact.abandoned_cart_items`  | Text | Number of items in cart                                |
+| `contact.abandoned_cart_value`  | Text | Cart value (formatted)                                 |
+| `contact.abandoned_cart_url`    | Text | Recovery URL                                           |
+| `contact.auth_method`           | Text | How the user signed up                                 |
+| `contact.rebirth_source`        | Text | Rebirth event family, e.g. purchase/newsletter/account |
+| `contact.rebirth_source_detail` | Text | Event detail, form source, auth method, or timestamp   |
+| `contact.contact_message`       | Text | Contact form message                                   |
 
 ---
 
@@ -337,6 +356,7 @@ CRON_SECRET=your-random-secret-here
 ```
 
 **Removed** (no longer needed):
+
 - `GHL_WEBHOOK_PURCHASE`
 - `GHL_WEBHOOK_NEWSLETTER`
 - `GHL_WEBHOOK_ABANDONED_CART`
@@ -347,15 +367,15 @@ CRON_SECRET=your-random-secret-here
 
 ## Testing Checklist
 
-| Test | How |
-|------|-----|
-| Purchase → GHL contact created | Make test purchase, verify contact appears in GHL with `customer` + `purchased` tags |
-| Newsletter → Welcome sequence starts | Submit newsletter form, verify GHL contact has `subscriber` tag, workflow triggers |
-| Abandoned cart → Recovery emails | Add items to cart, wait for cron, check GHL for `abandoned_cart` tag |
-| Purchase cancels abandon flow | Start abandon flow, then complete purchase — verify `purchased` tag triggers removal of `abandoned_cart` |
-| GHL failure doesn't break checkout | Unset `GHL_API_KEY`, verify checkout still completes |
-| Duplicate contacts handled | Submit same email twice, verify GHL upserts (no duplicates) |
-| Custom fields populated | After purchase, verify `last_order_number` etc. appear on GHL contact |
+| Test                                 | How                                                                                                      |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| Purchase → GHL contact created       | Make test purchase, verify contact appears in GHL with `customer` + `purchased` tags                     |
+| Newsletter → Welcome sequence starts | Submit newsletter form, verify GHL contact has `subscriber` tag, workflow triggers                       |
+| Abandoned cart → Recovery emails     | Add items to cart, wait for cron, check GHL for `abandoned_cart` tag                                     |
+| Purchase cancels abandon flow        | Start abandon flow, then complete purchase — verify `purchased` tag triggers removal of `abandoned_cart` |
+| GHL failure doesn't break checkout   | Unset `GHL_API_KEY`, verify checkout still completes                                                     |
+| Duplicate contacts handled           | Submit same email twice, verify GHL upserts (no duplicates)                                              |
+| Custom fields populated              | After purchase, verify `last_order_number` etc. appear on GHL contact                                    |
 
 ---
 

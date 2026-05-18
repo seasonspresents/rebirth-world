@@ -22,6 +22,12 @@ import { stripe } from "@/lib/payments/stripe";
 import { createServiceClient } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/emails";
 import { notifyPurchase } from "@/lib/ghl";
+import {
+  buildOrderItemsFromStripeLineItems,
+  getShippoRateIdFromCheckoutMetadata,
+  getUserIdFromCheckoutMetadata,
+  parseCheckoutItemVariants,
+} from "@/lib/stripe-checkout-webhook";
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -156,11 +162,6 @@ export async function POST(req: NextRequest) {
 // Helpers
 // ---------------------------------------------------------------------------
 
-function getUserIdFromMetadata(metadata: any): string | null {
-  const id = metadata?.user_id;
-  return id && id !== "guest" ? id : null;
-}
-
 // ---------------------------------------------------------------------------
 // Handler: checkout.session.completed + async_payment_succeeded
 // ---------------------------------------------------------------------------
@@ -168,13 +169,14 @@ function getUserIdFromMetadata(metadata: any): string | null {
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   console.log(`Handling checkout completed: ${session.id}`);
   const supabase = createServiceClient();
+  const shippoRateId = getShippoRateIdFromCheckoutMetadata(session.metadata);
 
   // Idempotency check inside the handler too — if an earlier delivery of the
   // same session (different event, e.g. completed then async_payment_succeeded)
   // already created the order, skip re-creation.
   const { data: existingOrder } = await supabase
     .from("orders")
-    .select("id, order_number")
+    .select("id, order_number, shippo_rate_id")
     .eq("stripe_checkout_session_id", session.id)
     .maybeSingle();
 
@@ -185,6 +187,19 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       .eq("order_id", existingOrder.id);
 
     if (itemCount && itemCount > 0) {
+      if (shippoRateId && !existingOrder.shippo_rate_id) {
+        const { error: rateUpdateError } = await supabase
+          .from("orders")
+          .update({ shippo_rate_id: shippoRateId })
+          .eq("id", existingOrder.id);
+
+        if (rateUpdateError) {
+          throw new Error(
+            `Order Shippo rate update failed: ${rateUpdateError.message}`
+          );
+        }
+      }
+
       console.log(
         `Order ${existingOrder.order_number} already exists with ${itemCount} items for session ${session.id}, skipping`
       );
@@ -223,7 +238,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const discount = (session as any).total_details?.amount_discount ?? 0;
 
   // 5. User
-  const userId = getUserIdFromMetadata(session.metadata);
+  const userId = getUserIdFromCheckoutMetadata(session.metadata);
   const isGuest = userId === null;
   const customerEmail =
     session.customer_details?.email ?? (session as any).customer_email ?? null;
@@ -239,7 +254,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         stripe_payment_intent_id:
           typeof session.payment_intent === "string"
             ? session.payment_intent
-            : (session.payment_intent as any)?.id ?? null,
+            : ((session.payment_intent as any)?.id ?? null),
         email: customerEmail,
         status: "confirmed",
         payment_status: "paid",
@@ -256,6 +271,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         shipping_state: shippingAddress?.state ?? null,
         shipping_postal_code: shippingAddress?.postal_code ?? null,
         shipping_country: shippingAddress?.country ?? null,
+        shippo_rate_id: shippoRateId,
       },
       { onConflict: "stripe_checkout_session_id" }
     )
@@ -269,52 +285,19 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   console.log(`Created/updated order ${orderNumber} with id ${order.id}`);
 
   // 7. Variant metadata
-  const itemVariantsMap: Record<string, string> = {};
+  let itemVariantsMap: Record<string, string> = {};
   try {
-    const raw = session.metadata?.item_variants;
-    if (raw) {
-      const parsed = JSON.parse(raw) as { priceId: string; variant: string }[];
-      for (const v of parsed) itemVariantsMap[v.priceId] = v.variant;
-    }
+    itemVariantsMap = parseCheckoutItemVariants(session.metadata);
   } catch {
     console.log("Could not parse item_variants metadata");
   }
 
   // 8. Order items (upsert is safer if this retries)
-  const orderItems = lineItems.data.map((li) => {
-    const price = li.price;
-    const product =
-      price && typeof price.product !== "string"
-        ? (price.product as Stripe.Product)
-        : null;
-
-    const unitPrice = li.price?.unit_amount ?? 0;
-    const qty = li.quantity ?? 1;
-
-    const variantRaw = price?.id ? itemVariantsMap[price.id] : null;
-    let variantName: string | null = null;
-    let engravingText: string | null = null;
-
-    if (variantRaw) {
-      const parts = variantRaw.split("|");
-      variantName = parts[0] || null;
-      engravingText = parts[1] || null;
-    }
-
-    return {
-      order_id: order.id,
-      stripe_product_id: product?.id ?? null,
-      stripe_price_id: price?.id ?? null,
-      product_name: li.description ?? product?.name ?? "Unknown",
-      product_image_url: product?.images?.[0] ?? null,
-      variant_name: variantName,
-      engraving_text: engravingText,
-      collection: product?.metadata?.collection ?? null,
-      unit_price: unitPrice,
-      quantity: qty,
-      total_price: unitPrice * qty,
-    };
-  });
+  const orderItems = buildOrderItemsFromStripeLineItems(
+    order.id,
+    lineItems.data,
+    itemVariantsMap
+  );
 
   // Delete any existing items for this order first (handles retry after partial failure)
   await supabase.from("order_items").delete().eq("order_id", order.id);
@@ -433,7 +416,9 @@ async function handleCheckoutExpired(session: Stripe.Checkout.Session) {
 // ---------------------------------------------------------------------------
 
 async function handleChargeRefunded(charge: Stripe.Charge) {
-  console.log(`Charge refunded: ${charge.id} amount_refunded=${charge.amount_refunded}`);
+  console.log(
+    `Charge refunded: ${charge.id} amount_refunded=${charge.amount_refunded}`
+  );
   const supabase = createServiceClient();
 
   const paymentIntentId =

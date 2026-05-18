@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Star, Check, ShoppingBag, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Ruler } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { ProductImageGallery } from "@/components/shop/product-image-gallery";
+import { WishlistButton } from "@/components/shop/wishlist-button";
 import { useCart } from "@/components/cart/cart-context";
 import { formatPrice } from "@/lib/payments/constants";
 import type { Product } from "@/lib/payments/constants";
@@ -48,11 +49,10 @@ interface ApparelHeroProps {
 export function ApparelHero({ product }: ApparelHeroProps) {
   const { addItem, setCartOpen } = useCart();
 
-  const APPAREL_SIZES =
-    product.metadata.ring_sizes
-      ?.split(",")
-      .map((s) => s.trim())
-      .filter(Boolean) ?? ["XS", "S", "M", "L", "XL", "2XL"];
+  const APPAREL_SIZES = product.metadata.ring_sizes
+    ?.split(",")
+    .map((s) => s.trim())
+    .filter(Boolean) ?? ["XS", "S", "M", "L", "XL", "2XL"];
 
   const colors = Object.keys(COLOR_MAP);
 
@@ -89,7 +89,7 @@ export function ApparelHero({ product }: ApparelHeroProps) {
       style={{ backgroundColor: "#f2ece0", color: "#1c1a17" }}
     >
       <div className="mx-auto max-w-[1200px]">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-[60px] items-start">
+        <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-[60px]">
           {/* ── LEFT: Gallery (sticky) ───────────────── */}
           <div className="md:sticky md:top-20">
             <ProductImageGallery
@@ -104,7 +104,7 @@ export function ApparelHero({ product }: ApparelHeroProps) {
             {/* Current Drop tag */}
             <div className="mb-4">
               <span
-                className="inline-block text-[9px] font-bold tracking-[2px] uppercase px-[10px] py-1"
+                className="inline-block px-[10px] py-1 text-[9px] font-bold tracking-[2px] uppercase"
                 style={{ backgroundColor: "#c4603a", color: "#fff" }}
               >
                 Current Drop
@@ -112,18 +112,24 @@ export function ApparelHero({ product }: ApparelHeroProps) {
             </div>
 
             {/* Stars */}
-            <div className="flex items-center gap-2 mb-3.5 flex-wrap">
-              <span style={{ color: "#c4603a", fontSize: 16, letterSpacing: 1 }}>
+            <div className="mb-3.5 flex flex-wrap items-center gap-2">
+              <span
+                style={{ color: "#c4603a", fontSize: 16, letterSpacing: 1 }}
+              >
                 &#9733;&#9733;&#9733;&#9733;&#9733;
               </span>
-              <span className="text-xs" style={{ color: "#9a9186" }}>
+              <a
+                href="#reviews"
+                className="text-xs underline-offset-4 hover:underline"
+                style={{ color: "#9a9186" }}
+              >
                 Rated 4.9/5 &middot; Limited stock remaining
-              </span>
+              </a>
             </div>
 
             {/* Product name */}
             <h1
-              className="font-[family-name:var(--font-editorial)] font-bold leading-[1.1] mb-1.5"
+              className="mb-1.5 font-[family-name:var(--font-editorial)] leading-[1.1] font-bold"
               style={{ fontSize: "clamp(26px, 3.5vw, 42px)" }}
             >
               {product.name}
@@ -131,7 +137,7 @@ export function ApparelHero({ product }: ApparelHeroProps) {
 
             {/* Subtitle */}
             <p
-              className="font-[family-name:var(--font-editorial)] text-base italic mb-4"
+              className="mb-4 font-[family-name:var(--font-editorial)] text-base italic"
               style={{ color: "#9a9186" }}
             >
               {product.metadata.subtitle ||
@@ -139,7 +145,7 @@ export function ApparelHero({ product }: ApparelHeroProps) {
             </p>
 
             {/* Price */}
-            <div className="flex items-baseline flex-wrap gap-2.5 mb-1.5">
+            <div className="mb-1.5 flex flex-wrap items-baseline gap-2.5">
               <span
                 className="font-[family-name:var(--font-caps)] leading-none"
                 style={{ fontSize: 40, letterSpacing: 1, color: "#c4603a" }}
@@ -148,19 +154,23 @@ export function ApparelHero({ product }: ApparelHeroProps) {
               </span>
               {product.metadata.compare_at_price && (
                 <>
-                  <span className="text-lg line-through" style={{ color: "#c4bdb4" }}>
+                  <span
+                    className="text-lg line-through"
+                    style={{ color: "#c4bdb4" }}
+                  >
                     {formatPrice(
                       parseInt(product.metadata.compare_at_price, 10),
                       product.currency
                     )}
                   </span>
                   <span
-                    className="text-[11px] font-bold px-2 py-[3px]"
+                    className="px-2 py-[3px] text-[11px] font-bold"
                     style={{ backgroundColor: "#c4603a", color: "#fff" }}
                   >
                     Save{" "}
                     {formatPrice(
-                      parseInt(product.metadata.compare_at_price, 10) - product.price,
+                      parseInt(product.metadata.compare_at_price, 10) -
+                        product.price,
                       product.currency
                     )}
                   </span>
@@ -170,17 +180,17 @@ export function ApparelHero({ product }: ApparelHeroProps) {
 
             {/* Philosophy quote */}
             <p
-              className="font-[family-name:var(--font-editorial)] text-[17px] italic leading-[1.5] py-3.5 pl-4 mb-[18px]"
+              className="mb-[18px] py-3.5 pl-4 font-[family-name:var(--font-editorial)] text-[17px] leading-[1.5] italic"
               style={{ color: "#c4603a", borderLeft: "3px solid #c4603a" }}
             >
-              &ldquo;In order to obtain that next chapter in life, you must bless the
-              places in you that are breaking &mdash; and embrace the rebirth of what
-              is blooming within you.&rdquo;
+              &ldquo;In order to obtain that next chapter in life, you must
+              bless the places in you that are breaking &mdash; and embrace the
+              rebirth of what is blooming within you.&rdquo;
             </p>
 
             {/* Description */}
             <p
-              className="text-sm leading-[1.8] mb-5 pb-5"
+              className="mb-5 pb-5 text-sm leading-[1.8]"
               style={{
                 color: "#555",
                 borderBottom: "1px solid #e6ddd0",
@@ -191,7 +201,7 @@ export function ApparelHero({ product }: ApparelHeroProps) {
             </p>
 
             {/* Product pills */}
-            <div className="flex flex-wrap gap-[7px] mb-6">
+            <div className="mb-6 flex flex-wrap gap-[7px]">
               {[
                 { label: "80% Cotton 20% Recycled Poly", olive: true },
                 { label: "Collab with Local Artists", olive: false },
@@ -200,7 +210,7 @@ export function ApparelHero({ product }: ApparelHeroProps) {
               ].map((pill) => (
                 <span
                   key={pill.label}
-                  className="inline-flex items-center gap-[5px] text-[10px] font-semibold tracking-[0.5px] px-3 py-1.5"
+                  className="inline-flex items-center gap-[5px] px-3 py-1.5 text-[10px] font-semibold tracking-[0.5px]"
                   style={{
                     backgroundColor: pill.olive ? "#5c6644" : "#1c1a17",
                     color: pill.olive ? "#fff" : "#f2ece0",
@@ -213,19 +223,19 @@ export function ApparelHero({ product }: ApparelHeroProps) {
 
             {/* 1. Choose Color */}
             <div className="mb-[22px]">
-              <div className="text-[11px] font-bold tracking-[2px] uppercase mb-2.5">
+              <div className="mb-2.5 text-[11px] font-bold tracking-[2px] uppercase">
                 1. Choose Color
               </div>
-              <div className="flex gap-3.5 flex-wrap">
+              <div className="flex flex-wrap gap-3.5">
                 {colors.map((color) => (
                   <button
                     key={color}
                     type="button"
                     onClick={() => setSelectedColor(color)}
-                    className="flex flex-col items-center gap-1.5 cursor-pointer"
+                    className="flex min-h-11 min-w-11 cursor-pointer flex-col items-center gap-1.5"
                   >
                     <div
-                      className="w-9 h-9 rounded-full transition-all"
+                      className="h-9 w-9 rounded-full transition-all"
                       style={{
                         backgroundColor: COLOR_MAP[color],
                         border:
@@ -244,13 +254,14 @@ export function ApparelHero({ product }: ApparelHeroProps) {
 
             {/* 2. Choose Size */}
             <div className="mb-[22px]">
-              <div className="text-[11px] font-bold tracking-[2px] uppercase flex justify-between items-center mb-2.5">
+              <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold tracking-[2px] uppercase">
                 <span>2. Choose Size</span>
                 <a
-                  href="#"
-                  className="text-[11px] font-normal tracking-normal underline"
+                  href="/size-guide#apparel-fit"
+                  className="inline-flex min-h-11 items-center gap-1.5 px-2 text-[11px] font-normal tracking-normal underline"
                   style={{ color: "#c4603a" }}
                 >
+                  <Ruler className="size-3.5" />
                   Size Guide
                 </a>
               </div>
@@ -261,14 +272,15 @@ export function ApparelHero({ product }: ApparelHeroProps) {
                     type="button"
                     onClick={() => setSelectedSize(size)}
                     className={cn(
-                      "h-[42px] min-w-[42px] px-3.5 text-[13px] font-[family-name:var(--font-body)] cursor-pointer transition-all",
+                      "min-h-11 min-w-11 cursor-pointer px-3.5 font-[family-name:var(--font-body)] text-[13px] transition-all",
                       selectedSize === size
                         ? "text-[#f2ece0]"
                         : "text-[#1c1a17] hover:border-[#c4603a] hover:text-[#c4603a]"
                     )}
                     style={{
                       border: `1.5px solid ${selectedSize === size ? "#1c1a17" : "#c4bdb4"}`,
-                      backgroundColor: selectedSize === size ? "#1c1a17" : "transparent",
+                      backgroundColor:
+                        selectedSize === size ? "#1c1a17" : "transparent",
                     }}
                   >
                     {size}
@@ -279,28 +291,33 @@ export function ApparelHero({ product }: ApparelHeroProps) {
 
             {/* Eco callout bar */}
             <div
-              className="flex items-center gap-3 px-4 py-3.5 mb-[18px]"
+              className="mb-[18px] flex items-center gap-3 px-4 py-3.5"
               style={{ backgroundColor: "#5c6644" }}
             >
-              <span className="text-[22px] flex-shrink-0">&#9851;</span>
-              <div className="text-xs leading-[1.5]" style={{ color: "rgba(255,255,255,0.9)" }}>
-                <strong className="block text-white mb-px">
+              <span className="flex-shrink-0 text-[22px]">&#9851;</span>
+              <div
+                className="text-xs leading-[1.5]"
+                style={{ color: "rgba(255,255,255,0.9)" }}
+              >
+                <strong className="mb-px block text-white">
                   AS Colour Relax Crew &mdash; 9.4 oz Mid-Weight Fleece
                 </strong>
-                80% cotton, 20% recycled polyester &middot; Each garment saves approx.
-                7 &times; 500ml plastic bottles from landfill
+                80% cotton, 20% recycled polyester &middot; Each garment saves
+                approx. 7 &times; 500ml plastic bottles from landfill
               </div>
             </div>
 
             {/* Total */}
             <div
-              className="flex justify-between items-center py-4 mb-4 flex-wrap gap-2"
+              className="mb-4 flex flex-wrap items-center justify-between gap-2 py-4"
               style={{
                 borderTop: "1px solid #e6ddd0",
                 borderBottom: "1px solid #e6ddd0",
               }}
             >
-              <span className="text-xs font-bold tracking-[2px] uppercase">Total:</span>
+              <span className="text-xs font-bold tracking-[2px] uppercase">
+                Total:
+              </span>
               <span
                 className="font-[family-name:var(--font-caps)] leading-none"
                 style={{ fontSize: 30, color: "#c4603a", letterSpacing: 1 }}
@@ -314,8 +331,12 @@ export function ApparelHero({ product }: ApparelHeroProps) {
               type="button"
               onClick={handleAddToCart}
               disabled={!selectedSize}
-              className="w-full font-[family-name:var(--font-caps)] text-[20px] tracking-[2.5px] py-5 px-12 cursor-pointer transition-all hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ backgroundColor: "#c4603a", color: "#fff", border: "2px solid transparent" }}
+              className="w-full cursor-pointer px-12 py-5 font-[family-name:var(--font-caps)] text-[20px] tracking-[2.5px] transition-all hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-50"
+              style={{
+                backgroundColor: "#c4603a",
+                color: "#fff",
+                border: "2px solid transparent",
+              }}
             >
               <AnimatePresence mode="wait">
                 {added ? (
@@ -342,24 +363,36 @@ export function ApparelHero({ product }: ApparelHeroProps) {
               </AnimatePresence>
             </button>
             {!selectedSize && (
-              <p className="mt-2 text-center text-xs" style={{ color: "#9a9186" }}>
+              <p
+                className="mt-2 text-center text-xs"
+                style={{ color: "#9a9186" }}
+              >
                 Please select a size
               </p>
             )}
+            <WishlistButton
+              product={product}
+              showLabel
+              className="mt-3 w-full rounded-none"
+            />
 
             {/* Trust badges */}
             <div
-              className="grid grid-cols-1 sm:grid-cols-3 mt-4"
+              className="mt-4 grid grid-cols-1 sm:grid-cols-3"
               style={{ border: "1px solid #e6ddd0" }}
             >
               {[
                 { icon: "🔄", title: "30-Day Returns", sub: "Unworn, tags on" },
-                { icon: "🚚", title: "Free US Shipping", sub: "Orders over $75" },
+                {
+                  icon: "🚚",
+                  title: "Free US Shipping",
+                  sub: "Orders over $75",
+                },
                 { icon: "🎨", title: "Artist Collab", sub: "Limited edition" },
               ].map((b, i) => (
                 <div
                   key={b.title}
-                  className="flex flex-col sm:flex-row items-center gap-1 sm:gap-3 p-3.5 text-center sm:text-left"
+                  className="flex flex-col items-center gap-1 p-3.5 text-center sm:flex-row sm:gap-3 sm:text-left"
                   style={{
                     borderRight: i < 2 ? "1px solid #e6ddd0" : "none",
                     borderBottom: "1px solid #e6ddd0",
@@ -388,10 +421,10 @@ export function ApparelHero({ product }: ApparelHeroProps) {
                     onClick={() =>
                       setOpenAccordion(openAccordion === i ? -1 : i)
                     }
-                    className="w-full flex justify-between items-center py-[15px] cursor-pointer text-left gap-3"
+                    className="flex w-full cursor-pointer items-center justify-between gap-3 py-[15px] text-left"
                     style={{ background: "none", border: "none" }}
                   >
-                    <span className="text-[13px] font-semibold font-[family-name:var(--font-body)]">
+                    <span className="font-[family-name:var(--font-body)] text-[13px] font-semibold">
                       {item.title}
                     </span>
                     <ChevronDown

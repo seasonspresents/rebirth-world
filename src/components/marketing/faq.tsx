@@ -4,45 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
-import { cn } from "@/lib/utils";
-
-const faqItems = [
-  {
-    question: "What are the rings made from?",
-    answer:
-      "Our skateboard rings are made from recycled 7-ply Canadian maple — the same wood used in pro decks. Local skaters on the North Shore donate their broken boards, and Daniel shapes each ring by hand. Our wedding bands feature gold-plated steel shells lined with stabilized ancient wood like bog oak or Hawaiian koa.",
-  },
-  {
-    question: "How do I find my ring size?",
-    answer:
-      "Check the sizing guide on each product page for tips on measuring at home with string or paper. You can also visit any local jeweler for a free sizing. Keep in mind our wood-lined wedding bands run about one size smaller due to the interior liner (a size 9 shell with a 0.8mm wood liner wears like a size 7). When in doubt, size up.",
-  },
-  {
-    question: "How long does shipping take?",
-    answer:
-      "Standard shipping takes 5–10 business days within the US. Express shipping (2–5 business days) is available at checkout. International orders typically arrive in 10–15 business days. Every order includes tracking from our North Shore workshop to your door.",
-  },
-  {
-    question: "What is your return policy?",
-    answer:
-      "We offer a 30-day return window for unworn items in original packaging. Engraved or custom pieces are final sale. If your ring doesn't fit, reach out through the contact page and we'll work with you to make it right.",
-  },
-  {
-    question: "How do I care for my ring?",
-    answer:
-      "The interior of each ring is sealed with a thin CA glue finish for durability — not polyurethane. Avoid prolonged water exposure and store in the included pouch when you're not wearing it. A soft cloth is all you need for polishing. With basic care, your ring will last for years.",
-  },
-  {
-    question: "Do you offer engraving?",
-    answer:
-      "Yes — most rings can be laser engraved with up to 10 characters of text or a small graphic. You can add engraving during checkout for $9. It adds 2–3 business days to production time. Engraved pieces are final sale.",
-  },
-  {
-    question: "Do you make wedding bands?",
-    answer:
-      "Yes. Our premium wedding bands feature gold-plated steel shells lined with stabilized ancient wood — including bog oak and Hawaiian koa. These start at $75 and go up depending on materials and customization. They're built to be worn every day for a lifetime.",
-  },
-];
+import { CONTACT_FAQ_ITEMS } from "@/lib/seo";
 
 function FAQItem({
   item,
@@ -50,7 +12,7 @@ function FAQItem({
   isOpen,
   onToggle,
 }: {
-  item: (typeof faqItems)[0];
+  item: (typeof CONTACT_FAQ_ITEMS)[0];
   index: number;
   isOpen: boolean;
   onToggle: () => void;
@@ -130,7 +92,7 @@ export function FAQ() {
 
           {/* Right column — Framer Motion spring accordion */}
           <div>
-            {faqItems.map((item, index) => (
+            {CONTACT_FAQ_ITEMS.map((item, index) => (
               <FAQItem
                 key={index}
                 item={item}

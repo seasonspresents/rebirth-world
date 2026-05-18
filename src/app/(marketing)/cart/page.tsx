@@ -14,9 +14,18 @@ import { useState } from "react";
 import { ShippingEstimator } from "@/components/cart/shipping-estimator";
 
 export default function CartPage() {
-  const { items, subtotal, updateQuantity, removeItem, clearCart } = useCart();
+  const {
+    items,
+    subtotal,
+    selectedShippingRate,
+    shippingAddress,
+    updateQuantity,
+    removeItem,
+    clearCart,
+  } = useCart();
   const searchParams = useSearchParams();
   const [checkingOut, setCheckingOut] = useState(false);
+  const estimatedTotal = subtotal + (selectedShippingRate?.priceCents ?? 0);
 
   // Show toast when returning from canceled Stripe checkout
   useEffect(() => {
@@ -44,6 +53,8 @@ export default function CartPage() {
             price: i.price,
             collection: i.collection ?? null,
           })),
+          shippingRate: selectedShippingRate,
+          shippingAddress,
         }),
       });
 
@@ -67,9 +78,11 @@ export default function CartPage() {
     return (
       <section className="px-6 py-24">
         <div className="mx-auto max-w-[800px] text-center">
-          <ShoppingBag className="mx-auto mb-4 size-12 text-muted-foreground" />
-          <h1 className="text-2xl font-semibold font-[family-name:var(--font-display)]">Nothing here yet</h1>
-          <p className="mt-2 text-muted-foreground">
+          <ShoppingBag className="text-muted-foreground mx-auto mb-4 size-12" />
+          <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold">
+            Nothing here yet
+          </h1>
+          <p className="text-muted-foreground mt-2">
             Every ring starts as a broken skateboard. Find the piece that
             carries your story.
           </p>
@@ -84,20 +97,23 @@ export default function CartPage() {
   return (
     <section className="px-6 py-16">
       <div className="mx-auto max-w-[1000px]">
-        <h1 className="text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.1] tracking-tight font-[family-name:var(--font-display)]">
+        <h1 className="font-[family-name:var(--font-display)] text-[clamp(1.8rem,4vw,2.6rem)] leading-[1.1] tracking-tight">
           Your Cart
         </h1>
 
         <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_360px]">
           {/* Item list */}
           <div>
-            <div className="divide-y divide-border">
+            <div className="divide-border divide-y">
               {items.map((item) => {
                 const key = cartItemKey(item);
                 return (
-                  <div key={key} className="flex gap-4 py-6 first:pt-0 last:pb-0">
+                  <div
+                    key={key}
+                    className="flex gap-4 py-6 first:pt-0 last:pb-0"
+                  >
                     {/* Thumbnail */}
-                    <div className="relative size-24 shrink-0 overflow-hidden rounded-lg bg-muted sm:size-28">
+                    <div className="bg-muted relative size-24 shrink-0 overflow-hidden rounded-lg sm:size-28">
                       {item.image ? (
                         <Image
                           src={item.image}
@@ -107,7 +123,7 @@ export default function CartPage() {
                           sizes="112px"
                         />
                       ) : (
-                        <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
+                        <div className="text-muted-foreground flex h-full items-center justify-center text-xs">
                           No image
                         </div>
                       )}
@@ -122,7 +138,7 @@ export default function CartPage() {
                         {item.name}
                       </Link>
                       {item.variant && (
-                        <p className="mt-0.5 text-xs text-muted-foreground">
+                        <p className="text-muted-foreground mt-0.5 text-xs">
                           {item.variant.includes("|")
                             ? `Size ${item.variant.split("|")[0]} · Engraving: "${item.variant.split("|")[1]}"`
                             : `Size ${item.variant}`}
@@ -137,7 +153,8 @@ export default function CartPage() {
                         <div className="flex items-center gap-1">
                           <button
                             type="button"
-                            className="flex size-8 items-center justify-center rounded-md border border-border transition-colors hover:bg-muted"
+                            aria-label={`Decrease quantity for ${item.name}`}
+                            className="border-border hover:bg-muted flex size-8 items-center justify-center rounded-md border transition-colors"
                             onClick={() =>
                               updateQuantity(key, item.quantity - 1)
                             }
@@ -149,7 +166,8 @@ export default function CartPage() {
                           </span>
                           <button
                             type="button"
-                            className="flex size-8 items-center justify-center rounded-md border border-border transition-colors hover:bg-muted"
+                            aria-label={`Increase quantity for ${item.name}`}
+                            className="border-border hover:bg-muted flex size-8 items-center justify-center rounded-md border transition-colors"
                             onClick={() =>
                               updateQuantity(key, item.quantity + 1)
                             }
@@ -159,7 +177,8 @@ export default function CartPage() {
                         </div>
                         <button
                           type="button"
-                          className="ml-auto text-sm text-muted-foreground transition-colors hover:text-destructive"
+                          aria-label={`Remove ${item.name} from cart`}
+                          className="text-muted-foreground hover:text-destructive ml-auto text-sm transition-colors"
                           onClick={() => removeItem(key)}
                         >
                           <Trash2 className="size-4" />
@@ -180,7 +199,7 @@ export default function CartPage() {
 
             <button
               type="button"
-              className="mt-6 text-sm text-muted-foreground underline-offset-4 hover:underline"
+              className="text-muted-foreground mt-6 text-sm underline-offset-4 hover:underline"
               onClick={clearCart}
             >
               Clear cart
@@ -189,7 +208,7 @@ export default function CartPage() {
 
           {/* Order summary */}
           <div className="lg:sticky lg:top-24">
-            <div className="rounded-xl border border-border bg-card text-card-foreground p-6">
+            <div className="border-border bg-card text-card-foreground rounded-xl border p-6">
               <h2 className="text-lg font-semibold">Order Summary</h2>
 
               <div className="mt-4 space-y-2 text-sm">
@@ -197,15 +216,25 @@ export default function CartPage() {
                   <span className="text-muted-foreground">Subtotal</span>
                   <span className="font-medium">{formatPrice(subtotal)}</span>
                 </div>
-                <div className="border-t border-border pt-3 mt-1">
+                <div className="flex justify-between gap-4">
+                  <span className="text-muted-foreground">Shipping</span>
+                  <span className="text-right font-medium">
+                    {selectedShippingRate
+                      ? selectedShippingRate.priceCents === 0
+                        ? "FREE"
+                        : formatPrice(selectedShippingRate.priceCents)
+                      : "Select a rate"}
+                  </span>
+                </div>
+                <div className="border-border mt-1 border-t pt-3">
                   <ShippingEstimator />
                 </div>
               </div>
 
-              <div className="mt-4 border-t border-border pt-4">
+              <div className="border-border mt-4 border-t pt-4">
                 <div className="flex justify-between text-base font-semibold">
-                  <span>Total</span>
-                  <span>{formatPrice(subtotal)}</span>
+                  <span>Estimated total</span>
+                  <span>{formatPrice(estimatedTotal)}</span>
                 </div>
               </div>
 
@@ -215,23 +244,32 @@ export default function CartPage() {
                 onClick={handleCheckout}
                 disabled={checkingOut}
               >
-                {checkingOut ? "Redirecting..." : "Proceed to Checkout"}
+                {checkingOut
+                  ? "Redirecting..."
+                  : selectedShippingRate
+                    ? `Checkout with ${selectedShippingRate.service}`
+                    : "Checkout with fallback shipping"}
               </Button>
 
-              <p className="mt-3 text-center text-xs text-muted-foreground">
-                Shipping &amp; taxes calculated at checkout
+              <p className="text-muted-foreground mt-3 text-center text-xs">
+                {selectedShippingRate
+                  ? "Selected shipping is saved. Taxes and final address are verified at checkout."
+                  : "No rate selected. Checkout will use fallback shipping options."}
               </p>
 
               {/* Trust messaging */}
-              <div className="mt-5 space-y-2 border-t border-border pt-4">
-                <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="text-primary">&#10003;</span> Handmade in the North Shore workshop
+              <div className="border-border mt-5 space-y-2 border-t pt-4">
+                <p className="text-muted-foreground flex items-center gap-2 text-xs">
+                  <span className="text-primary">&#10003;</span> Handmade in the
+                  North Shore workshop
                 </p>
-                <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="text-primary">&#10003;</span> 1-year warranty on every piece
+                <p className="text-muted-foreground flex items-center gap-2 text-xs">
+                  <span className="text-primary">&#10003;</span> 1-year warranty
+                  on every piece
                 </p>
-                <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="text-primary">&#10003;</span> 30-day returns, no questions asked
+                <p className="text-muted-foreground flex items-center gap-2 text-xs">
+                  <span className="text-primary">&#10003;</span> 30-day returns,
+                  no questions asked
                 </p>
               </div>
             </div>

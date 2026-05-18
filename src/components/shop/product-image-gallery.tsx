@@ -76,6 +76,7 @@ export function ProductImageGallery({
         {/* Main image — cinematic scroll reveal */}
         <button
           className="relative w-full aspect-[4/5] bg-muted cursor-zoom-in"
+          aria-label={`Open ${productName} image ${activeIndex + 1} of ${images.length}`}
           onClick={() => setLightboxOpen(true)}
         >
           <AnimatePresence mode="wait">
@@ -113,6 +114,7 @@ export function ProductImageGallery({
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
+                aria-label={`Show ${productName} image ${i + 1} of ${images.length}`}
                 className={cn(
                   "relative size-16 shrink-0 overflow-hidden rounded-lg border-2 transition-all",
                   i === activeIndex
@@ -147,6 +149,7 @@ export function ProductImageGallery({
             >
               <button
                 className="relative w-full aspect-[4/5] bg-muted"
+                aria-label={`Open ${productName} image ${i + 1} of ${images.length}`}
                 onClick={() => {
                   setActiveIndex(i);
                   setLightboxOpen(true);
@@ -202,6 +205,7 @@ export function ProductImageGallery({
 
             <button
               onClick={() => setLightboxOpen(false)}
+              aria-label="Close product image gallery"
               className="absolute right-3 top-3 rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
             >
               <X className="size-5" />
@@ -211,12 +215,14 @@ export function ProductImageGallery({
               <>
                 <button
                   onClick={() => navigate(-1)}
+                  aria-label="Show previous product image"
                   className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
                 >
                   <ChevronLeft className="size-5" />
                 </button>
                 <button
                   onClick={() => navigate(1)}
+                  aria-label="Show next product image"
                   className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
                 >
                   <ChevronRight className="size-5" />

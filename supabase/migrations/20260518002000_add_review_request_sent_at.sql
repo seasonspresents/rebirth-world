@@ -1,0 +1,12 @@
+BEGIN;
+
+ALTER TABLE public.orders
+  ADD COLUMN IF NOT EXISTS review_request_sent_at TIMESTAMPTZ;
+
+CREATE INDEX IF NOT EXISTS idx_orders_review_request_eligible
+  ON public.orders(delivered_at)
+  WHERE status = 'delivered'
+    AND delivered_at IS NOT NULL
+    AND review_request_sent_at IS NULL;
+
+COMMIT;

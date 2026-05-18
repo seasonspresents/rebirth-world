@@ -11,17 +11,26 @@ import {
   useState,
 } from "react";
 import { useAuth } from "@/components/auth/auth-context";
-import type { CartAction, CartItemData } from "@/lib/cart/types";
+import type {
+  CartAction,
+  CartItemData,
+  CartShippingAddress,
+  CartShippingRate,
+} from "@/lib/cart/types";
 import { cartItemKey, productToCartItem } from "@/lib/cart/types";
 import type { Product } from "@/lib/payments/constants";
 
 const STORAGE_KEY = "rebirth-cart";
+const SHIPPING_STORAGE_KEY = "rebirth-cart-shipping";
 
 // ---------------------------------------------------------------------------
 // Reducer
 // ---------------------------------------------------------------------------
 
-function cartReducer(state: CartItemData[], action: CartAction): CartItemData[] {
+function cartReducer(
+  state: CartItemData[],
+  action: CartAction
+): CartItemData[] {
   switch (action.type) {
     case "ADD_ITEM": {
       const key = cartItemKey(action.item);
@@ -55,6 +64,40 @@ function cartReducer(state: CartItemData[], action: CartAction): CartItemData[] 
   }
 }
 
+interface CartShippingSelection {
+  selectedShippingRate: CartShippingRate | null;
+  shippingAddress: CartShippingAddress | null;
+}
+
+type CartShippingAction =
+  | { type: "SET_RATE"; rate: CartShippingRate | null }
+  | { type: "SET_ADDRESS"; address: CartShippingAddress | null }
+  | { type: "SET_SELECTION"; selection: CartShippingSelection }
+  | { type: "CLEAR" };
+
+const EMPTY_SHIPPING_SELECTION: CartShippingSelection = {
+  selectedShippingRate: null,
+  shippingAddress: null,
+};
+
+function shippingReducer(
+  state: CartShippingSelection,
+  action: CartShippingAction
+): CartShippingSelection {
+  switch (action.type) {
+    case "SET_RATE":
+      return { ...state, selectedShippingRate: action.rate };
+    case "SET_ADDRESS":
+      return { ...state, shippingAddress: action.address };
+    case "SET_SELECTION":
+      return action.selection;
+    case "CLEAR":
+      return EMPTY_SHIPPING_SELECTION;
+    default:
+      return state;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Context
 // ---------------------------------------------------------------------------
@@ -64,10 +107,19 @@ interface CartContextType {
   itemCount: number;
   subtotal: number;
   isLoading: boolean;
-  addItem: (product: Product, quantity?: number, variant?: string | null) => void;
+  selectedShippingRate: CartShippingRate | null;
+  shippingAddress: CartShippingAddress | null;
+  addItem: (
+    product: Product,
+    quantity?: number,
+    variant?: string | null
+  ) => void;
   removeItem: (key: string) => void;
   updateQuantity: (key: string, quantity: number) => void;
   clearCart: () => void;
+  setShippingRate: (rate: CartShippingRate | null) => void;
+  setShippingAddress: (address: CartShippingAddress | null) => void;
+  clearShippingSelection: () => void;
   isCartOpen: boolean;
   setCartOpen: (open: boolean) => void;
 }
@@ -97,6 +149,39 @@ function writeLocalStorage(items: CartItemData[]) {
   }
 }
 
+function readShippingStorage(): CartShippingSelection {
+  if (typeof window === "undefined") {
+    return EMPTY_SHIPPING_SELECTION;
+  }
+  try {
+    const raw = localStorage.getItem(SHIPPING_STORAGE_KEY);
+    return raw
+      ? (JSON.parse(raw) as CartShippingSelection)
+      : EMPTY_SHIPPING_SELECTION;
+  } catch {
+    return EMPTY_SHIPPING_SELECTION;
+  }
+}
+
+function writeShippingStorage(
+  selectedShippingRate: CartShippingRate | null,
+  shippingAddress: CartShippingAddress | null
+) {
+  if (typeof window === "undefined") return;
+  try {
+    if (!selectedShippingRate && !shippingAddress) {
+      localStorage.removeItem(SHIPPING_STORAGE_KEY);
+      return;
+    }
+    localStorage.setItem(
+      SHIPPING_STORAGE_KEY,
+      JSON.stringify({ selectedShippingRate, shippingAddress })
+    );
+  } catch {
+    // quota exceeded — ignore
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Provider
 // ---------------------------------------------------------------------------
@@ -104,30 +189,64 @@ function writeLocalStorage(items: CartItemData[]) {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
   const [items, dispatch] = useReducer(cartReducer, []);
-  const [isLoading, setIsLoading] = useState(true);
+  const [shippingSelection, dispatchShipping] = useReducer(
+    shippingReducer,
+    EMPTY_SHIPPING_SELECTION
+  );
+  const [hasHydratedStorage, markStorageHydrated] = useReducer(
+    () => true,
+    false
+  );
   const [isCartOpen, setCartOpen] = useState(false);
-  const initialized = useRef(false);
   const prevUserId = useRef<string | null>(null);
+  const { selectedShippingRate, shippingAddress } = shippingSelection;
+  const isLoading = !hasHydratedStorage;
 
   // -- Initialise from localStorage on mount --------------------------------
   useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
+    if (hasHydratedStorage) return;
     const stored = readLocalStorage();
     if (stored.length > 0) {
       dispatch({ type: "SET_ITEMS", items: stored });
     }
-    setIsLoading(false);
+    dispatchShipping({
+      type: "SET_SELECTION",
+      selection: readShippingStorage(),
+    });
+    markStorageHydrated();
+  }, [hasHydratedStorage]);
+
+  // -- Shipping selection ----------------------------------------------------
+  const clearShippingSelection = useCallback(() => {
+    dispatchShipping({ type: "CLEAR" });
+    writeShippingStorage(null, null);
   }, []);
+
+  const setShippingRate = useCallback((rate: CartShippingRate | null) => {
+    dispatchShipping({ type: "SET_RATE", rate });
+  }, []);
+
+  const setShippingAddress = useCallback(
+    (address: CartShippingAddress | null) => {
+      dispatchShipping({ type: "SET_ADDRESS", address });
+    },
+    []
+  );
 
   // -- Persist to localStorage on every change ------------------------------
   useEffect(() => {
-    if (!initialized.current) return;
+    if (!hasHydratedStorage) return;
     writeLocalStorage(items);
-  }, [items]);
+  }, [items, hasHydratedStorage]);
+
+  useEffect(() => {
+    if (!hasHydratedStorage) return;
+    writeShippingStorage(selectedShippingRate, shippingAddress);
+  }, [selectedShippingRate, shippingAddress, hasHydratedStorage]);
 
   // -- Sync with Supabase when user logs in ---------------------------------
   useEffect(() => {
+    if (!hasHydratedStorage) return;
     if (!user) {
       prevUserId.current = null;
       return;
@@ -147,12 +266,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       .then((data) => {
         if (data?.items) {
           dispatch({ type: "SET_ITEMS", items: data.items });
+          clearShippingSelection();
         }
       })
       .catch(() => {
         // offline / error — keep localStorage items
       });
-  }, [user]);
+  }, [user, clearShippingSelection, hasHydratedStorage]);
 
   // -- Actions --------------------------------------------------------------
 
@@ -160,6 +280,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     (product: Product, quantity = 1, variant: string | null = null) => {
       const item = productToCartItem(product, quantity, variant);
       dispatch({ type: "ADD_ITEM", item });
+      clearShippingSelection();
 
       // Fire-and-forget DB upsert for logged-in users
       if (user) {
@@ -170,12 +291,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }).catch(() => {});
       }
     },
-    [user]
+    [user, clearShippingSelection]
   );
 
   const removeItem = useCallback(
     (key: string) => {
       dispatch({ type: "REMOVE_ITEM", key });
+      clearShippingSelection();
 
       if (user) {
         // Parse key back to price+variant for the API
@@ -187,7 +309,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }).catch(() => {});
       }
     },
-    [user]
+    [user, clearShippingSelection]
   );
 
   const updateQuantity = useCallback(
@@ -197,27 +319,33 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       dispatch({ type: "UPDATE_QUANTITY", key, quantity });
+      clearShippingSelection();
 
       if (user) {
         const [stripePriceId, variant] = key.split("::");
         fetch("/api/cart", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ stripePriceId, variant: variant || null, quantity }),
+          body: JSON.stringify({
+            stripePriceId,
+            variant: variant || null,
+            quantity,
+          }),
         }).catch(() => {});
       }
     },
-    [user, removeItem]
+    [user, removeItem, clearShippingSelection]
   );
 
   const clearCart = useCallback(() => {
     dispatch({ type: "CLEAR_CART" });
     writeLocalStorage([]);
+    clearShippingSelection();
 
     if (user) {
       fetch("/api/cart", { method: "DELETE" }).catch(() => {});
     }
-  }, [user]);
+  }, [user, clearShippingSelection]);
 
   // -- Derived values -------------------------------------------------------
 
@@ -237,10 +365,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       itemCount,
       subtotal,
       isLoading,
+      selectedShippingRate,
+      shippingAddress,
       addItem,
       removeItem,
       updateQuantity,
       clearCart,
+      setShippingRate,
+      setShippingAddress,
+      clearShippingSelection,
       isCartOpen,
       setCartOpen,
     }),
@@ -249,10 +382,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       itemCount,
       subtotal,
       isLoading,
+      selectedShippingRate,
+      shippingAddress,
       addItem,
       removeItem,
       updateQuantity,
       clearCart,
+      setShippingRate,
+      setShippingAddress,
+      clearShippingSelection,
       isCartOpen,
     ]
   );

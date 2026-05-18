@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReviewDisplayItem } from "@/lib/review-types";
 
 interface Testimonial {
   quote: string;
@@ -19,8 +20,7 @@ const LIGHT_TESTIMONIALS: Testimonial[] = [
       "\u201CEverything looks incredible, I\u2019m so stoked. My mom FaceTimed me as she opened it and it looks better than I could have ever imagined. Thank you for turning my dreams into reality.\u201D",
     name: "Verified Buyer",
     meta: "Custom Ring · DM",
-    mediaNote:
-      "Customer DM screenshot showing genuine reaction",
+    mediaNote: "Customer DM screenshot showing genuine reaction",
     mediaImage: "/images/people/malzl002722-r1-066-31a.webp",
   },
   {
@@ -28,8 +28,7 @@ const LIGHT_TESTIMONIALS: Testimonial[] = [
       "\u201CUs looking at my engagement ring made by Daniel \u2014 it has one of my first favorite skateboards inside! Shoutout + thank you @rebirthrings\u201D",
     name: "Jared",
     meta: "Engagement Ring · @mormonjared",
-    mediaNote:
-      "Customer showing engagement ring with skateboard inside",
+    mediaNote: "Customer showing engagement ring with skateboard inside",
     mediaImage: "/images/people/dame-in-rebirth.webp",
   },
   {
@@ -37,18 +36,42 @@ const LIGHT_TESTIMONIALS: Testimonial[] = [
       "\u201CI\u2019ve been addicted to using this journal. I am obsessed.\u201D",
     name: "Lexx H.",
     meta: "Rebirth Journal · @lexxhidalgo",
-    mediaNote:
-      "Customer photo with Rebirth journal",
+    mediaNote: "Customer photo with Rebirth journal",
     mediaImage: "/images/testimonials/img_0651.webp",
   },
 ];
 
-export function SocialProofLight() {
+function reviewsToTestimonials(reviews: ReviewDisplayItem[]): Testimonial[] {
+  return reviews
+    .filter((review) => review.body || review.title)
+    .map((review) => ({
+      quote: review.body ? `“${review.body}”` : `“${review.title}”`,
+      name: "Verified Buyer",
+      meta: review.title || "Approved Review",
+      mediaImage: review.photos[0],
+    }));
+}
+
+function resolveTestimonials(
+  reviews: ReviewDisplayItem[] | undefined,
+  fallback: Testimonial[]
+) {
+  const pulledReviews = reviews ? reviewsToTestimonials(reviews) : [];
+  return [...pulledReviews, ...fallback].slice(0, 3);
+}
+
+export function SocialProofLight({
+  reviews,
+}: {
+  reviews?: ReviewDisplayItem[];
+}) {
+  const testimonials = resolveTestimonials(reviews, LIGHT_TESTIMONIALS);
+
   return (
     <section className="bg-[#e0dbd2] py-14 md:py-20">
       <div className="mx-auto max-w-[1200px] px-4 md:px-6">
         <div className="mb-12 text-center">
-          <span className="mb-2.5 block text-[10px] font-bold uppercase tracking-[3.5px] text-[var(--rebirth-teal)]">
+          <span className="mb-2.5 block text-[10px] font-bold tracking-[3.5px] text-[var(--rebirth-teal)] uppercase">
             Verified Reviews
           </span>
           <h2 className="font-[family-name:var(--font-caps)] text-[clamp(30px,4.5vw,58px)] leading-[1.05] tracking-[2px]">
@@ -59,20 +82,26 @@ export function SocialProofLight() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {LIGHT_TESTIMONIALS.map((t, i) => (
+          {testimonials.map((t, i) => (
             <div
               key={i}
               className="flex flex-col gap-3.5 border border-[#e0dbd2] bg-[var(--rebirth-film-cream)] p-6"
             >
               {t.mediaImage && (
                 <div className="relative aspect-square overflow-hidden">
-                  <Image src={t.mediaImage} alt={`${t.name} with Rebirth product`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                  <Image
+                    src={t.mediaImage}
+                    alt={`${t.name} with Rebirth product`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
                 </div>
               )}
               <div className="text-sm tracking-[1.5px] text-[var(--rebirth-amber)]">
                 ★★★★★
               </div>
-              <p className="flex-1 text-[13px] italic leading-[1.7] text-[#444]">
+              <p className="flex-1 text-[13px] leading-[1.7] text-[#444] italic">
                 {t.quote}
               </p>
               <div className="text-[13px] font-bold">{t.name}</div>
@@ -104,8 +133,7 @@ const DARK_TESTIMONIALS: Testimonial[] = [
       "\u201CIn love with this new ring that @rebirthrings made for me. Hit up my boy if you want one!\u201D",
     name: "Jackson J.",
     meta: "Wedding Band",
-    mediaNote:
-      "Customer Instagram post with Rebirth ring",
+    mediaNote: "Customer Instagram post with Rebirth ring",
     mediaImage: "/images/people/000041.webp",
   },
   {
@@ -113,27 +141,30 @@ const DARK_TESTIMONIALS: Testimonial[] = [
       "\u201CShe makes these really sick rings out of old skateboard decks & he engraved a few for me & some of the other members... how stinking cool\u201D",
     name: "Sierra F.",
     meta: "Engraved Ring · @sierra.fernald",
-    mediaNote:
-      "Customer photo of engraved skateboard ring",
+    mediaNote: "Customer photo of engraved skateboard ring",
     mediaImage: "/images/people/men-wedding-ring.webp",
   },
   {
-    quote:
-      "\u201CThank you guys so much!!! They are PERFECT\u201D",
+    quote: "\u201CThank you guys so much!!! They are PERFECT\u201D",
     name: "Emma",
     meta: "Verified Buyer",
-    mediaNote:
-      "Customer DM showing genuine excitement",
+    mediaNote: "Customer DM showing genuine excitement",
     mediaImage: "/images/testimonials/img_0648.webp",
   },
 ];
 
-export function SocialProofDark() {
+export function SocialProofDark({
+  reviews,
+}: {
+  reviews?: ReviewDisplayItem[];
+}) {
+  const testimonials = resolveTestimonials(reviews, DARK_TESTIMONIALS);
+
   return (
     <section className="bg-[#111] py-14 md:py-20">
       <div className="mx-auto max-w-[1200px] px-4 md:px-6">
         <div className="mb-12 text-center">
-          <span className="mb-2.5 block text-[10px] font-bold uppercase tracking-[3.5px] text-[var(--rebirth-amber)]">
+          <span className="mb-2.5 block text-[10px] font-bold tracking-[3.5px] text-[var(--rebirth-amber)] uppercase">
             More Love
           </span>
           <h2 className="font-[family-name:var(--font-caps)] text-[clamp(30px,4.5vw,58px)] leading-[1.05] tracking-[2px] text-[var(--rebirth-film-cream)]">
@@ -144,20 +175,26 @@ export function SocialProofDark() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {DARK_TESTIMONIALS.map((t, i) => (
+          {testimonials.map((t, i) => (
             <div
               key={i}
               className="flex flex-col gap-3.5 border border-[#2a2a2a] bg-[#1a1a1a] p-6"
             >
               {t.mediaImage && (
                 <div className="relative aspect-square overflow-hidden">
-                  <Image src={t.mediaImage} alt={`${t.name} with Rebirth product`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                  <Image
+                    src={t.mediaImage}
+                    alt={`${t.name} with Rebirth product`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
                 </div>
               )}
               <div className="text-sm tracking-[1.5px] text-[var(--rebirth-amber)]">
                 ★★★★★
               </div>
-              <p className="flex-1 text-[13px] italic leading-[1.7] text-[#aaa]">
+              <p className="flex-1 text-[13px] leading-[1.7] text-[#aaa] italic">
                 {t.quote}
               </p>
               <div className="text-[13px] font-bold text-[var(--rebirth-film-cream)]">

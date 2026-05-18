@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { upsertContact } from "@/lib/ghl";
+import { GHL_CUSTOM_FIELDS, upsertContact } from "@/lib/ghl";
 import { sendEmail } from "@/lib/emails";
 
 const contactSchema = z.object({
@@ -23,7 +23,15 @@ export async function POST(request: NextRequest) {
       tags: ["contact_form", "lead"],
       source: "rebirth.world",
       customFields: [
-        { key: "contact_message", field_value: validatedData.message },
+        {
+          key: GHL_CUSTOM_FIELDS.contactMessage,
+          field_value: validatedData.message,
+        },
+        { key: GHL_CUSTOM_FIELDS.rebirthSource, field_value: "contact_form" },
+        {
+          key: GHL_CUSTOM_FIELDS.rebirthSourceDetail,
+          field_value: "contact_page",
+        },
       ],
     });
 

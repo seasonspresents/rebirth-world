@@ -1,8 +1,11 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getProductBySlug, listProducts } from "@/lib/payments/products";
+import { getApprovedReviewsForProduct } from "@/lib/review-data";
 import { RingPDP } from "@/components/pdp/ring/ring-pdp";
 import { ApparelPDP } from "@/components/pdp/apparel/apparel-pdp";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import { RecentlyViewedProducts } from "@/components/shop/recently-viewed";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -13,7 +16,9 @@ export async function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
 
@@ -24,6 +29,9 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     description:
       product.description ||
       `${product.name} — Handcrafted from recycled materials by Rebirth World.`,
+    alternates: {
+      canonical: `/shop/${product.slug}`,
+    },
     openGraph: {
       title: `${product.name} | Rebirth World`,
       description:
@@ -36,14 +44,18 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const products = await listProducts();
+  const product = products.find((p) => p.slug === slug) ?? null;
 
   if (!product) notFound();
 
   const collection = product.metadata?.collection;
+  const availableProductSlugs = products.map((item) => item.slug);
+  const { reviews, summary: reviewSummary } =
+    await getApprovedReviewsForProduct(product.id);
 
   // JSON-LD — from our own Stripe product data (trusted)
-  const jsonLd = JSON.stringify({
+  const jsonLdProduct: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
@@ -57,14 +69,42 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       price: (product.price / 100).toFixed(2),
       availability: "https://schema.org/InStock",
     },
-  }).replace(/</g, "\\u003c");
+  };
+
+  if (reviewSummary.reviewCount > 0) {
+    jsonLdProduct.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: reviewSummary.averageRating.toFixed(1),
+      reviewCount: reviewSummary.reviewCount,
+    };
+  }
+
+  const jsonLd = JSON.stringify(jsonLdProduct).replace(/</g, "\\u003c");
 
   // Route to appropriate PDP template based on collection
   if (collection === "apparel") {
     return (
       <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
-        <ApparelPDP product={product} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
+        />
+        <BreadcrumbJsonLd
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Shop", href: "/shop" },
+            { name: product.name, href: `/shop/${product.slug}` },
+          ]}
+        />
+        <ApparelPDP
+          product={product}
+          reviews={reviews}
+          reviewSummary={reviewSummary}
+        />
+        <RecentlyViewedProducts
+          product={product}
+          availableSlugs={availableProductSlugs}
+        />
       </>
     );
   }
@@ -72,8 +112,26 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   // Default: Ring PDP (skateboard-rings, wedding-bands, or unspecified)
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
-      <RingPDP product={product} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Shop", href: "/shop" },
+          { name: product.name, href: `/shop/${product.slug}` },
+        ]}
+      />
+      <RingPDP
+        product={product}
+        reviews={reviews}
+        reviewSummary={reviewSummary}
+      />
+      <RecentlyViewedProducts
+        product={product}
+        availableSlugs={availableProductSlugs}
+      />
     </>
   );
 }

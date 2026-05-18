@@ -96,6 +96,7 @@ export interface Order {
   updated_at: string;
   shipped_at: string | null;
   delivered_at: string | null;
+  review_request_sent_at: string | null;
 }
 
 /**
@@ -117,6 +118,27 @@ export interface OrderItem {
   engraving_graphic_url: string | null;
   collection: string | null;
   created_at: string;
+}
+
+/**
+ * Review
+ * Maps to the `reviews` table
+ */
+export interface Review {
+  id: string;
+  order_item_id: string;
+  user_id: string;
+  product_stripe_id: string;
+  rating: number;
+  title: string | null;
+  body: string | null;
+  photos: string[];
+  verified_purchase: boolean;
+  status: "pending" | "approved" | "rejected";
+  admin_response: string | null;
+  admin_response_at: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 /**
@@ -176,4 +198,3 @@ export interface EmailSubscriber {
 export type UserProfileUpdate = Partial<
   Omit<UserProfile, "id" | "user_id" | "created_at" | "updated_at">
 >;
-
