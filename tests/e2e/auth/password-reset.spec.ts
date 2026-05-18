@@ -93,16 +93,14 @@ test.describe("Password Reset Flow", () => {
       await expect(page).toHaveURL("/sign-in");
     });
 
-    // NOTE: Actual password reset email test
-    // Uncomment when ready to test with real Supabase instance
-    test.skip("should send password reset email for valid email", async ({
+    test("should send password reset email for valid email", async ({
       page,
     }) => {
-      const TEST_EMAIL = process.env.TEST_USER_EMAIL;
-
-      if (!TEST_EMAIL) {
-        test.skip();
-      }
+      test.skip(
+        !process.env.TEST_USER_EMAIL,
+        "Set TEST_USER_EMAIL before sending password reset emails."
+      );
+      const TEST_EMAIL = process.env.TEST_USER_EMAIL!;
 
       // Enter valid email
       const emailInput = page.locator('input[type="email"]').first();
@@ -122,9 +120,6 @@ test.describe("Password Reset Flow", () => {
   });
 
   test.describe("Reset Password Page", () => {
-    // NOTE: This page requires a valid reset token from email
-    // These are placeholder tests - actual testing requires email integration
-
     test("should load reset password page with token", async ({ page }) => {
       // Navigate with dummy token (will fail in real scenario)
       await page.goto("/reset-password?token=dummy-token");
@@ -133,29 +128,32 @@ test.describe("Password Reset Flow", () => {
       await expect(page).toHaveURL(/\/reset-password/);
     });
 
-    test.skip("should display new password form with valid token", async ({
+    test("should display new password form with valid token", async ({
       page,
     }) => {
-      // TODO: Generate valid reset token for testing
-      // This would require:
-      // 1. Triggering password reset for test user
-      // 2. Extracting token from email or database
-      // 3. Using that token here
+      test.skip(
+        !process.env.TEST_RESET_TOKEN,
+        "Set TEST_RESET_TOKEN from a captured reset email before testing the reset form."
+      );
 
-      await page.goto("/reset-password?token=VALID_TOKEN_HERE");
+      await page.goto(`/reset-password?token=${process.env.TEST_RESET_TOKEN}`);
 
       // Check for password fields
       const passwordInput = page.locator('input[type="password"]').first();
       await expect(passwordInput).toBeVisible();
     });
 
-    test.skip("should successfully reset password with valid token", async ({
+    test("should successfully reset password with valid token", async ({
       page,
     }) => {
-      // TODO: Implement when token generation is available
+      test.skip(
+        !process.env.TEST_RESET_TOKEN ||
+          process.env.RUN_SUPABASE_MUTATION_TESTS !== "1",
+        "Set TEST_RESET_TOKEN and RUN_SUPABASE_MUTATION_TESTS=1 before mutating passwords."
+      );
       const newPassword = "NewSecurePass123!";
 
-      await page.goto("/reset-password?token=VALID_TOKEN_HERE");
+      await page.goto(`/reset-password?token=${process.env.TEST_RESET_TOKEN}`);
 
       // Fill new password
       const passwordInput = page.locator('input[type="password"]').first();

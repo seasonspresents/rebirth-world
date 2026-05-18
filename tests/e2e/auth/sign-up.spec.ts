@@ -6,7 +6,7 @@ test.describe("Sign Up Page", () => {
   });
 
   test("should load sign up page successfully", async ({ page }) => {
-    await expect(page).toHaveTitle(/Acme/);
+    await expect(page).toHaveTitle(/Rebirth|Sign up/i);
     await expect(page).toHaveURL("/sign-up");
   });
 
@@ -71,7 +71,7 @@ test.describe("Sign Up Page", () => {
 
   test("should show validation error for invalid email", async ({ page }) => {
     // Fill name and enter invalid email
-    const nameInput = page.locator('input[name*="name" i]').first();
+    const nameInput = page.getByLabel(/name/i).first();
     await nameInput.fill("Test User");
 
     const emailInput = page
@@ -126,17 +126,20 @@ test.describe("Sign Up Page", () => {
     expect(legalLinksCount).toBeGreaterThan(0);
   });
 
-  // NOTE: Actual registration test
-  // Uncomment when ready to test with real Supabase instance
-  test.skip("should successfully register new user", async ({ page }) => {
-    // TODO: Generate unique test email or clean up after test
+  test("should successfully register new user", async ({ page }) => {
+    test.skip(
+      process.env.RUN_SUPABASE_MUTATION_TESTS !== "1",
+      "Set RUN_SUPABASE_MUTATION_TESTS=1 before creating real Supabase users."
+    );
     const timestamp = Date.now();
-    const testEmail = `test${timestamp}@example.com`;
+    const testEmail = `rebirth-e2e+${timestamp}@example.com`;
     const testPassword = "SecureTestPass123!";
 
-    // Fill in credentials
+    await page.locator('input[id="fullName"]').fill("Rebirth E2E");
     const emailInput = page.locator('input[type="email"]').first();
     await emailInput.fill(testEmail);
+    await page.getByRole("button", { name: /continue/i }).click();
+    await expect(page).toHaveURL(/\/sign-up\/confirm/);
 
     const passwordInput = page.locator('input[type="password"]').first();
     await passwordInput.fill(testPassword);
@@ -145,7 +148,7 @@ test.describe("Sign Up Page", () => {
     const submitButton = page.locator('button[type="submit"]').first();
     await submitButton.click();
 
-    // Should show confirmation message or redirect to email confirmation
+    // Should show confirmation message or redirect to email confirmation.
     await page.waitForTimeout(2000);
 
     // Check for success (either redirect or confirmation message)
