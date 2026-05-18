@@ -1,6 +1,9 @@
+import { Suspense } from "react";
 import type { Product } from "@/lib/payments/constants";
 import type { ReviewDisplayItem, ReviewSummary } from "@/lib/review-types";
+import { RelatedProducts } from "@/components/shop/related-products";
 import { ProductReviews } from "@/components/shop/reviews";
+import { ProductStoryBlock } from "@/components/pdp/shared/product-story-block";
 import { ApparelHero } from "./apparel-hero";
 import { UgcScrollStrip } from "./ugc-scroll-strip";
 import { IconBenefitStrip } from "./icon-benefit-strip";
@@ -32,7 +35,10 @@ export function ApparelPDP({
       {/* 1. Hero Product Section */}
       <ApparelHero product={product} />
 
-      {/* 2. UGC Scroll Strip */}
+      {/* 2. Product Story Block */}
+      <ProductStoryBlock product={product} tone="warm" />
+
+      {/* 3. UGC Scroll Strip */}
       <UgcScrollStrip />
 
       {/* 3. Icon Benefit Strip */}
@@ -142,6 +148,20 @@ export function ApparelPDP({
 
       {/* 15. Final CTA */}
       <FinalCta product={product} />
+
+      {/* Related Products */}
+      {product.metadata.collection && (
+        <section className="bg-[#f2ece0] px-6 py-16 md:py-24">
+          <div className="mx-auto max-w-[1200px]">
+            <Suspense>
+              <RelatedProducts
+                collection={product.metadata.collection}
+                excludeId={product.id}
+              />
+            </Suspense>
+          </div>
+        </section>
+      )}
     </>
   );
 }

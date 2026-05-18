@@ -30,7 +30,7 @@ export function ProductReviews({
   const hasReviews = summary.reviewCount > 0;
 
   return (
-    <section className="bg-background border-y px-6 py-16 md:py-24">
+    <section id="reviews" className="bg-background border-y px-6 py-16 md:py-24">
       <div className="mx-auto max-w-[1200px]">
         <div className="grid gap-10 lg:grid-cols-[0.42fr_0.58fr] lg:gap-16">
           <div className="space-y-6">

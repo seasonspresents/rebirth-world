@@ -196,9 +196,12 @@ export function RingHero({ product }: RingHeroProps) {
               <span className="text-base tracking-wide text-[var(--amber)]">
                 {"\u2605\u2605\u2605\u2605\u2605"}
               </span>
-              <span className="text-xs text-[var(--gray)]">
+              <a
+                href="#reviews"
+                className="text-xs text-[var(--gray)] underline-offset-4 hover:text-[var(--teal)] hover:underline"
+              >
                 Rated 4.9/5 by 200+ customers
-              </span>
+              </a>
             </div>
 
             {/* Product name — Playfair Display */}

@@ -3,6 +3,7 @@ import type { Product } from "@/lib/payments/constants";
 import type { ReviewDisplayItem, ReviewSummary } from "@/lib/review-types";
 import { RelatedProducts } from "@/components/shop/related-products";
 import { ProductReviews } from "@/components/shop/reviews";
+import { ProductStoryBlock } from "@/components/pdp/shared/product-story-block";
 
 /* Ring PDP sections — matching mockup order */
 import { RingHero } from "@/components/pdp/ring/ring-hero";
@@ -41,7 +42,10 @@ export function RingPDP({
       {/* ─── 1. Hero Product Section ─── */}
       <RingHero product={product} />
 
-      {/* ─── 2. UGC Scroll Strip ─── */}
+      {/* ─── 2. Product Story Block ─── */}
+      <ProductStoryBlock product={product} tone="dark" />
+
+      {/* ─── 3. UGC Scroll Strip ─── */}
       <RingUgcStrip ctaHref={ctaHref} />
 
       {/* ─── 3. Icon Benefit Strip ─── */}

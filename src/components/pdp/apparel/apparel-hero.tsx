@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Star, Check, ShoppingBag, ChevronDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { ProductImageGallery } from "@/components/shop/product-image-gallery";
@@ -116,9 +116,13 @@ export function ApparelHero({ product }: ApparelHeroProps) {
               <span style={{ color: "#c4603a", fontSize: 16, letterSpacing: 1 }}>
                 &#9733;&#9733;&#9733;&#9733;&#9733;
               </span>
-              <span className="text-xs" style={{ color: "#9a9186" }}>
+              <a
+                href="#reviews"
+                className="text-xs underline-offset-4 hover:underline"
+                style={{ color: "#9a9186" }}
+              >
                 Rated 4.9/5 &middot; Limited stock remaining
-              </span>
+              </a>
             </div>
 
             {/* Product name */}
