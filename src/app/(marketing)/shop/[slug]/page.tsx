@@ -5,6 +5,7 @@ import { getApprovedReviewsForProduct } from "@/lib/review-data";
 import { RingPDP } from "@/components/pdp/ring/ring-pdp";
 import { ApparelPDP } from "@/components/pdp/apparel/apparel-pdp";
 import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import { RecentlyViewedProducts } from "@/components/shop/recently-viewed";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -43,11 +44,13 @@ export async function generateMetadata({
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const products = await listProducts();
+  const product = products.find((p) => p.slug === slug) ?? null;
 
   if (!product) notFound();
 
   const collection = product.metadata?.collection;
+  const availableProductSlugs = products.map((item) => item.slug);
   const { reviews, summary: reviewSummary } =
     await getApprovedReviewsForProduct(product.id);
 
@@ -98,6 +101,10 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           reviews={reviews}
           reviewSummary={reviewSummary}
         />
+        <RecentlyViewedProducts
+          product={product}
+          availableSlugs={availableProductSlugs}
+        />
       </>
     );
   }
@@ -120,6 +127,10 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         product={product}
         reviews={reviews}
         reviewSummary={reviewSummary}
+      />
+      <RecentlyViewedProducts
+        product={product}
+        availableSlugs={availableProductSlugs}
       />
     </>
   );
