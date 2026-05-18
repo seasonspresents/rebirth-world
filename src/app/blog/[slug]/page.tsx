@@ -10,6 +10,8 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { NewsletterCTA } from "@/components/marketing/newsletter-cta";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
+import { DEFAULT_OG_IMAGE, toAbsoluteUrl } from "@/lib/seo";
 import type { BlogPosting, WithContext } from "schema-dts";
 
 interface BlogPostPageProps {
@@ -39,20 +41,6 @@ export async function generateMetadata({
     };
   }
 
-  // Helper function to construct proper image URL
-  const getImageUrl = (imagePath: string): string => {
-    // If it's already a complete URL, use as-is
-    if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-      return imagePath;
-    }
-    // If it's an absolute path, prepend domain only
-    if (imagePath.startsWith("/")) {
-      return `https://rebirth.world${imagePath}`;
-    }
-    // If it's a relative path, prepend domain with slash
-    return `https://rebirth.world/${imagePath}`;
-  };
-
   return {
     title: post.title,
     description: post.description,
@@ -71,7 +59,7 @@ export async function generateMetadata({
       images: post.thumbnail
         ? [
             {
-              url: getImageUrl(post.thumbnail),
+              url: toAbsoluteUrl(post.thumbnail),
               width: 1200,
               height: 630,
               alt: post.title,
@@ -79,7 +67,7 @@ export async function generateMetadata({
           ]
         : [
             {
-              url: "https://rebirth.world/og/default.jpg",
+              url: toAbsoluteUrl(DEFAULT_OG_IMAGE),
               width: 1200,
               height: 630,
               alt: "Rebirth World Blog",
@@ -92,7 +80,9 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: post.title,
       description: post.description,
-      images: post.thumbnail ? [getImageUrl(post.thumbnail)] : ["/og/default.jpg"],
+      images: post.thumbnail
+        ? [toAbsoluteUrl(post.thumbnail)]
+        : [DEFAULT_OG_IMAGE],
     },
   };
 }
@@ -125,8 +115,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       },
     },
     image: post.thumbnail
-      ? `https://rebirth.world${post.thumbnail}`
-      : "https://rebirth.world/og/default.jpg",
+      ? toAbsoluteUrl(post.thumbnail)
+      : toAbsoluteUrl(DEFAULT_OG_IMAGE),
     url: `https://rebirth.world/blog/${slug}`,
     keywords: post.tags?.join(", "),
     mainEntityOfPage: {
@@ -142,6 +132,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Blog", href: "/blog" },
+          { name: post.title, href: `/blog/${slug}` },
+        ]}
       />
       <div className="mx-auto max-w-3xl px-4 py-12">
         <Link

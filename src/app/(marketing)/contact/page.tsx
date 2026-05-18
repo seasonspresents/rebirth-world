@@ -1,5 +1,7 @@
 import { ContactForm } from "@/components/marketing/contact-form";
 import { FAQ } from "@/components/marketing/faq";
+import { FAQPageJsonLd } from "@/components/seo/json-ld";
+import { CONTACT_FAQ_ITEMS } from "@/lib/seo";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -25,6 +27,12 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div>
+      <FAQPageJsonLd
+        questions={CONTACT_FAQ_ITEMS.map((item) => ({
+          question: item.question,
+          answer: item.answer,
+        }))}
+      />
       <ContactForm />
       <FAQ />
     </div>

@@ -1,5 +1,6 @@
-import { OrganizationJsonLd } from "@/components/seo/json-ld";
+import { FAQPageJsonLd, OrganizationJsonLd } from "@/components/seo/json-ld";
 import { listProducts } from "@/lib/payments/products";
+import { HOMEPAGE_FAQ_ITEMS } from "@/lib/seo";
 import {
   getApprovedReviews,
   getReviewSummariesForProducts,
@@ -107,6 +108,12 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: jsonLdContent }}
       />
       <OrganizationJsonLd />
+      <FAQPageJsonLd
+        questions={HOMEPAGE_FAQ_ITEMS.map((item) => ({
+          question: item.q,
+          answer: item.a,
+        }))}
+      />
       <div>
         {/* 1. Hero */}
         <Hero />

@@ -1,3 +1,10 @@
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+  toAbsoluteUrl,
+} from "@/lib/seo";
+
 type ProductJsonLdProps = {
   name: string;
   description: string;
@@ -35,12 +42,12 @@ export function OrganizationJsonLd() {
       data={{
         "@context": "https://schema.org",
         "@type": "Organization",
-        name: "Rebirth World",
-        url: "https://rebirth.world",
-        logo: "https://rebirth.world/logo.png",
-        description:
-          "Handcrafted rings made from recycled skateboards and wood-lined metal wedding bands. Shaped by hand on the North Shore of Oahu.",
-        sameAs: [],
+        "@id": `${SITE_URL}/#organization`,
+        name: SITE_NAME,
+        url: SITE_URL,
+        logo: toAbsoluteUrl("/logo.png"),
+        description: SITE_DESCRIPTION,
+        sameAs: ["https://instagram.com/rebirthrings"],
       }}
     />
   );

@@ -1,6 +1,7 @@
 import { getAllPosts } from "@/lib/posts";
 import BlogClient from "./blog-client";
 import { Metadata } from "next";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 import type { Blog, WithContext } from "schema-dts";
 
 export const metadata: Metadata = {
@@ -79,6 +80,12 @@ export default async function BlogPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Blog", href: "/blog" },
+        ]}
       />
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className="mx-auto max-w-6xl">

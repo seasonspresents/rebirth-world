@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Ring Size Guide",
   description:
     "Find your Rebirth ring size with measurement instructions, a US size chart, and fit notes for wood-lined wedding bands.",
+  alternates: {
+    canonical: "/size-guide",
+  },
 };
 
 const ringSizes = [

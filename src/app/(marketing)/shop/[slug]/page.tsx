@@ -4,6 +4,7 @@ import { getProductBySlug, listProducts } from "@/lib/payments/products";
 import { getApprovedReviewsForProduct } from "@/lib/review-data";
 import { RingPDP } from "@/components/pdp/ring/ring-pdp";
 import { ApparelPDP } from "@/components/pdp/apparel/apparel-pdp";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -27,6 +28,9 @@ export async function generateMetadata({
     description:
       product.description ||
       `${product.name} — Handcrafted from recycled materials by Rebirth World.`,
+    alternates: {
+      canonical: `/shop/${product.slug}`,
+    },
     openGraph: {
       title: `${product.name} | Rebirth World`,
       description:
@@ -82,6 +86,13 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLd }}
         />
+        <BreadcrumbJsonLd
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Shop", href: "/shop" },
+            { name: product.name, href: `/shop/${product.slug}` },
+          ]}
+        />
         <ApparelPDP
           product={product}
           reviews={reviews}
@@ -97,6 +108,13 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Shop", href: "/shop" },
+          { name: product.name, href: `/shop/${product.slug}` },
+        ]}
       />
       <RingPDP
         product={product}

@@ -10,11 +10,15 @@ import { ShopFilters, type ShopFilterOption } from "@/components/shop/shop-filte
 import { ShopSearch } from "@/components/shop/shop-search";
 import { SortSelect } from "@/components/shop/sort-select";
 import { ProductGridSkeleton } from "@/components/shop/product-grid-skeleton";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
   title: "Shop",
   description:
     "Browse our collection of handcrafted rings and jewelry made from recycled skateboards and reclaimed materials.",
+  alternates: {
+    canonical: "/shop",
+  },
 };
 
 const COLLECTION_HEADERS: Record<
@@ -179,6 +183,10 @@ function toFilterOptions(counts: Map<string, number>): ShopFilterOption[] {
 function getCollectionHeader(collection?: string) {
   if (!collection) return COLLECTION_HEADERS.all;
   return COLLECTION_HEADERS[collection] ?? COLLECTION_HEADERS.all;
+}
+
+function getCollectionLabel(collection?: string) {
+  return COLLECTIONS.find((item) => item.slug === collection)?.label;
 }
 
 function ShopCollectionHeader({ collection }: { collection?: string }) {
@@ -412,9 +420,24 @@ export default async function ShopPage({
   }>;
 }) {
   const { collection, material, price, size, q, sort } = await searchParams;
+  const collectionLabel = getCollectionLabel(collection);
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Shop", href: "/shop" },
+          ...(collectionLabel
+            ? [
+                {
+                  name: collectionLabel,
+                  href: `/shop?collection=${collection}`,
+                },
+              ]
+            : []),
+        ]}
+      />
       <ShopCollectionHeader collection={collection} />
 
       {/* Products grid — luxury spacing */}
