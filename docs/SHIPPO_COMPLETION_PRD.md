@@ -143,10 +143,12 @@ File: `scripts/test-shippo.ts`
 File: `scripts/test-shippo-webhook.ts`
 
 - Sends simulated Shippo `track_updated` payloads to `localhost:3000/api/webhooks/shippo`
+  or the `SHIPPO_WEBHOOK_TEST_BASE_URL` override.
 - Tests all status transitions: PRE_TRANSIT → TRANSIT → DELIVERED
 - Tests edge cases: FAILURE, RETURNED, status downgrade prevention
 - Tests auth: valid token, invalid token, missing token
-- Run: `npx tsx scripts/test-shippo-webhook.ts`
+- Setup notes: `docs/SHIPPO_WEBHOOK_SETUP.md`
+- Run: `SHIPPO_WEBHOOK_TEST_BASE_URL=http://localhost:3000/api/webhooks/shippo pnpm exec tsx scripts/test-shippo-webhook.ts`
 
 **Chunk 4C — Local Stripe webhook test for order + collection storage**
 
