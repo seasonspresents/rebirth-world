@@ -18,7 +18,9 @@ export default function MarketingLayout({
         <SectionColorBlender />
         <Header />
         <CartDrawer />
-        <main className="pb-16 md:pb-0">{children}</main>
+        <main className="pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
+          {children}
+        </main>
         <Footer />
         <BottomNav />
       </div>

@@ -4,18 +4,35 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
-import { House, ShoppingBag, ShoppingCart, User } from "lucide-react";
+import { House, Search, ShoppingCart, User } from "lucide-react";
 import { useCart } from "@/components/cart/cart-context";
 
 const navItems = [
   { label: "Home", href: "/", icon: House },
-  { label: "Shop", href: "/shop", icon: ShoppingBag },
+  {
+    label: "Search",
+    href: "/shop#products",
+    icon: Search,
+    isActive: (pathname: string) => pathname === "/shop",
+  },
   { label: "Cart", href: null, icon: ShoppingCart },
-  { label: "Account", href: "/sign-in", icon: User },
+  {
+    label: "Account",
+    href: "/sign-in",
+    icon: User,
+    isActive: (pathname: string) =>
+      pathname.startsWith("/sign-in") ||
+      pathname.startsWith("/sign-up") ||
+      pathname.startsWith("/dashboard"),
+  },
 ] as const;
 
 export function BottomNav() {
   const pathname = usePathname();
+  return <BottomNavInner key={pathname} pathname={pathname} />;
+}
+
+function BottomNavInner({ pathname }: { pathname: string }) {
   const { itemCount, setCartOpen } = useCart();
   const [visible, setVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -37,7 +54,9 @@ export function BottomNav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  const isActive = (href: string | null) => {
+  const isActive = (item: (typeof navItems)[number]) => {
+    if ("isActive" in item) return item.isActive(pathname);
+    const href = item.href;
     if (!href) return false;
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
@@ -51,12 +70,12 @@ export function BottomNav() {
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
           transition={{ duration: 0.25, ease: "easeInOut" }}
-          className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 text-foreground backdrop-blur-md md:hidden"
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 text-foreground shadow-[0_-8px_24px_rgba(28,25,23,0.08)] backdrop-blur-md md:hidden"
           style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
           <div className="flex h-16 items-center justify-around">
             {navItems.map((item) => {
-              const active = isActive(item.href);
+              const active = isActive(item);
               const Icon = item.icon;
 
               if (item.label === "Cart") {
@@ -65,7 +84,8 @@ export function BottomNav() {
                     key={item.label}
                     type="button"
                     onClick={() => setCartOpen(true)}
-                    className="flex flex-col items-center gap-0.5 text-muted-foreground transition-colors"
+                    className="flex min-h-16 flex-1 flex-col items-center justify-center gap-0.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    aria-label={`Cart${itemCount > 0 ? `, ${itemCount} item${itemCount === 1 ? "" : "s"}` : ""}`}
                   >
                     <span className="relative">
                       <Icon className="size-5" />
@@ -84,7 +104,8 @@ export function BottomNav() {
                 <Link
                   key={item.label}
                   href={item.href!}
-                  className={`flex flex-col items-center gap-0.5 transition-colors ${
+                  aria-current={active ? "page" : undefined}
+                  className={`flex min-h-16 flex-1 flex-col items-center justify-center gap-0.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                     active
                       ? "text-foreground"
                       : "text-muted-foreground"
