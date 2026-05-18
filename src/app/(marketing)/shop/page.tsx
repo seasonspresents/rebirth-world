@@ -7,6 +7,7 @@ import { COLLECTIONS, type Product } from "@/lib/payments/constants";
 import { getReviewSummariesForProducts } from "@/lib/review-data";
 import { ProductCard } from "@/components/shop/product-card";
 import { ShopFilters, type ShopFilterOption } from "@/components/shop/shop-filters";
+import { ShopSearch } from "@/components/shop/shop-search";
 import { SortSelect } from "@/components/shop/sort-select";
 import { ProductGridSkeleton } from "@/components/shop/product-grid-skeleton";
 
@@ -142,6 +143,33 @@ function matchesPrice(product: Product, price?: string) {
   }
 }
 
+function normalizeSearchValue(value: string | null | undefined) {
+  return value?.toLowerCase().replace(/[-_/]+/g, " ").trim() ?? "";
+}
+
+function productMatchesSearch(product: Product, query?: string) {
+  const normalizedQuery = normalizeSearchValue(query);
+  if (!normalizedQuery) return true;
+
+  const haystack = [
+    product.name,
+    product.description,
+    product.metadata.collection,
+    product.metadata.material,
+    getProductMaterial(product),
+    product.metadata.subtitle,
+    product.metadata.story,
+    product.metadata.handmade_note,
+  ]
+    .map(normalizeSearchValue)
+    .filter(Boolean)
+    .join(" ");
+
+  return normalizedQuery
+    .split(/\s+/)
+    .every((token) => haystack.includes(token));
+}
+
 function toFilterOptions(counts: Map<string, number>): ShopFilterOption[] {
   return [...counts.entries()]
     .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
@@ -217,12 +245,14 @@ async function ProductGrid({
   material,
   price,
   size,
+  q,
   sort = "featured",
 }: {
   collection?: string;
   material?: string;
   price?: string;
   size?: string;
+  q?: string;
   sort?: string;
 }) {
   const allProducts = await listProducts();
@@ -282,6 +312,10 @@ async function ProductGrid({
     products = products.filter((product) => getRingSizes(product).includes(size));
   }
 
+  if (q) {
+    products = products.filter((product) => productMatchesSearch(product, q));
+  }
+
   // Sort
   products = sortProducts(products, sort);
   const reviewSummaries = await getReviewSummariesForProducts(
@@ -299,18 +333,30 @@ async function ProductGrid({
       </Suspense>
 
       <div>
+        <div className="mb-5 md:mb-7">
+          <Suspense>
+            <ShopSearch />
+          </Suspense>
+        </div>
+
         {/* Sort row */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between md:mb-12">
           <div>
             <p className="text-muted-foreground text-sm">
               {products.length} {products.length === 1 ? "product" : "products"}
+              {q ? (
+                <>
+                  {" "}
+                  for <span className="font-medium text-foreground">&ldquo;{q}&rdquo;</span>
+                </>
+              ) : null}
             </p>
-            {(collection || material || price || size) && (
+            {(collection || material || price || size || q) && (
               <Link
                 href="/shop"
                 className="mt-1 inline-flex text-sm font-medium text-[var(--rebirth-teal)] underline-offset-4 hover:underline"
               >
-                Reset filters
+                Reset search and filters
               </Link>
             )}
           </div>
@@ -323,16 +369,16 @@ async function ProductGrid({
         {products.length === 0 ? (
           <div className="border-border bg-muted/20 py-20 text-center">
             <p className="text-muted-foreground mx-auto max-w-[48ch] text-lg leading-relaxed">
-              {collection || material || price || size
-                ? "No pieces match those filters yet. Reset the filters to keep exploring everything Rebirth has available."
+              {collection || material || price || size || q
+                ? "No pieces match that search yet. Reset the search and filters to keep exploring everything Rebirth has available."
                 : "No products available yet. Check back soon!"}
             </p>
-            {collection || material || price || size ? (
+            {collection || material || price || size || q ? (
               <Link
                 href="/shop"
                 className="mt-6 inline-flex min-h-11 items-center justify-center bg-[var(--rebirth-warm-black)] px-6 py-3 font-[family-name:var(--font-caps)] text-sm tracking-[2px] text-white transition-all hover:-translate-y-0.5"
               >
-                RESET FILTERS
+                RESET SEARCH
               </Link>
             ) : null}
           </div>
@@ -361,10 +407,11 @@ export default async function ShopPage({
     material?: string;
     price?: string;
     size?: string;
+    q?: string;
     sort?: string;
   }>;
 }) {
-  const { collection, material, price, size, sort } = await searchParams;
+  const { collection, material, price, size, q, sort } = await searchParams;
 
   return (
     <>
@@ -379,6 +426,7 @@ export default async function ShopPage({
               material={material}
               price={price}
               size={size}
+              q={q}
               sort={sort}
             />
           </Suspense>

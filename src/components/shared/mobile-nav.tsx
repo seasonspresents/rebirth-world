@@ -63,6 +63,13 @@ export function MobileNav() {
               Shop
             </Link>
             <Link
+              href="/shop#products"
+              className="block rounded-md px-4 py-2 text-2xl font-medium transition-colors hover:bg-muted"
+              onClick={() => setOpen(false)}
+            >
+              Search
+            </Link>
+            <Link
               href="/our-story"
               className="block rounded-md px-4 py-2 text-2xl font-medium transition-colors hover:bg-muted"
               onClick={() => setOpen(false)}

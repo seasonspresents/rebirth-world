@@ -112,7 +112,7 @@ export function ProductCard({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
                 transition={{ duration: 0.4, ease: luxuryEase }}
-                className="bg-background/90 text-foreground hover:bg-background absolute inset-x-4 bottom-4 z-10 flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium backdrop-blur-sm transition-colors"
+                className="bg-background/90 text-foreground hover:bg-background absolute inset-x-4 bottom-4 z-10 flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium backdrop-blur-sm transition-colors"
                 onClick={(e) => {
                   e.preventDefault();
                   setQuickViewOpen(true);

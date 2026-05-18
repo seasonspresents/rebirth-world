@@ -21,6 +21,7 @@ import { AnnouncementBar } from "@/components/shared/announcement-bar";
 
 const NAV_ITEMS = [
   { label: "Shop", href: "/shop" },
+  { label: "Search", href: "/shop#products" },
   { label: "Our Story", href: "/our-story" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
