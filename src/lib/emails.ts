@@ -4,13 +4,20 @@ import { ConfirmSignupEmail } from "@/components/email/confirm-signup";
 import { OrderConfirmationEmail } from "@/components/email/order-confirmation";
 import { ShippingNotificationEmail } from "@/components/email/shipping-notification";
 import { ContactNotificationEmail } from "@/components/email/contact-notification";
+import { ReviewRequestEmail } from "@/components/email/review-request";
 
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
 }
 
 // Email type definitions
-export type EmailType = "welcome" | "confirm-signup" | "order-confirmation" | "shipping-notification" | "contact-notification";
+export type EmailType =
+  | "welcome"
+  | "confirm-signup"
+  | "order-confirmation"
+  | "shipping-notification"
+  | "contact-notification"
+  | "review-request";
 
 // Props types for each email type
 export type EmailProps = {
@@ -62,6 +69,16 @@ export type EmailProps = {
     message: string;
     siteUrl?: string;
   };
+  "review-request": {
+    orderNumber: string;
+    items: Array<{
+      name: string;
+      reviewUrl: string;
+      image?: string | null;
+    }>;
+    shippingName?: string;
+    siteUrl?: string;
+  };
 };
 
 // Email configuration type
@@ -92,6 +109,10 @@ const emailConfigs: Record<EmailType, EmailConfig> = {
     from: "Rebirth World <hello@rebirth.world>",
     subject: "New contact form message — Rebirth World",
   },
+  "review-request": {
+    from: "Rebirth World <hello@rebirth.world>",
+    subject: "How is your Rebirth piece wearing in?",
+  },
 };
 
 // Email template mapping
@@ -101,6 +122,7 @@ const emailTemplates = {
   "order-confirmation": OrderConfirmationEmail,
   "shipping-notification": ShippingNotificationEmail,
   "contact-notification": ContactNotificationEmail,
+  "review-request": ReviewRequestEmail,
 };
 
 // Type-safe email sending function

@@ -16,6 +16,27 @@ export interface CartItemData {
   collection: string | null; // e.g. "skateboard-rings", "wedding-bands", "apparel"
 }
 
+export interface CartShippingAddress {
+  name: string;
+  street1: string;
+  street2?: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+}
+
+export interface CartShippingRate {
+  rateId: string;
+  carrier: string;
+  service: string;
+  price: string;
+  priceCents: number;
+  currency: string;
+  estimatedDays: number | null;
+  durationTerms: string | null;
+}
+
 /**
  * Cart reducer actions
  */

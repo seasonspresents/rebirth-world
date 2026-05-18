@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +18,8 @@ export function SizeSelector({
   onSelect,
   sizeGuideSlot,
 }: SizeSelectorProps) {
+  const uniqueSizes = Array.from(new Set(sizes));
+
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
@@ -26,7 +27,7 @@ export function SizeSelector({
         {sizeGuideSlot}
       </div>
       <div className="flex flex-wrap gap-2">
-        {sizes.map((size) => {
+        {uniqueSizes.map((size) => {
           const isMTO = madeToOrderSizes.includes(size);
           const isSelected = selectedSize === size;
           return (

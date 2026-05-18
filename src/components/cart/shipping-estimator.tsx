@@ -1,34 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2, Package, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/components/cart/cart-context";
+import type { CartShippingAddress, CartShippingRate } from "@/lib/cart/types";
 import { formatPrice } from "@/lib/payments/constants";
 
-interface ShippingRate {
-  rateId: string;
-  carrier: string;
-  service: string;
-  price: string;
-  priceCents: number;
-  currency: string;
-  estimatedDays: number | null;
-  durationTerms: string | null;
-}
-
 interface RatesResponse {
-  rates: ShippingRate[];
+  rates: CartShippingRate[];
   freeShippingEligible: boolean;
   freeShippingThreshold: number;
 }
 
 export function ShippingEstimator() {
-  const { items, subtotal } = useCart();
+  const {
+    items,
+    subtotal,
+    selectedShippingRate,
+    shippingAddress,
+    setShippingRate,
+    setShippingAddress,
+    clearShippingSelection,
+  } = useCart();
   const [zip, setZip] = useState("");
   const [country, setCountry] = useState("US");
-  const [rates, setRates] = useState<ShippingRate[] | null>(null);
+  const [rates, setRates] = useState<CartShippingRate[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [freeEligible, setFreeEligible] = useState(false);
@@ -39,20 +37,23 @@ export function ShippingEstimator() {
     setLoading(true);
     setError(null);
     setRates(null);
+    clearShippingSelection();
+
+    const estimateAddress: CartShippingAddress = {
+      name: "Shipping Estimate",
+      street1: "123 Main St",
+      city: "Anytown",
+      state: "CA",
+      zip: zip.trim(),
+      country,
+    };
 
     try {
       const res = await fetch("/api/shipping/rates", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          address: {
-            name: "Shipping Estimate",
-            street1: "123 Main St",
-            city: "Anytown",
-            state: "CA",
-            zip: zip.trim(),
-            country,
-          },
+          address: estimateAddress,
           items: items.map((item) => ({
             product_name: item.name,
             quantity: item.quantity,
@@ -71,10 +72,25 @@ export function ShippingEstimator() {
       const data: RatesResponse = await res.json();
       setRates(data.rates);
       setFreeEligible(data.freeShippingEligible);
+      setShippingAddress(estimateAddress);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setLoading(false);
+    }
+  }
+
+  function selectRate(rate: CartShippingRate) {
+    setShippingRate(rate);
+    if (!shippingAddress || shippingAddress.zip !== zip.trim()) {
+      setShippingAddress({
+        name: "Shipping Estimate",
+        street1: "123 Main St",
+        city: "Anytown",
+        state: "CA",
+        zip: zip.trim(),
+        country,
+      });
     }
   }
 
@@ -83,6 +99,12 @@ export function ShippingEstimator() {
     10
   );
   const remainingForFree = thresholdCents - subtotal;
+
+  useEffect(() => {
+    if (!shippingAddress) return;
+    setZip(shippingAddress.zip);
+    setCountry(shippingAddress.country);
+  }, [shippingAddress]);
 
   return (
     <div className="space-y-3">
@@ -97,8 +119,9 @@ export function ShippingEstimator() {
           onChange={(e) => {
             setCountry(e.target.value);
             setRates(null);
+            clearShippingSelection();
           }}
-          className="h-9 rounded-md border border-border bg-background px-3 text-sm"
+          className="border-border bg-background h-9 rounded-md border px-3 text-sm"
         >
           <option value="US">United States</option>
           <option value="CA">Canada</option>
@@ -113,6 +136,7 @@ export function ShippingEstimator() {
           onChange={(e) => {
             setZip(e.target.value);
             setRates(null);
+            clearShippingSelection();
           }}
           onKeyDown={(e) => e.key === "Enter" && fetchRates()}
           className="h-9 w-28"
@@ -128,51 +152,74 @@ export function ShippingEstimator() {
         </Button>
       </div>
 
-      {error && (
-        <p className="text-xs text-destructive">{error}</p>
-      )}
+      {error && <p className="text-destructive text-xs">{error}</p>}
 
       {rates && rates.length > 0 && (
         <div className="space-y-1.5">
           {rates.map((rate) => (
-            <div
+            <button
+              type="button"
               key={rate.rateId}
-              className="flex items-center justify-between rounded-md border border-border px-3 py-2 text-sm"
+              onClick={() => selectRate(rate)}
+              className={`flex w-full items-center justify-between rounded-md border px-3 py-2 text-left text-sm transition-colors ${
+                selectedShippingRate?.rateId === rate.rateId
+                  ? "border-primary bg-primary/5"
+                  : "border-border hover:bg-muted"
+              }`}
             >
               <div className="flex items-center gap-2">
-                <Package className="size-3.5 text-muted-foreground" />
+                <span
+                  className={`flex size-4 items-center justify-center rounded-full border ${
+                    selectedShippingRate?.rateId === rate.rateId
+                      ? "border-primary"
+                      : "border-muted-foreground/50"
+                  }`}
+                  aria-hidden="true"
+                >
+                  {selectedShippingRate?.rateId === rate.rateId && (
+                    <span className="bg-primary size-2 rounded-full" />
+                  )}
+                </span>
+                <Package className="text-muted-foreground size-3.5" />
                 <div>
                   <span className="font-medium">{rate.service}</span>
-                  <span className="ml-1.5 text-xs text-muted-foreground">
+                  <span className="text-muted-foreground ml-1.5 text-xs">
                     {rate.carrier}
                   </span>
                 </div>
               </div>
               <div className="text-right">
-                <span className="font-medium font-[family-name:var(--font-mono)]">
+                <span className="font-[family-name:var(--font-mono)] font-medium">
                   {rate.priceCents === 0
                     ? "FREE"
                     : formatPrice(rate.priceCents)}
                 </span>
                 {rate.estimatedDays && (
-                  <span className="ml-1.5 text-xs text-muted-foreground">
+                  <span className="text-muted-foreground ml-1.5 text-xs">
                     {rate.estimatedDays}d
                   </span>
                 )}
               </div>
-            </div>
+            </button>
           ))}
         </div>
       )}
 
+      {selectedShippingRate && (
+        <p className="text-muted-foreground text-xs">
+          Selected: {selectedShippingRate.service}. Final shipping is verified
+          at checkout.
+        </p>
+      )}
+
       {rates && rates.length === 0 && (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs">
           No shipping options available for this destination.
         </p>
       )}
 
       {!freeEligible && remainingForFree > 0 && (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs">
           Add {formatPrice(remainingForFree)} more for free shipping
         </p>
       )}

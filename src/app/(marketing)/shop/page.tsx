@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import { listProducts, getProductsByCollection } from "@/lib/payments/products";
-import { COLLECTIONS } from "@/lib/payments/constants";
 import type { Product } from "@/lib/payments/constants";
+import { getReviewSummariesForProducts } from "@/lib/review-data";
 import { ProductCard } from "@/components/shop/product-card";
 import { CollectionFilter } from "@/components/shop/collection-filter";
 import { SortSelect } from "@/components/shop/sort-select";
@@ -56,6 +56,9 @@ async function ProductGrid({
 
   // Sort
   products = sortProducts(products, sort);
+  const reviewSummaries = await getReviewSummariesForProducts(
+    products.map((product) => product.id)
+  );
 
   return (
     <>
@@ -65,7 +68,7 @@ async function ProductGrid({
           <CollectionFilter counts={counts} totalCount={allProducts.length} />
         </Suspense>
         <div className="flex items-center gap-3">
-          <span className="text-sm text-muted-foreground">
+          <span className="text-muted-foreground text-sm">
             {products.length} {products.length === 1 ? "product" : "products"}
           </span>
           <Suspense>
@@ -77,7 +80,7 @@ async function ProductGrid({
       {/* Products */}
       {products.length === 0 ? (
         <div className="py-20 text-center">
-          <p className="text-lg text-muted-foreground">
+          <p className="text-muted-foreground text-lg">
             {collection
               ? "No products found in this collection yet."
               : "No products available yet. Check back soon!"}
@@ -86,7 +89,12 @@ async function ProductGrid({
       ) : (
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
           {products.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              index={index}
+              reviewSummary={reviewSummaries[product.id]}
+            />
           ))}
         </div>
       )}
@@ -106,11 +114,11 @@ export default async function ShopPage({
       {/* Editorial header — luxury spacing */}
       <div className="bg-grain px-6 py-24 md:py-32 lg:py-40">
         <div className="relative z-10 mx-auto max-w-[1200px]">
-          <p className="label-luxury mb-6 text-primary">The Collection</p>
+          <p className="label-luxury text-primary mb-6">The Collection</p>
           <h1 className="text-mega max-w-[16ch]">
             Every piece, shaped by hand
           </h1>
-          <p className="mt-6 max-w-[48ch] text-base leading-relaxed text-muted-foreground md:text-lg">
+          <p className="text-muted-foreground mt-6 max-w-[48ch] text-base leading-relaxed md:text-lg">
             Recycled skateboard rings, wood-lined wedding bands, and apparel —
             each piece handmade in the North Shore workshop. No two are alike.
           </p>

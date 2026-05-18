@@ -73,7 +73,8 @@ function getStatusBadge(status: string) {
     case "processing":
       return {
         label: "Processing",
-        className: "bg-yellow-500 text-white dark:bg-yellow-600 dark:text-white",
+        className:
+          "bg-yellow-500 text-white dark:bg-yellow-600 dark:text-white",
       };
     case "shipped":
       return {
@@ -225,7 +226,9 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
     // tracking_number can come from Shippo label (already on order) or manual input
     const hasTrackingOnOrder = order?.tracking_number;
     if (!trackingNumber.trim() && !hasTrackingOnOrder) {
-      toast.error("Tracking number is required. Purchase a label or enter one manually.");
+      toast.error(
+        "Tracking number is required. Purchase a label or enter one manually."
+      );
       return;
     }
     setFulfilling(true);
@@ -250,7 +253,9 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
       if (data.emailSent) {
         toast.success("Order marked as shipped and customer notified");
       } else {
-        toast.warning("Order marked as shipped, but email notification failed. Notify customer manually.");
+        toast.warning(
+          "Order marked as shipped, but email notification failed. Notify customer manually."
+        );
       }
     } catch {
       toast.error("Failed to fulfill order");
@@ -301,17 +306,22 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
     }
   };
 
-  const handleBuyLabel = async () => {
-    if (!selectedRateId) {
+  const handleBuyLabel = async (rateId: string | null = selectedRateId) => {
+    if (rateId === null && !order?.shippo_rate_id) {
+      toast.error("No stored rate is available for this order");
+      return;
+    }
+    if (rateId !== null && !rateId) {
       toast.error("Select a rate first");
       return;
     }
     setBuyingLabel(true);
     try {
+      const requestRateId = rateId ?? "";
       const res = await fetch(`/api/admin/orders/${orderId}/shipping/label`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rateId: selectedRateId }),
+        body: JSON.stringify(requestRateId ? { rateId: requestRateId } : {}),
       });
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
@@ -324,6 +334,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
       setTrackingUrl(data.order.tracking_url || "");
       setCarrier(data.order.shipping_carrier || "");
       setRates([]);
+      setSelectedRateId("");
       toast.success("Label purchased! Tracking number auto-filled.");
     } catch {
       toast.error("Failed to purchase label");
@@ -333,7 +344,12 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
   };
 
   const handleRefundLabel = async () => {
-    if (!confirm("Refund this shipping label? The order will be set back to unfulfilled.")) return;
+    if (
+      !confirm(
+        "Refund this shipping label? The order will be set back to unfulfilled."
+      )
+    )
+      return;
     setRefundingLabel(true);
     try {
       const res = await fetch(`/api/admin/orders/${orderId}/shipping/refund`, {
@@ -466,6 +482,10 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
   const hasTracking = order.tracking_number;
   const hasLabel = order.shippo_label_url;
   const currency = order.currency || "usd";
+  const storedShippoRateId = order.shippo_rate_id;
+  const hasStoredRate = Boolean(storedShippoRateId);
+  const hasFreeShippingMarker = storedShippoRateId === "free_shipping";
+  const hasPurchasableStoredRate = hasStoredRate && !hasFreeShippingMarker;
   const canFulfill =
     order.status !== "shipped" &&
     order.status !== "delivered" &&
@@ -524,7 +544,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                           </div>
                         )}
                         <div className="min-w-0 flex-1">
-                          <p className="font-medium leading-tight">
+                          <p className="leading-tight font-medium">
                             {item.product_name}
                           </p>
                           {item.variant_name && (
@@ -682,7 +702,9 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                     {hasLabel && (
                       <div className="space-y-3">
                         <div className="flex items-center gap-2">
-                          <Badge className="bg-green-500 text-white">Label Purchased</Badge>
+                          <Badge className="bg-green-500 text-white">
+                            Label Purchased
+                          </Badge>
                           {order.shipping_carrier && (
                             <span className="text-muted-foreground text-sm">
                               via {order.shipping_carrier}
@@ -729,13 +751,19 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                         </div>
                         {order.tracking_number && (
                           <p className="text-sm">
-                            <span className="text-muted-foreground">Tracking: </span>
-                            <span className="font-mono">{order.tracking_number}</span>
+                            <span className="text-muted-foreground">
+                              Tracking:{" "}
+                            </span>
+                            <span className="font-mono">
+                              {order.tracking_number}
+                            </span>
                           </p>
                         )}
                         {order.shipping_rate_amount != null && (
                           <p className="text-sm">
-                            <span className="text-muted-foreground">Label cost: </span>
+                            <span className="text-muted-foreground">
+                              Label cost:{" "}
+                            </span>
                             {formatPrice(order.shipping_rate_amount, currency)}
                           </p>
                         )}
@@ -746,23 +774,73 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                     {!hasLabel && canFulfill && hasShipping && (
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                          <Label className="text-base font-semibold">Shipping Label</Label>
+                          <Label className="text-base font-semibold">
+                            Shipping Label
+                          </Label>
                         </div>
 
                         {rates.length === 0 && (
-                          <Button
-                            variant="outline"
-                            onClick={handleGetRates}
-                            disabled={loadingRates}
-                            className="w-full"
-                          >
-                            {loadingRates ? (
-                              <Loader2 className="mr-1 h-4 w-4 animate-spin" />
-                            ) : (
-                              <Truck className="mr-1 h-4 w-4" />
+                          <div className="space-y-3">
+                            {hasPurchasableStoredRate && (
+                              <div className="border-border space-y-2 rounded-lg border p-3">
+                                <div className="flex items-center justify-between gap-3">
+                                  <div>
+                                    <p className="text-sm font-medium">
+                                      Stored Shippo rate ready
+                                    </p>
+                                    <p className="text-muted-foreground font-mono text-xs break-all">
+                                      {storedShippoRateId}
+                                    </p>
+                                  </div>
+                                  <Button
+                                    onClick={() => handleBuyLabel(null)}
+                                    disabled={buyingLabel}
+                                  >
+                                    {buyingLabel && (
+                                      <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                                    )}
+                                    {buyingLabel
+                                      ? "Purchasing..."
+                                      : "Buy Label"}
+                                  </Button>
+                                </div>
+                              </div>
                             )}
-                            {loadingRates ? "Getting rates..." : "Get Shipping Rates"}
-                          </Button>
+
+                            {hasFreeShippingMarker && (
+                              <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3 text-sm text-yellow-900 dark:border-yellow-900/60 dark:bg-yellow-950/30 dark:text-yellow-200">
+                                Stored rate is a free-shipping marker. Fetch
+                                fresh Shippo rates before buying a label.
+                              </div>
+                            )}
+
+                            {!hasStoredRate && (
+                              <p className="text-muted-foreground text-sm">
+                                No stored checkout rate is available for this
+                                order.
+                              </p>
+                            )}
+
+                            <Button
+                              variant={
+                                hasPurchasableStoredRate ? "ghost" : "outline"
+                              }
+                              onClick={handleGetRates}
+                              disabled={loadingRates || buyingLabel}
+                              className="w-full"
+                            >
+                              {loadingRates ? (
+                                <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                              ) : (
+                                <Truck className="mr-1 h-4 w-4" />
+                              )}
+                              {loadingRates
+                                ? "Getting rates..."
+                                : hasPurchasableStoredRate
+                                  ? "Fetch Fresh Rates Instead"
+                                  : "Get Shipping Rates"}
+                            </Button>
+                          </div>
                         )}
 
                         {rates.length > 0 && (
@@ -781,12 +859,14 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                                     type="radio"
                                     name="shipping-rate"
                                     checked={selectedRateId === rate.rateId}
-                                    onChange={() => setSelectedRateId(rate.rateId)}
+                                    onChange={() =>
+                                      setSelectedRateId(rate.rateId)
+                                    }
                                     className="mt-0.5 h-4 w-4 shrink-0 sm:mt-0"
                                   />
                                   <div className="min-w-0 flex-1">
                                     <div className="flex items-start justify-between gap-2 sm:items-center">
-                                      <p className="text-sm font-medium leading-tight">
+                                      <p className="text-sm leading-tight font-medium">
                                         {rate.carrier} — {rate.service}
                                       </p>
                                       <span className="shrink-0 text-sm font-semibold">
@@ -796,7 +876,8 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                                     <p className="text-muted-foreground mt-0.5 text-xs">
                                       {rate.estimatedDays
                                         ? `${rate.estimatedDays} business day${rate.estimatedDays !== 1 ? "s" : ""}`
-                                        : rate.durationTerms || "Estimated delivery varies"}
+                                        : rate.durationTerms ||
+                                          "Estimated delivery varies"}
                                     </p>
                                   </div>
                                 </label>
@@ -804,7 +885,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                             </div>
                             <div className="flex gap-2">
                               <Button
-                                onClick={handleBuyLabel}
+                                onClick={() => handleBuyLabel()}
                                 disabled={buyingLabel || !selectedRateId}
                                 className="flex-1"
                                 size="lg"
@@ -850,7 +931,10 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                             <div className="mt-4 space-y-4">
                               <div className="space-y-2">
                                 <Label htmlFor="carrier">Carrier</Label>
-                                <Select value={carrier} onValueChange={setCarrier}>
+                                <Select
+                                  value={carrier}
+                                  onValueChange={setCarrier}
+                                >
                                   <SelectTrigger id="carrier">
                                     <SelectValue placeholder="Select carrier" />
                                   </SelectTrigger>
@@ -952,9 +1036,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                       <span className="text-muted-foreground">
                         Order number
                       </span>
-                      <span className="font-medium">
-                        {order.order_number}
-                      </span>
+                      <span className="font-medium">{order.order_number}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Date</span>
@@ -972,9 +1054,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                     )}
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Status</span>
-                      <Badge className={status.className}>
-                        {status.label}
-                      </Badge>
+                      <Badge className={status.className}>{status.label}</Badge>
                     </div>
                   </div>
 
@@ -996,9 +1076,7 @@ export default function OrderDetailClient({ orderId }: { orderId: string }) {
                     {order.tax_amount > 0 && (
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Tax</span>
-                        <span>
-                          {formatPrice(order.tax_amount, currency)}
-                        </span>
+                        <span>{formatPrice(order.tax_amount, currency)}</span>
                       </div>
                     )}
                     {order.discount_amount > 0 && (

@@ -1,10 +1,14 @@
 import { getFeaturedProducts } from "@/lib/payments/products";
+import { getReviewSummariesForProducts } from "@/lib/review-data";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { Spotlight } from "@/components/ui/spotlight";
 import { HorizontalProductShowcase } from "@/components/marketing/horizontal-product-showcase";
 
 export async function FeaturedProducts() {
   const products = await getFeaturedProducts();
+  const reviewSummaries = await getReviewSummariesForProducts(
+    products.map((product) => product.id)
+  );
 
   if (products.length === 0) {
     return (
@@ -16,7 +20,7 @@ export async function FeaturedProducts() {
           <h2 className="text-fluid-display">
             Our collection is being curated
           </h2>
-          <p className="mt-4 max-w-[44ch] text-base text-section-muted">
+          <p className="text-section-muted mt-4 max-w-[44ch] text-base">
             Sign up for our newsletter to be the first to know when new pieces
             drop.
           </p>
@@ -47,7 +51,10 @@ export async function FeaturedProducts() {
       </div>
 
       <div className="mt-12 md:mt-16">
-        <HorizontalProductShowcase products={products} />
+        <HorizontalProductShowcase
+          products={products}
+          reviewSummaries={reviewSummaries}
+        />
       </div>
 
       <div className="px-6 pb-24 md:hidden" />

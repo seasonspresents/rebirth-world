@@ -3,7 +3,29 @@ import { z } from "zod";
 import { stripe } from "@/lib/payments/stripe";
 import { createClient } from "@/lib/supabase/server";
 import { getCheckoutShippingRates } from "@/lib/shippo";
+import type { AddressInput, ShippingRate } from "@/lib/shippo";
 import type Stripe from "stripe";
+
+const shippingAddressSchema = z.object({
+  name: z.string().min(1),
+  street1: z.string().min(1),
+  street2: z.string().optional(),
+  city: z.string().min(1),
+  state: z.string().min(1),
+  zip: z.string().min(1),
+  country: z.string().length(2),
+});
+
+const shippingRateSchema = z.object({
+  rateId: z.string().min(1),
+  carrier: z.string().min(1),
+  service: z.string().min(1),
+  price: z.string(),
+  priceCents: z.number().int().min(0),
+  currency: z.string().min(3).max(3),
+  estimatedDays: z.number().int().positive().nullable(),
+  durationTerms: z.string().nullable(),
+});
 
 // Client may send `price` and `name` fields for UX convenience, but we IGNORE
 // them for all server-side math — the only field we trust is `stripePriceId`.
@@ -19,16 +41,66 @@ const checkoutSchema = z.object({
     )
     .min(1)
     .max(50),
+  shippingRate: shippingRateSchema.nullable().optional(),
+  shippingAddress: shippingAddressSchema.nullable().optional(),
 });
 
 const BRAND_TAG = "rebirth-world";
+const REPRESENTATIVE_SHIPPING_ADDRESS: AddressInput = {
+  name: "Rate Estimate",
+  street1: "1 Market St",
+  city: "San Francisco",
+  state: "CA",
+  zip: "94105",
+  country: "US",
+};
+
+function toStripeShippingOption(
+  rate: ShippingRate
+): Stripe.Checkout.SessionCreateParams.ShippingOption {
+  const minDays = rate.estimatedDays ?? 5;
+  const maxDays = Math.max(minDays + 2, minDays);
+  const displayName =
+    rate.priceCents === 0 && rate.rateId === "free_shipping"
+      ? "Free Standard Shipping"
+      : `${rate.carrier} ${rate.service}`;
+
+  return {
+    shipping_rate_data: {
+      type: "fixed_amount",
+      fixed_amount: {
+        amount: rate.priceCents,
+        currency: rate.currency.toLowerCase(),
+      },
+      display_name: displayName,
+      delivery_estimate: {
+        minimum: { unit: "business_day", value: minDays },
+        maximum: { unit: "business_day", value: maxDays },
+      },
+    },
+  };
+}
+
+function getPurchasableShippoRateId(
+  selectedRate: ShippingRate,
+  rates: ShippingRate[]
+) {
+  if (selectedRate.rateId !== "free_shipping") {
+    return selectedRate.rateId;
+  }
+
+  return rates.find((rate) => rate.rateId !== "free_shipping")?.rateId ?? null;
+}
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const parsed = checkoutSchema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid cart items" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid checkout request", details: parsed.error.flatten() },
+      { status: 400 }
+    );
   }
 
   const supabase = await createClient();
@@ -83,7 +155,8 @@ export async function POST(req: NextRequest) {
           quantity: item.quantity,
           unitAmount: price.unit_amount ?? 0,
           productName: product.name,
-          productCollection: (product.metadata?.collection as string) ?? undefined,
+          productCollection:
+            (product.metadata?.collection as string) ?? undefined,
           variant: item.variant ?? null,
         };
       })
@@ -122,9 +195,16 @@ export async function POST(req: NextRequest) {
   );
 
   // -------------------------------------------------------------------------
-  // Shipping rates via Shippo (HI → CA representative route)
+  // Shipping rates via Shippo
   // -------------------------------------------------------------------------
-  let shippingOptions: Stripe.Checkout.SessionCreateParams.ShippingOption[];
+  let shippingOptions: Stripe.Checkout.SessionCreateParams.ShippingOption[] =
+    [];
+  let shippingRateSource:
+    | "selected_shippo_rate"
+    | "fallback_representative_shippo_rates"
+    | "fallback_static_rates" = "fallback_representative_shippo_rates";
+  let verifiedShippoRateId: string | null = null;
+
   try {
     const shippoItems = resolvedItems.map((item) => ({
       product_name: item.productName,
@@ -132,44 +212,46 @@ export async function POST(req: NextRequest) {
       unit_price: item.unitAmount,
       collection: item.productCollection,
     }));
+    const selectedShippingRate = parsed.data.shippingRate ?? null;
+    const selectedShippingAddress = parsed.data.shippingAddress ?? null;
 
-    const { rates } = await getCheckoutShippingRates(
-      {
-        name: "Rate Estimate",
-        street1: "1 Market St",
-        city: "San Francisco",
-        state: "CA",
-        zip: "94105",
-        country: "US",
-      },
-      shippoItems,
-      subtotalCents
-    );
+    if (selectedShippingRate && selectedShippingAddress) {
+      const { rates } = await getCheckoutShippingRates(
+        selectedShippingAddress,
+        shippoItems,
+        subtotalCents
+      );
+      const verifiedRate = rates.find(
+        (rate) => rate.rateId === selectedShippingRate.rateId
+      );
 
-    shippingOptions = rates.slice(0, 5).map((rate) => {
-      const minDays = rate.estimatedDays ?? 5;
-      const maxDays = Math.max(minDays + 2, minDays);
-      return {
-        shipping_rate_data: {
-          type: "fixed_amount" as const,
-          fixed_amount: { amount: rate.priceCents, currency: "usd" },
-          display_name:
-            rate.priceCents === 0
-              ? "Free Standard Shipping"
-              : `${rate.carrier} ${rate.service}`,
-          delivery_estimate: {
-            minimum: { unit: "business_day" as const, value: minDays },
-            maximum: { unit: "business_day" as const, value: maxDays },
-          },
-        },
-      };
-    });
+      if (verifiedRate) {
+        shippingOptions = [toStripeShippingOption(verifiedRate)];
+        shippingRateSource = "selected_shippo_rate";
+        verifiedShippoRateId = getPurchasableShippoRateId(verifiedRate, rates);
+      } else {
+        console.warn("Selected Shippo rate was not returned during reverify", {
+          selectedRateId: selectedShippingRate.rateId,
+        });
+      }
+    }
+
+    if (shippingOptions.length === 0) {
+      const { rates } = await getCheckoutShippingRates(
+        REPRESENTATIVE_SHIPPING_ADDRESS,
+        shippoItems,
+        subtotalCents
+      );
+
+      shippingOptions = rates.slice(0, 5).map(toStripeShippingOption);
+    }
 
     if (shippingOptions.length === 0) {
       throw new Error("No rates returned");
     }
   } catch (rateErr) {
     console.warn("Shippo rate fetch failed, using fallback rates:", rateErr);
+    shippingRateSource = "fallback_static_rates";
     const thresholdCents = parseInt(
       process.env.NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD || "10000",
       10
@@ -234,6 +316,10 @@ export async function POST(req: NextRequest) {
         brand: BRAND_TAG,
         user_id: user?.id ?? "guest",
         order_source: "website",
+        shipping_rate_source: shippingRateSource,
+        ...(verifiedShippoRateId && {
+          shippo_rate_id: verifiedShippoRateId,
+        }),
         ...(itemVariants.length > 0 && {
           item_variants: JSON.stringify(itemVariants),
         }),

@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { AddToCartButton } from "@/components/shop/add-to-cart-button";
 import { formatPrice } from "@/lib/payments/constants";
 import type { Product } from "@/lib/payments/constants";
+import { resolveProductImage } from "@/lib/product-images";
 
 interface ProductQuickViewProps {
   product: Product;
@@ -32,6 +33,7 @@ export function ProductQuickView({
     ? parseInt(product.metadata.compare_at_price, 10)
     : null;
   const isOnSale = compareAt !== null && compareAt > product.price;
+  const primaryImage = resolveProductImage(product.images[0]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -44,9 +46,9 @@ export function ProductQuickView({
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Image */}
           <div className="relative aspect-square bg-muted">
-            {product.images[0] ? (
+            {primaryImage ? (
               <Image
-                src={product.images[0]}
+                src={primaryImage}
                 alt={product.name}
                 fill
                 className="object-cover"

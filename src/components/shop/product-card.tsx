@@ -3,10 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Eye } from "lucide-react";
+import { Eye, Star } from "lucide-react";
 import { motion } from "motion/react";
 import type { Product } from "@/lib/payments/constants";
 import { formatPrice, getCollectionStyle } from "@/lib/payments/constants";
+import type { ReviewSummary } from "@/lib/review-types";
+import { resolveProductImage } from "@/lib/product-images";
 import { Badge } from "@/components/ui/badge";
 import { SpotlightCard } from "@/components/ui/spotlight";
 import { ProductQuickView } from "@/components/shop/product-quick-view";
@@ -14,12 +16,17 @@ import { ProductQuickView } from "@/components/shop/product-quick-view";
 interface ProductCardProps {
   product: Product;
   index?: number;
+  reviewSummary?: ReviewSummary;
 }
 
 /* Luxury easing — smooth, expensive-feeling motion */
 const luxuryEase: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-export function ProductCard({ product, index = 0 }: ProductCardProps) {
+export function ProductCard({
+  product,
+  index = 0,
+  reviewSummary,
+}: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
 
@@ -31,6 +38,8 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const badgeText =
     product.metadata.badge_text ||
     (isOnSale ? "Sale" : isFeatured ? "Featured" : null);
+  const primaryImage = resolveProductImage(product.images[0]);
+  const alternateImage = resolveProductImage(product.images[1]);
 
   return (
     <>
@@ -51,21 +60,19 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         <SpotlightCard
           className="rounded-none"
           spotlightColor={
-            isFeatured
-              ? "rgba(204, 126, 58, 0.1)"
-              : "rgba(45, 138, 126, 0.08)"
+            isFeatured ? "rgba(204, 126, 58, 0.1)" : "rgba(45, 138, 126, 0.08)"
           }
         >
           <Link
             href={`/shop/${product.slug}`}
-            className="group block overflow-hidden rounded-xl border border-border bg-card text-card-foreground transition-shadow duration-300 hover:shadow-lg"
+            className="group border-border bg-card text-card-foreground block overflow-hidden rounded-xl border transition-shadow duration-300 hover:shadow-lg"
           >
             {/* Image — 3:4 portrait aspect ratio */}
-            <div className="relative aspect-product overflow-hidden bg-muted/30">
-              {product.images[0] ? (
+            <div className="aspect-product bg-muted/30 relative overflow-hidden">
+              {primaryImage ? (
                 <>
                   <Image
-                    src={product.images[0]}
+                    src={primaryImage}
                     alt={product.name}
                     fill
                     className="object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
@@ -73,9 +80,9 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                     style={{ viewTransitionName: `product-${product.slug}` }}
                   />
                   {/* Hover image crossfade */}
-                  {product.images[1] && (
+                  {alternateImage && (
                     <Image
-                      src={product.images[1]}
+                      src={alternateImage}
                       alt={`${product.name} alternate`}
                       fill
                       className="object-cover transition-opacity duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
@@ -85,7 +92,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                   )}
                 </>
               ) : (
-                <div className="flex h-full items-center justify-center text-muted-foreground">
+                <div className="text-muted-foreground flex h-full items-center justify-center">
                   No image
                 </div>
               )}
@@ -94,7 +101,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               {badgeText && (
                 <Badge
                   variant={isOnSale ? "destructive" : "secondary"}
-                  className="absolute left-3 top-3 z-10 rounded-none text-[10px] tracking-wider"
+                  className="absolute top-3 left-3 z-10 rounded-none text-[10px] tracking-wider"
                 >
                   {badgeText}
                 </Badge>
@@ -105,7 +112,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
                 transition={{ duration: 0.4, ease: luxuryEase }}
-                className="absolute inset-x-4 bottom-4 z-10 flex items-center justify-center gap-2 rounded-lg bg-background/90 px-4 py-2.5 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-background"
+                className="bg-background/90 text-foreground hover:bg-background absolute inset-x-4 bottom-4 z-10 flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium backdrop-blur-sm transition-colors"
                 onClick={(e) => {
                   e.preventDefault();
                   setQuickViewOpen(true);
@@ -123,20 +130,31 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
                   {product.metadata.collection.replace(/-/g, " ")}
                 </p>
               )}
-              <h3 className="text-sm font-medium tracking-wide font-[family-name:var(--font-display)]">
+              <h3 className="font-[family-name:var(--font-display)] text-sm font-medium tracking-wide">
                 {product.name}
               </h3>
               {product.metadata.subtitle && (
-                <p className="line-clamp-1 text-xs text-muted-foreground">
+                <p className="text-muted-foreground line-clamp-1 text-xs">
                   {product.metadata.subtitle}
                 </p>
               )}
+              {reviewSummary && reviewSummary.reviewCount > 0 && (
+                <div className="text-muted-foreground flex min-h-5 items-center gap-1.5 text-xs">
+                  <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-500" />
+                  <span>{reviewSummary.averageRating.toFixed(1)}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>
+                    {reviewSummary.reviewCount}{" "}
+                    {reviewSummary.reviewCount === 1 ? "review" : "reviews"}
+                  </span>
+                </div>
+              )}
               <div className="flex items-center gap-2">
-                <p className="text-sm font-[family-name:var(--font-dm-mono)] text-muted-foreground">
+                <p className="text-muted-foreground font-[family-name:var(--font-dm-mono)] text-sm">
                   {formatPrice(product.price, product.currency)}
                 </p>
                 {isOnSale && compareAt && (
-                  <p className="text-xs text-muted-foreground/60 line-through font-[family-name:var(--font-dm-mono)]">
+                  <p className="text-muted-foreground/60 font-[family-name:var(--font-dm-mono)] text-xs line-through">
                     {formatPrice(compareAt, product.currency)}
                   </p>
                 )}
