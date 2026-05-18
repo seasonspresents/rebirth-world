@@ -19,6 +19,9 @@ export const GHL_CUSTOM_FIELDS = {
   abandonedCartItems: "contact.abandoned_cart_items",
   abandonedCartValue: "contact.abandoned_cart_value",
   abandonedCartUrl: "contact.abandoned_cart_url",
+  wishlistItems: "contact.wishlist_items",
+  wishlistValue: "contact.wishlist_value",
+  wishlistUrl: "contact.wishlist_url",
   authMethod: "contact.auth_method",
   rebirthSource: "contact.rebirth_source",
   rebirthSourceDetail: "contact.rebirth_source_detail",
@@ -68,6 +71,16 @@ export interface AccountPayload {
   email: string;
   first_name?: string;
   auth_method: string;
+}
+
+export interface WishlistPayload {
+  email: string;
+  first_name?: string;
+  item_count: number;
+  wishlist_value: number;
+  wishlist_url: string;
+  item_names: string[];
+  last_activity: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -255,6 +268,69 @@ export function notifyAbandonedCart(data: AbandonedCartPayload): void {
         field_value: data.recovery_url,
       },
       { key: GHL_CUSTOM_FIELDS.rebirthSource, field_value: "abandoned_cart" },
+      {
+        key: GHL_CUSTOM_FIELDS.rebirthSourceDetail,
+        field_value: data.last_activity,
+      },
+    ],
+  }).catch(() => {
+    // already logged inside ghlApi
+  });
+}
+
+export function notifyWishlistCreated(data: WishlistPayload): void {
+  upsertContact({
+    email: data.email,
+    firstName: data.first_name,
+    tags: ["wishlist", "lead"],
+    source: "rebirth.world",
+    customFields: [
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistItems,
+        field_value: data.item_names.join(", "),
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistValue,
+        field_value: (data.wishlist_value / 100).toFixed(2),
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistUrl,
+        field_value: data.wishlist_url,
+      },
+      { key: GHL_CUSTOM_FIELDS.rebirthSource, field_value: "wishlist" },
+      {
+        key: GHL_CUSTOM_FIELDS.rebirthSourceDetail,
+        field_value: data.last_activity,
+      },
+    ],
+  }).catch(() => {
+    // already logged inside ghlApi
+  });
+}
+
+export function notifyDormantWishlist(data: WishlistPayload): void {
+  upsertContact({
+    email: data.email,
+    firstName: data.first_name,
+    tags: ["wishlist", "wishlist_dormant"],
+    source: "rebirth.world",
+    customFields: [
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistItems,
+        field_value: data.item_names.join(", "),
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistValue,
+        field_value: (data.wishlist_value / 100).toFixed(2),
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.wishlistUrl,
+        field_value: data.wishlist_url,
+      },
+      {
+        key: GHL_CUSTOM_FIELDS.rebirthSource,
+        field_value: "wishlist_dormant",
+      },
       {
         key: GHL_CUSTOM_FIELDS.rebirthSourceDetail,
         field_value: data.last_activity,

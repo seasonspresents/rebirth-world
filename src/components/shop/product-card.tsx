@@ -12,6 +12,7 @@ import { resolveProductImage } from "@/lib/product-images";
 import { Badge } from "@/components/ui/badge";
 import { SpotlightCard } from "@/components/ui/spotlight";
 import { ProductQuickView } from "@/components/shop/product-quick-view";
+import { WishlistButton } from "@/components/shop/wishlist-button";
 
 interface ProductCardProps {
   product: Product;
@@ -77,7 +78,9 @@ export function ProductCard({
                         fill
                         className="object-cover transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        style={{ viewTransitionName: `product-${product.slug}` }}
+                        style={{
+                          viewTransitionName: `product-${product.slug}`,
+                        }}
                       />
                       {/* Hover image crossfade */}
                       {alternateImage && (
@@ -108,6 +111,11 @@ export function ProductCard({
                   )}
                 </div>
               </Link>
+
+              <WishlistButton
+                product={product}
+                className="absolute top-3 right-3 z-10"
+              />
 
               {/* Quick View */}
               <motion.button

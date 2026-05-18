@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { AddToCartButton } from "@/components/shop/add-to-cart-button";
+import { WishlistButton } from "@/components/shop/wishlist-button";
 import { formatPrice } from "@/lib/payments/constants";
 import type { Product } from "@/lib/payments/constants";
 import { resolveProductImage } from "@/lib/product-images";
@@ -37,7 +38,7 @@ export function ProductQuickView({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden text-foreground">
+      <DialogContent className="text-foreground max-w-2xl gap-0 overflow-hidden p-0">
         <DialogHeader className="sr-only">
           <DialogTitle>{product.name}</DialogTitle>
           <DialogDescription>Quick view of {product.name}</DialogDescription>
@@ -45,7 +46,7 @@ export function ProductQuickView({
 
         <div className="grid grid-cols-1 md:grid-cols-2">
           {/* Image */}
-          <div className="relative aspect-square bg-muted">
+          <div className="bg-muted relative aspect-square">
             {primaryImage ? (
               <Image
                 src={primaryImage}
@@ -55,7 +56,7 @@ export function ProductQuickView({
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             ) : (
-              <div className="flex h-full items-center justify-center text-muted-foreground">
+              <div className="text-muted-foreground flex h-full items-center justify-center">
                 No image
               </div>
             )}
@@ -64,32 +65,32 @@ export function ProductQuickView({
           {/* Details */}
           <div className="flex flex-col p-6">
             {product.metadata.collection && (
-              <p className="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              <p className="text-muted-foreground mb-1 text-xs font-medium tracking-wider uppercase">
                 {product.metadata.collection.replace(/-/g, " ")}
               </p>
             )}
-            <h2 className="text-lg font-semibold font-[family-name:var(--font-display)]">
+            <h2 className="font-[family-name:var(--font-display)] text-lg font-semibold">
               {product.name}
             </h2>
             {product.metadata.subtitle && (
-              <p className="mt-0.5 text-sm text-muted-foreground">
+              <p className="text-muted-foreground mt-0.5 text-sm">
                 {product.metadata.subtitle}
               </p>
             )}
 
             <div className="mt-2 flex items-center gap-2">
-              <p className="text-lg font-semibold text-primary">
+              <p className="text-primary text-lg font-semibold">
                 {formatPrice(product.price, product.currency)}
               </p>
               {isOnSale && compareAt && (
-                <p className="text-sm text-muted-foreground line-through">
+                <p className="text-muted-foreground text-sm line-through">
                   {formatPrice(compareAt, product.currency)}
                 </p>
               )}
             </div>
 
             {product.description && (
-              <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+              <p className="text-muted-foreground mt-3 line-clamp-3 text-sm leading-relaxed">
                 {product.description}
               </p>
             )}
@@ -102,6 +103,11 @@ export function ProductQuickView({
                   product.metadata.engraving_available === "true"
                 }
                 compact
+              />
+              <WishlistButton
+                product={product}
+                showLabel
+                className="mt-3 w-full rounded-lg"
               />
             </div>
 

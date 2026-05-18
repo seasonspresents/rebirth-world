@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { ShoppingBag } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import {
   motion,
   AnimatePresence,
@@ -16,6 +16,7 @@ import { MobileNav } from "@/components/shared/mobile-nav";
 import { Logo } from "@/components/shared/logo";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { useCart } from "@/components/cart/cart-context";
+import { useWishlist } from "@/components/wishlist/wishlist-context";
 import { cn } from "@/lib/utils";
 import { AnnouncementBar } from "@/components/shared/announcement-bar";
 
@@ -33,6 +34,7 @@ export function Header() {
   const [hidden, setHidden] = useState(false);
   const prevScrollY = useRef(0);
   const { itemCount, setCartOpen } = useCart();
+  const { count: wishlistCount } = useWishlist();
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
 
   useMotionValueEvent(scrollY, "change", (current) => {
@@ -59,14 +61,16 @@ export function Header() {
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
-        scrolled ? "border-b border-border/50" : "border-b border-transparent"
+        scrolled ? "border-border/50 border-b" : "border-b border-transparent"
       )}
     >
       <AnnouncementBar />
       <div
         className={cn(
           "backdrop-blur-[14px] transition-colors duration-300",
-          scrolled ? "bg-background/92 text-foreground" : "bg-background/70 text-foreground"
+          scrolled
+            ? "bg-background/92 text-foreground"
+            : "bg-background/70 text-foreground"
         )}
       >
         <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between px-6">
@@ -78,14 +82,14 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="relative px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground relative px-3 py-2 text-sm font-medium transition-colors"
                 onMouseEnter={() => setHoveredNav(item.label)}
                 onMouseLeave={() => setHoveredNav(null)}
               >
                 {hoveredNav === item.label && (
                   <motion.span
                     layoutId="navHover"
-                    className="absolute inset-0 rounded-md bg-muted/50"
+                    className="bg-muted/50 absolute inset-0 rounded-md"
                     transition={{
                       type: "spring",
                       bounce: 0.2,
@@ -99,6 +103,30 @@ export function Header() {
 
             <div className="ml-3 flex items-center gap-1">
               <ThemeToggle />
+              <Button variant="ghost" size="icon" className="relative" asChild>
+                <Link href="/wishlist" aria-label="Saved items">
+                  <Heart className="size-5" />
+                  <AnimatePresence mode="wait">
+                    {wishlistCount > 0 && (
+                      <motion.span
+                        key={wishlistCount}
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.5, opacity: 0 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 25,
+                        }}
+                      >
+                        <Badge className="absolute -top-1 -right-1 size-5 p-0 text-[10px]">
+                          {wishlistCount}
+                        </Badge>
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </Link>
+              </Button>
               <Button
                 variant="ghost"
                 size="icon"

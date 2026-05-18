@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Menu, ShoppingBag } from "lucide-react";
+import { Heart, Menu, ShoppingBag } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -14,16 +14,28 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { useCart } from "@/components/cart/cart-context";
+import { useWishlist } from "@/components/wishlist/wishlist-context";
 import { useLenisPause } from "@/hooks/use-lenis-pause";
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
   const { itemCount, setCartOpen } = useCart();
+  const { count: wishlistCount } = useWishlist();
 
   useLenisPause(open);
 
   return (
     <div className="flex items-center gap-2 md:hidden">
+      <Button variant="ghost" size="icon" className="relative" asChild>
+        <Link href="/wishlist" aria-label="Saved items">
+          <Heart className="size-5" />
+          {wishlistCount > 0 && (
+            <Badge className="absolute -top-1 -right-1 size-5 p-0 text-[10px]">
+              {wishlistCount}
+            </Badge>
+          )}
+        </Link>
+      </Button>
       <Button
         variant="ghost"
         size="icon"
@@ -57,42 +69,49 @@ export function MobileNav() {
           <nav className="flex flex-1 flex-col gap-4">
             <Link
               href="/shop"
-              className="block rounded-md px-4 py-2 text-2xl font-medium transition-colors hover:bg-muted"
+              className="hover:bg-muted block rounded-md px-4 py-2 text-2xl font-medium transition-colors"
               onClick={() => setOpen(false)}
             >
               Shop
             </Link>
             <Link
               href="/shop#products"
-              className="block rounded-md px-4 py-2 text-2xl font-medium transition-colors hover:bg-muted"
+              className="hover:bg-muted block rounded-md px-4 py-2 text-2xl font-medium transition-colors"
               onClick={() => setOpen(false)}
             >
               Search
             </Link>
             <Link
+              href="/wishlist"
+              className="hover:bg-muted block rounded-md px-4 py-2 text-2xl font-medium transition-colors"
+              onClick={() => setOpen(false)}
+            >
+              Saved Items
+            </Link>
+            <Link
               href="/our-story"
-              className="block rounded-md px-4 py-2 text-2xl font-medium transition-colors hover:bg-muted"
+              className="hover:bg-muted block rounded-md px-4 py-2 text-2xl font-medium transition-colors"
               onClick={() => setOpen(false)}
             >
               Our Story
             </Link>
             <Link
               href="/blog"
-              className="block rounded-md px-4 py-2 text-2xl font-medium transition-colors hover:bg-muted"
+              className="hover:bg-muted block rounded-md px-4 py-2 text-2xl font-medium transition-colors"
               onClick={() => setOpen(false)}
             >
               Blog
             </Link>
             <Link
               href="/contact"
-              className="block rounded-md px-4 py-2 text-2xl font-medium transition-colors hover:bg-muted"
+              className="hover:bg-muted block rounded-md px-4 py-2 text-2xl font-medium transition-colors"
               onClick={() => setOpen(false)}
             >
               Contact
             </Link>
             <Link
               href="/sign-in"
-              className="block rounded-md px-4 py-2 text-2xl font-medium transition-colors hover:bg-muted"
+              className="hover:bg-muted block rounded-md px-4 py-2 text-2xl font-medium transition-colors"
               onClick={() => setOpen(false)}
             >
               Sign in
@@ -104,7 +123,7 @@ export function MobileNav() {
             </Button>
             <div className="mt-auto flex flex-col items-center gap-4">
               <ThemeToggle />
-              <p className="text-xs font-[family-name:var(--font-dm-mono)] tracking-wide text-muted-foreground/60">
+              <p className="text-muted-foreground/60 font-[family-name:var(--font-dm-mono)] text-xs tracking-wide">
                 Embrace Change
               </p>
             </div>
