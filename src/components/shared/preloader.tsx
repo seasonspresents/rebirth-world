@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText } from "@/lib/gsap/register";
 
 export function Preloader() {
   const [visible, setVisible] = useState(true);
   const [animateOut, setAnimateOut] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const brandRef = useRef<HTMLSpanElement>(null);
   const subRef = useRef<HTMLSpanElement>(null);
@@ -15,6 +16,7 @@ export function Preloader() {
   useGSAP(
     () => {
       if (!brandRef.current || !visible) return;
+      if (shouldReduceMotion) return;
 
       const split = SplitText.create(brandRef.current, { type: "chars" });
 
@@ -46,13 +48,29 @@ export function Preloader() {
         split.revert();
       };
     },
-    { scope: containerRef, dependencies: [visible] }
+    { scope: containerRef, dependencies: [shouldReduceMotion, visible] }
   );
 
   useEffect(() => {
-    if (sessionStorage.getItem("rebirth-preloader-shown")) {
-      setVisible(false);
-      return;
+    let cancelled = false;
+
+    if (
+      shouldReduceMotion ||
+      sessionStorage.getItem("rebirth-preloader-shown")
+    ) {
+      const skipTimer = window.setTimeout(() => {
+        if (!cancelled) {
+          setVisible(false);
+        }
+        if (shouldReduceMotion) {
+          sessionStorage.setItem("rebirth-preloader-shown", "1");
+        }
+      }, 0);
+
+      return () => {
+        cancelled = true;
+        clearTimeout(skipTimer);
+      };
     }
 
     const timer = setTimeout(() => {
@@ -68,7 +86,7 @@ export function Preloader() {
       clearTimeout(timer);
       clearTimeout(removeTimer);
     };
-  }, []);
+  }, [shouldReduceMotion]);
 
   if (!visible) return null;
 

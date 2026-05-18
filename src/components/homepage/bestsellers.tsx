@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { ProductCard } from "@/components/shop/product-card";
 import type { Product } from "@/lib/payments/constants";
 import type { ReviewSummary } from "@/lib/review-types";
@@ -34,6 +34,7 @@ export function Bestsellers({
   reviewSummaries = {},
 }: BestsellersProps) {
   const [activeTab, setActiveTab] = useState<string>("wedding-bands");
+  const shouldReduceMotion = useReducedMotion();
 
   const curatedSlugs = CURATED_SLUGS[activeTab];
   let filtered: Product[];
@@ -84,9 +85,9 @@ export function Bestsellers({
         {/* Product Grid */}
         <motion.div
           key={activeTab}
-          initial={{ opacity: 0, y: 10 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.4 }}
           className="grid grid-cols-1 gap-5 min-[400px]:grid-cols-2 lg:grid-cols-4"
         >
           {displayProducts.map((product, i) => (

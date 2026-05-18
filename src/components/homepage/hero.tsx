@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -219,13 +219,16 @@ function HeroSlideshow({
 }) {
   const [current, setCurrent] = useState(0);
   const isBackground = variant === "background";
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
+    if (shouldReduceMotion) return;
+
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % HERO_IMAGES.length);
     }, 5500);
     return () => clearInterval(interval);
-  }, []);
+  }, [shouldReduceMotion]);
 
   return (
     <div
@@ -239,12 +242,15 @@ function HeroSlideshow({
         <motion.div
           key={current}
           className="absolute inset-0"
-          initial={{ opacity: 0, scale: 1.08 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, scale: 1.08 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
+          exit={shouldReduceMotion ? undefined : { opacity: 0 }}
           transition={{
-            opacity: { duration: 1.2, ease: "easeInOut" },
-            scale: { duration: 6, ease: "easeOut" },
+            opacity: {
+              duration: shouldReduceMotion ? 0 : 1.2,
+              ease: "easeInOut",
+            },
+            scale: { duration: shouldReduceMotion ? 0 : 6, ease: "easeOut" },
           }}
         >
           <Image

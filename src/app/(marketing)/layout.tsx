@@ -3,6 +3,7 @@ import { Header } from "@/components/shared/header";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { BottomNav } from "@/components/shared/bottom-nav";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
+import { MotionPreferencesProvider } from "@/components/providers/motion-preferences-provider";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { SectionColorBlender } from "@/components/marketing/section-color-blender";
 
@@ -12,18 +13,20 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SmoothScrollProvider>
-      <div className="cursor-custom overflow-x-clip">
-        <CustomCursor />
-        <SectionColorBlender />
-        <Header />
-        <CartDrawer />
-        <main className="pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
-          {children}
-        </main>
-        <Footer />
-        <BottomNav />
-      </div>
-    </SmoothScrollProvider>
+    <MotionPreferencesProvider>
+      <SmoothScrollProvider>
+        <div className="cursor-custom overflow-x-clip">
+          <CustomCursor />
+          <SectionColorBlender />
+          <Header />
+          <CartDrawer />
+          <main className="pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
+            {children}
+          </main>
+          <Footer />
+          <BottomNav />
+        </div>
+      </SmoothScrollProvider>
+    </MotionPreferencesProvider>
   );
 }
