@@ -25,6 +25,10 @@ const COLLECTION_HEADERS: Record<
     image: string;
     cta: string;
     accent: string;
+    secondaryCta?: {
+      label: string;
+      href: string;
+    };
   }
 > = {
   all: {
@@ -50,6 +54,10 @@ const COLLECTION_HEADERS: Record<
     image: "/images/wedding-bands/spalted-maple-burl/hand-lifestyle-shot-.webp",
     cta: "Shop wedding bands",
     accent: "text-[#d5a56c]",
+    secondaryCta: {
+      label: "Find your size",
+      href: "/size-guide",
+    },
   },
   apparel: {
     eyebrow: "Small-batch apparel",
@@ -182,6 +190,14 @@ function ShopCollectionHeader({ collection }: { collection?: string }) {
           >
             {header.cta}
           </Link>
+          {header.secondaryCta ? (
+            <Link
+              href={header.secondaryCta.href}
+              className="inline-flex min-h-12 items-center justify-center border border-white/30 px-6 py-3 font-[family-name:var(--font-caps)] text-sm tracking-[2px] text-white transition-all hover:border-white hover:bg-white/10"
+            >
+              {header.secondaryCta.label}
+            </Link>
+          ) : null}
           {collection ? (
             <Link
               href="/shop"

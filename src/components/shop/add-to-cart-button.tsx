@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Link from "next/link";
 import { ShoppingBag, Check } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { toast } from "sonner";
@@ -61,7 +62,15 @@ export function AddToCartButton({
       {/* Size selector */}
       {hasSizes && (
         <div className="mb-4">
-          <p className="mb-2 text-sm font-semibold">Select Size</p>
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <p className="text-sm font-semibold">Select Size</p>
+            <Link
+              href="/size-guide"
+              className="inline-flex min-h-11 items-center text-xs font-medium text-primary underline-offset-4 hover:underline"
+            >
+              Size guide
+            </Link>
+          </div>
           <div className="flex flex-wrap gap-2">
             {uniqueSizes.map((size) => (
               <button

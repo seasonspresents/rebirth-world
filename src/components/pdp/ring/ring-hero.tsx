@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Ruler } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { ProductImageGallery } from "@/components/shop/product-image-gallery";
@@ -275,7 +275,7 @@ export function RingHero({ product }: RingHeroProps) {
                       key={m.id}
                       type="button"
                       onClick={() => setSelectedMetal(m.id)}
-                      className="flex flex-col items-center gap-1.5 cursor-pointer"
+                      className="flex min-h-11 min-w-11 cursor-pointer flex-col items-center gap-1.5"
                     >
                       <div
                         className={cn(
@@ -311,7 +311,7 @@ export function RingHero({ product }: RingHeroProps) {
                       type="button"
                       onClick={() => setSelectedWood(w)}
                       className={cn(
-                        "h-[42px] min-w-[42px] border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
+                        "min-h-11 min-w-11 border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
                         selectedWood === w
                           ? "border-[var(--black)] bg-[var(--black)] text-[var(--warm-white)]"
                           : "border-[var(--mid-gray)] bg-transparent text-[var(--black)] hover:border-[var(--teal)] hover:text-[var(--teal)]"
@@ -337,7 +337,7 @@ export function RingHero({ product }: RingHeroProps) {
                       type="button"
                       onClick={() => setSelectedWidth(w)}
                       className={cn(
-                        "h-[42px] min-w-[42px] border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
+                        "min-h-11 min-w-11 border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
                         selectedWidth === w
                           ? "border-[var(--black)] bg-[var(--black)] text-[var(--warm-white)]"
                           : "border-[var(--mid-gray)] bg-transparent text-[var(--black)] hover:border-[var(--teal)] hover:text-[var(--teal)]"
@@ -362,8 +362,9 @@ export function RingHero({ product }: RingHeroProps) {
                   </span>
                   <a
                     href="/size-guide"
-                    className="text-[11px] font-normal text-[var(--teal)] underline tracking-normal normal-case"
+                    className="inline-flex min-h-11 items-center gap-1.5 px-2 text-[11px] font-normal text-[var(--teal)] underline tracking-normal normal-case"
                   >
+                    <Ruler className="size-3.5" />
                     Size Guide
                   </a>
                 </div>
@@ -374,7 +375,7 @@ export function RingHero({ product }: RingHeroProps) {
                       type="button"
                       onClick={() => setSelectedSize(s)}
                       className={cn(
-                        "h-[42px] min-w-[42px] border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
+                        "min-h-11 min-w-11 border-[1.5px] px-3 text-[13px] transition-all cursor-pointer",
                         selectedSize === s
                           ? "border-[var(--black)] bg-[var(--black)] text-[var(--warm-white)]"
                           : "border-[var(--mid-gray)] bg-transparent text-[var(--black)] hover:border-[var(--teal)] hover:text-[var(--teal)]"

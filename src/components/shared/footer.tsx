@@ -11,6 +11,7 @@ const footerLinks = {
     { label: "Skateboard Rings", href: "/shop?collection=skateboard-rings" },
     { label: "Wedding Bands", href: "/shop?collection=wedding-bands" },
     { label: "Apparel", href: "/shop?collection=apparel" },
+    { label: "Size Guide", href: "/size-guide" },
   ],
   Company: [
     { label: "Our Story", href: "/our-story" },

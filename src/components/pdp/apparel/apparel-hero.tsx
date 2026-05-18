@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Ruler } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner";
 import { ProductImageGallery } from "@/components/shop/product-image-gallery";
@@ -226,7 +226,7 @@ export function ApparelHero({ product }: ApparelHeroProps) {
                     key={color}
                     type="button"
                     onClick={() => setSelectedColor(color)}
-                    className="flex flex-col items-center gap-1.5 cursor-pointer"
+                    className="flex min-h-11 min-w-11 cursor-pointer flex-col items-center gap-1.5"
                   >
                     <div
                       className="w-9 h-9 rounded-full transition-all"
@@ -251,10 +251,11 @@ export function ApparelHero({ product }: ApparelHeroProps) {
               <div className="text-[11px] font-bold tracking-[2px] uppercase flex justify-between items-center mb-2.5">
                 <span>2. Choose Size</span>
                 <a
-                  href="#"
-                  className="text-[11px] font-normal tracking-normal underline"
+                  href="/size-guide#apparel-fit"
+                  className="inline-flex min-h-11 items-center gap-1.5 px-2 text-[11px] font-normal tracking-normal underline"
                   style={{ color: "#c4603a" }}
                 >
+                  <Ruler className="size-3.5" />
                   Size Guide
                 </a>
               </div>
@@ -265,7 +266,7 @@ export function ApparelHero({ product }: ApparelHeroProps) {
                     type="button"
                     onClick={() => setSelectedSize(size)}
                     className={cn(
-                      "h-[42px] min-w-[42px] px-3.5 text-[13px] font-[family-name:var(--font-body)] cursor-pointer transition-all",
+                      "min-h-11 min-w-11 px-3.5 text-[13px] font-[family-name:var(--font-body)] cursor-pointer transition-all",
                       selectedSize === size
                         ? "text-[#f2ece0]"
                         : "text-[#1c1a17] hover:border-[#c4603a] hover:text-[#c4603a]"
