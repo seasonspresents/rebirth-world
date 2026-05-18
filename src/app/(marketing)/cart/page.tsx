@@ -153,6 +153,7 @@ export default function CartPage() {
                         <div className="flex items-center gap-1">
                           <button
                             type="button"
+                            aria-label={`Decrease quantity for ${item.name}`}
                             className="border-border hover:bg-muted flex size-8 items-center justify-center rounded-md border transition-colors"
                             onClick={() =>
                               updateQuantity(key, item.quantity - 1)
@@ -165,6 +166,7 @@ export default function CartPage() {
                           </span>
                           <button
                             type="button"
+                            aria-label={`Increase quantity for ${item.name}`}
                             className="border-border hover:bg-muted flex size-8 items-center justify-center rounded-md border transition-colors"
                             onClick={() =>
                               updateQuantity(key, item.quantity + 1)
@@ -175,6 +177,7 @@ export default function CartPage() {
                         </div>
                         <button
                           type="button"
+                          aria-label={`Remove ${item.name} from cart`}
                           className="text-muted-foreground hover:text-destructive ml-auto text-sm transition-colors"
                           onClick={() => removeItem(key)}
                         >
